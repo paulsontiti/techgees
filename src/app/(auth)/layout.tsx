@@ -29,7 +29,7 @@ export default function AuthLayout({
     flex-col fixed inset-y-0 z-50">
 <Sidebar/>
     </div>
-  <main className="md:pl-56 h-full mt-[100px]">
+  <main className="md:pl-56 h-full mt-[80px]">
   {children}
   </main>
           </SignedIn>
