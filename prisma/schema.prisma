@@ -28,7 +28,8 @@ model Course{
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
 
-CourseCategory CourseCategory[]
+courseCategory CourseCategory[]
+@@unique([id,userId])
 }
 
 model Attachment{
@@ -44,7 +45,7 @@ model Category{
   id String @id @default(uuid())
   name String @unique
 
-  CourseCategory CourseCategory[]
+  courseCategory CourseCategory[]
 }
 
 model CourseCategory{
