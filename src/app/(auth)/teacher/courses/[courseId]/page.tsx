@@ -84,7 +84,7 @@ async function CourseIdPage({params:{courseId}}:{params:{courseId:string}}) {
         <TitleForm course={course}/>
         <DescriptionForm course={course}/>
         <ImageForm course={course}/>
-        <CategoryForm categories={categories} courseCategories={courseCategories}/>
+        <CategoryForm categories={categories} courseCategories={courseCategories} courseId={courseId}/>
        </div>
       </div>
     </div>

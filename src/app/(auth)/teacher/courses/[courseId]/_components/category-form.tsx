@@ -27,6 +27,7 @@ import toast from 'react-hot-toast'
 
 import { Category } from '@prisma/client'
 import { Pencil } from 'lucide-react'
+import Loader from "@/components/loader"
 
 const SelectedCategory = ({category,removecategory}:
   {category:Category,removecategory:React.Dispatch<React.SetStateAction<{
@@ -44,12 +45,12 @@ const SelectedCategory = ({category,removecategory}:
   </div>
 }
 
-function CategoryForm({courseCategories,categories}:{courseCategories:Category[],categories:Category[]}) {
+function CategoryForm({courseCategories,categories,courseId}:{courseCategories:Category[],categories:Category[],courseId:string}) {
 const [editing,setEditing] = useState(false)
 const router = useRouter()
 
 const [open, setOpen] = React.useState(false)
-const [value, setValue] = React.useState("")
+const [loading, setLoading] = React.useState(false)
 const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
 
    
@@ -58,14 +59,16 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
     }
 
 
-    const onSubmit = async(values:any)=>{
+    const onSubmit = async(selectedCategoryIds:string[])=>{
         try{
-            await axios.patch(`/api/courses/${course.id}`,values)
+            await axios.post(`/api/courses/${courseId}/course-category`,selectedCategoryIds)
             toast.success("Course updated")
             toggleEdit()
             router.refresh()
         }catch(err:any){
             toast.error("Something went wrong",err.message)
+        }finally{
+          setLoading(false)
         }
     }
   return (
@@ -79,14 +82,15 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
              ):(
                 <>
                 <Pencil className='h-4 w-4 mr-2'/>
-                Edit description
+                Edit category
                 </>
              )}
             </Button>
         </div>
      
         {editing ? 
-         <Popover open={open} onOpenChange={setOpen}>
+    <div>
+           <Popover open={open} onOpenChange={setOpen}>
          <PopoverTrigger asChild>
            <Button
              variant="outline"
@@ -96,7 +100,7 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
            >
              {selectedcategories.length > 0 
               //  ? categories.find((category) => category.id === value)?.name
-              ? <div className="max-w-full overflow-auto flex gap-2">
+              ? <div className="max-w-full flex-col flex gap-2">
                 {selectedcategories.map((cat)=>{
                   return <SelectedCategory category={cat} removecategory={setSelectedCategories}/>
                 })}
@@ -115,8 +119,8 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
                    <CommandItem
                      key={category.id}
                      value={category.name}
-                     onSelect={(currentValue) => {
-                       //setValue(currentValue === value ? "" : currentValue)
+                     onSelect={() => {
+                    
                        setSelectedCategories((prv)=> [...prv,category])
                        setOpen(false)
                      }}
@@ -124,7 +128,7 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
                      <Check
                        className={cn(
                          "mr-2 h-4 w-4",
-                         value === category.id ? "opacity-100" : "opacity-0"
+                         selectedcategories.find((cat)=>cat.id === category.id) ? "opacity-100" : "opacity-0"
                        )}
                      />
                      {category.name}
@@ -135,14 +139,22 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
            </Command>
          </PopoverContent>
        </Popover>
+       <Button className="mt-4 flex items-center justify-between" 
+       onClick={()=>{
+        setLoading(true)
+        onSubmit(selectedcategories.map(cat=>cat.id))
+       }}
+       disabled={selectedcategories.length === 0}
+       >Save <Loader loading={loading}/></Button>
+    </div>
        :
          <div className={cn('text-sm mt-2',
             courseCategories.length === 0 && "text-slate-500 italic"
-         )}>{courseCategories.length > 0 ? <>
+         )}>{courseCategories.length > 0 ? <div className="flex gap-x-2">
          {courseCategories.map((category)=>{
             return <span>{category.name}</span>
          })}
-         </>: "No category"}</div>}
+         </div>: "No category"}</div>}
       
     </div>
   )
