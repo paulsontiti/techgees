@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, X } from "lucide-react"
  
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -28,6 +28,21 @@ import toast from 'react-hot-toast'
 import { Category } from '@prisma/client'
 import { Pencil } from 'lucide-react'
 
+const SelectedCategory = ({category,removecategory}:
+  {category:Category,removecategory:React.Dispatch<React.SetStateAction<{
+    id: string;
+    name: string;
+}[]>>})=>{
+
+  return <div className="flex items-center p-2 hover:bg-white bg-slate-100" 
+  onClick={(e)=>{
+    e.preventDefault()
+    removecategory((prv)=> prv.filter((cat)=> cat.id !== category.id))}}
+  >
+    <span>{category.name}</span>
+    <X className="ml-2 h-4 w-4" />
+  </div>
+}
 
 function CategoryForm({courseCategories,categories}:{courseCategories:Category[],categories:Category[]}) {
 const [editing,setEditing] = useState(false)
@@ -35,10 +50,8 @@ const router = useRouter()
 
 const [open, setOpen] = React.useState(false)
 const [value, setValue] = React.useState("")
+const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
 
-
-
-   
    
     const toggleEdit = ()=>{
         setEditing((prv)=>!prv)
@@ -79,26 +92,32 @@ const [value, setValue] = React.useState("")
              variant="outline"
              role="combobox"
              aria-expanded={open}
-             className="w-[200px] justify-between"
+             className="w-full justify-between h-auto"
            >
-             {value
-               ? categories.find((category) => category.id === value)?.name
+             {selectedcategories.length > 0 
+              //  ? categories.find((category) => category.id === value)?.name
+              ? <div className="max-w-full overflow-auto flex gap-2">
+                {selectedcategories.map((cat)=>{
+                  return <SelectedCategory category={cat} removecategory={setSelectedCategories}/>
+                })}
+              </div>
                : "Select category..."}
              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
            </Button>
          </PopoverTrigger>
-         <PopoverContent className="w-[200px] p-0">
+         <PopoverContent className="w-full p-0">
            <Command>
-             <CommandInput placeholder="Search framework..." />
+             <CommandInput placeholder="Search category..." />
              <CommandList>
                <CommandEmpty>No category found.</CommandEmpty>
                <CommandGroup>
                  {categories.map((category) => (
                    <CommandItem
                      key={category.id}
-                     value={category.id}
+                     value={category.name}
                      onSelect={(currentValue) => {
-                       setValue(currentValue === value ? "" : currentValue)
+                       //setValue(currentValue === value ? "" : currentValue)
+                       setSelectedCategories((prv)=> [...prv,category])
                        setOpen(false)
                      }}
                    >
@@ -124,6 +143,7 @@ const [value, setValue] = React.useState("")
             return <span>{category.name}</span>
          })}
          </>: "No category"}</div>}
+      
     </div>
   )
 }

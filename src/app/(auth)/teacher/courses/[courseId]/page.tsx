@@ -28,6 +28,9 @@ async function CourseIdPage({params:{courseId}}:{params:{courseId:string}}) {
 
     if(!course) return redirect("/dashboard")
 
+
+
+
       const requiredFields = [
         course.title,
         course.description,
@@ -39,6 +42,25 @@ async function CourseIdPage({params:{courseId}}:{params:{courseId:string}}) {
       const totalFields = requiredFields.length
       const completedFields = requiredFields.filter(Boolean).length
       const completionText = `(${completedFields}/${totalFields})`
+
+
+      const categories = await db.category.findMany({
+        orderBy:{
+          name:"asc"
+        }
+      })
+
+      const cC = await db.courseCategory.findMany({
+        where:{
+          courseId
+        },
+        include:{
+          category:true
+        }
+      })
+
+      const courseCategories = cC.map(categpry =>  categpry.category)
+
   return (
     <div className='p-6'>
       <div className='flex items-center justify-between'>
@@ -62,7 +84,7 @@ async function CourseIdPage({params:{courseId}}:{params:{courseId:string}}) {
         <TitleForm course={course}/>
         <DescriptionForm course={course}/>
         <ImageForm course={course}/>
-        <CategoryForm categories={[]} courseCategories={[]}/>
+        <CategoryForm categories={categories} courseCategories={courseCategories}/>
        </div>
       </div>
     </div>
