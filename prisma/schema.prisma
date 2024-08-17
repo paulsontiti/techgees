@@ -9,57 +9,164 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
-model Course{
-  id String @id @default(uuid())
-  userId String
-  title String @db.Text
-  description String? @db.LongText
-  imageUrl String? @db.Text
-  price Float?
+model Course {
+  id            String  @id @default(uuid())
+  userId        String
+  title         String  @db.Text
+  description   String? @db.LongText
+  imageUrl      String? @db.Text
+  price         Float?
   comboDiscount Float?
   promoDiscount Float?
-  isPublished Boolean @default(false)
-
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
-
-courseCategory CourseCategory[]
-@@unique([id,userId])
-}
-
-model Attachment{
-  id String @id @default(uuid())
-  name String
-  url String @db.Text
+  isPublished   Boolean @default(false)
 
   createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
+
+  courseCategories CourseCategory[]
+  chapters        Chapter[]
+
+  userProgresses UserProgress[]
+  purchases Purchase[]
+
+  @@unique([id, userId])
 }
 
-model Category{
+model Chapter {
+  id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  position    Int
+  isPublished Boolean @default(false)
+  isFree      Boolean @default(false)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  userProgresses UserProgress[]
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([id, courseId])
+  @@index([courseId])
+}
+
+model Session{
+    id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  position    Int
+  videoUrl String?
+  videoDuration Int
+  isPublished Boolean @default(false)
+  isFree      Boolean @default(false)
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  userProgresses UserProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([chapterId])
+}
+
+model Purchase{
   id String @id @default(uuid())
+  userId String 
+
+  courseId String 
+  course Course @relation(fields: [courseId],references: [id],onDelete: Cascade)
+
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+  @@unique([userId,courseId])
+}
+
+model User{
+  id String @id @default(uuid())
+  userId String 
+  role Role @default(Student)
+
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role{
+  Admin
+  Student 
+  Teacher
+}
+
+model UserProgress {
+  id          String  @id @default(uuid())
+  userId      String
+  isCompleted Boolean @default(false)
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  sessionId String?
+  session Session?   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  courseId String?
+  course Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, chapterId])
+  @@unique([userId, sessionId])
+  @@unique([userId, courseId])
+  @@index([chapterId])
+  @@index([sessionId])
+  @@index([courseId])
+}
+
+model Attachment {
+  id   String @id @default(uuid())
+  name String
+  url  String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id   String @id @default(uuid())
   name String @unique
 
-  courseCategory CourseCategory[]
-}
-
-model CourseCategory{
-  id String @id @default(uuid())
-  courseId String
-  categoryId String
-
-  course Course @relation(fields: [courseId],references: [id],onDelete: Cascade)
-  category Category @relation(fields: [categoryId],references: [id],onDelete: Cascade)
+  courseCategories CourseCategory[]
 
   createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
+}
 
-@@index([courseId])
-@@index([categoryId])
-@@unique([courseId,categoryId])
+model CourseCategory {
+  id         String @id @default(uuid())
+  courseId   String
+  categoryId String
+
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([courseId, categoryId])
+  @@index([courseId])
+  @@index([categoryId])
 }
