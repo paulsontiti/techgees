@@ -24,6 +24,7 @@ import { Chapter, Course } from "@prisma/client";
 import { Pencil, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import ChaptersList from "./chapters-list";
 
 const formSchema = zod.object({
   title: zod.string().min(1, {
@@ -52,11 +53,12 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${course.id}/chapters`, values);
+      await axios.post(`/api/courses/${course.id}/chapters`, values);
       toast.success("Chapter created");
       toggleCreating();
       router.refresh();
     } catch (err: any) {
+      console.log(err)
       toast.error("Something went wrong", err.message);
     }
   };
@@ -121,7 +123,12 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
                 "text-sm mt-2",
                 !course.chapters.length && "text-slate-500 italic"
              )}>{!course.chapters.length && "No chapters"}
-             {/* TODO: Add a list of chapters */}
+            
+            <ChaptersList
+              onEdit={()=>{}}
+              onReorder={()=>{}}
+              chapters={course.chapters ?? []}
+            />
              </div>
              <p className="text-xs text-muted-foreground mt-4">
                 Drag and drop to reorder the chapters
