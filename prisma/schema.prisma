@@ -64,9 +64,8 @@ model Session{
   description String? @db.Text
   position    Int
   videoUrl String?
-  videoDuration Int
+  videoDuration Int?
   isPublished Boolean @default(false)
-  isFree      Boolean @default(false)
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)

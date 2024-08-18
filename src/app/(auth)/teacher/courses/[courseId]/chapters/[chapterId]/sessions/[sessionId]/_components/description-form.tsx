@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 
 import * as zod from "zod"
 
-import { Course } from '@prisma/client'
+import { Session } from '@prisma/client'
 import { Pencil } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Editor } from '@/components/editor'
@@ -25,7 +25,7 @@ const formSchema = zod.object({
     })
 })
 
-function DescriptionForm({course}:{course:Course}) {
+function DescriptionForm({session,courseId}:{session:Session,courseId:string}) {
 const [editing,setEditing] = useState(false)
 const router = useRouter()
 
@@ -33,7 +33,7 @@ const router = useRouter()
     const form = useForm<zod.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            description:course.description ?? ""
+            description:session.description ?? ""
         }
     })
 
@@ -48,8 +48,9 @@ const router = useRouter()
 
     const onSubmit = async(values:zod.infer<typeof formSchema>)=>{
         try{
-            await axios.patch(`/api/courses/${course.id}`,values)
-            toast.success("Course updated")
+            await axios.patch(`/api/courses/${courseId}/chapters/${session.chapterId}
+                /sessions/${session.id}`,values)
+            toast.success("Session updated")
             toggleEdit()
             router.refresh()
         }catch(err:any){
@@ -60,7 +61,7 @@ const router = useRouter()
     <div className='mt-6 
     border bg-slate-100 rounded-md p-4'>
         <div className='font-medium flex items-center justify-between'>
-            Course description
+            Session description
             <Button variant="ghost" onClick={toggleEdit}>
              {editing ? (
                 <>Cancel</>
@@ -83,14 +84,14 @@ control={form.control}
 name='description'
 render={({field})=>{
     return   <FormItem>
-          <FormLabel>Course description</FormLabel>
+          <FormLabel>Session description</FormLabel>
           <FormControl>
               <Editor
-             
+          
               {...field}
               />
           </FormControl>
-          <FormDescription>A brief description of this course</FormDescription>
+          <FormDescription>A brief description of this Session</FormDescription>
           <FormMessage/>
       </FormItem>
   }}
@@ -104,10 +105,9 @@ render={({field})=>{
                     </div>
 </form>
         </Form> :
-         <div className={cn('text-sm mt-2',
-            !course.description && "text-slate-500 italic"
-         )}>{course.description ? <Preview value={course.description}/> : 
-         "No description"}</div>}
+         <p className={cn('text-sm mt-2',
+            !session.description && "text-slate-500 italic"
+         )}>{session.description ? <Preview value={session.description}/> : "No description"}</p>}
     </div>
   )
 }

@@ -20,12 +20,12 @@ import toast from "react-hot-toast";
 
 import * as zod from "zod";
 
-import { Chapter, Course } from "@prisma/client";
-import { Pencil, PlusCircle } from "lucide-react";
+import { Chapter,Session } from "@prisma/client";
+import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import ChaptersList from "./chapters-list";
 import PageLoader from "@/components/page-loader";
+import SessionsList from "./sessions-list";
 
 const formSchema = zod.object({
   title: zod.string().min(1, {
@@ -33,7 +33,7 @@ const formSchema = zod.object({
   }),
 });
 
-function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
+function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -54,8 +54,8 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${course.id}/chapters`, values);
-      toast.success("Chapter created");
+      await axios.post(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/sessions`, values);
+      toast.success("Session created");
       toggleCreating();
       router.refresh();
     } catch (err: any) {
@@ -65,16 +65,17 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
   };
 
   const onReorder = async (
-    reorderedChapters:{chapterId:string,position:number}[]
+    reorderSessions:{sessionId:string,position:number}[]
   )=>{
     try{
       setIsUpdating(true)
 
-      await axios.put(`/api/courses/${course.id}/chapters/reorder`,{
-        reorderedChapters
+      await axios.put(`/api/courses/${chapter.courseId}
+        /chapters/${chapter.id}/sessions/reorder`,{
+        reorderSessions
       })
 
-      toast.success("Chapters reordered")
+      toast.success("Sessions reordered")
       router.refresh()
     }catch(err:any){
       toast.error("Something went wrong",err.message)
@@ -83,8 +84,8 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
     }
   }
 
-  const onEdit = (chapterId:string)=>{
-    router.push(`/teacher/courses/${course.id}/chapters/${chapterId}`)
+  const onEdit = (sessionId:string)=>{
+    router.push(`/teacher/courses/${chapter.courseId}/chapters/${chapter.id}/sessions/${sessionId}`)
   }
 
   return ( 
@@ -92,16 +93,16 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
       className="mt-6 relative
     border bg-slate-100 rounded-md p-4"
     >
-      <PageLoader isloading={isUpdating} label="re-odering chapters..."/>
+      <PageLoader isloading={isUpdating} label="re-odering sessions..."/>
       <div className="font-medium flex items-center justify-between">
-        Course chapters
+        Chapter sessions
         <Button variant="ghost" onClick={toggleCreating}>
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add a chapter
+              Add a session
             </>
           )}
         </Button>
@@ -119,16 +120,16 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Chapter title </FormLabel>
+                    <FormLabel>Session title </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isSubmitting}
-                        placeholder='e.g. "Introduction to the course"'
+                        placeholder='e.g. "Introduction to the chapter"'
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      What's the name of the chapter
+                      What's the name of the session
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -147,18 +148,18 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
        <div>
              <div className={cn(
                 "text-sm mt-2",
-                !course.chapters.length && "text-slate-500 italic"
-             )}>{!course.chapters.length && "No chapters"}
+                !chapter.sessions.length && "text-slate-500 italic"
+             )}>{!chapter.sessions.length && "No sessions"}
             
-            <ChaptersList
+            <SessionsList
               onEdit={onEdit}
               onReorder={onReorder}
-              items={course.chapters ?? []}
+              items={chapter.sessions ?? []}
             />
              </div>
-             <p className="text-xs text-muted-foreground mt-4">
-                Drag and drop to reorder the chapters
-             </p>
+          { !!chapter.sessions.length &&    <p className="text-xs text-muted-foreground mt-4">
+                Drag and drop to reorder the sessions
+             </p>}
 
        </div>
       )}
@@ -166,4 +167,4 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
   );
 }
 
-export default ChaptersForm;
+export default SessionForm;

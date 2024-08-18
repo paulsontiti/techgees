@@ -2,7 +2,7 @@
 import Loader from '@/components/loader'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-
+import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
@@ -12,20 +12,17 @@ import toast from 'react-hot-toast'
 
 import * as zod from "zod"
 
-import { Course } from '@prisma/client'
+import { Session } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Editor } from '@/components/editor'
-import { Preview } from '@/components/preview'
 
 
 const formSchema = zod.object({
-    description:zod.string().min(1,{
-        message:"description is required"
+    title:zod.string().min(1,{
+        message:"Title is required"
     })
 })
 
-function DescriptionForm({course}:{course:Course}) {
+function TitleForm({session,courseId}:{session:Session,courseId:string}) {
 const [editing,setEditing] = useState(false)
 const router = useRouter()
 
@@ -33,7 +30,7 @@ const router = useRouter()
     const form = useForm<zod.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            description:course.description ?? ""
+            title:session.title
         }
     })
 
@@ -48,8 +45,9 @@ const router = useRouter()
 
     const onSubmit = async(values:zod.infer<typeof formSchema>)=>{
         try{
-            await axios.patch(`/api/courses/${course.id}`,values)
-            toast.success("Course updated")
+            await axios.patch(`/api/courses/${courseId}
+                /chapters/${session.chapterId}/sessions/${session.id}`,values)
+            toast.success("Session updated")
             toggleEdit()
             router.refresh()
         }catch(err:any){
@@ -60,19 +58,18 @@ const router = useRouter()
     <div className='mt-6 
     border bg-slate-100 rounded-md p-4'>
         <div className='font-medium flex items-center justify-between'>
-            Course description
+            Session title
             <Button variant="ghost" onClick={toggleEdit}>
              {editing ? (
                 <>Cancel</>
              ):(
                 <>
                 <Pencil className='h-4 w-4 mr-2'/>
-                Edit description
+                Edit title
                 </>
              )}
             </Button>
         </div>
-     
         {editing ? <Form {...form}>
 <form 
 onSubmit={form.handleSubmit(onSubmit)}
@@ -80,17 +77,18 @@ className='space-y-4 mt-4'
 >
 <FormField 
 control={form.control}
-name='description'
+name='title'
 render={({field})=>{
     return   <FormItem>
-          <FormLabel>Course description</FormLabel>
+          <FormLabel>Session title</FormLabel>
           <FormControl>
-              <Editor
-             
+              <Input
+              disabled={isSubmitting}
+              placeholder='e.g. Introduction to this course'
               {...field}
               />
           </FormControl>
-          <FormDescription>A brief description of this course</FormDescription>
+          <FormDescription>What will you teach in this session</FormDescription>
           <FormMessage/>
       </FormItem>
   }}
@@ -103,13 +101,9 @@ render={({field})=>{
                         >Save <Loader loading={isSubmitting}/></Button>
                     </div>
 </form>
-        </Form> :
-         <div className={cn('text-sm mt-2',
-            !course.description && "text-slate-500 italic"
-         )}>{course.description ? <Preview value={course.description}/> : 
-         "No description"}</div>}
+        </Form> : <p className='text-sm mt-2'>{session.title}</p>}
     </div>
   )
 }
 
-export default DescriptionForm
+export default TitleForm
