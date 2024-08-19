@@ -10,6 +10,7 @@ import TitleForm from "./_components/title-form";
 import DescriptionForm from "./_components/description-form";
 import VideoDurationForm from "./_components/video-duration-form";
 import Banner from "@/components/banner";
+import SessionActions from "./_components/session-actions";
 
 async function SessionIdPage({
   params: { chapterId, courseId, sessionId },
@@ -39,6 +40,8 @@ async function SessionIdPage({
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
 
+  const isComplete = requiredFields.every(Boolean)
+
   return (
    <>
   {!session.isPublished &&  <Banner
@@ -60,6 +63,13 @@ async function SessionIdPage({
             Complete all fields {completionText}
           </span>
         </div>
+        <SessionActions
+          sessionId={sessionId}
+          courseId={courseId}
+          isPublished={session.isPublished}
+          disabled={!isComplete}
+          chapterId={chapterId}
+        />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-16">
         <div>

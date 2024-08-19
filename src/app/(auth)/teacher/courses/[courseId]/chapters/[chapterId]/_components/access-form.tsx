@@ -48,16 +48,14 @@ function AccessForm({ chapter }: { chapter: Chapter }) {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
-      await axios.patch(
-        `/api/courses/${chapter.courseId}
-                /chapters/${chapter.id}`,
+      await axios.patch(`/api/courses/${chapter.courseId}/chapters/${chapter.id}`,
         values
       );
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
     } catch (err: any) {
-      toast.error("Something went wrong", err.message);
+      toast.error(err.message);
     }
   };
   return (

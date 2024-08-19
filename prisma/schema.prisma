@@ -9,17 +9,17 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "mongodb"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Course {
-  id            String  @id @default(uuid())
+  id            String  @id @default(uuid()) @map("_id")
   userId        String
-  title         String  @db.Text
-  description   String? @db.LongText
-  imageUrl      String? @db.Text
+  title         String  
+  description   String? 
+  imageUrl      String? 
   price         Float?
   comboDiscount Float?
   promoDiscount Float?
@@ -38,9 +38,9 @@ model Course {
 }
 
 model Chapter {
-  id          String  @id @default(uuid())
+  id          String  @id @default(uuid()) @map("_id")
   title       String
-  description String? @db.Text
+  description String? 
   position    Int
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
@@ -59,9 +59,9 @@ model Chapter {
 }
 
 model Session{
-    id          String  @id @default(uuid())
+    id          String  @id @default(uuid()) @map("_id")
   title       String
-  description String? @db.Text
+  description String? 
   position    Int
   videoUrl String?
   videoDuration Int?
@@ -79,7 +79,7 @@ model Session{
 }
 
 model Purchase{
-  id String @id @default(uuid())
+  id String @id @default(uuid()) @map("_id")
   userId String 
 
   courseId String 
@@ -94,7 +94,7 @@ model Purchase{
 }
 
 model User{
-  id String @id @default(uuid())
+  id String @id @default(uuid()) @map("_id")
   userId String 
   role Role @default(Student)
 
@@ -110,7 +110,7 @@ enum Role{
 }
 
 model UserProgress {
-  id          String  @id @default(uuid())
+  id          String  @id @default(uuid()) @map("_id")
   userId      String
   isCompleted Boolean @default(false)
 
@@ -136,16 +136,16 @@ model UserProgress {
 }
 
 model Attachment {
-  id   String @id @default(uuid())
+  id   String @id @default(uuid()) @map("_id")
   name String
-  url  String @db.Text
+  url  String 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id   String @id @default(uuid())
+  id   String @id @default(uuid()) @map("_id")
   name String @unique
 
   courseCategories CourseCategory[]
@@ -155,7 +155,7 @@ model Category {
 }
 
 model CourseCategory {
-  id         String @id @default(uuid())
+  id         String @id @default(uuid()) @map("_id")
   courseId   String
   categoryId String
 

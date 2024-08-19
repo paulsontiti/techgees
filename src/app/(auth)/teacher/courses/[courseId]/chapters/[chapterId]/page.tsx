@@ -10,6 +10,7 @@ import SessionForm from "./_components/session-form";
 import LinkButton from "@/components/link-button";
 import AccessForm from "./_components/access-form";
 import Banner from "@/components/banner";
+import ChapterActions from "./_components/chapter-actions";
 
 async function ChapterIdPage({
   params: { chapterId,courseId },
@@ -48,6 +49,8 @@ async function ChapterIdPage({
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
 
+  const isComplete = requiredFields.every(Boolean)
+
 
 
 
@@ -70,6 +73,12 @@ async function ChapterIdPage({
             Complete all fields {completionText}
           </span>
         </div>
+        <ChapterActions
+          disabled={!isComplete}
+          courseId={courseId}
+          chapterId={chapterId}
+          isPublished={chapter.isPublished}
+        />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-16">
         <div>
