@@ -10,6 +10,14 @@ import ImageForm from "./_components/image-form";
 import CategoryForm from "./_components/category-form";
 import PriceForm from "./_components/price-form";
 import ChaptersForm from "./_components/chapters-form";
+import Banner from "@/components/banner";
+import CourseActions from "./_components/course-actions";
+import { getCourseWithCourseCategoriesAndChapters } from "../../../../../../actions/getCourseWithCourseCategoriesAndChapters";
+import { Chapter } from "@prisma/client";
+import { getCategories } from "../../../../../../actions/getCategories";
+import { getCourseCategoriesByCourseId } from "../../../../../../actions/getCourseCategoriesByCourseId";
+
+
 
 async function CourseIdPage({
   params: { courseId },
@@ -19,24 +27,18 @@ async function CourseIdPage({
   const { userId } = auth();
   if (!userId) return redirect("/dashboard");
 
-  const course = await db.course.findUnique({
-    where: {
-      id_userId: {
-        id: courseId,
-        userId,
-      },
-    },
-    include: {
-      courseCategories: true,
-      chapters:{
-        orderBy:{
-          position:"asc"
-        }
-      }
-    },
-  });
+  const {data:course,error} = await getCourseWithCourseCategoriesAndChapters(userId,courseId)
+
+  if(error) return <div>{error.message}</div>
 
   if (!course) return redirect("/dashboard");
+
+  const {data:categories,error:categoriesError} = await getCategories()
+  if(categoriesError) return <div>{categoriesError.message}</div>
+
+  const {data:courseCategoriesByCourseId,error:cCError} = await getCourseCategoriesByCourseId(courseId)
+  if(cCError) return <div>{cCError.message}</div>
+
 
   const requiredFields = [
     course.title,
@@ -44,31 +46,26 @@ async function CourseIdPage({
     course.imageUrl,
     course.price,
     course.courseCategories.length > 0,
-    course.chapters.some(chapter => chapter.isPublished)
+    course.chapters.some((chapter:Chapter) => chapter.isPublished)
   ];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
+  const isComplete = requiredFields.every(Boolean)
 
-  const categories = await db.category.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
+ 
 
-  const cC = await db.courseCategory.findMany({
-    where: {
-      courseId,
-    },
-    include: {
-      category: true,
-    },
-  });
+ 
 
-  const courseCategories = cC.map((categpry) => categpry.category);
+  const courseCategories = courseCategoriesByCourseId.map((category:any) => category.category);
 
   return (
+   <>
+       {!course.isPublished &&  <Banner
+    variant={"warning"}
+    label="This course is unpublished. It will not be visible to your students"
+   />}
     <div className="p-6">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-y-2">
@@ -77,6 +74,7 @@ async function CourseIdPage({
             Complete all fields {completionText}
           </span>
         </div>
+        <CourseActions courseId={courseId} isPublished={course.isPublished} disabled={!isComplete}/>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-16">
         <div>
@@ -111,6 +109,7 @@ async function CourseIdPage({
         </div>
       </div>
     </div>
+   </>
   );
 }
 

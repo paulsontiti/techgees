@@ -1,23 +1,27 @@
-'use client'
 
-import Loader from '@/components/loader'
-import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React from 'react'
+import { DataTable } from './_components/data-table'
+import { columns } from './_components/columns'
+import ErrorPage from '@/components/error'
+import CreateCourseButton from './_components/create-course-button'
+import { getCoursesByUserId } from '../../../../../actions/getCoursesByUserId'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 
-function Page() {
-  const [loading,setLoading] = useState(false)
-  const router =  useRouter()
+async function Page() {
+
+
+  const {userId} = auth()
+  if(!userId) return redirect("/sign-in")
+
+  const {data:courses,error} = await getCoursesByUserId(userId)
+  if(error) return <ErrorPage message={error.message}/>
   return (
     <div className='p-6'>
-      <Button
-      onClick={()=>{
-        setLoading(true)
-        router.push("/teacher/create")
-      }}>
-        Create new course
-        <Loader loading={loading}/>
-      </Button>
+   <CreateCourseButton/>
+      <div className=" mx-auto py-10">
+      <DataTable columns={columns} data={courses} />
+    </div>
     </div>
   )
 }
