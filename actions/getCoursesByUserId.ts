@@ -1,8 +1,11 @@
 import { db } from "@/lib/db";
-import { ReturnValue } from "./getCourseWithCourseCategoriesAndChapters";
+import { Course } from "@prisma/client";
 
 
-
+interface ReturnValue{
+    courses:Course[] | null,
+    error:Error | null
+}
 
 
 export const getCoursesByUserId = async(userId:string):
@@ -15,9 +18,9 @@ Promise<ReturnValue>=>{
                 createdAt:"desc"
             }
         });
-      return {data:courses,error:null}
+      return {courses,error:null}
     }catch(error:any){
     
-        return {data:null,error}
+        return {courses:null,error}
     }
     }

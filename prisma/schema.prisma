@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch","fullTextIndex"]
 }
 
 datasource db {
@@ -34,7 +35,8 @@ model Course {
   userProgresses UserProgress[]
   purchases Purchase[]
 
-  @@unique([id, userId])
+
+  @@fulltext([title])
 }
 
 model Chapter {
@@ -76,6 +78,7 @@ model Session{
   updatedAt DateTime @updatedAt
 
   @@index([chapterId])
+  attachments Attachment[]
 }
 
 model Purchase{
@@ -139,6 +142,8 @@ model Attachment {
   id   String @id @default(uuid()) @map("_id")
   name String
   url  String 
+  sessionId String 
+  session Session @relation(fields: [sessionId],references: [id],onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,9 +1,10 @@
 import { db } from "@/lib/db";
-import { ReturnValue } from "./getCourseWithCourseCategoriesAndChapters";
+import { Category } from "@prisma/client";
 
-
-
-
+type ReturnValue ={
+  courseCategories:Category[] | null,
+  error:Error | null
+}
 
 export const getCourseCategoriesByCourseId = async(courseId:string):
 Promise<ReturnValue>=>{
@@ -16,9 +17,10 @@ Promise<ReturnValue>=>{
               category: true,
             },
           });
-      return {data:courseCategoriesByCourseId,error:null}
+          const courseCategories = courseCategoriesByCourseId.map(cc=>cc.category)
+      return {courseCategories,error:null}
     }catch(error:any){
     
-        return {data:null,error}
+        return {courseCategories:null,error}
     }
     }
