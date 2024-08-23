@@ -38,6 +38,7 @@ function SessionSidebarItem({
   return (
     <div className=" mt-1">
       <button
+      disabled={isLocked}
       onClick={onClick}
         type="button"
         className={cn(

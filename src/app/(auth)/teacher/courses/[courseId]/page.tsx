@@ -36,7 +36,7 @@ async function CourseIdPage({
   const {data:categories,error:categoriesError} = await getCategories()
   if(categoriesError) return <div>{categoriesError.message}</div>
 
-  const {data:courseCategoriesByCourseId,error:cCError} = await getCourseCategoriesByCourseId(courseId)
+  const {courseCategories,error:cCError} = await getCourseCategoriesByCourseId(courseId)
   if(cCError) return <div>{cCError.message}</div>
 
 
@@ -58,7 +58,6 @@ async function CourseIdPage({
 
  
 
-  const courseCategories = courseCategoriesByCourseId.map((category:any) => category.category);
 
   return (
    <>

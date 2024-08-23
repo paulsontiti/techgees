@@ -29,15 +29,15 @@ export const getSessionAttachmentsNextSessionuserprogress = async({
             }
         })
 
-        let attachments : Attachment[] = []
+        const attachments = await db.attachment.findMany({
+            where:{
+                sessionId
+            }
+        })
 
-        if(purchase){
-            attachments = await db.attachment.findMany({
-                where:{
-                    sessionId
-                }
-            })
-        }
+        // if(purchase){
+        //     attachments = 
+        // }
 
         const session = await db.session.findUnique({
             where:{
