@@ -1,5 +1,6 @@
 "use client";
 
+import CourseProgress from "@/components/course-progress";
 import IconBadge from "@/components/icon-badge";
 import PageLoader from "@/components/page-loader";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,7 @@ type CourseCardProps = {
   imageUrl: string;
   chapterslength: number;
   price: number;
-  progressPercentage: number;
+  progressPercentage: number | null;
   categories: Category[];
 };
 function CourseCard({
@@ -70,10 +71,16 @@ function CourseCard({
             {chapterslength} {chapterslength > 1 ? "chapters" : "chapter"}
           </div>
         </div>
-        {progressPercentage === 0 ? (
-          <p className="text-md md:text-sm font-medium text-slate-700">{formatPrice(price)}</p>
+        
+        {progressPercentage === null ? (
+          <p className="text-md md:text-sm font-medium
+           text-slate-700">{formatPrice(price)}</p>
         ) : (
-          <div>{/* TODO:Progress component */}</div>
+         <CourseProgress
+          value={progressPercentage}
+          variant={progressPercentage === 100 ? "success" : "default"}
+          size="sm"
+         />
         )}
       </div>
     </div>

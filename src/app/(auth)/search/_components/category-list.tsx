@@ -21,7 +21,7 @@ function CategoryList({courses}:{courses:SearchPageCourseType[]}) {
             title={course.title}
             imageUrl={course.imageUrl ?? ""}
             price={course.price ?? 0}
-            progressPercentage={course.progressPercentage ?? 0}
+            progressPercentage={course.progressPercentage}
             chapterslength={course.chapters.length}
             categories={courseCategories ?? []}
             />

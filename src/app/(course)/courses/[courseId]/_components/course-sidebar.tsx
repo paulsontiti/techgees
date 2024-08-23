@@ -5,6 +5,7 @@ import { CourseChaptersUserProgressType } from '../../../../../../actions/getCou
 import { getCoursePurchaseByUserId } from '../../../../../../actions/getCoursePurchase'
 import ErrorPage from '@/components/error'
 import CourseSidebarItem from './course-sidebar-item'
+import CourseProgress from '@/components/course-progress'
 
 type CourseSidebarProps = {
     course:CourseChaptersUserProgressType,
@@ -23,7 +24,13 @@ async function CourseSidebar({
     <div className='h-full border-r flex flex-col overflow-y-auto shadow-sm'>
         <div className='p-8 flex flex-col border-b'>
             <h1 className='font-semibold'>{course.title}</h1>
-        {/* Check purchase and add progress */}
+      
+     <div className='mt-10'>
+     <CourseProgress
+      variant="success"
+      value={progressPercentage}
+      />
+     </div>
         </div>
         <div className='flex flex-col w-full'>
             {course.chapters.map((chapter)=>{

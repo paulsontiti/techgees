@@ -78,10 +78,10 @@ await Promise.all(
             
         }
 
-        const progressPercentage = await getCourseProgress(userId,course.id)
+        const {progressPercentage} = await getCourseProgress(userId,course.id)
         return {
                 ...course,
-            progressPercentage:null
+            progressPercentage
             }
         
     })
