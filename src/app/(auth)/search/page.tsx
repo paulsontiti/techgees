@@ -31,7 +31,7 @@ async function SearchPage(
    </div>
     <div className='p-6 space-y-4'>
       <Categories categories={categories}/>
-      <CoursesList courses={data.courses ?? []}/> 
+      <CoursesList courses={data.courses ?? []} label='No course found'/> 
     </div>
    </>
   )
