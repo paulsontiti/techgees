@@ -11,7 +11,7 @@ interface ReturnValue{
 export type SearchPageCourseType = Course &{
         chapters:{id:string}[],
         progressPercentage:number | null,
-    }
+    } | null
 
 type ParamType ={
     userId:string,

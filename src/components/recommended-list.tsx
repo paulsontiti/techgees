@@ -1,18 +1,20 @@
 
 import React from 'react'
-import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
-import CourseCard from './course-card'
-import { getCourseCategoriesByCourseId } from '../../../../../actions/getCourseCategoriesByCourseId'
+import { RecommendedCourseType } from '../../actions/getRecommendedCourses'
+import { getCourseCategoriesByCourseId } from '../../actions/getCourseCategoriesByCourseId'
+import CourseCard from '@/app/(auth)/search/_components/course-card'
 
-function CategoryList({courses}:{courses:SearchPageCourseType[]}) {
+
+function RecommendedCoursesList({courses}:{courses:RecommendedCourseType[]}) {
 
     if(Array.isArray(courses) && courses.length === 0) return <div
     className='text-center text-sm text-muted-foreground mt-10'>
-        No course found
+        No recommended course found
     </div>
   return (
     <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
         {courses.map(async(course)=>{
+          if(course === null) return <div>No course</div>
             const {courseCategories} = await getCourseCategoriesByCourseId(course.id)
             
             return <CourseCard
@@ -20,8 +22,8 @@ function CategoryList({courses}:{courses:SearchPageCourseType[]}) {
             id={course.id}
             title={course.title}
             imageUrl={course.imageUrl ?? ""}
+            progressPercentage={null}
             price={course.price ?? 0}
-            progressPercentage={course.progressPercentage}
             chapterslength={course.chapters.length}
             categories={courseCategories ?? []}
             />
@@ -30,4 +32,4 @@ function CategoryList({courses}:{courses:SearchPageCourseType[]}) {
   )
 }
 
-export default CategoryList
+export default RecommendedCoursesList

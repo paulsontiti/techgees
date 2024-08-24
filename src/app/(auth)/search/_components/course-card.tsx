@@ -17,7 +17,7 @@ type CourseCardProps = {
   imageUrl: string;
   chapterslength: number;
   price: number;
-  progressPercentage: number | null;
+  progressPercentage?: number | null;
   categories: Category[];
 };
 function CourseCard({
@@ -77,7 +77,7 @@ function CourseCard({
            text-slate-700">{formatPrice(price)}</p>
         ) : (
          <CourseProgress
-          value={progressPercentage}
+          value={progressPercentage ?? 0}
           variant={progressPercentage === 100 ? "success" : "default"}
           size="sm"
          />

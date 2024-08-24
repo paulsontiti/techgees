@@ -5,7 +5,7 @@ import SearchInput from '@/components/search-input'
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { getCourseWithProgressChapters } from '../../../../actions/getCourseWithProgressChapters'
-import CategoryList from './_components/category-list'
+import CoursesList from './_components/courses-list'
 
 async function SearchPage(
   { searchParams:{title,categoryId} }: 
@@ -31,7 +31,7 @@ async function SearchPage(
    </div>
     <div className='p-6 space-y-4'>
       <Categories categories={categories}/>
-      <CategoryList courses={data.courses ?? []}/> 
+      <CoursesList courses={data.courses ?? []}/> 
     </div>
    </>
   )
