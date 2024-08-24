@@ -13,8 +13,8 @@ function RecommendedCoursesList({courses}:{courses:RecommendedCourseType[]}) {
     </div>
   return (
     <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {courses.map(async(course)=>{
-          if(course === null) return <div>No course</div>
+        {courses.map(async(course,index)=>{
+          if(course === null) return <div   key={index}>No course</div>
             const {courseCategories} = await getCourseCategoriesByCourseId(course.id)
             
             return <CourseCard

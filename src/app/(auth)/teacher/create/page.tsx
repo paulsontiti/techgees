@@ -50,7 +50,7 @@ const router = useRouter()
                 Name your course
             </h1>
             <p className='text-sm text-slate-600'>
-                What would you like to name your course? Don't worry, you can change it later
+                {`What would you like to name your course? Don't worry, you can change it later`}
             </p>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
