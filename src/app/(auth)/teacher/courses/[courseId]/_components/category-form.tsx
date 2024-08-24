@@ -33,6 +33,8 @@ const SelectedCategory = ({category,removecategory}:
   {category:Category,removecategory:React.Dispatch<React.SetStateAction<{
     id: string;
     name: string;
+    createdAt: Date;
+    updatedAt: Date;
 }[]>>})=>{
 
   return <div className="flex items-center p-2 hover:bg-white bg-slate-100" 
@@ -102,7 +104,7 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
               //  ? categories.find((category) => category.id === value)?.name
               ? <div className="max-w-full flex-col flex gap-2">
                 {selectedcategories.map((cat)=>{
-                  return <SelectedCategory category={cat} removecategory={setSelectedCategories}/>
+                  return <SelectedCategory key={cat.id} category={cat} removecategory={setSelectedCategories}/>
                 })}
               </div>
                : "Select category..."}

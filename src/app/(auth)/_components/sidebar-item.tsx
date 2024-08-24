@@ -29,7 +29,7 @@ const onClick = ()=>{
 
 useEffect(()=>{
     setLoading(false)
-})
+},[])
 
   return (
     <button

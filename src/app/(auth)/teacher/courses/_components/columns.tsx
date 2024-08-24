@@ -18,6 +18,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import CourseTableAction from "./course-table-action"
 
 
 
@@ -88,49 +89,7 @@ export const columns: ColumnDef<Course>[] = [
 {
   id: "actions", 
   cell: ({ row }) => {
-    const {id} = row.original
-    const [editing,setEditing] = useState(false)
-    const [viewing,setViewing] = useState(false)
-
-    const router = useRouter()
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-              className="flex items-center gap-x-2"
-            onClick={() => {
-              setEditing(true)
-              setViewing(false)
-              router.push(`/teacher/courses/${id}`)
-            }}
-          >
-            <Pencil className="h-4 w-4"/>
-            Edit course
-            <Loader loading={editing}/>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-          className="flex items-center gap-x-2"
-           onClick={() => {
-            setEditing(false)
-            setViewing(true)
-            router.push(`/teacher/courses/${id}`)
-          }}
-          >
-            <Eye className="w-4 h-4"/>
-            View course details
-            <Loader loading={viewing}/>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
+   return <CourseTableAction row={row}/>
   },
 },
 ]

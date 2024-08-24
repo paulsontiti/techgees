@@ -129,7 +129,7 @@ function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
                       />
                     </FormControl>
                     <FormDescription>
-                      What's the name of the session
+                      {`What's the name of the session`}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

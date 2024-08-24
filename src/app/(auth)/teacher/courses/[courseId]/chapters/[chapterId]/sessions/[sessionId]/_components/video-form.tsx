@@ -70,7 +70,7 @@ const router = useRouter()
         }}
         />
     <div className='text-xs text-muted-foreground mt-4'>
-        Upload this session's video
+       {`Upload this session's video`}
     </div>
         </>
         : 

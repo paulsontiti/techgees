@@ -128,7 +128,7 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
                       />
                     </FormControl>
                     <FormDescription>
-                      What's the name of the chapter
+                      {`What's the name of the chapter`}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
