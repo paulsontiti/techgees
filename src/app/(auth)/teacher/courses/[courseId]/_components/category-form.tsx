@@ -154,7 +154,7 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
             courseCategories.length === 0 && "text-slate-500 italic"
          )}>{courseCategories.length > 0 ? <div className="flex gap-x-2">
          {courseCategories.map((category)=>{
-            return <span>{category.name}</span>
+            return <span key={category.id}>{category.name}</span>
          })}
          </div>: "No category"}</div>}
       

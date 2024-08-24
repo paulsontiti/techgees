@@ -99,7 +99,7 @@ function VideoDurationForm({ session,courseId }: { session: Session,courseId:str
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>How long is this session's video</FormDescription>
+                    <FormDescription>{`How long is this session's video`}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
