@@ -15,10 +15,9 @@ export async function PATCH(
 
     const course = await db.course.findUnique({
       where: {
-        id_userId: {
           id: courseId,
           userId,
-        },
+        
       },
     });
     if (!course) return new NextResponse("Unauthoried", { status: 401 });

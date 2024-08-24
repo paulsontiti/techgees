@@ -17,20 +17,18 @@ if(!userId)  return new NextResponse("Unauthoried",{status:401})
 
     const course = await db.course.findUnique({
         where:{
-            id_userId:{
                 id:courseId,
                 userId
-            }
+            
         }
     })
     if(!course)  return new NextResponse("Unauthoried",{status:401})
 
         await db.course.update({
             where:{
-                id_userId:{
                     id:courseId,
                     userId
-                }
+                
             },
             data:{
                 ...values
@@ -59,10 +57,10 @@ if(!userId)  return new NextResponse("Unauthoried",{status:401})
 
     const course = await db.course.findUnique({
         where:{
-            id_userId:{
+          
                 id:courseId,
                 userId
-            }
+            
         }
     })
     if(!course)  return new NextResponse("Unauthoried",{status:401})

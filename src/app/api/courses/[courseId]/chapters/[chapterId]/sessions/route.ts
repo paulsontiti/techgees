@@ -14,10 +14,10 @@ export async function POST(
 
         const courseOwner = await db.course.findUnique({
             where:{
-                id_userId:{
+            
                     id:courseId,
                     userId
-                }
+                
             }
         })
         if(!courseOwner) return new NextResponse("Unauthorized",{status:401})

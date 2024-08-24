@@ -86,7 +86,7 @@ async function CourseIdPage({
           <ImageForm course={course} />
           <CategoryForm
             categories={categories}
-            courseCategories={courseCategories}
+            courseCategories={courseCategories ?? []}
             courseId={courseId}
           />
         </div>

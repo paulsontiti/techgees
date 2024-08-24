@@ -47,7 +47,9 @@ const SelectedCategory = ({category,removecategory}:
   </div>
 }
 
-function CategoryForm({courseCategories,categories,courseId}:{courseCategories:Category[],categories:Category[],courseId:string}) {
+function CategoryForm(
+  {courseCategories,categories,courseId}:
+  {courseCategories:Category[],categories:Category[],courseId:string}) {
 const [editing,setEditing] = useState(false)
 const router = useRouter()
 

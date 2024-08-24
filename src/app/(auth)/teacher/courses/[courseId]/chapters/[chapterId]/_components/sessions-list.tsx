@@ -1,5 +1,5 @@
 "use client"
-import { session, Session } from '@prisma/client'
+import { Session } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
 
 import {
@@ -94,9 +94,7 @@ if(!isMounted) return null
 </div>
 {session.title}
 <div className='ml-auto pr-2 flex items-center gap-x-2'>
-  {session.isFree && (
-    <Badge>Free</Badge>
-  )}
+
 <Badge className={cn(
   "bg-slate-500",
   session.isPublished && "bg-sky-700"

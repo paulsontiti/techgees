@@ -16,10 +16,10 @@ export async function PATCH(
 
     const course = await db.course.findUnique({
       where: {
-        id_userId: {
+   
           id: courseId,
           userId,
-        },
+        
       },
     });
     if (!course) return new NextResponse("Unauthoried", { status: 401 });
@@ -53,10 +53,9 @@ if(!userId)  return new NextResponse("Unauthoried",{status:401})
 
     const course = await db.course.findUnique({
         where:{
-            id_userId:{
                 id:courseId,
                 userId
-            }
+            
         }
     })
     if(!course)  return new NextResponse("Unauthoried",{status:401})

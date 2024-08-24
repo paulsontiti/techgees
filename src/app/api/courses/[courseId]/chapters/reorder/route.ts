@@ -12,10 +12,9 @@ export async function PUT(
     
     const courseOwner = await db.course.findUnique({
         where:{
-            id_userId:{
                 id:courseId,
                 userId
-            }
+            
         }
     })
 if(!courseOwner) return new NextResponse("Unauthorised", { status: 401 });

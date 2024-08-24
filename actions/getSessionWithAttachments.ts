@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
-import { Session } from "@prisma/client";
+import { Attachment, Session } from "@prisma/client";
 
 
 interface ReturnValue{
-    session:Session | null,
+    session:Session &{attachments:Attachment[]} | null,
     error:Error | null
 }
 
