@@ -70,7 +70,7 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
             toggleEdit()
             router.refresh()
         }catch(err:any){
-            toast.error("Something went wrong",err.message)
+            toast.error(err.message)
         }finally{
           setLoading(false)
         }

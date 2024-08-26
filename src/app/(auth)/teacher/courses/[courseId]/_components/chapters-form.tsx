@@ -60,7 +60,7 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
       router.refresh();
     } catch (err: any) {
       console.log(err)
-      toast.error("Something went wrong", err.message);
+      toast.error(err.message);
     }
   };
 

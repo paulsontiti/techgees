@@ -50,7 +50,7 @@ const router = useRouter()
             toggleEdit()
             router.refresh()
         }catch(err:any){
-            toast.error("Something went wrong",err.message)
+            toast.error(err.message)
         }
     }
   return (

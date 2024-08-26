@@ -56,7 +56,7 @@ function PriceForm({ course }: { course: Course }) {
       toggleEdit();
       router.refresh();
     } catch (err: any) {
-      toast.error("Something went wrong", err.message);
+      toast.error(err.message);
     }
   };
   return (
