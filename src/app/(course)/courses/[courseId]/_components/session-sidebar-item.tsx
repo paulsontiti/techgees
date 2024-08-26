@@ -42,10 +42,11 @@ function SessionSidebarItem({
       onClick={onClick}
         type="button"
         className={cn(
-          "w-full h-[50px] flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-2 transition-all hover:text-slate-600 hover:bg-sky-300/20",
+          "w-full h-[50px] flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-2 transition-all hover:text-slate-600 hover:bg-slate-300/20",
           isActive &&
             "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700",
-          isCompleted && isActive && "bg-emerald-200/20"
+          isCompleted && isActive && "bg-emerald-200/20",
+          !isLocked && "hover:bg-sky-300/20"
         )}
       >
         <div className="flex items-center gap-x-2 py-1">
