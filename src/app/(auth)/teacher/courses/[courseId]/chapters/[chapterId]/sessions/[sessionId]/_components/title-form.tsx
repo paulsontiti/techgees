@@ -45,8 +45,7 @@ const router = useRouter()
 
     const onSubmit = async(values:zod.infer<typeof formSchema>)=>{
         try{
-            await axios.patch(`/api/courses/${courseId}
-                /chapters/${session.chapterId}/sessions/${session.id}`,values)
+            await axios.patch(`/api/courses/${courseId}/chapters/${session.chapterId}/sessions/${session.id}`,values)
             toast.success("Session updated")
             toggleEdit()
             router.refresh()
