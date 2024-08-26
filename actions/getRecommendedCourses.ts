@@ -14,7 +14,9 @@ export type RecommendedCourseType = Course &{
 export const getRecommendedCourses = async (): Promise<ReturnValue> => {
   try {
     const recommendedCourses = await db.course.findMany({
-     
+     where:{
+      isPublished:true
+     },
           include: {
             chapters: {
               where: {
