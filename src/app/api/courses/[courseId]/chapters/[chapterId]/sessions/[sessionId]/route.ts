@@ -10,6 +10,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = auth();
+    console.log(userId)
     if (!userId) return new NextResponse("Unauthorized user", { status: 401 });
 
     const { isPublished, ...values } = await req.json();
@@ -22,6 +23,7 @@ export async function PATCH(
         
       },
     });
+    console.log(course)
     if(!course)  return new NextResponse("Unauthorized,you are not the creator of this course",{status:401})
 
     await db.session.update({
