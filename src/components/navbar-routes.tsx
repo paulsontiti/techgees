@@ -29,7 +29,7 @@ export const NavbarRoutes = ()=>{
 
     useEffect(()=>{
         setLoading(false)
-    })
+    },[setLoading])
 
     return <>
     {

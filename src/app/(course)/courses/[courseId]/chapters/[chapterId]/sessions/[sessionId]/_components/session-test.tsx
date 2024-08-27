@@ -54,7 +54,7 @@ function SessionTest({questions,sessionId}:{
         </AccordionTrigger>
         <AccordionContent>
         {questions.map((question)=>{
-          return <QuestionItemForm question={question}/>
+          return <QuestionItemForm question={question} key={question.id}/>
         })}
       <Button onClick={onSubmit} disabled={submitting}>Submit
         <Loader loading={submitting}/>

@@ -40,7 +40,7 @@ console.log(err)
     }
     }
   )()
-},[])
+},[sessionId])
 
   const Icon = isLocked ? Lock : isCompleted ? CheckCheck : PlayCircle;
   const isActive = pathname?.includes(id);

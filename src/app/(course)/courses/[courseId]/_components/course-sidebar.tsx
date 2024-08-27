@@ -36,7 +36,7 @@ async function CourseSidebar({
         <div className='flex flex-col w-full'>
             {course.chapters.map(async(chapter)=>{
                 const {progressPercentage,error} = await getChapterProgress(userId,chapter.id)
-                if(error) return <ErrorPage message={error.message}/>
+                if(error) return <ErrorPage message={error.message} key={error.name}/>
                 return <CourseSidebarItem
                 key={chapter.id}
                 id={chapter.id}

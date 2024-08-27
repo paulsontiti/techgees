@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
-import { Attachment, Session } from "@prisma/client";
+import { Attachment, Question, Session } from "@prisma/client";
 
 
 interface ReturnValue{
-    session:Session &{attachments:Attachment[]} | null,
+    session:Session &{attachments:Attachment[],questions:Question[]} | null,
     error:Error | null
 }
 
@@ -16,13 +16,14 @@ Promise<ReturnValue>=>{
               id: sessionId,
               chapterId,
             },include:{
+              questions:true,
               attachments:{
                 where:{
                   sessionId
                 },orderBy:{
                   createdAt:"desc"
                 }
-              },questions:true
+              }
             }
           });
       return {session,error:null}
