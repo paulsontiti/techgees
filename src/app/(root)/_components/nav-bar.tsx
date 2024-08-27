@@ -16,7 +16,7 @@ function Navbar({ userId, courses }: { userId: string; courses: Course[] }) {
       <div className="md:p-6 flex items-center justify-between w-full">
       <div className="flex items-center gap-x-4">
         <Logo />
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center">
           <CategoryDropdownMenu />
           <SearchInput courses={courses} />
         </div>
