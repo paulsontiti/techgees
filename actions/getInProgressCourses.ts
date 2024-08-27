@@ -21,7 +21,7 @@ export const getInProgressCourses = async (
           include: {
             chapters: {
               where: {
-                isPublished: true,
+                //isPublished: true,
               },
             },
           },

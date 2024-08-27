@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch","fullTextIndex"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -18,9 +18,9 @@ datasource db {
 model Course {
   id            String  @id @default(uuid()) @map("_id")
   userId        String
-  title         String  
-  description   String? 
-  imageUrl      String? 
+  title         String
+  description   String?
+  imageUrl      String?
   price         Float?
   comboDiscount Float?
   promoDiscount Float?
@@ -30,19 +30,23 @@ model Course {
   updatedAt DateTime @updatedAt
 
   courseCategories CourseCategory[]
-  chapters        Chapter[]
+  chapters         Chapter[]
+   comments Comment[]
 
   userProgresses UserProgress[]
-  purchases Purchase[]
-
+  purchases      Purchase[]
+  questions      Question[]
 
   @@fulltext([title])
+  courseTestScores CourseTestScore[]
+  likes Like[]
+  dislikes DisLike[]
 }
 
 model Chapter {
   id          String  @id @default(uuid()) @map("_id")
   title       String
-  description String? 
+  description String?
   position    Int
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
@@ -51,64 +55,192 @@ model Chapter {
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   userProgresses UserProgress[]
-  sessions Session[]
+  sessions       Session[]
+   comments Comment[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  questions Question[]
 
   @@unique([id, courseId])
   @@index([courseId])
+  chapterTestScores ChapterTestScore[]
+  likes Like[]
+    dislikes DisLike[]
 }
 
-model Session{
-    id          String  @id @default(uuid()) @map("_id")
-  title       String
-  description String? 
-  position    Int
-  videoUrl String?
+model Session {
+  id            String  @id @default(uuid()) @map("_id")
+  title         String
+  description   String?
+  position      Int
+  videoUrl      String?
   videoDuration Int?
-  isPublished Boolean @default(false)
+  isPublished   Boolean @default(false)
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   userProgresses UserProgress[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  attachments       Attachment[]
+  questions         Question[]
+  sessionTestScores SessionTestScore[]
 
   @@index([chapterId])
-  attachments Attachment[]
+  likes Like[]
+    dislikes DisLike[]
+  comments Comment[]
 }
 
-model Purchase{
+model DisLike{
   id String @id @default(uuid()) @map("_id")
-  userId String 
+  userId String
+    sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  courseId String 
-  course Course @relation(fields: [courseId],references: [id],onDelete: Cascade)
+    courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
-  @@index([courseId])
+    createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  @@unique([userId,sessionId])
+  @@unique([userId,chapterId])
   @@unique([userId,courseId])
+
 }
 
-model User{
+model Like{
   id String @id @default(uuid()) @map("_id")
-  userId String 
-  role Role @default(Student)
+  userId String
+    sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
+    courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+    createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  @@unique([userId,sessionId])
+  @@unique([userId,chapterId])
+  @@unique([userId,courseId])
+
+}
+
+
+model Comment{
+  id String @id @default(uuid()) @map("_id")
+  comment String
+  userId String
+
+    sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+    courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   
+
+    createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+@@index([sessionId])
+@@index([chapterId])
+@@index([courseId])
+}
+
+model Question {
+  id       String @id @default(uuid()) @map("_id")
+  question String
+  options  Json
+  answer   String
+
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-enum Role{
+model SessionTestScore {
+  id     String @id @default(uuid()) @map("_id")
+  score  Int
+  userId String
+
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model ChapterTestScore {
+  id     String @id @default(uuid()) @map("_id")
+  score  Int
+  userId String
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model CourseTestScore {
+  id     String @id @default(uuid()) @map("_id")
+  score  Int
+  userId String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Purchase {
+  id     String @id @default(uuid()) @map("_id")
+  userId String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model User {
+  id     String @id @default(uuid()) @map("_id")
+  userId String
+  firstName String
+  lastName String
+  email String 
+  imageUrl String 
+  phone String?
+  role   Role   @default(Student)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
   Admin
-  Student 
+  Student
   Teacher
 }
 
@@ -121,11 +253,10 @@ model UserProgress {
   chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   sessionId String?
-  session Session?   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   courseId String?
-  course Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -139,11 +270,11 @@ model UserProgress {
 }
 
 model Attachment {
-  id   String @id @default(uuid()) @map("_id")
-  name String
-  url  String 
-  sessionId String 
-  session Session @relation(fields: [sessionId],references: [id],onDelete: Cascade)
+  id        String  @id @default(uuid()) @map("_id")
+  name      String
+  url       String
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -156,7 +287,7 @@ model Category {
   courseCategories CourseCategory[]
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model CourseCategory {

@@ -6,6 +6,7 @@ import { CheckCheck, Lock, PlayCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import SessionSidebarItem from "./session-sidebar-item";
+import CourseProgress from "@/components/course-progress";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -14,6 +15,7 @@ type CourseSidebarItemProps = {
   courseId: string;
   isLocked: boolean;
   sessions: Session[];
+  chapterProgress:number
 };
 
 function CourseSidebarItem({
@@ -22,7 +24,7 @@ function CourseSidebarItem({
   isCompleted,
   isLocked,
   courseId,
-  sessions,
+  sessions,chapterProgress
 }: CourseSidebarItemProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -55,6 +57,7 @@ function CourseSidebarItem({
           )}
           />
           {title}
+          
         </div>
         <div className={cn(
             "ml-auto opacity-0 border-2 border-slate-700 h-full transition-all",
@@ -65,6 +68,9 @@ function CourseSidebarItem({
         </div>
       </button>
       <div className="ml-12">
+        <CourseProgress value={chapterProgress} variant="success"/>
+      </div>
+      <div className="ml-12 mt-4">
         {sessions.map((session) => {
           return (
            <SessionSidebarItem key={session.id}
@@ -73,7 +79,7 @@ function CourseSidebarItem({
            courseId={courseId}
            id={session.id}
            sessionId={session.id}
-           isLocked={isLocked}
+           isLocked={isLocked || !session.isPublished}
            
            />
           );

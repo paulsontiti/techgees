@@ -22,7 +22,7 @@ Promise<ReturnValue>=>{
                 },orderBy:{
                   createdAt:"desc"
                 }
-              }
+              },questions:true
             }
           });
       return {session,error:null}

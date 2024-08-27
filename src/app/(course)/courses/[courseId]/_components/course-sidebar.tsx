@@ -6,6 +6,7 @@ import { getCoursePurchaseByUserId } from '../../../../../../actions/getCoursePu
 import ErrorPage from '@/components/error'
 import CourseSidebarItem from './course-sidebar-item'
 import CourseProgress from '@/components/course-progress'
+import { getChapterProgress } from '../../../../../../actions/getChapterProgress'
 
 type CourseSidebarProps = {
     course:CourseChaptersUserProgressType,
@@ -33,7 +34,9 @@ async function CourseSidebar({
      </div>
         </div>
         <div className='flex flex-col w-full'>
-            {course.chapters.map((chapter)=>{
+            {course.chapters.map(async(chapter)=>{
+                const {progressPercentage,error} = await getChapterProgress(userId,chapter.id)
+                if(error) return <ErrorPage message={error.message}/>
                 return <CourseSidebarItem
                 key={chapter.id}
                 id={chapter.id}
@@ -42,8 +45,9 @@ async function CourseSidebar({
                     !!chapter.userProgresses?.[0]?.isCompleted
                 }
                 courseId={course.id}
-                isLocked={!chapter.isFree &&  !purchase}
+                isLocked={!chapter.isFree &&  !purchase && !chapter.isPublished}
                 sessions={chapter.sessions ?? []}
+                chapterProgress={progressPercentage ?? 0}
                 />
             })}
 

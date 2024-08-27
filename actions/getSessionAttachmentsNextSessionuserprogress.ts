@@ -1,10 +1,10 @@
 import { db } from "@/lib/db"
-import { Attachment, Chapter, Session, UserProgress } from "@prisma/client"
+import { Attachment, Chapter, Question, Session, UserProgress } from "@prisma/client"
 
 
 
 interface ReturnValue{
-    session:Session | null,
+    session:Session &{questions:Question[]} | null,
     attachments:Attachment[],
     nextSession : Session | null,
     userProgress : UserProgress | null,
@@ -13,21 +13,15 @@ interface ReturnValue{
     error:Error | null
 }
 export const getSessionAttachmentsNextSessionuserprogress = async({
-    userId,courseId,chapterId,sessionId
+    userId,chapterId,sessionId
     }:{
         userId: string,
         chapterId:string,
-        courseId:string,sessionId:string
+        sessionId:string
     }):Promise<ReturnValue>=>{
 
     try{
-        const purchase = await db.purchase.findUnique({
-            where:{
-                userId_courseId:{
-                    userId,courseId
-                }
-            }
-        })
+     
 
         const attachments = await db.attachment.findMany({
             where:{
@@ -35,15 +29,15 @@ export const getSessionAttachmentsNextSessionuserprogress = async({
             }
         })
 
-        // if(purchase){
-        //     attachments = 
-        // }
+   
 
         const session = await db.session.findUnique({
             where:{
                 id:sessionId,
                 isPublished:true,
-            },
+            },include:{
+                questions:true
+            }
         })
         const  nextSession = await db.session.findFirst({
             where:{

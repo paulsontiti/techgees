@@ -8,6 +8,13 @@ import { getSessionAttachmentsNextSessionuserprogress } from "../../../../../../
 import VideoPlayer from "./_components/video-player";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
+import SessionTest from "./_components/session-test";
+import SessionComments from "./_components/comments";
+import { getSessionLikesCount } from "../../../../../../../../../actions/getSessionLikesCount";
+import { getSessionDisLikesCount } from "../../../../../../../../../actions/getSessionDisLikesCount";
+import { getSessionComments } from "../../../../../../../../../actions/getSessionCommentsCount";
+import { hasLikedSession } from "../../../../../../../../../actions/hasLikedSession";
+import { hasDisLikedSession } from "../../../../../../../../../actions/hasDisLikedSession";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -26,7 +33,6 @@ async function SessionIdPage({
     error,
   } = await getSessionAttachmentsNextSessionuserprogress({
     userId,
-    courseId,
     chapterId,
     sessionId,
   });
@@ -35,6 +41,23 @@ async function SessionIdPage({
   if (!session) return redirect("/");
 
   const completeOnEnd = !userProgress?.isCompleted;
+
+  const {numberOfLikes,error:likesError} = await getSessionLikesCount(sessionId)
+  if (likesError) return <ErrorPage message={likesError.message} />;
+
+
+  const {numberOfDisLikes,error:dislikesError} = await getSessionDisLikesCount(sessionId)
+  if (dislikesError) return <ErrorPage message={dislikesError.message} />;
+
+
+  const {comments,error:commentsError} = await getSessionComments(sessionId)
+  if (commentsError) return <ErrorPage message={commentsError.message} />;
+
+  const {hasLiked,error:hasLikedError} = await hasLikedSession(sessionId,userId)
+  if (hasLikedError) return <ErrorPage message={hasLikedError.message} />;
+
+  const {hasDisLiked,error:hasDisLikedError} = await hasDisLikedSession(sessionId,userId)
+  if (hasDisLikedError) return <ErrorPage message={hasDisLikedError.message} />;
   return (
     <div className="mt-4">
       {userProgress?.isCompleted && (
@@ -43,20 +66,14 @@ async function SessionIdPage({
 
       <div
         className="
-        flex flex-col max-w-4xl mx-auto pb-20"
+        flex flex-col max-w-4xl mx-auto pb-20 mt-4"
       >
-        <VideoPlayer
-          session={session}
-          completeOnEnd={completeOnEnd}
-          courseId={courseId}
-          nextSessionId={nextSession?.id ?? ""}
-        />
-        <div>
+          <div >
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">{session.title}</h2>
           </div>
           <Separator />
-          <div>
+          <div className="max-w-[370px] md:max-w-full">
             <Preview value={session.description ?? ""} />
           </div>
           {attachments.length > 0 && (
@@ -81,6 +98,23 @@ async function SessionIdPage({
             </>
           )}
         </div>
+        <VideoPlayer
+          session={session}
+          completeOnEnd={completeOnEnd}
+          courseId={courseId}
+          nextSessionId={nextSession?.id ?? ""}
+        />
+      <SessionComments 
+      numberOfLikes={numberOfLikes}
+      numberOfDisLikes={numberOfDisLikes}
+      comments={comments}
+      sessionId={sessionId}
+      hasLiked={hasLiked}
+      hasDisLiked={hasDisLiked}
+      />
+      
+          <Separator/>
+          {!userProgress?.isCompleted || !session.questions.length && <SessionTest questions={session.questions} sessionId={sessionId}/>}
       </div>
     </div>
   );

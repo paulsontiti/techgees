@@ -11,7 +11,7 @@ Promise<ReturnValue>=>{
 const publishedChapters = await db.chapter.findMany({
     where:{
         courseId,
-        isPublished : true
+        //isPublished : true
     },
     select:{
         id:true

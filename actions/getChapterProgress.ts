@@ -7,13 +7,13 @@ interface ReturnValue{
     error:Error | null
 }
 
-export const getSessionProgress = async(userId:string,chapterId:string):
+export const getChapterProgress = async(userId:string,chapterId:string):
 Promise<ReturnValue>=>{
     try{
 const publishedSessions = await db.session.findMany({
     where:{
         chapterId,
-        isPublished : true
+        //isPublished : true
     },
     select:{
         id:true

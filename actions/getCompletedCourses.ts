@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { Chapter, Course } from "@prisma/client";
 import { getCourseProgress } from "./getCourseProgress";
 import { SearchPageCourseType } from "./getCourseWithProgressChapters";
 
@@ -19,13 +18,16 @@ export const getCompletedCourses = async (
       where: {
         userId,
         isCompleted: true,
+        courseId:{
+          not:null
+        }
       },
       select: {
                 course: {
                   include: {
                     chapters: {
                       where: {
-                        isPublished: true,
+                        //isPublished: true,
                       },
                     },
                   },

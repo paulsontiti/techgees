@@ -20,7 +20,7 @@ export const getRecommendedCourses = async (): Promise<ReturnValue> => {
           include: {
             chapters: {
               where: {
-                isPublished: true,
+                //isPublished: true,
               },
             },
           },

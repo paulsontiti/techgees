@@ -2,9 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { Session } from "@prisma/client";
+import axios from "axios";
 import { CheckCheck, Lock, PlayCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type SessionSidebarItemProps = {
   title: string;
@@ -12,7 +13,7 @@ type SessionSidebarItemProps = {
   courseId: string;
   isLocked: boolean;
   chapterId:string,
-  sessionId:string
+  sessionId:string,
 };
 
 function SessionSidebarItem({
@@ -27,7 +28,19 @@ function SessionSidebarItem({
   const router = useRouter();
   const [isCompleted,setIsCompleted] = useState(false)
   
-//TODO:GET iscomplted from userprogress for this session
+useEffect(()=>{
+  (
+    async()=>{
+    try{
+      const data = await axios.get(`/api/user-progress/sessions/${sessionId}`)
+      setIsCompleted(data.data.isCompleted)
+      
+    }catch(err){
+console.log(err)
+    }
+    }
+  )()
+},[])
 
   const Icon = isLocked ? Lock : isCompleted ? CheckCheck : PlayCircle;
   const isActive = pathname?.includes(id);
@@ -58,7 +71,7 @@ function SessionSidebarItem({
             isCompleted && "text-emerald-700"
           )}
           />
-          {title}
+         <span className="line-clamp-1 text-left"> {title}</span>
         </div>
         <div className={cn(
             "ml-auto opacity-0 border-2 border-slate-700 h-full transition-all",

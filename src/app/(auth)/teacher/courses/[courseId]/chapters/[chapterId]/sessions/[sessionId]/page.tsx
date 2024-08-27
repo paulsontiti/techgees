@@ -14,6 +14,7 @@ import SessionActions from "./_components/session-actions";
 import SessionAttachmentForm from "./_components/attachment-form";
 import { getSessionWithAttachment } from "../../../../../../../../../../actions/getSessionWithAttachments";
 import ErrorPage from "@/components/error";
+import SessionQuestionsForm from "./_components/session-questions-form";
 
 async function SessionIdPage({
   params: { chapterId, courseId, sessionId },
@@ -34,6 +35,7 @@ if(error) return <ErrorPage message={error.message}/>
     session.description,
     session.videoUrl,
     session.videoDuration,
+    session.questions.length > 9
   ];
 
   const totalFields = requiredFields.length;
@@ -98,6 +100,13 @@ if(error) return <ErrorPage message={error.message}/>
               </div>
               <SessionVideoForm courseId={courseId} session={session} />
             </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={LayoutDashboard} />
+              <h2 className="text-xl">Add session questions</h2>
+            </div>
+            <SessionQuestionsForm courseId={courseId} session={session }/>
           </div>
         </div>
       </div>

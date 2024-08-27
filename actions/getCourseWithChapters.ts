@@ -21,7 +21,7 @@ export const getCourseWithChapters = async (
       },
       include: {
         chapters: {
-          where: { isPublished: true },
+          //where: { isPublished: true },
           orderBy: {
             position: "asc",
           },
