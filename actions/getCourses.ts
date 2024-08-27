@@ -1,21 +1,22 @@
 import { db } from "@/lib/db";
-import { ReturnValue } from "./getCourseWithCourseCategoriesAndChapters";
+import { Course } from "@prisma/client";
 
-
-
-
+interface ReturnValue{
+    courses:Course[],
+    error:Error | null
+  }
 
 export const getCourses = async():
 Promise<ReturnValue>=>{
     try{
         const courses = await db.course.findMany({
             orderBy:{
-                createdAt:"desc"
+                title:"asc"
             }
         });
-      return {data:courses,error:null}
+      return {courses,error:null}
     }catch(error:any){
     
-        return {data:null,error}
+        return {courses:[],error}
     }
     }

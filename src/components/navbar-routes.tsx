@@ -40,6 +40,13 @@ export const NavbarRoutes = ()=>{
         )
     }
     <div className="flex gap-x-2 ml-auto">
+        <Button
+        variant="link"
+        size="sm"
+        onClick={()=>{
+            router.push("/")
+        }}
+        >Home</Button>
         {isTeacherPage || isCoursePage ? (
             <Button variant="ghost" size="sm"
             onClick={onExitClick}>

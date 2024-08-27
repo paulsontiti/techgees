@@ -5,8 +5,8 @@ function Logo() {
 
     return <div className='flex items-center '>
         <Image
-    height={50}
-    width={50}
+    height={70}
+    width={70}
     alt="Logo"
     src="/assets/logo.jpg"
     />
