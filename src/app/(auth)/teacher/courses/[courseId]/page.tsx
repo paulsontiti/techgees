@@ -33,7 +33,7 @@ async function CourseIdPage({
 
   if (!course) return redirect("/dashboard");
 
-  const {data:categories,error:categoriesError} = await getCategories()
+  const {categories,error:categoriesError} = await getCategories()
   if(categoriesError) return <div>{categoriesError.message}</div>
 
   const {courseCategories,error:cCError} = await getCourseCategoriesByCourseId(courseId)
