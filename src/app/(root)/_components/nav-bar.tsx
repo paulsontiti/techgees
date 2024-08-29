@@ -5,19 +5,21 @@ import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import React from "react";
 import SearchInput from "./search-input";
-import { CategoryDropdownMenu } from "./category-dropdown-menu";
-import { Course } from "@prisma/client";
+import { Category, Course } from "@prisma/client";
+import CategoryDropdownMenu from "./category-dropdown-menu";
 
-function Navbar({ userId, courses }: { userId: string; courses: Course[] }) {
+function Navbar(
+  { userId, courses,categories }:
+   { userId: string; courses: Course[],categories:Category[] }) {
   const router = useRouter();
 
   return (
   <div>
       <div className="md:p-6 flex items-center justify-between w-full">
-      <div className="flex items-center gap-x-4">
+      <div className="flex items-center gap-x-8">
         <Logo />
-        <div className="hidden md:flex items-center">
-          <CategoryDropdownMenu />
+        <div className="hidden md:flex items-center gap-x-4">
+          <CategoryDropdownMenu categories={categories} />
           <SearchInput courses={courses} />
         </div>
       </div>
@@ -43,8 +45,8 @@ function Navbar({ userId, courses }: { userId: string; courses: Course[] }) {
         )}
       </div>
     </div>
-    <div className=" md:hidden flex items-center">
-          <CategoryDropdownMenu />
+    <div className="p-2 md:hidden flex items-center gap-x-4">
+          <CategoryDropdownMenu categories={categories} />
           <SearchInput courses={courses} />
         </div>
   </div>

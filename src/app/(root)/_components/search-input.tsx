@@ -1,13 +1,16 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+"use router"
+
+import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import React, { useEffect } from "react";
 import { useDebounce } from "../../../../hooks/use-debounce";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 function SearchInput({ courses }: { courses: Course[] }) {
   const [open, setOpen] = React.useState(false);
@@ -17,6 +20,7 @@ function SearchInput({ courses }: { courses: Course[] }) {
 
   const debouncedValue = useDebounce(value);
 
+  const router = useRouter()
   useEffect(() => {
     (async () => {
       if (value) {
@@ -26,86 +30,67 @@ function SearchInput({ courses }: { courses: Course[] }) {
         } catch (err: any) {
           toast.error(err.message);
         }
-      }else{
-        setSearchedCoureses(courses)
+      } else {
+        setSearchedCoureses(courses);
       }
     })();
   }, [debouncedValue]);
 
   return (
-    <div className="relative">
-      <div className="relative">
-        <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
-        <Input
-          value={value}
-          onFocus={() => {
-            setOpen(true);
-          }}
-          onBlur={()=>{
-            setOpen(false)
-          }}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200"
-          placeholder="Search for a course"
-        />
-        {open && (
-          <div
-            className={cn(
-              "hidden",
-              open && "block absolute top-15 left-2 mt-4"
-            )}
-          >
-            <Card className="min-w-[200px]">
-           
-              <CardContent className="mt-4">
-                {searchedCourses.length === 0 ? 
-                <div className="italic text-sm">No course match your search</div>
-                :<>
-                {searchedCourses.map((course) => {
+    <div className="relative w-full">
+      <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
+      <Input
+        value={value}
+        onFocus={() => {
+          setOpen(true);
+        }}
+        // onBlur={() => {
+        //   setOpen(false);
+        // }}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+        className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200"
+        placeholder="Search for a course"
+      />
+      {open && (
+        <div
+          className={cn(
+            "hidden",
+            open && "flex z-10 absolute top-15 left-2 mt-4"
+          )}
+        >
+          <Card className="min-w-[200px]">
+            <CardContent className="mt-4">
+              <div className="flex justify-between">
+             
+              {searchedCourses.length === 0 ? (
+                <div className="italic text-sm">
+                  No course match your search
+                </div>
+              ) : (
+                <div>
+                  {searchedCourses.map((course) => {
                     return (
                       <div
-                        key={course.id}
-                        className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer"
-                      >
-                        {course.title}
-                      </div>
+                      onClick={()=>{
+                        setOpen(false)
+                        router.push(`/courses/${course.id}`)
+                      }}
+                      className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer"
+                    >
+                      {course.title}
+                    </div>
                     );
                   })}
-                </>
-                }
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
-
-      {/* <Command className="rounded-lg border shadow-md md:min-w-[450px] relative">
-      <CommandInput placeholder="Type a command or search..." 
-      onFocus={()=>{setOpen(true)}}
-      />
-      {open && <CommandList className='absolute bottom-10'>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup>
-                 {categories.map((category) => (
-                   <CommandItem
-                     key={category.id}
-                     value={category.name}
-                     onSelect={() => {
-                    
-                      
-                       setOpen(false)
-                     }}
-                   >
-                    
-                     {category.name}
-                   </CommandItem>
-                 ))}
-        <CommandSeparator />
-       </CommandGroup>
-      </CommandList>}
-    </Command> */}
+                </div>
+              )}
+                 <X className="text-right w-4 h-4 cursor-pointer" onClick={()=>{setOpen(false)}}/>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

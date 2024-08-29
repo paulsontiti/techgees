@@ -1,124 +1,67 @@
-import {
-    Cloud,
-    CreditCard,
-    Github,
-    Keyboard,
-    LifeBuoy,
-    LogOut,
-    Mail,
-    MessageSquare,
-    Plus,
-    PlusCircle,
-    Settings,
-    User,
-    UserPlus,
-    Users,
-  } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { Category} from "@prisma/client";
+import React from "react";
+import CategoryCourses from "./category-courses";
+
+function CategoryDropdownMenu({ categories }: { categories: Category[] }) {
+  const [open, setOpen] = React.useState(false);
+
+
+
   
-  import { Button } from "@/components/ui/button"
-  import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+
+  return (
+    <div className="relative">
+      <div className="relative">
+      <span onMouseEnter={()=>{
+        setOpen((prv)=> !prv)
+      }}
+      onClick={()=>{
+        setOpen((prv)=> !prv)
+      }}
+      >Categories</span>
+        {open && (
+          <div
+            className={cn(
+              "hidden",
+              open && "block bg-white z-10 absolute top-15 left-2 mt-4 border px-2"
+            )}
+          >
+            <div className="min-w-[200px]">
+           
+              <div className="mt-4">
+               
+                {categories.map((category) => {
+                    return (
+                      <Dialog key={category.id}>
+                      <DialogTrigger asChild>
+                      <div
+                        className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer"
+                      >
+                        {category.name}
+                      </div>
+                      </DialogTrigger>
+                      <DialogContent className="w-[300px] md:w-auto md:h-auto overflow-y-auto h-2/3">
+                        <DialogHeader>
+                          <DialogTitle className="mt-4">All courses in {category.name} category</DialogTitle>
+                         
+                        </DialogHeader>
+                     <CategoryCourses categoryId={category.id}/>
+                      </DialogContent>
+                    </Dialog>
+                     
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
   
-  export function CategoryDropdownMenu() {
-    return (
-      <DropdownMenu>
-        
-        <DropdownMenuTrigger asChild>
-          <Button variant="link">Category</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Billing</span>
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Keyboard className="mr-2 h-4 w-4" />
-              <span>Keyboard shortcuts</span>
-              <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Users className="mr-2 h-4 w-4" />
-              <span>Team</span>
-            </DropdownMenuItem>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                <UserPlus className="mr-2 h-4 w-4" />
-                <span>Invite users</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem>
-                    <Mail className="mr-2 h-4 w-4" />
-                    <span>Email</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    <span>Message</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    <span>More...</span>
-                  </DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuItem>
-              <Plus className="mr-2 h-4 w-4" />
-              <span>New Team</span>
-              <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Github className="mr-2 h-4 w-4" />
-            <span>GitHub</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <LifeBuoy className="mr-2 h-4 w-4" />
-            <span>Support</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <Cloud className="mr-2 h-4 w-4" />
-            <span>API</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
-  }
-  
+    </div>
+  );
+}
+
+export default CategoryDropdownMenu;

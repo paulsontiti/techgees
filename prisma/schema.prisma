@@ -213,6 +213,7 @@ model CourseTestScore {
 model Purchase {
   id     String @id @default(uuid()) @map("_id")
   userId String
+  percentage Int @default(0)
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)

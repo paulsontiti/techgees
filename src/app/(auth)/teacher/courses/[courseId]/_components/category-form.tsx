@@ -55,7 +55,7 @@ const router = useRouter()
 
 const [open, setOpen] = React.useState(false)
 const [loading, setLoading] = React.useState(false)
-const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
+const [selectedcategories,setSelectedCategories] = useState<Category[]>(courseCategories)
 
    
     const toggleEdit = ()=>{
@@ -115,7 +115,7 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
          </PopoverTrigger>
          <PopoverContent className="w-full p-0">
            <Command>
-             <CommandInput placeholder="Search category..." />
+             <CommandInput placeholder="Search category..."/>
              <CommandList>
                <CommandEmpty>No category found.</CommandEmpty>
                <CommandGroup>
@@ -154,9 +154,12 @@ const [selectedcategories,setSelectedCategories] = useState<Category[]>([])
        :
          <div className={cn('text-sm mt-2',
             courseCategories.length === 0 && "text-slate-500 italic"
-         )}>{courseCategories.length > 0 ? <div className="flex gap-x-2">
+         )}>{courseCategories.length > 0 ? <div className="flex gap-2 flex-wrap">
          {courseCategories.map((category)=>{
-            return <span key={category.id}>{category.name}</span>
+            return <span
+             key={category.id}
+             className="bg-sky-100 p-2"
+             >{category.name}</span>
          })}
          </div>: "No category"}</div>}
       
