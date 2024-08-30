@@ -7,6 +7,7 @@ import ErrorPage from '@/components/error'
 import CourseSidebarItem from './course-sidebar-item'
 import CourseProgress from '@/components/course-progress'
 import { getChapterProgress } from '../../../../../../actions/getChapterProgress'
+import PaymentProgress from '@/components/paymentProgress'
 
 type CourseSidebarProps = {
     course:CourseChaptersUserProgressType,
@@ -24,7 +25,10 @@ async function CourseSidebar({
   return (
     <div className='h-full border-r flex flex-col overflow-y-auto shadow-sm'>
         <div className='p-8 flex flex-col border-b'>
+            <div className='flex items-center '>
             <h1 className='font-semibold'>{course.title}</h1>
+            <PaymentProgress value={purchase?.percentage!} size='sm'/>
+            </div>
       
      <div className='mt-10'>
      <CourseProgress

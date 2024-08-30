@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
 export const CourseEnrollButton = (
-    {courseId,label}:{
+    {courseId,label,chapterId}:{
         courseId:string,
-        label:string
+        label:string,
+        chapterId:string
     }
 )=>{
 
@@ -14,7 +15,7 @@ export const CourseEnrollButton = (
 
     return <Button
     onClick={()=>{
-        router.push(`/payment/${courseId}`)
+        router.push(`/payment/${courseId}/chapters/${chapterId}`)
     }}
     size="sm"
     className="w-full md:w-auto">

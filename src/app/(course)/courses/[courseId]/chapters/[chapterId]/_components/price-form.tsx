@@ -53,7 +53,7 @@ function PriceForm({email,courseId,chapterId}:{
         }
       );
 
-      const { authorizationUrl } = response.data;
+      const { authorizationUrl,reference } = response.data;
       
 
       // Open Paystack payment page in a new tab
@@ -62,7 +62,7 @@ function PriceForm({email,courseId,chapterId}:{
       if (paymentWindow) {
         const interval = setInterval(() => {
           if (paymentWindow.closed) {
-            window.location.href = `/courses/${courseId}/chapters/${chapterId}`;
+            window.location.href = `/courses/${courseId}/chapters/${chapterId}?reference=${reference}`;
             clearInterval(interval);
           }
         }, 1000);
