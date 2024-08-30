@@ -7,6 +7,7 @@ import Banner from "@/components/banner";
 import { Preview } from "@/components/preview";
 import { CourseEnrollButton } from "./_components/enroll-button";
 import { Separator } from "@/components/ui/separator";
+import { formatPrice } from "@/lib/format";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -45,8 +46,11 @@ async function ChapterIdPage({
       >
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
           <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
-          {!purchase && (
-            <CourseEnrollButton courseId={courseId} price={course.price!} />
+          {purchase?.percentage !== 100 && (
+            <CourseEnrollButton courseId={courseId}
+            label={purchase?.percentage === 0 ? `Enroll for ${formatPrice(course.price!)}` :
+             `Pay ${formatPrice(((100 - purchase?.percentage!)/100)*course.price!)}`}
+            />
           )}
         </div>
         <Separator />

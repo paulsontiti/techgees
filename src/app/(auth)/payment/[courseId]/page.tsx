@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation';
 import React from 'react'
 
 async function CoursePaymentPage(
-    {params:{courseId}}:{
-        params:{courseId:string}
+    {params:{courseId,chapterId}}:{
+        params:{courseId:string,chapterId:string}
     }
 ) {
     const user = await currentUser()
@@ -24,7 +24,7 @@ async function CoursePaymentPage(
     
   return (
     <div>
-        <PriceForm email={user.emailAddresses[0].emailAddress}/>
+        <PriceForm email={user.emailAddresses[0].emailAddress} courseId={courseId} chapterId={chapterId}/>
     </div>
   )
 }

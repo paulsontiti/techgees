@@ -27,8 +27,8 @@ const formSchema = zod.object({
   }),
 });
 
-function PriceForm({email}:{
-    email:string,
+function PriceForm({email,courseId,chapterId}:{
+    email:string,courseId:string,chapterId:string
 }) {
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -49,10 +49,12 @@ function PriceForm({email}:{
          
           amount: values.amount,
           email,
+          courseId
         }
       );
 
       const { authorizationUrl } = response.data;
+      
 
       // Open Paystack payment page in a new tab
       const paymentWindow = window.open(authorizationUrl);
@@ -60,7 +62,7 @@ function PriceForm({email}:{
       if (paymentWindow) {
         const interval = setInterval(() => {
           if (paymentWindow.closed) {
-            window.location.href = '/checkout-success';
+            window.location.href = `/courses/${courseId}/chapters/${chapterId}`;
             clearInterval(interval);
           }
         }, 1000);
