@@ -10,7 +10,7 @@ interface ReturnValue{
 export const getChapterProgress = async(userId:string,chapterId:string):
 Promise<ReturnValue>=>{
     try{
-const publishedSessions = await db.session.findMany({
+const sessions = await db.session.findMany({
     where:{
         chapterId,
         //isPublished : true
@@ -20,7 +20,7 @@ const publishedSessions = await db.session.findMany({
     }
 })
 
-const publishedSessionIds = publishedSessions.map(session => session.id)
+const publishedSessionIds = sessions.map(session => session.id)
 
 const validCompletedSessions = await db.userProgress.count({
     where:{
@@ -32,11 +32,13 @@ const validCompletedSessions = await db.userProgress.count({
     }
 })
 
-const progressPercentage = (validCompletedSessions/publishedSessionIds.length) * 100
+
+const progressPercentage = publishedSessionIds.length === 0 ? 0 : (validCompletedSessions/publishedSessionIds.length) * 100
+
 
       return {progressPercentage,error:null}
     }catch(error:any){
-    console.log("[GET_COURSE_PROGRESS]",error)
+    console.log("[GET_CHAPTER_PROGRESS]",error)
         return {progressPercentage:null,error}
     }
     }

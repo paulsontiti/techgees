@@ -1,12 +1,18 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Session } from "@prisma/client";
 import { CheckCheck, Lock, PlayCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import SessionSidebarItem from "./session-sidebar-item";
 import CourseProgress from "@/components/course-progress";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Session } from "@prisma/client";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -18,14 +24,15 @@ type CourseSidebarItemProps = {
   chapterProgress:number
 };
 
-function CourseSidebarItem({
+export function ChapterAccordion({
   id,
   title,
   isCompleted,
   isLocked,
   courseId,
   sessions,chapterProgress
-}: CourseSidebarItemProps) {
+}: CourseSidebarItemProps)  {
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -36,12 +43,14 @@ function CourseSidebarItem({
     router.push(`/courses/${courseId}/chapters/${id}`);
   };
   return (
-    <div className=" mt-4">
-      <button
+    <Accordion type="single" collapsible className="w-full px-2">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>
+        <button
       onClick={onClick}
         type="button"
         className={cn(
-          "w-full h-[50px] flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-sky-300/20",
+          "w-11/12 h-[50px] p-4 flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-sky-300/20",
           isActive &&
             "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700",
           isCompleted && isActive && "bg-emerald-200/20"
@@ -56,7 +65,7 @@ function CourseSidebarItem({
             isCompleted && "text-emerald-700"
           )}
           />
-          {title}
+          <span className="line-clamp-1">{title}</span>
           
         </div>
         <div className={cn(
@@ -67,10 +76,11 @@ function CourseSidebarItem({
 
         </div>
       </button>
-      <div className="ml-12">
+     
+        </AccordionTrigger>
+        <AccordionContent>
+        <div>
         <CourseProgress value={chapterProgress} variant="success"/>
-      </div>
-      <div className="ml-12 mt-4">
         {sessions.map((session) => {
           return (
            <SessionSidebarItem key={session.id}
@@ -85,8 +95,8 @@ function CourseSidebarItem({
           );
         })}
       </div>
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
-
-export default CourseSidebarItem;

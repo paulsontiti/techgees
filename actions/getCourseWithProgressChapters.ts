@@ -57,7 +57,7 @@ const courses = await db.course.findMany({
             },select:{
                 id:true
             }
-        },purchases:{
+        },paystackPayments:{
             where:{
                 userId
             }
@@ -70,7 +70,7 @@ const courses = await db.course.findMany({
 const coursesWithProgressAndCategory:SearchPageCourseType[]  = 
 await Promise.all(
     courses.map(async(course)=>{
-        if(course.purchases.length === 0){
+        if(course.paystackPayments.length === 0){
             return {
                     ...course,
                     progressPercentage:null

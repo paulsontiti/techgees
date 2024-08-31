@@ -27,9 +27,7 @@ const onClick = ()=>{
     router.push(href)
 }
 
-useEffect(()=>{
-    setLoading(false)
-},[])
+
 
   return (
     <button

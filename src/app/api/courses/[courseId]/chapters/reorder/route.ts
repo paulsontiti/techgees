@@ -20,6 +20,7 @@ export async function PUT(
 if(!courseOwner) return new NextResponse("Unauthorised", { status: 401 });
 
 const {reorderedChapters} = await req.json()
+console.log(reorderedChapters)
 
 for(let item of reorderedChapters){
     await db.chapter.update({

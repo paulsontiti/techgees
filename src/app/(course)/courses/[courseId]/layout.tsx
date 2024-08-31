@@ -1,4 +1,3 @@
-import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -7,7 +6,7 @@ import CourseSidebar from "./_components/course-sidebar";
 import ErrorPage from "@/components/error";
 import { getCourseChaptersUserProgress } from "../../../../../actions/getCourseChaptersUserProgress";
 import CourseNavbar from "./_components/course-navbar";
-import { getTotalAmountPaidForCourse } from "../../../../../actions/getTotalAmountPaidForCourse";
+import { getPurchasePercentage } from "../../../../../actions/getPurchasePercentage";
 
 async function CourseLayout({
   children,
@@ -35,21 +34,19 @@ async function CourseLayout({
 
  
 
-  const {totalAmountPaid,error:amoutPaidError} = await getTotalAmountPaidForCourse(userId,course.id)
-  if(amoutPaidError) return <ErrorPage message={amoutPaidError.message}/>
-
-  const purchasePercentage = (totalAmountPaid/course.price!) * 100
+  const {purchasePercentage,error:purschaseError} = await getPurchasePercentage(courseId,userId,course.price!)
+  if (purschaseError) return <ErrorPage message={purschaseError.message} />;
 
   return (
     <div className="h-full">
-      <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
+      <div className="h-[80px] md:pl-96 fixed inset-y-0 w-full z-50">
         <CourseNavbar
           course={course}
           progressPercentage={progressPercentage ?? 0}
           purchasePercentage={purchasePercentage}
         />
       </div>
-      <div className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
+      <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">
         <CourseSidebar
           course={course}
           progressPercentage={progressPercentage ?? 0}

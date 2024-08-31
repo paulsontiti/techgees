@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Chapter, Course, Purchase, UserProgress } from "@prisma/client";
+import { Chapter, UserProgress } from "@prisma/client";
 import { getTotalAmountPaidForCourse } from "./getTotalAmountPaidForCourse";
 
 interface ReturnValue {
@@ -7,7 +7,6 @@ interface ReturnValue {
   chapter: Chapter | null;
   nextChapter: Chapter | null;
   userProgress: UserProgress | null;
-  totalAmountPaid: number;
 
   error: Error | null;
 }
@@ -21,8 +20,6 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
   courseId: string;
 }): Promise<ReturnValue> => {
   try {
-    const {totalAmountPaid,error} = await getTotalAmountPaidForCourse(userId,courseId)
-    if(error) throw new Error(error.message)
 
     const course = await db.course.findUnique({
       where: {
@@ -43,10 +40,7 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
 
     if (!chapter || !course) throw new Error("Chapter or course not found");
 
-    let nextChapter: Chapter | null = null;
-
-    if (chapter.isFree || totalAmountPaid > 0) {
-      nextChapter = await db.chapter.findFirst({
+    const nextChapter = await db.chapter.findFirst({
         where: {
           courseId,
           isPublished: true,
@@ -58,7 +52,7 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
           position: "asc",
         },
       });
-    }
+    
 
     const userProgress = await db.userProgress.findUnique({
       where: {
@@ -73,7 +67,6 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
       chapter,
       nextChapter,
       userProgress,
-      totalAmountPaid,
       course,
       error: null,
     };
@@ -83,7 +76,6 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
       chapter: null,
       nextChapter: null,
       userProgress: null,
-      totalAmountPaid: 0,
       course: null,
       error,
     };

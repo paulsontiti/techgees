@@ -22,14 +22,14 @@ export default function AuthLayout({
           </SignedOut>
           <SignedIn>
             <UserButton />
-            <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-50">
+            <div className="h-[80px] md:pl-[250px] fixed inset-y-0 w-full z-50">
 <Navbar/>
     </div>
-    <div className="hidden md:flex h-full w-56 
+    <div className="hidden md:flex h-full w-[250px]
     flex-col fixed inset-y-0 z-50">
 <Sidebar/>
     </div>
-  <main className="md:pl-56 h-full mt-[80px]">
+  <main className="md:pl-[250px] h-full mt-[80px]">
   {children}
   </main>
           </SignedIn>

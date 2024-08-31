@@ -9,6 +9,7 @@ import { CourseEnrollButton } from "./_components/enroll-button";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/format";
 import { getPayStackPayment } from "../../../../../../../actions/getPayStackPayment";
+import { getPurchasePercentage } from "../../../../../../../actions/getPurchasePercentage";
 
 
 async function ChapterIdPage({
@@ -23,7 +24,7 @@ async function ChapterIdPage({
   const { userId } = auth();
   if (!userId) return redirect("/");
 
-  const { course, chapter, nextChapter, totalAmountPaid, userProgress, error } =
+  const { course, chapter, nextChapter, userProgress, error } =
     await getChapterCoursePurchaseUserProgressNextChapter({
       userId,
       courseId,
@@ -47,9 +48,12 @@ async function ChapterIdPage({
   }
 
 
-  const purchasePercentage = (totalAmountPaid/course.price!) * 100
+  const {purchasePercentage,error:purschaseError} = await getPurchasePercentage(courseId,userId,course.price!)
+  if (purschaseError) return <ErrorPage message={purschaseError.message} />;
 
-  const isLocked = !chapter.isFree && totalAmountPaid === 0;
+
+
+  const isLocked = !chapter.isFree && purchasePercentage === 0;
   const completeOnEnd = purchasePercentage === 0 && !userProgress?.isCompleted;
   return (
     <div>

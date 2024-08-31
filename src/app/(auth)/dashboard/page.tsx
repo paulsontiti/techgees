@@ -28,10 +28,11 @@ async function DashboardPage() {
 
   const courses = [...inProgress,...completedCourses]
 
-
+  
   if(errorCompleted) 
     return <ErrorPage message={errorCompleted.message}/>
   
+
   return (
     <div >
      <div className='p-6 space-y-4'>

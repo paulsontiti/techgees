@@ -32,7 +32,7 @@ export async function POST(
                 position:"desc"
             }
         })  
-const newPosition = lastChapter ? lastChapter.position + 1 : 1
+const newPosition = lastChapter ? lastChapter.position + 1 : 0
 
 await db.chapter.create({
     data:{

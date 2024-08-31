@@ -33,7 +33,7 @@ export async function POST(
                 position:"desc"
             }
         })  
-const newPosition = lastSession ? lastSession.position + 1 : 1
+const newPosition = lastSession ? lastSession.position + 1 : 0
 
 await db.session.create({
     data:{

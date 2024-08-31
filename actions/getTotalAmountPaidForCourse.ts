@@ -18,8 +18,9 @@ Promise<ReturnValue>=>{
                 amount:true
             }
         });
-
+        
         const paymentAmounts = payments.map(payment => payment.amount)
+        console.log(paymentAmounts.length)
         
         const totalAmountPaid = paymentAmounts.length === 0 ? 0 : paymentAmounts.reduce((total,curr)=> total+curr)
         
