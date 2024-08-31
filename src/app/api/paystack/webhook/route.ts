@@ -40,42 +40,7 @@ export async function POST(req: Request) {
             },
           });
 
-          const { userId, course, courseId } = payStackPayment;
-          const price = course?.price ?? 0;
-          let percentage = 0;
-
-          const purchase = await db.purchase.findUnique({
-            where: {
-              userId_courseId: {
-                userId,
-                courseId,
-              },
-            },
-          });
-
-          if (purchase) {
-            percentage = (amount / price) * 100 + purchase.percentage;
-            await db.purchase.update({
-              where: {
-                userId_courseId: {
-                  userId,
-                  courseId,
-                },
-              },
-              data: {
-                percentage,
-              },
-            });
-          } else {
-            percentage = (amount / price) * 100;
-            await db.purchase.create({
-              data: {
-                percentage,
-                userId,
-                courseId,
-              },
-            });
-          }
+         
         }
       }
     }

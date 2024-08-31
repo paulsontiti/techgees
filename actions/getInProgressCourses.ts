@@ -12,7 +12,7 @@ export const getInProgressCourses = async (
   userId: string
 ): Promise<ReturnValue> => {
   try {
-    const purchasedCourses = await db.purchase.findMany({
+    const purchasedCourses = await db.paystackPayment.findMany({
       where: {
         userId,
       },

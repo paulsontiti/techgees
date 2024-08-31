@@ -47,58 +47,18 @@ export async function POST(req: Request) {
             }
            })
   
-            const course = await db.course.findUnique({
-              where:{
-                id:courseId
-              },select:{price:true}
-            })
-            const price = course?.price ?? 0;
-            let percentage = 0;
-  
-            const purchase = await db.purchase.findUnique({
-              where: {
-                userId_courseId: {
-                  userId,
-                  courseId,
-                },
-              },
-            });
-  
-            if (purchase) {
-              percentage = (amount / price) * 100 + purchase.percentage;
-              await db.purchase.update({
-                where: {
-                  userId_courseId: {
-                    userId,
-                    courseId,
-                  },
-                },
-                data: {
-                  percentage,
-                },
-              });
-            } else {
-              percentage = (amount / price) * 100;
-              await db.purchase.create({
-                data: {
-                  percentage,
-                  userId,
-                  courseId,
-                },
-              });
-            }
-          }
+           
         } else {
           await db.paystackPayment.create({
             data: {
               reference,
               userId,
               courseId,
-              payment_status: "",
               amount,
             },
           });
         }
+      }
       
     },10000)
 

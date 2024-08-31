@@ -2,7 +2,6 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { CourseChaptersUserProgressType } from '../../../../../../actions/getCourseChaptersUserProgress'
-import { getCoursePurchaseByUserId } from '../../../../../../actions/getCoursePurchase'
 import ErrorPage from '@/components/error'
 import CourseSidebarItem from './course-sidebar-item'
 import CourseProgress from '@/components/course-progress'
@@ -12,22 +11,21 @@ import PaymentProgress from '@/components/paymentProgress'
 type CourseSidebarProps = {
     course:CourseChaptersUserProgressType,
     progressPercentage:number
+    purchasePercentage:number
 }
 
 async function CourseSidebar({
-    course,progressPercentage
+    course,progressPercentage,purchasePercentage
 }:CourseSidebarProps) {
     const { userId } = auth();
     if (!userId) return redirect("/");
 
-    const {purchase,error} = await getCoursePurchaseByUserId(userId,course.id)
-    if(error) return <ErrorPage message={error.message}/>
   return (
     <div className='h-full border-r flex flex-col overflow-y-auto shadow-sm'>
         <div className='p-8 flex flex-col border-b'>
             <div className='flex items-center '>
             <h1 className='font-semibold'>{course.title}</h1>
-            <PaymentProgress value={purchase?.percentage!} size='sm'/>
+            <PaymentProgress value={purchasePercentage} size='sm'/>
             </div>
       
      <div className='mt-10'>
@@ -49,7 +47,7 @@ async function CourseSidebar({
                     !!chapter.userProgresses?.[0]?.isCompleted
                 }
                 courseId={course.id}
-                isLocked={!chapter.isFree &&  !purchase && !chapter.isPublished}
+                isLocked={!chapter.isFree &&  purchasePercentage < 0 && !chapter.isPublished}
                 sessions={chapter.sessions ?? []}
                 chapterProgress={progressPercentage ?? 0}
                 />

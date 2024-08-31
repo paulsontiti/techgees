@@ -34,12 +34,11 @@ model Course {
   comments         Comment[]
 
   userProgresses   UserProgress[]
-  purchases        Purchase[]
   questions        Question[]
   courseTestScores CourseTestScore[]
   likes            Like[]
   dislikes         DisLike[]
-  paystackPayment  PaystackPayment[]
+  paystackPayments PaystackPayment[]
 
   @@fulltext([title])
 }
@@ -210,30 +209,15 @@ model CourseTestScore {
   createdAt DateTime @default(now())
 }
 
-model Purchase {
-  id         String @id @default(uuid()) @map("_id")
-  userId     String
-  percentage Int    @default(0)
-
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, courseId])
-  @@index([courseId])
-}
-
 model PaystackPayment {
-  id              String @id @default(uuid()) @map("_id")
-  reference       String
-  amount          Float
-  delivery_status String @default("pending")
-  payment_status  String
-  userId          String
-  courseId        String
-  course          Course @relation(fields: [courseId], references: [id], onDelete: NoAction)
+  id             String @id @default(uuid()) @map("_id")
+  reference      String
+  amount         Float
+  payment_status String @default("pending")
+  userId         String
+  user           User   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  courseId       String
+  course         Course @relation(fields: [courseId], references: [id], onDelete: NoAction)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -253,6 +237,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  paystackPayments PaystackPayment[]
 }
 
 enum Role {

@@ -7,6 +7,7 @@ import CourseSidebar from "./_components/course-sidebar";
 import ErrorPage from "@/components/error";
 import { getCourseChaptersUserProgress } from "../../../../../actions/getCourseChaptersUserProgress";
 import CourseNavbar from "./_components/course-navbar";
+import { getTotalAmountPaidForCourse } from "../../../../../actions/getTotalAmountPaidForCourse";
 
 async function CourseLayout({
   children,
@@ -22,6 +23,7 @@ async function CourseLayout({
     userId,
     courseId
   );
+  
   if (courseError) return <ErrorPage message={courseError.message} />;
   if (!course) return redirect("/");
 
@@ -31,18 +33,27 @@ async function CourseLayout({
   );
   if (error) return <ErrorPage message={error.message} />;
 
+ 
+
+  const {totalAmountPaid,error:amoutPaidError} = await getTotalAmountPaidForCourse(userId,course.id)
+  if(amoutPaidError) return <ErrorPage message={amoutPaidError.message}/>
+
+  const purchasePercentage = (totalAmountPaid/course.price!) * 100
+
   return (
     <div className="h-full">
       <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
         <CourseNavbar
           course={course}
           progressPercentage={progressPercentage ?? 0}
+          purchasePercentage={purchasePercentage}
         />
       </div>
       <div className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
         <CourseSidebar
           course={course}
           progressPercentage={progressPercentage ?? 0}
+          purchasePercentage={purchasePercentage}
         />
       </div>
       <main className="md:pl-80 h-full pt-[80px]">{children}</main>
