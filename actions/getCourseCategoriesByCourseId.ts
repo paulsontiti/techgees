@@ -20,7 +20,7 @@ Promise<ReturnValue>=>{
           const courseCategories = courseCategoriesByCourseId.map(cc=>cc.category)
       return {courseCategories,error:null}
     }catch(error:any){
-    
+    console.log(error)
         return {courseCategories:null,error}
     }
     }

@@ -9,28 +9,25 @@ export async function PUT(
   try {
     const { userId } = auth();
     if (!userId) return new NextResponse("Unauthorised", { status: 401 });
-    
-    const courseOwner = await db.course.findUnique({
-        where:{
-         
-                id:courseId,
-                userId
-            
-        }
-    })
-if(!courseOwner) return new NextResponse("Unauthorised", { status: 401 });
+    const course = await db.course.findUnique({
+      where: {
+        id: courseId,
+        userId,
+      },
+    });
 
-const {reorderSessions} = await req.json()
+    if (!course) return new NextResponse("Unauthorised", { status: 401 });
 
-for(let item of reorderSessions){
-    await db.session.update({
-        where:{id:item.sessionId},
-        data:{position: item.position}
-    })
-}
-return NextResponse.json("")
+    const { reorderSessions } = await req.json();
 
-} catch (err) {
+    for (let item of reorderSessions) {
+      await db.session.update({
+        where: { id: item.sessionId },
+        data: { position: item.position },
+      });
+    }
+    return NextResponse.json("");
+  } catch (err) {
     console.log("[SESSION_REORDER]", err);
     return new NextResponse("Internal server error", { status: 500 });
   }

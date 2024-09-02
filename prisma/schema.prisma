@@ -40,7 +40,63 @@ model Course {
   dislikes         DisLike[]
   paystackPayments PaystackPayment[]
 
+
+  recommendeeCourses RecommendedCourses[]
+  recommendedCourses RecommendedCourses[] @relation("recommendedCourse")
+  preRequisiteParentCourses PreRequisiteCourses[]
+  preRequisiteCourses PreRequisiteCourses[] @relation("preRequisite")
+
   @@fulltext([title])
+  childrenCourses ComboCourses[] @relation("childCourse")
+  comboParentCourses ComboCourses[]
+}
+
+model ComboCourses {
+  id         String @id @default(uuid()) @map("_id")
+  parentCourseId   String
+  childCourseId String
+
+  parentCourse   Course   @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
+  childCourse Course @relation("childCourse",fields: [childCourseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentCourseId, childCourseId])
+  @@index([parentCourseId])
+  @@index([childCourseId])
+}
+
+model PreRequisiteCourses {
+  id         String @id @default(uuid()) @map("_id")
+  parentCourseId   String
+  prerequisiteCourseId String
+
+  preRequisitee   Course   @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
+  preRequisite Course @relation("preRequisite",fields: [prerequisiteCourseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentCourseId, prerequisiteCourseId])
+  @@index([parentCourseId])
+  @@index([prerequisiteCourseId])
+}
+
+model RecommendedCourses {
+  id         String @id @default(uuid()) @map("_id")
+  courseId   String
+  recommendedCourseId String
+
+  recommendeecourse   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  recommendedCourse Course @relation("recommendedCourse",fields: [recommendedCourseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([courseId, recommendedCourseId])
+  @@index([courseId])
+  @@index([recommendedCourseId])
 }
 
 model Chapter {
@@ -308,3 +364,5 @@ model CourseCategory {
   @@index([courseId])
   @@index([categoryId])
 }
+
+

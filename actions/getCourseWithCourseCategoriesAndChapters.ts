@@ -1,9 +1,16 @@
 import { db } from "@/lib/db";
+import { Chapter, Course, CourseCategory } from "@prisma/client";
 
 export interface ReturnValue {
-  data: any | null;
+  course: CourseType | null;
   error: Error | null;
 }
+
+type CourseType = Course & {
+    courseCategories: CourseCategory[],
+    chapters: Chapter[]
+  }
+
 
 export const getCourseWithCourseCategoriesAndChapters = async (
   userId: string,
@@ -25,8 +32,8 @@ export const getCourseWithCourseCategoriesAndChapters = async (
         },
       },
     });
-    return { data: course, error: null };
+    return { course, error: null };
   } catch (error: any) {
-    return { data: null, error };
+    return { course: null, error };
   }
 };

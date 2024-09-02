@@ -16,6 +16,13 @@ import { getCourseWithCourseCategoriesAndChapters } from "../../../../../../acti
 import { Chapter } from "@prisma/client";
 import { getCategories } from "../../../../../../actions/getCategories";
 import { getCourseCategoriesByCourseId } from "../../../../../../actions/getCourseCategoriesByCourseId";
+import PreRequisiteCoursesForm from "./_components/pre-requisite-courses-form";
+import { getCourses } from "../../../../../../actions/getCourses";
+import CourseChildrenForm from "./_components/children-courses-form";
+import { getPrerequisiteCourses } from "../../../../../../actions/getPreRequisiteCourses";
+import { getChildrenCourses } from "../../../../../../actions/getChildrenCourses";
+import RecommendedCoursesForm from "./_components/recommended-courses-form";
+import { getCourseRecommendedCourses } from "../../../../../../actions/getCourseRecommendedCourses";
 
 
 
@@ -27,7 +34,7 @@ async function CourseIdPage({
   const { userId } = auth();
   if (!userId) return redirect("/dashboard");
 
-  const {data:course,error} = await getCourseWithCourseCategoriesAndChapters(userId,courseId)
+  const {course,error} = await getCourseWithCourseCategoriesAndChapters(userId,courseId)
 
   if(error) return <div>{error.message}</div>
 
@@ -37,7 +44,20 @@ async function CourseIdPage({
   if(categoriesError) return <div>{categoriesError.message}</div>
 
   const {courseCategories,error:cCError} = await getCourseCategoriesByCourseId(courseId)
-  if(cCError) return <div>{cCError.message}</div>
+  
+
+
+  const {preRequisiteCourses,error:preError} = await getPrerequisiteCourses(courseId)
+  if(preError) return <div>{preError.message}</div>
+
+  const {childrenCourses,error:comboError} = await getChildrenCourses(courseId)
+  if(comboError) return <div>{comboError.message}</div>
+
+  const {recommendedCourses,error:recomError} = await getCourseRecommendedCourses(courseId)
+  if(recomError) return <div>{recomError.message}</div>
+
+  const {courses,error:coursesError} = await getCourses()
+  if(coursesError) return <div>{coursesError.message}</div>
 
 
   const requiredFields = [
@@ -61,6 +81,9 @@ async function CourseIdPage({
 
   return (
    <>
+   {cCError && <Banner
+    variant={"warning"}
+    label={cCError.message}/>}
        {!course.isPublished &&  <Banner
     variant={"warning"}
     label="This course is unpublished. It will not be visible to your students"
@@ -84,11 +107,25 @@ async function CourseIdPage({
           <TitleForm course={course} />
           <DescriptionForm course={course} />
           <ImageForm course={course} />
+        </div>
+        <div className="space-y-6">
           <CategoryForm
             categories={categories}
             courseCategories={courseCategories ?? []}
             courseId={courseId}
           />
+        <PreRequisiteCoursesForm 
+        courseId={courseId} 
+        courses={courses} 
+        preRequisiteCourses={preRequisiteCourses}/>
+         <CourseChildrenForm 
+         courseId={courseId} 
+         courses={courses} 
+         childrenCourses={childrenCourses}/>
+              <RecommendedCoursesForm 
+         courseId={courseId} 
+         courses={courses} 
+         recommendedCourses={recommendedCourses}/>
         </div>
         <div className="space-y-6">
           <div>

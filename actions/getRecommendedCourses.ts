@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Chapter, Course } from "@prisma/client";
+import { Course } from "@prisma/client";
 
 type ReturnValue = {
   recommendedCourses: RecommendedCourseType[] | null;
@@ -15,7 +15,7 @@ export const getRecommendedCourses = async (): Promise<ReturnValue> => {
   try {
     const recommendedCourses = await db.course.findMany({
      where:{
-      isPublished:true
+      //isPublished:true
      },
           include: {
             chapters: {
