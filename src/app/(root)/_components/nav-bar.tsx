@@ -50,7 +50,7 @@ function Navbar(
         )}
       </div>
     </div>
-    <div className="p-2 md:hidden flex items-center gap-x-4">
+    <div className="p-4 md:hidden flex items-center gap-x-4">
           <CategoryDropdownMenu categories={categories} />
           <SearchInput courses={courses} />
         </div>

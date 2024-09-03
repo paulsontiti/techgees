@@ -1,40 +1,24 @@
-"use client";
-
 import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
-import { ChevronDown, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import React, { useEffect } from "react";
 import { useDebounce } from "../../../../hooks/use-debounce";
 import axios from "axios";
 import toast from "react-hot-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import CourseDetailsDialog from "./course-details-dialog";
+import { useRouter } from "next/navigation";
+
 
 function SearchInput({ courses }: { courses: Course[] }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [searchedCourses, setSearchedCoureses] =
     React.useState<Course[]>(courses);
+
+    const router = useRouter()
 
   const debouncedValue = useDebounce(value);
   useEffect(() => {
@@ -88,44 +72,15 @@ function SearchInput({ courses }: { courses: Course[] }) {
                     <div className="mt-4">
                       {courses.map((course) => {
                         return (
-                          <Dialog key={course.id}>
-                            <DialogTrigger asChild>
-                              <div className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer">
-                                {course.title}
-                              </div>
-                            </DialogTrigger>
-                            <DialogContent className="w-[300px] md:w-auto md:h-auto overflow-y-auto h-2/3">
-                              <Breadcrumb>
-                                <BreadcrumbList>
-                                  <BreadcrumbItem>
-                                    <BreadcrumbLink href="/">
-                                      Home
-                                    </BreadcrumbLink>
-                                  </BreadcrumbItem>
-                                  <BreadcrumbSeparator />
-                                  <BreadcrumbItem>
-                                    <DropdownMenu>
-                                      <DropdownMenuTrigger className="flex items-center gap-1">
-                                        Components
-                                        <ChevronDown className="h-4 w-4" />
-                                      </DropdownMenuTrigger>
-                                      <DropdownMenuContent align="start">
-                                        <DropdownMenuItem>
-                                          Documentation
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                          Themes
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                          GitHub
-                                        </DropdownMenuItem>
-                                      </DropdownMenuContent>
-                                    </DropdownMenu>
-                                  </BreadcrumbItem>
-                                </BreadcrumbList>
-                              </Breadcrumb>
-                            </DialogContent>
-                          </Dialog>
+                          <div 
+                          onClick={()=>{
+                           
+                            router.push(`/course/${course.id}`)
+                            setOpen(false)
+                          }}
+                          className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer">
+                          {course.title}
+                        </div>
                         );
                       })}
                     </div>
