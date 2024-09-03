@@ -39,8 +39,13 @@ function Navbar(
           </div>
         ) : (
           <>
-            <SignInButton />
-            <SignUpButton />
+           <Button size="sm">
+           <SignInButton />
+           </Button>
+           <Button size="sm" variant="outline">
+           <SignUpButton />
+           </Button>
+            
           </>
         )}
       </div>

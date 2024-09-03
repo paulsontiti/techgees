@@ -16,7 +16,7 @@ async function CourseLayout({
   params: { courseId: string };
 }) {
   const { userId } = auth();
-  if (!userId) return redirect("/");
+  if (!userId) return redirect("/sign-in");
 
   const { course, error: courseError } = await getCourseChaptersUserProgress(
     userId,

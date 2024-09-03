@@ -1,16 +1,34 @@
-"use router"
+"use client";
 
 import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
-import { Search, X } from "lucide-react";
+import { ChevronDown, Search, X } from "lucide-react";
 import React, { useEffect } from "react";
 import { useDebounce } from "../../../../hooks/use-debounce";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function SearchInput({ courses }: { courses: Course[] }) {
   const [open, setOpen] = React.useState(false);
@@ -19,8 +37,6 @@ function SearchInput({ courses }: { courses: Course[] }) {
     React.useState<Course[]>(courses);
 
   const debouncedValue = useDebounce(value);
-
-  const router = useRouter()
   useEffect(() => {
     (async () => {
       if (value) {
@@ -63,29 +79,64 @@ function SearchInput({ courses }: { courses: Course[] }) {
           <Card className="min-w-[200px]">
             <CardContent className="mt-4">
               <div className="flex justify-between">
-             
-              {searchedCourses.length === 0 ? (
-                <div className="italic text-sm">
-                  No course match your search
-                </div>
-              ) : (
-                <div>
-                  {searchedCourses.map((course) => {
-                    return (
-                      <div
-                      onClick={()=>{
-                        setOpen(false)
-                        router.push(`/courses/${course.id}`)
-                      }}
-                      className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer"
-                    >
-                      {course.title}
+                {searchedCourses.length === 0 ? (
+                  <div className="italic text-sm mt-4">
+                    No course match your search
+                  </div>
+                ) : (
+                  <div className="min-w-[200px]">
+                    <div className="mt-4">
+                      {courses.map((course) => {
+                        return (
+                          <Dialog key={course.id}>
+                            <DialogTrigger asChild>
+                              <div className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer">
+                                {course.title}
+                              </div>
+                            </DialogTrigger>
+                            <DialogContent className="w-[300px] md:w-auto md:h-auto overflow-y-auto h-2/3">
+                              <Breadcrumb>
+                                <BreadcrumbList>
+                                  <BreadcrumbItem>
+                                    <BreadcrumbLink href="/">
+                                      Home
+                                    </BreadcrumbLink>
+                                  </BreadcrumbItem>
+                                  <BreadcrumbSeparator />
+                                  <BreadcrumbItem>
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger className="flex items-center gap-1">
+                                        Components
+                                        <ChevronDown className="h-4 w-4" />
+                                      </DropdownMenuTrigger>
+                                      <DropdownMenuContent align="start">
+                                        <DropdownMenuItem>
+                                          Documentation
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                          Themes
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                          GitHub
+                                        </DropdownMenuItem>
+                                      </DropdownMenuContent>
+                                    </DropdownMenu>
+                                  </BreadcrumbItem>
+                                </BreadcrumbList>
+                              </Breadcrumb>
+                            </DialogContent>
+                          </Dialog>
+                        );
+                      })}
                     </div>
-                    );
-                  })}
-                </div>
-              )}
-                 <X className="text-right w-4 h-4 cursor-pointer" onClick={()=>{setOpen(false)}}/>
+                  </div>
+                )}
+                <X
+                  className="text-right w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                />
               </div>
             </CardContent>
           </Card>

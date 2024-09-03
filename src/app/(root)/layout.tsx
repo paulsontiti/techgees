@@ -3,12 +3,10 @@ import Navbar from "./_components/nav-bar";
 import { auth } from "@clerk/nextjs/server";
 import { getCourses } from "../../../actions/getCourses";
 import ErrorPage from "@/components/error";
-import { redirect } from "next/navigation";
 import { getCategories } from "../../../actions/getCategories";
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
     const {userId} = auth()
-if(!userId) return redirect("/")
 
     const {courses,error} = await getCourses()
     if(error) return <ErrorPage message={error.message}/>
@@ -20,7 +18,7 @@ if(!userId) return redirect("/")
 
   return (
     <div>
-        <Navbar userId={userId} courses={courses} categories={categories}/>
+        <Navbar userId={userId ?? ""} courses={courses} categories={categories}/>
       <main>{children}</main>
     </div>
   );

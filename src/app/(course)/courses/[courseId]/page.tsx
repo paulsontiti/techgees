@@ -13,7 +13,7 @@ async function CourseIdPage(
   
   if(error) return <ErrorPage message={error.message}/>
 
-  if(!course ) return redirect("/")
+  if(!course ) return redirect("/courses")
   return redirect(`/courses/${courseId}/chapters/${course.chapters[0].id}`)
 }
 
