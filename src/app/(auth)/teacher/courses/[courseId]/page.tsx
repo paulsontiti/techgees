@@ -43,7 +43,7 @@ async function CourseIdPage({
   const {categories,error:categoriesError} = await getCategories()
   if(categoriesError) return <div>{categoriesError.message}</div>
 
-  const {courseCategories,error:cCError} = await getCourseCategoriesByCourseId(courseId)
+  const {categories:courseCategories,error:cCError} = await getCourseCategoriesByCourseId(courseId)
   
 
 

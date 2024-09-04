@@ -4,8 +4,8 @@ import Navbar from "./_components/navbar";
 import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "TechGees",
-  description: "Techgees",
+  title: "theglobalgenius",
+  description: "theglobalgenius",
 };
 
 export default function AuthLayout({

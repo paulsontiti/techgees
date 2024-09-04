@@ -10,7 +10,7 @@ function Logo() {
     alt="Logo"
     src="/assets/logo.jpg"
     />
-    {/* <span className='text-xs text-sky-700 font-bold'>TechGees</span> */}
+    {/* <span className='text-xs text-sky-700 font-bold'>theglobalgenius</span> */}
     </div>
 }
 

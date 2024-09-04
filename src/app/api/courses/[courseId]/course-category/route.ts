@@ -1,4 +1,3 @@
-import { CategoryCourseType } from "@/app/(root)/course/[courseId]/page";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
@@ -46,17 +45,22 @@ export async function GET(
   { params: { courseId } }: { params: { courseId: string } }
 ) {
   try {
+    
     const courseCategories = await db.courseCategory.findMany({
       where: {
         courseId,
       },
-      include: {
-        category: true,
-      },
     });
 
-    const categories = courseCategories.map((cat) => cat.category);
+    const categoryIds = courseCategories.map((cat) => cat.categoryId);
 
+    const categories = await db.category.findMany({
+      where:{
+        id:{
+          in:categoryIds
+        }
+      }
+    })
    const categoryCourses =  categories.map(async(cat)=>{
         const courseCategories = await db.courseCategory.findMany({
             where: {

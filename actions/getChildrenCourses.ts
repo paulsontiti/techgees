@@ -1,8 +1,12 @@
 import { db } from "@/lib/db";
-import {Course } from "@prisma/client";
+import {Chapter, Course, Session } from "@prisma/client";
 
 export interface ReturnValue {
-  childrenCourses: Course[];
+  childrenCourses: (Course &{
+    chapters:(Chapter & {
+      sessions:Session[]
+    })[]
+  })[];
   error: Error | null;
 }
 
@@ -17,8 +21,16 @@ export const getChildrenCourses = async (
       where: {
         parentCourseId: courseId,
       },
-      include: {
-        childCourse:true
+      select: {
+        childCourse: {
+          include: {
+            chapters: {
+              include: {
+                sessions: true,
+              },
+            },
+          },
+        },
       },
     });
 

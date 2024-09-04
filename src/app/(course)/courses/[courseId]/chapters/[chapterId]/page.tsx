@@ -30,7 +30,7 @@ async function ChapterIdPage({
       courseId,
       chapterId,
     });
-  if (error) return <ErrorPage message={error.message} />;
+  if (error) return <Banner variant="error" label={error.message} />;
 
   if (!course || !chapter) return redirect("/");
   

@@ -78,7 +78,7 @@ export function ChapterAccordion({
       </button>
      
         </AccordionTrigger>
-        <AccordionContent>
+        <AccordionContent className="ml-16">
         <div>
         <CourseProgress value={chapterProgress} variant="success"/>
         {sessions.map((session) => {

@@ -2,25 +2,32 @@ import { db } from "@/lib/db";
 import { Category } from "@prisma/client";
 
 type ReturnValue ={
-  courseCategories:Category[] | null,
+  categories:Category[] | null,
   error:Error | null
 }
 
 export const getCourseCategoriesByCourseId = async(courseId:string):
 Promise<ReturnValue>=>{
     try{
-        const courseCategoriesByCourseId = await db.courseCategory.findMany({
+        const courseCategories = await db.courseCategory.findMany({
             where: {
               courseId,
             },
-            include: {
-              category: true,
-            },
           });
-          const courseCategories = courseCategoriesByCourseId.map(cc=>cc.category)
-      return {courseCategories,error:null}
+
+          const categoryIds = courseCategories.map((cat) => cat.categoryId);
+
+          const categories = await db.category.findMany({
+            where:{
+              id:{
+                in:categoryIds
+              }
+            }
+          })
+          
+      return {categories,error:null}
     }catch(error:any){
     console.log(error)
-        return {courseCategories:null,error}
+        return {categories:null,error}
     }
     }

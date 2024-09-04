@@ -3,7 +3,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
   DropdownMenu,
@@ -25,6 +24,17 @@ import { getCourseCategoriesByCourseId } from "../../../../../actions/getCourseC
 import Banner from "@/components/banner";
 import { getCourse } from "../../../../../actions/getCourse";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { getChildrenCourses } from "../../../../../actions/getChildrenCourses";
+import { ChapterContentAccordion } from "./_components/chapter-content-accordion";
+import { CourseContentAccordion } from "./_components/course-content-accordion";
+import { Preview } from "@/components/preview";
+import { getCoursePrerequisiteWithIdAndTitle } from "../../../../../actions/getCoursePrerequisite";
+import Link from "next/link";
+import { getCourseRecommendedCourses } from "../../../../../actions/getCourseRecommendedCourses";
+import { Button } from "@/components/ui/button";
+import Rating from "./_components/rating";
+import { getCountOfPaymentByCourseId } from "../../../../../actions/getCountOfPaymentByCourseId";
+import { getCountOfCommentsByCourseId } from "../../../../../actions/getCountOfCommentsByCourseId";
 
 export type CategoryCourseType = {
   category: { id: string; name: string };
@@ -36,29 +46,70 @@ async function CourseIdPage({
 }: {
   params: { courseId: string };
 }) {
-  const { courseCategories: categories, error } =
+  const { categories, error } =
     await getCourseCategoriesByCourseId(courseId);
 
+  if (error) return <Banner variant="error" label={error.message} />;
+
   const { course, error: courseError } = await getCourse(courseId);
+  if (courseError)
+    return <Banner variant="error" label={courseError.message} />;
+
+  const { childrenCourses, error: comboError } = await getChildrenCourses(
+    courseId
+  );
+  if (comboError) return <Banner variant="error" label={comboError.message} />;
 
 
-  let chaptersLength = 0
-  let sessionslength = 0
-  if(course !== null && course.childrenCourses.length > 0){
-    course.childrenCourses.map((child)=>{
+  const { preRequisiteCourses, error: preError } = await getCoursePrerequisiteWithIdAndTitle(
+    courseId
+  );
+  if (preError) return <Banner variant="error" label={preError.message} />;
 
-      chaptersLength +=child.childCourse.chapters.length
-    })
-  }else{
-    chaptersLength = course?.chapters.length ?? 0
-   sessionslength = course?.chapters.length ?? 0
-    const chapters = course?.chapters
+  const { recommendedCourses, error: recommError } = await getCourseRecommendedCourses(
+    courseId
+  );
+  if (recommError) return <Banner variant="error" label={recommError.message} />;
+
+  const { numberOfPayments, error: paymentError } = await getCountOfPaymentByCourseId(
+    courseId
+  );
+  if (paymentError) return <Banner variant="error" label={paymentError.message} />;
+
+  const { numberOfComments, error: commError } = await getCountOfCommentsByCourseId(
+    courseId
+  );
+  if (commError) return <Banner variant="error" label={commError.message} />;
+
+
+  let chaptersLength = 0;
+  let sessionslength = 0;
+  let duration = 0;
+
+  if (course !== null) {
+    if (childrenCourses.length > 0) {
+      childrenCourses.map((child) => {
+        chaptersLength += child.chapters.length;
+        child.chapters.map((chapter) => {
+          chapter.sessions.map((session) => {
+            sessionslength++;
+            duration += session.videoDuration ?? 0;
+          });
+        });
+      });
+    } else {
+      const chapters = course.chapters.map((courseChapter) => courseChapter);
+      chaptersLength = course?.chapters.length ?? 0;
+
+      chapters.map((chapter) => {
+        chapter.sessions.map((session) => {
+          sessionslength++;
+          duration += session.videoDuration ?? 0;
+        });
+      });
+
     
-    chapters?.map((chapter)=>{
-      chapter.sessions.map((sess)=>{
-        sessionslength++
-      })
-    })
+    }
   }
 
   const wywl = [
@@ -72,9 +123,7 @@ async function CourseIdPage({
     "Learn professional developer best practices.",
   ];
   return (
-    <div className="p-2">
-      {error && <Banner variant="error" label={error.message} />}
-      {courseError && <Banner variant="error" label={courseError.message} />}
+    <div className="px-4">
       <div>
         <Breadcrumb>
           <BreadcrumbList>
@@ -131,14 +180,14 @@ async function CourseIdPage({
       <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
       <h2 className="mt-2 text-lg font-semibold">Subtitle</h2>
       <div className="flex items-center gap-x-2 mt-4">
-        <div className="flex items-center text-xs">
-          4.5 <Star />
-          <StarHalf />
-        </div>
-        <div className="flex items-center text-xs">500 students</div>
-        <div className="flex items-center text-xs">
-          300 <MessageCircle className="w-4 h-4" />
-        </div>
+        <Rating rating={4.5}/>
+       {numberOfPayments > 0 &&  <div className="flex items-center text-xs">
+        {numberOfPayments} {numberOfPayments < 1 ? "student" : "students"}</div>}
+       {numberOfComments > 0 &&  <div className="flex items-center text-xs">
+          <Link href="" className="underline text-blue-500">
+            {numberOfComments}  {numberOfComments < 1 ? "review" : "reviews"}
+          </Link>
+        </div>}
         <div className="flex items-center text-xs">
           400 <ThumbsUp className="w-4 h-4" />
         </div>
@@ -154,7 +203,7 @@ async function CourseIdPage({
           {wywl.map((item) => {
             return (
               <div key={item} className="flex items-start my-2 gap-2">
-                <Check className="max-w-4 max-h-4 min-w-4 min-h-4"/>
+                <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
                 <div className="text-xs">{item}</div>
               </div>
             );
@@ -162,14 +211,66 @@ async function CourseIdPage({
         </CardContent>
       </Card>
       <div className="mt-8">
-          <h1 className="text-xl font-bold">Course content</h1>
-          <div className="mt-8 flex items-center gap-x-2">
+        <h1 className="text-xl font-bold">Course content</h1>
+        <div className="mt-4 flex items-center gap-x-2 text-xs">
+          {childrenCourses.length > 0 && (
             <div className="flex items-center gap-x-1">
-              {chaptersLength} chapters</div>
-              <div className="flex items-center gap-x-1">
-                {sessionslength} sessions</div>
-          
+              {childrenCourses.length} courses
+            </div>
+          )}
+          <div className="flex items-center gap-x-1">
+            {chaptersLength} chapters
           </div>
+          <div className="flex items-center gap-x-1">
+            {sessionslength} sessions
+          </div>
+          <div className="flex items-center gap-x-1">{duration} mins(total length)</div>
+        </div>
+      </div>
+      {
+      childrenCourses.length > 0 ? 
+      childrenCourses.map((course)=>{
+
+        return <CourseContentAccordion course={course}/>
+      })
+      :
+      course?.chapters.map((chapter) => {
+        return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
+      })}
+
+      <div>
+      <h1 className="text-xl font-bold mt-8 mb-2">Pre-requisite</h1>
+        {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course)=>{
+          return <Link href={`/course/${course.id}`} className="" key={course.id}>
+            {course.title}
+          </Link>
+        }) :
+        <p>None</p>}
+      </div>
+
+      <div>
+      <h1 className="text-xl font-bold mt-8 mb-2">Recommended courses</h1>
+        {recommendedCourses.length > 0 ? 
+        <div className="flex items-center flex-wrap gap-1">
+          {
+            recommendedCourses.map((course)=>{
+              return <Button size="sm" variant="outline">
+                <Link href={`/course/${course.id}`} key={course.id}>
+                {course.title}
+              </Link>
+              </Button>
+               
+            })
+          }
+        </div> :
+        <p>None</p>}
+      </div>
+
+      <h1 className="text-xl font-bold mt-8">Description</h1>
+      <Preview value={course?.description ?? ""}></Preview>
+
+      <div className="mt-4 border p-2">
+             <h1 className="text-xl font-bold mb-2">Reviews</h1>
       </div>
     </div>
   );

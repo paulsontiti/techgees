@@ -38,7 +38,7 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
       },
     });
 
-    if (!chapter || !course) throw new Error("Chapter or course not found");
+    if (!chapter || !course) throw new Error("Chapter or course not found or not published");
 
     const nextChapter = await db.chapter.findFirst({
         where: {

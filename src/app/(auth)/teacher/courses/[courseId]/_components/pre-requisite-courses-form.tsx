@@ -60,7 +60,7 @@ const [selectedCourses,setSelectedCourses] = useState<Course[]>(preRequisiteCour
 
     const onSubmit = async(selectedCategoryIds:string[])=>{
         try{
-            await axios.post(`/api/courses/${courseId}/course-category`,selectedCategoryIds)
+            await axios.post(`/api/courses/${courseId}/course-pre-requisite`,selectedCategoryIds)
             toast.success("Course updated")
             toggleEdit()
             router.refresh()
