@@ -1,28 +1,30 @@
 "use client";
-import { Editor } from "@/components/editor";
 import Loader from "@/components/loader";
-import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { Heart, HeartOff, MessageCircle, Share2 } from "lucide-react";
+import { Heart, HeartOff} from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import CommentForm from "./comment-form";
 import { Comment } from "@prisma/client";
 import { CommentsDialog } from "./comments-dialog";
+import { RatingSlider } from "@/components/rating-slider";
+import Rating from "@/app/(root)/course/[courseId]/_components/rating";
 
 function SessionComments({
   numberOfLikes,
   numberOfDisLikes,
   comments,
   sessionId,hasDisLiked,
-  hasLiked
+  hasLiked,rating,numberOfStudents,hasRated
 }: {
   numberOfLikes: number | null;
   numberOfDisLikes: number | null;
   comments: Comment[];
   sessionId: string;
-  hasLiked:boolean,hasDisLiked:boolean
+  hasLiked:boolean,hasDisLiked:boolean,
+  numberOfStudents:number,
+  rating:number,hasRated:boolean
 }) {
   const router = useRouter();
   const [loading,setLoading] = useState(false)
@@ -65,8 +67,7 @@ function SessionComments({
       <div className="flex items-center gap-x-6">
         <Heart fill={hasLiked ? "black" : "white"}  className="cursor-pointer" onClick={like} />
         <HeartOff fill={hasDisLiked ? "black" : "white"} className="cursor-pointer" onClick={dislike}/>
-        <MessageCircle className="cursor-pointer" />
-        <Share2 className="cursor-pointer" />
+     
         <Loader loading={loading}/>
       </div>
       <div className="mt-4 p-1 flex items-center gap-x-2">
@@ -86,8 +87,17 @@ function SessionComments({
         {!!comments.length && (
          <CommentsDialog comments={comments}/>
         )}
+         <Rating rating={rating} />
+      {numberOfStudents > 0 && (
+        <div className="flex items-center text-xs">
+          {numberOfStudents} {numberOfStudents === 1 ? "student" : "students"}
+        </div>
+      )}
       </div>
-     
+     {!hasRated &&  <div className="mt-4 w-[300px]">
+          <h1 className="text-sm">Rate this session</h1>
+          <RatingSlider url={`/api/rate/session/${sessionId}`}/>
+        </div>}
         <CommentForm sessionId={sessionId}/>
     </div>
   );

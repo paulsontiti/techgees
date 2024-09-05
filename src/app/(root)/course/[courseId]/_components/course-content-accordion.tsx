@@ -6,6 +6,7 @@ import {
   } from "@/components/ui/accordion";
   import { Chapter, Course, Session } from "@prisma/client";
 import { ChapterContentAccordion } from "./chapter-content-accordion";
+import { StatInfoDialog } from "./stat-info-dialog";
 
   
   export function CourseContentAccordion({
@@ -25,9 +26,17 @@ import { ChapterContentAccordion } from "./chapter-content-accordion";
         <AccordionItem value="item-1">
           <AccordionTrigger >
          
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center justify-between w-full">
               
                 <span className="line-clamp-1 text-sm">{course.title}</span>
+                <StatInfoDialog
+                numberOfComments={987}
+                numberOfStudents={213}
+                likes={599}
+                disLikes={2}
+                title={course.title}
+                description={course.description ?? ""}
+                />
               </div>
              
           

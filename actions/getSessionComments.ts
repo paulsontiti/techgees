@@ -2,22 +2,22 @@ import { db } from "@/lib/db";
 import { Comment } from "@prisma/client";
 
 interface ReturnValue{
-    numberOfComments:number,
+    comments:Comment[],
     error:Error | null
 }
 
-export const getSessionCommentsCount = async(sessionId:string):
+export const getSessionComments = async(sessionId:string):
 Promise<ReturnValue>=>{
     try{
-const numberOfComments = await db.comment.count({
+const comments = await db.comment.findMany({
     where:{
         sessionId,
     }
 })
 
-      return {numberOfComments,error:null}
+      return {comments,error:null}
     }catch(error:any){
     console.log("[GET_SESSION_COMMENTS]",error)
-        return {numberOfComments:0,error}
+        return {comments:[],error}
     }
     }

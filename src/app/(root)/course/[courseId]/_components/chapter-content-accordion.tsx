@@ -7,6 +7,7 @@ import {
 import { Chapter, Session } from "@prisma/client";
 import { BookOpen, Video } from "lucide-react";
 import Link from "next/link";
+import { StatInfoDialog } from "./stat-info-dialog";
 
 export function ChapterContentAccordion({
   chapter,
@@ -29,6 +30,14 @@ export function ChapterContentAccordion({
               <span className="line-clamp-1 text-sm">{chapter.title}</span>
             </div>
             <div>
+              <StatInfoDialog
+              numberOfComments={99}
+              numberOfStudents={89}
+              likes={687}
+              disLikes={2}
+              title={chapter.title}
+              description={chapter.description  ?? ""}
+              />
               {chapter.isFree && (
                 <Link
                   href={`/courses/${chapter.courseId}/chapters/${chapter.id}`}

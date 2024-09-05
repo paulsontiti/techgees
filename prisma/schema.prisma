@@ -44,6 +44,7 @@ model Course {
   childrenCourses ComboCourses[] @relation("childCourse")
   comboParentCourses ComboCourses[]
   purchases Purchase[]
+  ratings Rating[]
 }
 
 model ComboCourses {
@@ -118,6 +119,7 @@ model Chapter {
 
   @@unique([id, courseId])
   @@index([courseId])
+  ratings Rating[]
 }
 
 model Session {
@@ -144,6 +146,7 @@ model Session {
   comments          Comment[]
 
   @@index([chapterId])
+  ratings Rating[]
 }
 
 model DisLike {
@@ -163,7 +166,6 @@ model DisLike {
 
   @@unique([userId, sessionId])
   @@unique([userId, chapterId])
-  @@unique([userId, courseId])
 }
 
 model Like {
@@ -183,7 +185,27 @@ model Like {
 
   @@unique([userId, sessionId])
   @@unique([userId, chapterId])
-  @@unique([userId, courseId])
+}
+
+model Rating {
+  id        String   @id @default(uuid()) @map("_id")
+  userId    String
+  value Float
+  
+  sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, sessionId])
+  @@unique([userId, chapterId])
 }
 
 model Comment {

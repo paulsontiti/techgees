@@ -8,7 +8,6 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
-import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,7 +39,6 @@ export default function RootLayout({
         />
         <LayoutChildren>
           {children}
-          <Footer/>
         </LayoutChildren>
           </ClerkProvider></body>
     </html>

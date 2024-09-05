@@ -10,17 +10,23 @@ import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/format";
 import { getPayStackPayment } from "../../../../../../../actions/getPayStackPayment";
 import { getPurchasePercentage } from "../../../../../../../actions/getPurchasePercentage";
-
+import ChapterComments from "./_components/comments";
+import { getChapterLikesCount } from "../../../../../../../actions/getChapterLikesCount";
+import { getChapterDisLikesCount } from "../../../../../../../actions/getChapterDisLikesCount";
+import { getChapterComments } from "../../../../../../../actions/getChapterComments";
+import { hasLikedChapter } from "../../../../../../../actions/hasLikedChapter";
+import { hasDisLikedChapter } from "../../../../../../../actions/hasDisLikedChapter";
+import { getChapterStudentsCount } from "../../../../../../../actions/getChapterStudentsCount";
+import { hasRatedChapter } from "../../../../../../../actions/hasRatedChapter";
+import { getChapterRating } from "../../../../../../../actions/getChapterRating";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
-  searchParams:{reference}
+  searchParams: { reference },
 }: {
   params: { courseId: string; chapterId: string };
-  searchParams:{reference:string}
+  searchParams: { reference: string };
 }) {
-
-
   const { userId } = auth();
   if (!userId) return redirect("/");
 
@@ -33,34 +39,85 @@ async function ChapterIdPage({
   if (error) return <Banner variant="error" label={error.message} />;
 
   if (!course || !chapter) return redirect("/");
-  
+
   let payment = null;
 
-  if(reference){
-   const {paystack,error} = await getPayStackPayment(reference)
-   if (error) return <ErrorPage message={error.message} />;
-    if(paystack){
+  if (reference) {
+    const { paystack, error } = await getPayStackPayment(reference);
+    if (error) return <ErrorPage message={error.message} />;
+    if (paystack) {
       payment = {
-        amount:paystack.amount,
-        status:paystack.payment_status
-      }
+        amount: paystack.amount,
+        status: paystack.payment_status,
+      };
     }
   }
 
-
-  const {purchasePercentage,error:purschaseError} = await getPurchasePercentage(courseId,userId,course.price!)
-  if (purschaseError) return <ErrorPage message={purschaseError.message} />;
-
-
+  const { purchasePercentage, error: purschaseError } =
+    await getPurchasePercentage(courseId, userId, course.price!);
+  if (purschaseError)
+    return <Banner variant="error" label={purschaseError.message} />;
 
   const isLocked = !chapter.isFree && purchasePercentage === 0;
   const completeOnEnd = purchasePercentage === 0 && !userProgress?.isCompleted;
+
+  const { numberOfLikes, error: likesError } = await getChapterLikesCount(
+    chapterId
+  );
+  if (likesError) return <Banner variant="error" label={likesError.message} />;
+
+  const { numberOfDisLikes, error: dislikesError } =
+    await getChapterDisLikesCount(chapterId);
+  if (dislikesError)
+    return <Banner variant="error" label={dislikesError.message} />;
+
+  const { comments, error: commentsError } = await getChapterComments(
+    chapterId
+  );
+  if (commentsError)
+    return <Banner variant="error" label={commentsError.message} />;
+
+  const { hasLiked, error: hasLikedError } = await hasLikedChapter(
+    chapterId,
+    userId
+  );
+  if (hasLikedError)
+    return <Banner variant="error" label={hasLikedError.message} />;
+
+  const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedChapter(
+    chapterId,
+    userId
+  );
+  if (hasDisLikedError)
+    return <Banner variant="error" label={hasDisLikedError.message} />;
+
+  const { numberOfStudents, error: studentsError } =
+    await getChapterStudentsCount(chapterId);
+  if (studentsError)
+    return <Banner variant="error" label={studentsError.message} />;
+
+  const { hasRated, error: ratedError } = await hasRatedChapter(
+    chapterId,
+    userId
+  );
+  if (ratedError) return <Banner variant="error" label={ratedError.message} />;
+
+  const { averageRating, error: ratingError } = await getChapterRating(
+    chapterId
+  );
+  if (ratingError)
+    return <Banner variant="error" label={ratingError.message} />;
+
   return (
     <div>
-      {payment && <Banner
+      {payment && (
+        <Banner
           variant={payment.status === "success" ? "success" : "warning"}
-          label={`You payment of ${formatPrice(payment.amount)} is ${payment.status === "success" ? "successful" : "been processed"}`}
-        />}
+          label={`You payment of ${formatPrice(payment.amount)} is ${
+            payment.status === "success" ? "successful" : "been processed"
+          }`}
+        />
+      )}
       {userProgress?.isCompleted && (
         <Banner variant="success" label="You already completed this chapter." />
       )}
@@ -77,9 +134,16 @@ async function ChapterIdPage({
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
           <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
           {purchasePercentage !== 100 && (
-            <CourseEnrollButton courseId={courseId} chapterId={chapterId}
-            label={purchasePercentage === 0 ? `Enroll for ${formatPrice(course.price!)}` :
-             `Pay ${formatPrice(((100 - purchasePercentage)/100)*course.price!)}`}
+            <CourseEnrollButton
+              courseId={courseId}
+              chapterId={chapterId}
+              label={
+                purchasePercentage === 0
+                  ? `Enroll for ${formatPrice(course.price!)}`
+                  : `Pay ${formatPrice(
+                      ((100 - purchasePercentage) / 100) * course.price!
+                    )}`
+              }
             />
           )}
         </div>
@@ -87,6 +151,18 @@ async function ChapterIdPage({
         <div>
           <Preview value={chapter.description ?? ""} />
         </div>
+
+        <ChapterComments
+          chapterId={chapterId}
+          numberOfDisLikes={numberOfDisLikes}
+          numberOfLikes={numberOfLikes}
+          comments={comments}
+          hasDisLiked={hasDisLiked}
+          hasLiked={hasLiked}
+          rating={averageRating}
+          hasRated={hasRated}
+          numberOfStudents={numberOfStudents}
+        />
       </div>
     </div>
   );

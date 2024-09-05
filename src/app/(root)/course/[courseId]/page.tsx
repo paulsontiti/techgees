@@ -14,11 +14,6 @@ import { db } from "@/lib/db";
 import {
   Check,
   ChevronDown,
-  MessageCircle,
-  Star,
-  StarHalf,
-  ThumbsDown,
-  ThumbsUp,
 } from "lucide-react";
 import { getCourseCategoriesByCourseId } from "../../../../../actions/getCourseCategoriesByCourseId";
 import Banner from "@/components/banner";
@@ -32,10 +27,10 @@ import { getCoursePrerequisiteWithIdAndTitle } from "../../../../../actions/getC
 import Link from "next/link";
 import { getCourseRecommendedCourses } from "../../../../../actions/getCourseRecommendedCourses";
 import { Button } from "@/components/ui/button";
-import Rating from "./_components/rating";
 import { getCountOfPaymentByCourseId } from "../../../../../actions/getCountOfPaymentByCourseId";
 import { getCountOfCommentsByCourseId } from "../../../../../actions/getCountOfCommentsByCourseId";
 import { RatingSlider } from "@/components/rating-slider";
+import StatInfo from "./_components/stat-info";
 
 export type CategoryCourseType = {
   category: { id: string; name: string };
@@ -181,25 +176,14 @@ async function CourseIdPage({
       </div>
       <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
       <h2 className="mt-2 text-lg font-semibold">Subtitle</h2>
-      <div className="flex items-center gap-x-2 mt-4">
-        <Rating rating={4.5}/>
-       {numberOfPayments > 0 &&  <div className="flex items-center text-xs">
-        {numberOfPayments} {numberOfPayments < 1 ? "student" : "students"}</div>}
-       {numberOfComments > 0 &&  <div className="flex items-center text-xs">
-          <Link href="" className="underline text-blue-500">
-            {numberOfComments}  {numberOfComments < 1 ? "review" : "reviews"}
-          </Link>
-        </div>}
-        <div className="flex items-center gap-x-2 text-xs rounded-full bg-slate-100 p-2">
-          <div className="flex items-center gap-x-1 pr-2 border-r-2 border-black-100">
-           <ThumbsUp className="w-4 h-4" /> <span>400</span>
-          </div>
-          <div className="flex items-center text-xs gap-x-1">
-          4.5 <ThumbsDown className="w-4 h-4" />
-        </div>
-        </div>
-       
-      </div>
+      
+
+      <StatInfo
+      numberOfComments={numberOfComments}
+      numberOfStudents={numberOfPayments}
+      likes={300}
+      disLikes={12}
+      />
       <Card className="mt-4">
         <CardHeader className="text-xl font-bold">
           Benefits of taking this course

@@ -12,9 +12,13 @@ import SessionTest from "./_components/session-test";
 import SessionComments from "./_components/comments";
 import { getSessionLikesCount } from "../../../../../../../../../actions/getSessionLikesCount";
 import { getSessionDisLikesCount } from "../../../../../../../../../actions/getSessionDisLikesCount";
-import { getSessionComments } from "../../../../../../../../../actions/getSessionCommentsCount";
 import { hasLikedSession } from "../../../../../../../../../actions/hasLikedSession";
 import { hasDisLikedSession } from "../../../../../../../../../actions/hasDisLikedSession";
+import { getSessionCommentsCount } from "../../../../../../../../../actions/getSessionCommentsCount";
+import { getSessionComments } from "../../../../../../../../../actions/getSessionComments";
+import { getSessionRating } from "../../../../../../../../../actions/getSessionRating";
+import { hasRatedSession } from "../../../../../../../../../actions/hasRatedSession";
+import { getSessionStudentsCount } from "../../../../../../../../../actions/getSessionStudentsCount";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -58,6 +62,25 @@ async function SessionIdPage({
 
   const {hasDisLiked,error:hasDisLikedError} = await hasDisLikedSession(sessionId,userId)
   if (hasDisLikedError) return <ErrorPage message={hasDisLikedError.message} />;
+
+  const { numberOfStudents, error: studentsError } =
+  await getSessionStudentsCount(sessionId);
+if (studentsError)
+  return <Banner variant="error" label={studentsError.message} />;
+
+const { hasRated, error: ratedError } = await hasRatedSession(
+  sessionId,
+  userId
+);
+if (ratedError) return <Banner variant="error" label={ratedError.message} />;
+
+const { averageRating, error: ratingError } = await getSessionRating(
+  sessionId
+);
+if (ratingError)
+  return <Banner variant="error" label={ratingError.message} />;
+
+
   return (
     <div className="mt-4">
       {userProgress?.isCompleted && (
@@ -111,6 +134,9 @@ async function SessionIdPage({
       sessionId={sessionId}
       hasLiked={hasLiked}
       hasDisLiked={hasDisLiked}
+      numberOfStudents={numberOfStudents}
+      rating={averageRating}
+      hasRated={hasRated}
       />
       
           <Separator/>
