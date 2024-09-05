@@ -1,3 +1,5 @@
+
+"use client"
 import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
@@ -8,7 +10,6 @@ import React, { useEffect } from "react";
 import { useDebounce } from "../../../../hooks/use-debounce";
 import axios from "axios";
 import toast from "react-hot-toast";
-import CourseDetailsDialog from "./course-details-dialog";
 import { useRouter } from "next/navigation";
 
 
@@ -57,7 +58,7 @@ function SearchInput({ courses }: { courses: Course[] }) {
         <div
           className={cn(
             "hidden",
-            open && "flex z-10 absolute top-15 left-2 mt-4"
+            open && "flex z-10 absolute top-15 right-2 mt-4"
           )}
         >
           <Card className="min-w-[200px]">

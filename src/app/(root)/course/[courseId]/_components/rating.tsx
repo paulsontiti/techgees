@@ -17,12 +17,14 @@ function Rating({rating}:{rating:number}) {
 
     
   return (
-    <div className="flex items-center text-xs">
+    <div className="flex items-center text-xs gap-x-1">
         {rating}
-         {stars.map((star)=>{
+      <div className='flex items-center'>
+      {stars.map((star)=>{
         return <Star key={star} className='text-yellow-500 w-3 h-3'/>
     })}
     {!isNaN(decimalNum) && <StarHalf  className='text-yellow-500 w-3 h-3'/>}
+      </div>
         </div>
   )
 }

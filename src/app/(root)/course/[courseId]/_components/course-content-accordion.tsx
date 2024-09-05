@@ -27,7 +27,7 @@ import { ChapterContentAccordion } from "./chapter-content-accordion";
          
               <div className="flex items-center gap-x-2">
               
-                <span className="line-clamp-1">{course.title}</span>
+                <span className="line-clamp-1 text-sm">{course.title}</span>
               </div>
              
           

@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button";
 import Rating from "./_components/rating";
 import { getCountOfPaymentByCourseId } from "../../../../../actions/getCountOfPaymentByCourseId";
 import { getCountOfCommentsByCourseId } from "../../../../../actions/getCountOfCommentsByCourseId";
+import { RatingSlider } from "@/components/rating-slider";
 
 export type CategoryCourseType = {
   category: { id: string; name: string };
@@ -124,7 +125,8 @@ async function CourseIdPage({
   ];
   return (
     <div className="px-4">
-      <div>
+      <RatingSlider/>
+      <div className="mt-8">
         <Breadcrumb>
           <BreadcrumbList>
             {Array.isArray(categories) &&
@@ -188,12 +190,15 @@ async function CourseIdPage({
             {numberOfComments}  {numberOfComments < 1 ? "review" : "reviews"}
           </Link>
         </div>}
-        <div className="flex items-center text-xs">
-          400 <ThumbsUp className="w-4 h-4" />
-        </div>
-        <div className="flex items-center text-xs">
+        <div className="flex items-center gap-x-2 text-xs rounded-full bg-slate-100 p-2">
+          <div className="flex items-center gap-x-1 pr-2 border-r-2 border-black-100">
+           <ThumbsUp className="w-4 h-4" /> <span>400</span>
+          </div>
+          <div className="flex items-center text-xs gap-x-1">
           4.5 <ThumbsDown className="w-4 h-4" />
         </div>
+        </div>
+       
       </div>
       <Card className="mt-4">
         <CardHeader className="text-xl font-bold">
@@ -239,23 +244,25 @@ async function CourseIdPage({
       })}
 
       <div>
-      <h1 className="text-xl font-bold mt-8 mb-2">Pre-requisite</h1>
+      <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
         {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course)=>{
-          return <Link href={`/course/${course.id}`} className="" key={course.id}>
+          return <Link href={`/course/${course.id}`} 
+          className="text-xs" key={course.id}>
             {course.title}
           </Link>
         }) :
-        <p>None</p>}
+        <p   className="text-xs">None</p>}
       </div>
 
       <div>
-      <h1 className="text-xl font-bold mt-8 mb-2">Recommended courses</h1>
+      <h1 className="text-lg font-semibold mt-8 mb-2">Recommended courses</h1>
         {recommendedCourses.length > 0 ? 
         <div className="flex items-center flex-wrap gap-1">
           {
             recommendedCourses.map((course)=>{
               return <Button size="sm" variant="outline">
-                <Link href={`/course/${course.id}`} key={course.id}>
+                <Link
+                  className="text-xs" href={`/course/${course.id}`} key={course.id}>
                 {course.title}
               </Link>
               </Button>
@@ -263,14 +270,14 @@ async function CourseIdPage({
             })
           }
         </div> :
-        <p>None</p>}
+           <p   className="text-xs">None</p>}
       </div>
 
-      <h1 className="text-xl font-bold mt-8">Description</h1>
+      <h1 className="text-lg font-semibold mt-8">Description</h1>
       <Preview value={course?.description ?? ""}></Preview>
 
       <div className="mt-4 border p-2">
-             <h1 className="text-xl font-bold mb-2">Reviews</h1>
+             <h1 className="text-lg font-semibold mb-2">Reviews</h1>
       </div>
     </div>
   );

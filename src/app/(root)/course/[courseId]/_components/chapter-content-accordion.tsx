@@ -26,7 +26,7 @@ export function ChapterContentAccordion({
        
             <div className="flex items-center gap-x-2">
               <BookOpen className="w-4 h-4" />
-              <span className="line-clamp-1">{chapter.title}</span>
+              <span className="line-clamp-1 text-sm">{chapter.title}</span>
             </div>
             <div>
               {chapter.isFree && (
