@@ -1,3 +1,4 @@
+"use client"
 import { Preview } from "@/components/preview";
 import { UserDp } from "@/components/user-dp";
 import { Comment, User } from "@prisma/client";

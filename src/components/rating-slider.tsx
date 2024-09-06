@@ -21,7 +21,7 @@ export function RatingSlider({ className,url, ...props }: SliderProps & {url:str
       try {
         setLoading(true);
         await axios.post(url,{value});
-       
+       toast.success("Thanks for your feedback")
         router.refresh();
       } catch (err: any) {
         toast.error(err.message);
@@ -31,7 +31,7 @@ export function RatingSlider({ className,url, ...props }: SliderProps & {url:str
     };
 
   return (
-   <div className="flex items-center gap-x-2">
+   <div className="flex items-center gap-x-8 w-full">
      <Slider
       defaultValue={[1]}
       max={5}

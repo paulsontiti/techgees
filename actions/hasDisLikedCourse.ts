@@ -5,20 +5,20 @@ interface ReturnValue{
     error:Error | null
 }
 
-export const hasDisLikedChapter = async(
-    chapterId:string,userId:string):
+export const hasDisLikedCourse = async(
+    courseId:string,userId:string):
 Promise<ReturnValue>=>{
     try{
 const dislike = await db.disLike.findFirst({
     where:{
-            userId,chapterId
+            userId,courseId
         
     }
 })
 
       return {hasDisLiked:!!dislike,error:null}
     }catch(error:any){
-    console.log("[GET_HAS_DISLIKE_CHAPTER]",error)
+    console.log("[GET_HAS_DISLIKE_COURSE]",error)
         return {hasDisLiked:false,error}
     }
     }

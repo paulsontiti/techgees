@@ -3,12 +3,16 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { CourseChaptersUserProgressType } from "../../../../../../actions/getCourseChaptersUserProgress";
 import ErrorPage from "@/components/error";
-import CourseSidebarItem from "./course-sidebar-item";
 import CourseProgress from "@/components/course-progress";
 import { getChapterProgress } from "../../../../../../actions/getChapterProgress";
 import PaymentProgress from "@/components/paymentProgress";
 import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
 import { ChapterAccordion } from "./chapter-accordion";
+import { CourseActioDropdownMenu } from "./action-dropdown-menu";
+import Banner from "@/components/banner";
+import { hasLikedCourse } from "../../../../../../actions/hasLikedCourse";
+import { hasDisLikedCourse } from "../../../../../../actions/hasDisLikedCourse";
+import { hasRatedCourse } from "../../../../../../actions/hasRatedCourse";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -28,14 +32,42 @@ async function CourseSidebar({
     course.id!,
     purchasePercentage
   );
-  if (error) return <ErrorPage message={error.message} />;
+  if (error) return <Banner variant="error" label={error.message} />;
+
+  const { hasLiked, error: hasLikedError } = await hasLikedCourse(
+    course.id,
+    userId
+  );
+  if (hasLikedError)
+    return <Banner variant="error" label={hasLikedError.message} />;
+
+  const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedCourse(
+    course.id,
+    userId
+  );
+  if (hasDisLikedError)
+    return <Banner variant="error" label={hasDisLikedError.message} />;
+
+  const { hasRated, error: ratedError } = await hasRatedCourse(
+    course.id,
+    userId
+  );
+  if (ratedError) return <Banner variant="error" label={ratedError.message} />;
 
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-    <div className="p-8 flex flex-col border-b">
-        <div className="flex items-center ">
-          <h1 className="font-semibold">{course.title}</h1>
-          <PaymentProgress value={purchasePercentage} size="sm" />
+      <div className="p-8 flex flex-col border-b">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center ">
+            <h1 className="font-semibold">{course.title}</h1>
+            <PaymentProgress value={purchasePercentage} size="sm" />
+          </div>
+          <CourseActioDropdownMenu 
+          courseId={course.id}
+          hasDisLiked={hasDisLiked}
+          hasLiked={hasLiked}
+          hasRated={hasRated}
+          />
         </div>
 
         <div className="mt-10">
@@ -61,7 +93,9 @@ async function CourseSidebar({
               title={chapter.title}
               isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
               courseId={course.id}
-              isLocked={(!chapter.isPublished || !chapter.isFree) && chapterPaidFor < 0}
+              isLocked={
+                (!chapter.isPublished || !chapter.isFree) && chapterPaidFor < 0
+              }
               sessions={chapter.sessions ?? []}
               chapterProgress={progressPercentage ?? 0}
             />

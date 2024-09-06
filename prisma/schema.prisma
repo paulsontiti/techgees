@@ -164,8 +164,7 @@ model DisLike {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, sessionId])
-  @@unique([userId, chapterId])
+
 }
 
 model Like {
@@ -183,8 +182,7 @@ model Like {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, sessionId])
-  @@unique([userId, chapterId])
+
 }
 
 model Rating {
@@ -204,8 +202,6 @@ model Rating {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, sessionId])
-  @@unique([userId, chapterId])
 }
 
 model Comment {

@@ -31,6 +31,12 @@ import { getCountOfPaymentByCourseId } from "../../../../../actions/getCountOfPa
 import { getCountOfCommentsByCourseId } from "../../../../../actions/getCountOfCommentsByCourseId";
 import { RatingSlider } from "@/components/rating-slider";
 import StatInfo from "./_components/stat-info";
+import { getCourseRating } from "../../../../../actions/getCourseRating";
+import { getCourseComments } from "../../../../../actions/getCourseComments";
+import { getCourseNumberOfRatings } from "../../../../../actions/getCourseNumberOfRatings";
+import { getCourseLikesCount } from "../../../../../actions/getCourseLikesCount";
+import { getCourseDisLikesCount } from "../../../../../actions/getCourseDisLikesCount";
+import CommentItem from "@/app/(course)/courses/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 
 export type CategoryCourseType = {
   category: { id: string; name: string };
@@ -72,10 +78,31 @@ async function CourseIdPage({
   );
   if (paymentError) return <Banner variant="error" label={paymentError.message} />;
 
-  const { numberOfComments, error: commError } = await getCountOfCommentsByCourseId(
+  const { comments, error: commError } = await getCourseComments(
     courseId
   );
   if (commError) return <Banner variant="error" label={commError.message} />;
+
+  const { averageRating, error: ratingError } = await getCourseRating(
+    courseId
+  );
+  if (ratingError) return <Banner variant="error" label={ratingError.message} />;
+
+  
+  const { numberOfRatings, error: numRatingError } = await getCourseNumberOfRatings(
+    courseId
+  );
+  if (numRatingError) return <Banner variant="error" label={numRatingError.message} />;
+
+  const { numberOfLikes, error: likesError } = await getCourseLikesCount(
+    courseId
+  );
+  if (likesError) return <Banner variant="error" label={likesError.message} />;
+
+  const { numberOfDisLikes, error: disLikesError } = await getCourseDisLikesCount(
+    courseId
+  );
+  if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
 
 
   let chaptersLength = 0;
@@ -179,10 +206,10 @@ async function CourseIdPage({
       
 
       <StatInfo
-        numberOfComments={numberOfComments}
+        numberOfRatings={numberOfRatings}
         numberOfStudents={numberOfPayments}
-        likes={300}
-        disLikes={12} rating={0}      />
+        likes={numberOfLikes}
+        disLikes={numberOfDisLikes} rating={averageRating}      />
       <Card className="mt-4">
         <CardHeader className="text-xl font-bold">
           Benefits of taking this course
@@ -261,6 +288,10 @@ async function CourseIdPage({
 
       <div className="mt-4 border p-2">
              <h1 className="text-lg font-semibold mb-2">Reviews</h1>
+             {comments.map((comment)=>{
+
+              return <CommentItem comment={comment}/>
+             })}
       </div>
     </div>
   );

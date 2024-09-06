@@ -5,20 +5,19 @@ interface ReturnValue{
     error:Error | null
 }
 
-export const hasRatedChapter = async(
-    chapterId:string,userId:string):
+export const hasRatedCourse = async(
+    courseId:string,userId:string):
 Promise<ReturnValue>=>{
     try{
 const rating = await db.rating.findFirst({
     where:{
-            userId,chapterId
-        
+            userId,courseId
     }
 })
 
       return {hasRated:!!rating,error:null}
     }catch(error:any){
-    console.log("[HAS_RATED_CHAPTER]",error)
+    console.log("[HAS_RATED_COURSE]",error)
         return {hasRated:false,error}
     }
     }

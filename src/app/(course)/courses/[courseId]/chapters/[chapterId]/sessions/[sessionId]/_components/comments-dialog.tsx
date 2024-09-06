@@ -18,9 +18,9 @@ export function CommentsDialog({comments}:{comments:Comment[]}) {
 
  
   return (
-    <Dialog >
+    <Dialog>
       <DialogTrigger asChild>
-      <Button variant="link"> {numberOfComments === 1 ? "View comment" :`View all ${numberOfComments} comments`}
+      <Button size="sm" variant="link"> {numberOfComments === 1 ? "View comment" :`View all ${numberOfComments} comments`}
 
       </Button>
       </DialogTrigger>
