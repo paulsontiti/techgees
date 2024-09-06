@@ -2,6 +2,10 @@ import { Star, StarHalf } from 'lucide-react'
 import React from 'react'
 
 function Rating({rating}:{rating:number}) {
+
+  if(rating === 0) return null
+
+  
     let wholeNum = 0
     let decimalNum = 0.0
     

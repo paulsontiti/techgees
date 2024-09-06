@@ -36,6 +36,7 @@ import { StatInfoDialog } from "./stat-info-dialog";
                 disLikes={2}
                 title={course.title}
                 description={course.description ?? ""}
+                rating={0}
                 />
               </div>
              

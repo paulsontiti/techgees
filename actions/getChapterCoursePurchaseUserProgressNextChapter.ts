@@ -1,10 +1,9 @@
 import { db } from "@/lib/db";
-import { Chapter, UserProgress } from "@prisma/client";
-import { getTotalAmountPaidForCourse } from "./getTotalAmountPaidForCourse";
+import { Chapter, Session, UserProgress } from "@prisma/client";
 
 interface ReturnValue {
   course: { price: number | null } | null;
-  chapter: Chapter | null;
+  chapter: Chapter & {sessions:Session[]} | null;
   nextChapter: Chapter | null;
   userProgress: UserProgress | null;
 
@@ -35,7 +34,9 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
       where: {
         id: chapterId,
         isPublished: true,
-      },
+      },include:{
+        sessions:true
+      }
     });
 
     if (!chapter || !course) throw new Error("Chapter or course not found or not published");

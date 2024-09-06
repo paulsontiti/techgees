@@ -39,6 +39,7 @@ export function StatInfoDialog({
           numberOfStudents={numberOfStudents}
           likes={likes}
           disLikes={disLikes}
+          rating={0}
         />
       </DialogContent>
     </Dialog>

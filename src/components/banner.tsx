@@ -35,7 +35,7 @@ function Banner(
 ) {
     const Icon = iconMap[variant || "warning"]
   return (
-    <div className={cn(bannerVariants({variant}))}>
+    <div className={cn("md:max-w-[450px] ml-[80px] mt-2",bannerVariants({variant}))}>
         <Icon className="h-4 w-4 mr-2"/>
         {label}
     </div>

@@ -37,6 +37,7 @@ export function ChapterContentAccordion({
               disLikes={2}
               title={chapter.title}
               description={chapter.description  ?? ""}
+              rating={0}
               />
               {chapter.isFree && (
                 <Link

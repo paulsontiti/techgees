@@ -108,6 +108,12 @@ async function ChapterIdPage({
   if (ratingError)
     return <Banner variant="error" label={ratingError.message} />;
 
+  let duration = 0;
+
+  chapter.sessions.map((session) => {
+    duration += session.videoDuration ?? 0;
+  });
+
   return (
     <div>
       {payment && (
@@ -151,7 +157,14 @@ async function ChapterIdPage({
         <div>
           <Preview value={chapter.description ?? ""} />
         </div>
-
+        <div className="flex items-center gap-x-2 font-semibold italic">
+          <div className="flex items-center gap-x-1">
+            {chapter.sessions.length} sessions
+          </div>
+          <div className="flex items-center gap-x-1">
+            {duration} mins(total length)
+          </div>
+        </div>
         <ChapterComments
           chapterId={chapterId}
           numberOfDisLikes={numberOfDisLikes}

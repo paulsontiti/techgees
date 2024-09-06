@@ -120,7 +120,7 @@ async function CourseIdPage({
   ];
   return (
     <div className="px-4">
-      <RatingSlider/>
+      
       <div className="mt-8">
         <Breadcrumb>
           <BreadcrumbList>
@@ -179,11 +179,10 @@ async function CourseIdPage({
       
 
       <StatInfo
-      numberOfComments={numberOfComments}
-      numberOfStudents={numberOfPayments}
-      likes={300}
-      disLikes={12}
-      />
+        numberOfComments={numberOfComments}
+        numberOfStudents={numberOfPayments}
+        likes={300}
+        disLikes={12} rating={0}      />
       <Card className="mt-4">
         <CardHeader className="text-xl font-bold">
           Benefits of taking this course

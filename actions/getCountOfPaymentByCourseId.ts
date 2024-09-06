@@ -10,7 +10,7 @@ interface ReturnValue{
 export const getCountOfPaymentByCourseId = async(courseId:string):
 Promise<ReturnValue>=>{
     try{
-        const numberOfPayments = await db.purchase.count({
+        const numberOfPayments = await db.paystackPayment.count({
             where:{
                 courseId
             }
