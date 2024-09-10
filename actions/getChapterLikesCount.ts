@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 
 interface ReturnValue{
-    numberOfLikes:number | null,
+    numberOfLikes:number,
     error:Error | null
 }
 
@@ -17,6 +17,6 @@ const likes = await db.like.count({
       return {numberOfLikes:likes,error:null}
     }catch(error:any){
     console.log("[GET_CHAPTER_LIKES_COUNT]",error)
-        return {numberOfLikes:null,error}
+        return {numberOfLikes:0,error}
     }
     }

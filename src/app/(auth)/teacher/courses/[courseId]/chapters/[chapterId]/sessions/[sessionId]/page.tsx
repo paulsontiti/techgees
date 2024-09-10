@@ -25,7 +25,7 @@ async function SessionIdPage({
   if (!userId) return redirect("/dashboard");
 
  const {session,error} = await getSessionWithAttachment(sessionId,chapterId)
-if(error) return <ErrorPage message={error.message}/>
+if(error) return <ErrorPage name={error.name}/>
 
 
   if (!session) return redirect("/dashboard");

@@ -32,27 +32,27 @@ async function CourseSidebar({
     course.id!,
     purchasePercentage
   );
-  if (error) return <Banner variant="error" label={error.message} />;
+  if (error) return  <ErrorPage name={error.name}/>;
 
   const { hasLiked, error: hasLikedError } = await hasLikedCourse(
     course.id,
     userId
   );
   if (hasLikedError)
-    return <Banner variant="error" label={hasLikedError.message} />;
+    return  <ErrorPage name={hasLikedError.name}/>;
 
   const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedCourse(
     course.id,
     userId
   );
   if (hasDisLikedError)
-    return <Banner variant="error" label={hasDisLikedError.message} />;
+    return <ErrorPage name={hasDisLikedError.name}/>;
 
   const { hasRated, error: ratedError } = await hasRatedCourse(
     course.id,
     userId
   );
-  if (ratedError) return <Banner variant="error" label={ratedError.message} />;
+  if (ratedError) return  <ErrorPage name={ratedError.name}/>;
 
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
@@ -82,7 +82,7 @@ async function CourseSidebar({
           );
 
           if (error)
-            return <ErrorPage message={error.message} key={error.name} />;
+            return <ErrorPage name={error.name} key={error.name} />;
 
           const chapterPaidFor = paidPositions.indexOf(chapter.position);
 

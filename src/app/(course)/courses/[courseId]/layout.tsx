@@ -23,19 +23,19 @@ async function CourseLayout({
     courseId
   );
   
-  if (courseError) return <ErrorPage message={courseError.message} />;
+  if (courseError) return <ErrorPage name={courseError.name} />;
   if (!course) return redirect("/");
 
   const { progressPercentage, error } = await getCourseProgress(
     userId,
     courseId
   );
-  if (error) return <ErrorPage message={error.message} />;
+  if (error) return <ErrorPage name={error.name} />;
 
  
 
   const {purchasePercentage,error:purschaseError} = await getPurchasePercentage(courseId,userId,course.price!)
-  if (purschaseError) return <ErrorPage message={purschaseError.message} />;
+  if (purschaseError) return <ErrorPage name={purschaseError.name} />;
 
   return (
     <div className="h-full">

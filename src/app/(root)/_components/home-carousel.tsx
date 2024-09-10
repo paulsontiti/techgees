@@ -1,27 +1,23 @@
+
+"use client"
+
 import Carousel from "@/components/carousel";
-import Image from "next/image";
+
 
 const slides = [
-  "/assets/expressjs.png",
-  "/assets/github.png",
-  "/assets/javascript.png",
-  "/assets/js.png",
-  "/assets/mongodb.png",
-  "/assets/nextjs.jpg",
-  "/assets/nodejs.png",
-  "/assets/prisma.png",
-  "/assets/reactjs.png",
+  "/assets/free.jpg",
+  "/assets/free.jpg",
+  "/assets/free.jpg",
+  "/assets/free.jpg",
 ]
-export function HomePageCarousel() {
+
+function HomeCarousel() {
+ 
   return (
-   
-    <div className="max-w-[600px]">
-      
-      <Carousel>
-        {slides.map((slide)=>{
-          return   <img src={slide} className="w-full"/>
-        })}
-      </Carousel>
-    </div>
-  );
+   <div className="max-w-full lg:m-w[800px] mt-4 flex items-center justify-center">
+     <Carousel imgUrls={slides} autoSlide={true} />
+   </div>
+  )
 }
+
+export default HomeCarousel;

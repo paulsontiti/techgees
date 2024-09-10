@@ -11,7 +11,7 @@ async function CourseIdPage(
 
   const {course,error} = await getCourseWithChapters(courseId)
   
-  if(error) return <ErrorPage message={error.message}/>
+  if(error) return <ErrorPage name={error.name}/>
 
   if(!course ) return redirect("/courses")
   return redirect(`/courses/${courseId}/chapters/${course.chapters[0].id}`)

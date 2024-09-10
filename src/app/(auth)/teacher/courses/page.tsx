@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { DataTable } from './_components/data-table'
+import { CourseDataTable } from './_components/data-table'
 import { columns } from './_components/columns'
 import ErrorPage from '@/components/error'
 import { getCoursesByUserId } from '../../../../../actions/getCoursesByUserId'
@@ -15,13 +15,13 @@ async function Page() {
 
   const {courses,error} = await getCoursesByUserId(userId)
 
-  if(error) return <ErrorPage message={error.message}/>
+  if(error) return <ErrorPage name={error.name}/>
   
   return (
     <div className='p-6'>
   
       <div className=" mx-auto py-10">
-      <DataTable columns={columns} data={courses ?? []} />
+      <CourseDataTable columns={columns} data={courses ?? []} />
     </div>
     </div>
   )

@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic"
 import { useMemo } from "react"
 import "react-quill/dist/quill.bubble.css"
+import ErrorBoundary from "./error-boundary"
 
 interface PreviewProps{
     value: string
@@ -19,9 +20,11 @@ export const Preview = (
         {ssr:false}
 ),[])
 
-return <ReactQuill theme="bubble"
+return <ErrorBoundary>
+    <ReactQuill theme="bubble"
     value={value}
     readOnly 
     />
+</ErrorBoundary>
     
 }

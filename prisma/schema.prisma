@@ -13,6 +13,7 @@ model Course {
   id            String  @id @default(uuid()) @map("_id")
   userId        String
   title         String
+  subTitle      String?
   description   String?
   imageUrl      String?
   price         Float?
@@ -34,26 +35,43 @@ model Course {
   dislikes         DisLike[]
   paystackPayments PaystackPayment[]
 
-
-  recommendeeCourses RecommendedCourses[]
-  recommendedCourses RecommendedCourses[] @relation("recommendedCourse")
+  recommendeeCourses        RecommendedCourses[]
+  recommendedCourses        RecommendedCourses[]  @relation("recommendedCourse")
   preRequisiteParentCourses PreRequisiteCourses[]
-  preRequisiteCourses PreRequisiteCourses[] @relation("preRequisite")
+  preRequisiteCourses       PreRequisiteCourses[] @relation("preRequisite")
+  childrenCourses           ComboCourses[]        @relation("childCourse")
+  comboParentCourses        ComboCourses[]
+  purchases                 Purchase[]
+  ratings                   Rating[]
+  whatToLearn               WhatToLearn[]
+  courseBenefits             CourseBenefit[]
 
   @@fulltext([title])
-  childrenCourses ComboCourses[] @relation("childCourse")
-  comboParentCourses ComboCourses[]
-  purchases Purchase[]
-  ratings Rating[]
+}
+
+model WhatToLearn {
+  id   String @id @default(uuid()) @map("_id")
+  text String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model CourseBenefit {
+  id   String @id @default(uuid()) @map("_id")
+  text String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model ComboCourses {
-  id         String @id @default(uuid()) @map("_id")
-  parentCourseId   String
-  childCourseId String
+  id             String @id @default(uuid()) @map("_id")
+  parentCourseId String
+  childCourseId  String
 
-  parentCourse   Course   @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
-  childCourse Course @relation("childCourse",fields: [childCourseId], references: [id], onDelete: Cascade)
+  parentCourse Course @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
+  childCourse  Course @relation("childCourse", fields: [childCourseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -64,12 +82,12 @@ model ComboCourses {
 }
 
 model PreRequisiteCourses {
-  id         String @id @default(uuid()) @map("_id")
-  parentCourseId   String
+  id                   String @id @default(uuid()) @map("_id")
+  parentCourseId       String
   prerequisiteCourseId String
 
-  preRequisitee   Course   @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
-  preRequisite Course @relation("preRequisite",fields: [prerequisiteCourseId], references: [id], onDelete: Cascade)
+  preRequisitee Course @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
+  preRequisite  Course @relation("preRequisite", fields: [prerequisiteCourseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,12 +98,12 @@ model PreRequisiteCourses {
 }
 
 model RecommendedCourses {
-  id         String @id @default(uuid()) @map("_id")
-  courseId   String
+  id                  String @id @default(uuid()) @map("_id")
+  courseId            String
   recommendedCourseId String
 
-  recommendeecourse   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  recommendedCourse Course @relation("recommendedCourse",fields: [recommendedCourseId], references: [id], onDelete: Cascade)
+  recommendeecourse Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  recommendedCourse Course @relation("recommendedCourse", fields: [recommendedCourseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -116,10 +134,10 @@ model Chapter {
   chapterTestScores ChapterTestScore[]
   likes             Like[]
   dislikes          DisLike[]
+  ratings           Rating[]
 
   @@unique([id, courseId])
   @@index([courseId])
-  ratings Rating[]
 }
 
 model Session {
@@ -144,9 +162,9 @@ model Session {
   likes             Like[]
   dislikes          DisLike[]
   comments          Comment[]
+  ratings           Rating[]
 
   @@index([chapterId])
-  ratings Rating[]
 }
 
 model DisLike {
@@ -163,8 +181,6 @@ model DisLike {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-
 }
 
 model Like {
@@ -181,15 +197,13 @@ model Like {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-
 }
 
 model Rating {
-  id        String   @id @default(uuid()) @map("_id")
-  userId    String
-  value Float
-  
+  id     String @id @default(uuid()) @map("_id")
+  userId String
+  value  Float
+
   sessionId String?
   session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
@@ -201,7 +215,6 @@ model Rating {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 model Comment {
@@ -308,6 +321,9 @@ model User {
   updatedAt DateTime @updatedAt
 
   paystackPayments PaystackPayment[]
+
+  @@unique([userId])
+  
 }
 
 enum Role {
@@ -379,12 +395,12 @@ model CourseCategory {
 }
 
 model Purchase {
-  id         String @id @default(uuid()) @map("_id")
-  price Float
-  userId String
-  courseId   String
+  id       String @id @default(uuid()) @map("_id")
+  price    Float
+  userId   String
+  courseId String
 
-  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -392,4 +408,3 @@ model Purchase {
   @@unique([courseId, userId])
   @@index([courseId])
 }
-

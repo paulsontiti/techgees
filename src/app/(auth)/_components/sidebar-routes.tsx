@@ -5,84 +5,88 @@ import React from 'react'
 import SidebarItem from './sidebar-item'
 import { usePathname } from 'next/navigation'
 
-const studentRoutes =[
-    {
-        icon:Layout,
-        label:"Dashboard",
-        href:"/dashboard"
-    },
-    {
-        icon:Compass,
-        label:"Browse for courses",
-        href:"/search"
-    },
-    {
-      icon:Wallet,
-      label:"Wallet",
-      href:"/wallet"
+const studentRoutes = [
+  {
+    icon: Layout,
+    label: "Dashboard",
+    href: "/dashboard"
   },
   {
-    icon:Network,
-    label:"Network",
-    href:"/network"
-},
-    {
-      icon:HeartHandshake,
-      label:"Communities",
-      href:"/communities"
+    icon: Compass,
+    label: "Browse for courses",
+    href: "/search"
   },
   {
-    icon:Bug,
-    label:"Report an issue",
-    href:"/report-issue"
-},
-{
-  icon:MessageCircleQuestion,
-  label:"Feedback",
-  href:"/feedback"
-},
+    icon: Wallet,
+    label: "Wallet",
+    href: "/wallet"
+  },
+  {
+    icon: Network,
+    label: "Network",
+    href: "/network"
+  },
+  {
+    icon: HeartHandshake,
+    label: "Communities",
+    href: "/communities"
+  },
+  {
+    icon: Bug,
+    label: "Report an issue",
+    href: "/report-issue"
+  },
+  {
+    icon: MessageCircleQuestion,
+    label: "Feedback",
+    href: "/feedback"
+  },
 ]
 
-const teacherRoutes =[
+const teacherRoutes = [
   {
-      icon:List,
-      label:"Courses",
-      href:"/teacher/courses"
+    icon: List,
+    label: "Courses",
+    href: "/teacher/courses"
+  },
+  {
+    icon: List,
+    label: "Categories",
+    href: "/teacher/categories"
   }
 ]
 
-const adminRoutes =[
+const adminRoutes = [
   {
-      icon:List,
-      label:"Courses",
-      href:"/admin/courses"
+    icon: List,
+    label: "Courses",
+    href: "/admin/courses"
   },
   {
-      icon:BarChart,
-      label:"Analytics",
-      href:"/admin/analytics"
+    icon: BarChart,
+    label: "Analytics",
+    href: "/admin/analytics"
   },
 ]
 
 function SidebarRoutes() {
   const pathname = usePathname()
 
-    const routes = pathname.includes("/teacher") ? teacherRoutes : (
-      pathname.includes("/admin") ? adminRoutes :studentRoutes)
+  const routes = pathname.includes("/teacher") ? teacherRoutes : studentRoutes
   return (
     <div className='flex flex-col w-full'>
       {
-        routes.map((route)=>{
+        routes.map((route) => {
 
-            return(
-                <SidebarItem
-        
-                key={route.href}
-                icon={route.icon}
-                label={route.label}
-                href={route.href}
-                />
-            )
+          return (
+            <SidebarItem
+
+              key={route.href}
+              icon={route.icon}
+              label={route.label}
+              href={route.href}
+            />
+          )
         })
       }
     </div>

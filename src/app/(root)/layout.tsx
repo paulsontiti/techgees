@@ -9,10 +9,10 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
     const {userId} = auth()
 
     const {courses,error} = await getCourses()
-    if(error) return <ErrorPage message={error.message}/>
+    if(error) return <ErrorPage name={error.name}/>
 
     const {categories,error:catError} = await getCategories()
-    if(catError) return <ErrorPage message={catError.message}/>
+    if(catError) return <ErrorPage name={catError.name}/>
 
 
 

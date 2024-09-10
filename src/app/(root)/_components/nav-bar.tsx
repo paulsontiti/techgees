@@ -6,6 +6,7 @@ import SearchInput from "./search-input";
 import { Category, Course } from "@prisma/client";
 import Link from "next/link";
 import { CategoryDropdownMenu } from "./category-dropdown-menu";
+import MobileMenu from "./mobile-menu";
 
 function Navbar({
   userId,
@@ -16,6 +17,7 @@ function Navbar({
   courses: Course[];
   categories: Category[];
 }) {
+ 
   return (
     <div>
       <div className="md:p-6 flex items-center justify-between w-full">
@@ -45,9 +47,10 @@ function Navbar({
           )}
         </div>
       </div>
-      <div className="p-4 md:hidden flex items-center gap-x-4">
+      <div className="px-4 md:hidden flex items-center gap-x-4">
         <CategoryDropdownMenu categories={categories} />
         <SearchInput courses={courses} />
+        <MobileMenu/>
       </div>
     </div>
   );

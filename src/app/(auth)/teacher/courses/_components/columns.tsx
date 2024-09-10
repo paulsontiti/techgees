@@ -4,18 +4,8 @@ import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/format"
 import { Course } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ArrowUpDown,Eye,MoreHorizontal, Pencil } from "lucide-react"
-import Loader from "@/components/loader"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+
+import { ArrowUpDown} from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import CourseTableAction from "./course-table-action"

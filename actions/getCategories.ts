@@ -16,7 +16,7 @@ Promise<ReturnValue>=>{
           });
       return {categories,error:null}
     }catch(error:any){
-    
+    console.log("GET_CATEGORIES",error)
         return {categories:[],error}
     }
     }

@@ -44,7 +44,7 @@ async function ChapterIdPage({
 
   if (reference) {
     const { paystack, error } = await getPayStackPayment(reference);
-    if (error) return <ErrorPage message={error.message} />;
+    if (error) return <ErrorPage name={error.name} />;
     if (paystack) {
       payment = {
         amount: paystack.amount,
@@ -56,7 +56,7 @@ async function ChapterIdPage({
   const { purchasePercentage, error: purschaseError } =
     await getPurchasePercentage(courseId, userId, course.price!);
   if (purschaseError)
-    return <Banner variant="error" label={purschaseError.message} />;
+    return <ErrorPage name={purschaseError.name} />;
 
   const isLocked = !chapter.isFree && purchasePercentage === 0;
   const completeOnEnd = purchasePercentage === 0 && !userProgress?.isCompleted;
@@ -69,44 +69,44 @@ async function ChapterIdPage({
   const { numberOfDisLikes, error: dislikesError } =
     await getChapterDisLikesCount(chapterId);
   if (dislikesError)
-    return <Banner variant="error" label={dislikesError.message} />;
+    return <ErrorPage name={dislikesError.name} />;
 
   const { comments, error: commentsError } = await getChapterComments(
     chapterId
   );
   if (commentsError)
-    return <Banner variant="error" label={commentsError.message} />;
+    return   <ErrorPage name={commentsError.name} />;
 
   const { hasLiked, error: hasLikedError } = await hasLikedChapter(
     chapterId,
     userId
   );
   if (hasLikedError)
-    return <Banner variant="error" label={hasLikedError.message} />;
+    return <ErrorPage name={hasLikedError.name} />;
 
   const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedChapter(
     chapterId,
     userId
   );
   if (hasDisLikedError)
-    return <Banner variant="error" label={hasDisLikedError.message} />;
+    return <ErrorPage name={hasDisLikedError.name} />;
 
   const { numberOfStudents, error: studentsError } =
     await getChapterStudentsCount(chapterId);
   if (studentsError)
-    return <Banner variant="error" label={studentsError.message} />;
+    return  <ErrorPage name={studentsError.name} />;
 
   const { hasRated, error: ratedError } = await hasRatedChapter(
     chapterId,
     userId
   );
-  if (ratedError) return <Banner variant="error" label={ratedError.message} />;
+  if (ratedError) return <ErrorPage name={ratedError.name} />;
 
   const { averageRating, error: ratingError } = await getChapterRating(
     chapterId
   );
   if (ratingError)
-    return <Banner variant="error" label={ratingError.message} />;
+    return <ErrorPage name={ratingError.name} />;
 
   let duration = 0;
 

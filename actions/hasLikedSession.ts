@@ -9,12 +9,12 @@ export const hasLikedSession = async(
     sessionId:string,userId:string):
 Promise<ReturnValue>=>{
     try{
-const like = await db.like.findUnique({
+const like = await db.like.findFirst({
     where:{
-        userId_sessionId:{
+        
             userId,sessionId
         }
-    }
+    
 })
 
       return {hasLiked:!!like,error:null}

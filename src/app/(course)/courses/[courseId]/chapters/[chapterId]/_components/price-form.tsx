@@ -20,6 +20,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
 import toast from "react-hot-toast";
+import ErrorBoundary from "@/components/error-boundary";
 
 const formSchema = zod.object({
   amount: zod.coerce.number().min(10000, {
@@ -78,9 +79,9 @@ function PriceForm({email,courseId,chapterId}:{
 
  
   return (
-    <div
-      className="mt-6 flex items-center justify-center
-    border bg-slate-100 rounded-md p-4 w-[350px]"
+   <ErrorBoundary>
+     <div
+      className="border bg-slate-100 rounded-md p-4 w-[350px]"
     >
    
         <Form {...form}>
@@ -119,6 +120,7 @@ function PriceForm({email,courseId,chapterId}:{
         </Form>
 
     </div>
+   </ErrorBoundary>
   );
 }
 

@@ -27,14 +27,14 @@ export function CategoryDropdownMenu({
       <DropdownMenuTrigger asChild>
         <Button variant="link">Categories</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48 md:w-56 mx-2">
+      <DropdownMenuContent className="w-48 md:w-56">
         <DropdownMenuLabel>All categories</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          {categories.map(async (category) => {
+          {categories.map(async (category,index) => {
             const {courses,error} = await getCoursesByCategoryId(category.id);
-            if(error) return <Banner variant="error" label={error.message}/>
+            if(error) return <Banner key={index} variant="error" label={error.message}/>
             return (
               <DropdownMenuSub key={category.id}>
                 <DropdownMenuSubTrigger>

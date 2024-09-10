@@ -8,14 +8,58 @@ import { Chapter, Session } from "@prisma/client";
 import { BookOpen, Video } from "lucide-react";
 import Link from "next/link";
 import { StatInfoDialog } from "./stat-info-dialog";
+import { getChapterCommentsCount } from "../../../../../../actions/getChapterCommentsCount";
+import Banner from "@/components/banner";
+import { getChapterRating } from "../../../../../../actions/getChapterRating";
+import { getChapterLikesCount } from "../../../../../../actions/getChapterLikesCount";
+import { getChapterDisLikesCount } from "../../../../../../actions/getChapterDisLikesCount";
+import { getChapterNumberOfRatings } from "../../../../../../actions/getChapterNumberOfRatings";
+import { getChapterStudentsCount } from "../../../../../../actions/getChapterStudentsCount";
 
-export function ChapterContentAccordion({
+export async function ChapterContentAccordion({
   chapter,
 }: {
   chapter: Chapter & {
     sessions: Session[];
   };
 }) {
+
+
+  
+  const { numberOfStudents, error: error } = await getChapterStudentsCount(
+    chapter.id
+  );
+  if (error) return <Banner variant="error" label={error.message} />;
+
+
+  const { numberOfRatings, error: ratingError } = await getChapterNumberOfRatings(
+    chapter.id
+  );
+  if (ratingError) return <Banner variant="error" label={ratingError.message} />;
+
+
+
+  const {averageRating, error: numRatingError } = await getChapterRating(
+    chapter.id
+  );
+  if (numRatingError) return <Banner variant="error" label={numRatingError.message} />;
+
+  const { numberOfLikes, error: likesError } = await getChapterLikesCount(
+    chapter.id
+  );
+  if (likesError) return <Banner variant="error" label={likesError.message} />;
+
+  const { numberOfDisLikes, error: disLikesError } = await getChapterDisLikesCount(
+    chapter.id
+  );
+  if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
+
+
+  const { numberOfComments, error: commentsError } = await getChapterCommentsCount(
+    chapter.id
+  );
+
+  if(commentsError) return <Banner variant="error" label={commentsError.message}/>
   return (
     <Accordion
       type="single"
@@ -31,13 +75,14 @@ export function ChapterContentAccordion({
             </div>
             <div>
               <StatInfoDialog
-              numberOfComments={99}
-              numberOfStudents={89}
-              likes={687}
-              disLikes={2}
+             numberOfComments ={numberOfComments}
+             numberOfRatings={numberOfRatings}
+              numberOfStudents={numberOfStudents}
+              likes={numberOfLikes}
+              disLikes={numberOfDisLikes}
               title={chapter.title}
               description={chapter.description  ?? ""}
-              rating={0}
+              rating={averageRating}
               />
               {chapter.isFree && (
                 <Link

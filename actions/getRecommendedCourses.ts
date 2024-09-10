@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { Course } from "@prisma/client";
 
 type ReturnValue = {
-  recommendedCourses: RecommendedCourseType[] | null;
+  recommendedCourses: RecommendedCourseType[];
   error: Error | null;
 };
 

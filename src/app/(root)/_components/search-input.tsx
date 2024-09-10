@@ -35,7 +35,7 @@ function SearchInput({ courses }: { courses: Course[] }) {
         setSearchedCoureses(courses);
       }
     })();
-  }, [debouncedValue]);
+  }, [debouncedValue,value,courses]);
 
   return (
     <div className="relative w-full">
@@ -51,7 +51,8 @@ function SearchInput({ courses }: { courses: Course[] }) {
         onChange={(e) => {
           setValue(e.target.value);
         }}
-        className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200"
+        className="w-full md:w-[300px] pl-9 
+        rounded-full bg-slate-100 focus-visible:ring-slate-200"
         placeholder="Search for a course"
       />
       {open && (
@@ -71,9 +72,10 @@ function SearchInput({ courses }: { courses: Course[] }) {
                 ) : (
                   <div className="min-w-[200px]">
                     <div className="mt-4">
-                      {courses.map((course) => {
+                      {courses.map((course,index) => {
                         return (
                           <div 
+                          key={index}
                           onClick={()=>{
                            
                             router.push(`/course/${course.id}`)

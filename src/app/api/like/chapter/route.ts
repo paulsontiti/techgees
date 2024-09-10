@@ -10,18 +10,16 @@ export async function POST(req: Request) {
     if (!userId) {
       return new NextResponse("Unautorized", { status: 401 });
     }
-    const hasLiked = await db.like.findUnique({
-      where: { userId_chapterId: { userId, chapterId } },
+    const hasLiked = await db.like.findFirst({
+      where: {userId, chapterId  },
     });
 
     if (hasLiked) {
-      await db.like.delete({
+      await db.like.deleteMany({
         where: {
-          userId_chapterId: {
             userId,
             chapterId,
           },
-        },
       });
     } else {
       await db.like.create({

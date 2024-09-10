@@ -4,7 +4,7 @@ import { getCourseProgress } from "./getCourseProgress";
 
 
 interface ReturnValue{
-    courses: SearchPageCourseType[] | null,
+    courses: SearchPageCourseType[],
     error:Error | null
 }
 
@@ -92,6 +92,6 @@ await Promise.all(
       return {courses:coursesWithProgressAndCategory,error:null}
     }catch(error:any){
     console.log("[getCourseWithProgressChaptersCategory]",error)
-        return {courses:null,error}
+        return {courses:[],error}
     }
     }

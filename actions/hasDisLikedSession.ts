@@ -9,11 +9,9 @@ export const hasDisLikedSession = async(
     sessionId:string,userId:string):
 Promise<ReturnValue>=>{
     try{
-const dislike = await db.disLike.findUnique({
+const dislike = await db.disLike.findFirst({
     where:{
-        userId_sessionId:{
             userId,sessionId
-        }
     }
 })
 

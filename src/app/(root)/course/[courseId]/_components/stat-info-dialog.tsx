@@ -3,22 +3,33 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import StatInfo, { StatInfoProps } from "./stat-info";
+import StatInfo from "./stat-info";
 import { Preview } from "@/components/preview";
+
+type StatInfoProps = {
+  numberOfStudents: number;
+  numberOfComments:number,
+  numberOfRatings: number;
+  likes: number;
+  disLikes: number;
+  description?: string;
+  title?: string;
+  rating: number;
+};
 
 export function StatInfoDialog({
   numberOfComments,
   numberOfStudents,
+  numberOfRatings,
   likes,
   disLikes,
   description,
-  title,
+  title,rating
 }: StatInfoProps) {
   return (
     <Dialog>
@@ -37,9 +48,10 @@ export function StatInfoDialog({
         <StatInfo
           numberOfComments={numberOfComments}
           numberOfStudents={numberOfStudents}
+          numberOfRatings={numberOfRatings}
           likes={likes}
           disLikes={disLikes}
-          rating={0}
+          rating={rating}
         />
       </DialogContent>
     </Dialog>

@@ -28,8 +28,7 @@ import Link from "next/link";
 import { getCourseRecommendedCourses } from "../../../../../actions/getCourseRecommendedCourses";
 import { Button } from "@/components/ui/button";
 import { getCountOfPaymentByCourseId } from "../../../../../actions/getCountOfPaymentByCourseId";
-import { getCountOfCommentsByCourseId } from "../../../../../actions/getCountOfCommentsByCourseId";
-import { RatingSlider } from "@/components/rating-slider";
+
 import StatInfo from "./_components/stat-info";
 import { getCourseRating } from "../../../../../actions/getCourseRating";
 import { getCourseComments } from "../../../../../actions/getCourseComments";
@@ -88,7 +87,7 @@ async function CourseIdPage({
   );
   if (ratingError) return <Banner variant="error" label={ratingError.message} />;
 
-  
+
   const { numberOfRatings, error: numRatingError } = await getCourseNumberOfRatings(
     courseId
   );
@@ -131,23 +130,14 @@ async function CourseIdPage({
         });
       });
 
-    
+
     }
   }
 
-  const wywl = [
-    "Build 16 web development projects for your portfolio, ready to apply for junior developer jobs.",
-    "After the course you will be able to build ANY website you want.",
-    "Work as a freelance web developer.",
-    "Master backend development with Node",
-    "Learn the latest technologies, including Javascript, React, Node and even Web3 development.",
-    "Build fully-fledged websites and web apps for your startup or business.",
-    "Master frontend development with React",
-    "Learn professional developer best practices.",
-  ];
+
   return (
     <div className="px-4">
-      
+
       <div className="mt-8">
         <Breadcrumb>
           <BreadcrumbList>
@@ -202,29 +192,44 @@ async function CourseIdPage({
         </Breadcrumb>
       </div>
       <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-      <h2 className="mt-2 text-lg font-semibold">Subtitle</h2>
-      
+      <h2 className="mt-2 text-md font-medium">{course?.subTitle}</h2>
+
 
       <StatInfo
         numberOfRatings={numberOfRatings}
         numberOfStudents={numberOfPayments}
+        numberOfComments={comments.length}
         likes={numberOfLikes}
-        disLikes={numberOfDisLikes} rating={averageRating}      />
-      <Card className="mt-4">
-        <CardHeader className="text-xl font-bold">
-          Benefits of taking this course
-        </CardHeader>
-        <CardContent className="flex md:flex-row flex-col">
-          {wywl.map((item) => {
-            return (
-              <div key={item} className="flex items-start my-2 gap-2">
-                <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-                <div className="text-xs">{item}</div>
-              </div>
-            );
+        disLikes={numberOfDisLikes} rating={averageRating} />
+
+      {Array.isArray(course?.whatToLearn) && course.whatToLearn.length > 0 &&
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold">What you will learn</h2>
+          {course.whatToLearn.map((wtl) => {
+
+            return <div key={wtl.id} className="flex items-start my-2 gap-2">
+              <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
+              <div className="text-xs">{wtl.text}</div>
+            </div>
           })}
-        </CardContent>
-      </Card>
+        </div>
+      }
+      {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
+        <Card className="mt-4">
+          <CardHeader className="text-xl font-bold">
+            Benefits of taking this course
+          </CardHeader>
+          <CardContent className="flex md:flex-row flex-col">
+            {course?.courseBenefits.map((benefit) => {
+              return (
+                <div key={benefit.id} className="flex items-start my-2 gap-2">
+                  <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
+                  <div className="text-xs">{benefit.text}</div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>}
       <div className="mt-8">
         <h1 className="text-xl font-bold">Course content</h1>
         <div className="mt-4 flex items-center gap-x-2 text-xs">
@@ -243,55 +248,55 @@ async function CourseIdPage({
         </div>
       </div>
       {
-      childrenCourses.length > 0 ? 
-      childrenCourses.map((course)=>{
+        childrenCourses.length > 0 ?
+          childrenCourses.map((course,index) => {
 
-        return <CourseContentAccordion course={course}/>
-      })
-      :
-      course?.chapters.map((chapter) => {
-        return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
-      })}
+            return <CourseContentAccordion course={course} key={index}/>
+          })
+          :
+          course?.chapters.map((chapter) => {
+            return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
+          })}
 
       <div>
-      <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
-        {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course)=>{
-          return <Link href={`/course/${course.id}`} 
-          className="text-xs" key={course.id}>
+        <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
+        {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course) => {
+          return <Link href={`/course/${course.id}`}
+            className="text-xs" key={course.id}>
             {course.title}
           </Link>
         }) :
-        <p   className="text-xs">None</p>}
+          <p className="text-xs">None</p>}
       </div>
 
       <div>
-      <h1 className="text-lg font-semibold mt-8 mb-2">Recommended courses</h1>
-        {recommendedCourses.length > 0 ? 
-        <div className="flex items-center flex-wrap gap-1">
-          {
-            recommendedCourses.map((course)=>{
-              return <Button size="sm" variant="outline">
-                <Link
-                  className="text-xs" href={`/course/${course.id}`} key={course.id}>
-                {course.title}
-              </Link>
-              </Button>
-               
-            })
-          }
-        </div> :
-           <p   className="text-xs">None</p>}
+        <h1 className="text-lg font-semibold mt-8 mb-2">Recommended courses</h1>
+        {recommendedCourses.length > 0 ?
+          <div className="flex items-center flex-wrap gap-1">
+            {
+              recommendedCourses.map((course,index) => {
+                return <Button size="sm" variant="outline" key={index}>
+                  <Link
+                    className="text-xs" href={`/course/${course.id}`} key={course.id}>
+                    {course.title}
+                  </Link>
+                </Button>
+
+              })
+            }
+          </div> :
+          <p className="text-xs">None</p>}
       </div>
 
       <h1 className="text-lg font-semibold mt-8">Description</h1>
       <Preview value={course?.description ?? ""}></Preview>
 
       <div className="mt-4 border p-2">
-             <h1 className="text-lg font-semibold mb-2">Reviews</h1>
-             {comments.map((comment)=>{
+        <h1 className="text-lg font-semibold mb-2">Reviews</h1>
+        {comments.map((comment,index) => {
 
-              return <CommentItem comment={comment}/>
-             })}
+          return <CommentItem comment={comment} key={index}/>
+        })}
       </div>
     </div>
   );

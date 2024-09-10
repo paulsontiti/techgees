@@ -1,8 +1,6 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Course} from "@prisma/client";
 import React, { useEffect } from "react";
-import CourseCard from "./course-card";
 import { useDebounce } from "../../../../hooks/use-debounce";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -30,7 +28,7 @@ function SearchDropdown({ courses }: { courses: Course[] }) {
         setSearchedCoureses(courses);
       }
     })();
-  }, [debouncedValue]);
+  }, [debouncedValue,value,courses]);
 
 
 
@@ -66,9 +64,10 @@ function SearchDropdown({ courses }: { courses: Course[] }) {
            
               <div className="mt-4">
                
-                {courses.map((course) => {
+                {searchedCourses.map((course,index) => {
                     return (
                         <div
+                        key={index}
                         onClick={()=>{alert("")}}
                         className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer"
                       >

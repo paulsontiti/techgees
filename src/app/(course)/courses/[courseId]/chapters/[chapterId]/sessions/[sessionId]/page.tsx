@@ -40,45 +40,45 @@ async function SessionIdPage({
     chapterId,
     sessionId,
   });
-  if (error) return <ErrorPage message={error.message} />;
+  if (error) return <ErrorPage name={error.name} />;
 
   if (!session) return redirect("/");
 
   const completeOnEnd = !userProgress?.isCompleted;
 
   const {numberOfLikes,error:likesError} = await getSessionLikesCount(sessionId)
-  if (likesError) return <ErrorPage message={likesError.message} />;
+  if (likesError) return <ErrorPage name={likesError.name} />;
 
 
   const {numberOfDisLikes,error:dislikesError} = await getSessionDisLikesCount(sessionId)
-  if (dislikesError) return <ErrorPage message={dislikesError.message} />;
+  if (dislikesError) return <ErrorPage name={dislikesError.name} />;
 
 
   const {comments,error:commentsError} = await getSessionComments(sessionId)
-  if (commentsError) return <ErrorPage message={commentsError.message} />;
+  if (commentsError) return <ErrorPage name={commentsError.name} />;
 
   const {hasLiked,error:hasLikedError} = await hasLikedSession(sessionId,userId)
-  if (hasLikedError) return <ErrorPage message={hasLikedError.message} />;
+  if (hasLikedError) return <ErrorPage name={hasLikedError.name} />;
 
   const {hasDisLiked,error:hasDisLikedError} = await hasDisLikedSession(sessionId,userId)
-  if (hasDisLikedError) return <ErrorPage message={hasDisLikedError.message} />;
+  if (hasDisLikedError) return <ErrorPage name={hasDisLikedError.name} />;
 
   const { numberOfStudents, error: studentsError } =
   await getSessionStudentsCount(sessionId);
 if (studentsError)
-  return <Banner variant="error" label={studentsError.message} />;
+  return <ErrorPage name={studentsError.name} />;
 
 const { hasRated, error: ratedError } = await hasRatedSession(
   sessionId,
   userId
 );
-if (ratedError) return <Banner variant="error" label={ratedError.message} />;
+if (ratedError) return <ErrorPage name={ratedError.name} />;
 
 const { averageRating, error: ratingError } = await getSessionRating(
   sessionId
 );
 if (ratingError)
-  return <Banner variant="error" label={ratingError.message} />;
+  return <ErrorPage name={ratingError.name} />;
 
 
   return (

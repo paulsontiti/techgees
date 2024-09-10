@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { DataTable } from './data-table'
+import { CourseDataTable } from './data-table'
 import { columns } from './columns'
 import { Course } from '@prisma/client'
 
@@ -15,7 +15,7 @@ function CourseTable({courses}:{courses:Course[]}) {
  
   return (
     <div className=" mx-auto py-10">
-    <DataTable columns={columns} data={data} />
+    <CourseDataTable columns={columns} data={data} />
   </div>
   )
 }

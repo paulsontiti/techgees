@@ -6,6 +6,7 @@ import { getChildrenCourses } from '../../../../../actions/getChildrenCourses'
 import { getCourseRecommendedCourses } from '../../../../../actions/getCourseRecommendedCourses'
 import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
 import Banner from '@/components/banner'
+import ErrorPage from '@/components/error'
 
 
 function CourseDetails(
@@ -15,21 +16,21 @@ function CourseDetails(
 ) {
   return (
     <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-    {courses.map(async(course)=>{
+    {courses.map(async(course,index)=>{
       if(!course) return null
 
       const courseId = course.id
         const {categories,error} = await getCourseCategoriesByCourseId(courseId)
-        if(error) return <Banner variant="error"  label={error.message}/>
+        if(error) return <ErrorPage name={error.name} key={index}/>
         
 const {preRequisiteCourses,error:preError} = await getPrerequisiteCourses(courseId)
-if(preError) return <Banner variant="error"  label={preError.message}/>
+if(preError) return <ErrorPage name={preError.name} key={index}/>
 
 const {childrenCourses,error:comboError} = await getChildrenCourses(courseId)
-if(comboError) return <div>{comboError.message}</div>
+if(comboError) return <ErrorPage name={comboError.name} key={index}/>
 
 const {recommendedCourses,error:recomError} = await getCourseRecommendedCourses(courseId)
-if(recomError) return <Banner variant="error"  label={recomError.message}/>
+if(recomError) return <ErrorPage name={recomError.name} key={index}/>
         
         return <CourseCard
         key={course.id}

@@ -10,17 +10,15 @@ export async function POST(req: Request) {
     if (!userId) {
       return new NextResponse("Unautorized", { status: 401 });
     }
-    const hasDisLiked = await db.disLike.findUnique({
-      where: { userId_chapterId: { userId, chapterId } },
+    const hasDisLiked = await db.disLike.findFirst({
+      where: {  userId, chapterId } ,
     });
     if (hasDisLiked) {
-      await db.disLike.delete({
+      await db.disLike.deleteMany({
         where: {
-          userId_chapterId: {
             userId,
             chapterId,
           },
-        },
       });
     } else {
       await db.disLike.create({

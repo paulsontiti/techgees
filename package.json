@@ -33,6 +33,7 @@
     "@types/paystack": "^2.0.4",
     "@uploadthing/react": "^6.7.2",
     "axios": "^1.7.4",
+    "bootstrap": "^5.3.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -41,10 +42,12 @@
     "next": "14.2.5",
     "query-string": "^9.1.0",
     "react": "^18",
+    "react-bootstrap": "^2.10.4",
     "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "react-hot-toast": "^2.4.1",
+    "react-multi-carousel": "^2.8.5",
     "react-paystack": "^6.0.0",
     "react-quill": "^2.0.0",
     "tailwind-merge": "^2.5.2",
@@ -54,6 +57,7 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx-source": "^7.24.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

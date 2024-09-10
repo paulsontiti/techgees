@@ -1,19 +1,23 @@
+"use client"
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import React from 'react'
 import { Sidebar } from './sidebar'
+import ErrorBoundary from '@/components/error-boundary'
 
 function MobileSidebar() {
   return (
-    <Sheet>
+    <ErrorBoundary>
+      <Sheet>
         <SheetTrigger className='md:hidden pr-4 hover:opacity-75 transition'>
-        <Menu/>
+          <Menu />
         </SheetTrigger>
-        <SheetContent side="left" 
-        className='p-0 bg-white'>
-            <Sidebar/>
+        <SheetContent side="left"
+          className='p-0 bg-white'>
+          <Sidebar />
         </SheetContent>
-    </Sheet>
+      </Sheet>
+    </ErrorBoundary>
   )
 }
 
