@@ -27,33 +27,36 @@ export async function POST(req: Request) {
 
     const { authorization_url, reference } = response.data.data;
 
-    const purchase = await db.purchase.findUnique({
-      where:{
-        courseId_userId:{
-          userId,courseId
-        }
-      }
-    })
-
-    if(!purchase){
-      const course =  await db.course.findUnique({
-        where:{
-          id:courseId
-        },select:{
-          price:true
-        }
-      })
-      await db.purchase.create({
-        data:{
-          price:course?.price ?? 0,
-          courseId,
-          userId
-        }
-      })
-    }
+   
 
     setTimeout(async()=>{
       if (reference) {
+
+        const purchase = await db.purchase.findUnique({
+          where:{
+            courseId_userId:{
+              userId,courseId
+            }
+          }
+        })
+    
+        if(!purchase){
+          const course =  await db.course.findUnique({
+            where:{
+              id:courseId
+            },select:{
+              price:true
+            }
+          })
+          await db.purchase.create({
+            data:{
+              price:course?.price ?? 0,
+              courseId,
+              userId
+            }
+          })
+        }
+        
         const {
           verifiedPayment: { data },
           error,
