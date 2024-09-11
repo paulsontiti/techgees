@@ -40,6 +40,7 @@ function Carousel(
                     style={{ transform: `translateX(-${curr * 100}%)` }}>
                     {imgUrls.map((s, i) => (
                         <Image src={s} alt={s} width={1200} height={400}
+                        key={i}
                             className='min-w-full max-w-full min-h-[300px]
                             md:min-h-[400px]  
                             xl:max-h-[600px]' />
