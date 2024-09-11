@@ -67,7 +67,7 @@ function PriceForm({email,courseId,chapterId}:{
           }
         }, 1000);
       } else {
-        toast.error('Failed to open payment window.');
+        toast.error('Failed to open payment window.Try again');
       }
     } catch (error:any) {
       toast.error('Error initializing payment: '+ error.message);

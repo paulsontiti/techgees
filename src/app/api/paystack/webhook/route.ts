@@ -22,10 +22,7 @@ export async function POST(req: Request) {
         const payStackPayment = await db.paystackPayment.findUnique({
           where: {
             reference,
-          },
-          include: {
-            course: true,
-          },
+          }
         });
 
         if (!!payStackPayment) {

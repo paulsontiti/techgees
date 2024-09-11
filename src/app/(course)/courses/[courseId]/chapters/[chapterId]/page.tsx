@@ -19,6 +19,7 @@ import { hasDisLikedChapter } from "../../../../../../../actions/hasDisLikedChap
 import { getChapterStudentsCount } from "../../../../../../../actions/getChapterStudentsCount";
 import { hasRatedChapter } from "../../../../../../../actions/hasRatedChapter";
 import { getChapterRating } from "../../../../../../../actions/getChapterRating";
+import Paystack from "paystack";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },

@@ -27,10 +27,7 @@ export async function POST(req: Request) {
 
     const { authorization_url, reference } = response.data.data;
 
-   
-
-    setTimeout(async()=>{
-      if (reference) {
+    if (reference) {
 
         const purchase = await db.purchase.findUnique({
           where:{
@@ -56,40 +53,40 @@ export async function POST(req: Request) {
             }
           })
         }
-        
-        const {
-          verifiedPayment: { data },
-          error,
-        } = await verifyPayStackPayment(reference);
-        if (error) throw new Error(error.message);
-  
-        const { status } = data;
-        if (status === "success") {
 
-            await db.paystackPayment.create({
-            data:{
-              userId,
-              courseId,
-              reference,
-              payment_status:status,
-              amount
-            }
-           })
+        await db.paystackPayment.create({
+          data: {
+            reference,
+            userId,
+            courseId,
+            amount,
+          },
+        });
+        
+        // const {
+        //   verifiedPayment: { data },
+        //   error,
+        // } = await verifyPayStackPayment(reference);
+        // if (error) throw new Error(error.message);
+  
+        // const { status } = data;
+        // if (status === "success") {
+
+        //     await db.paystackPayment.create({
+        //     data:{
+        //       userId,
+        //       courseId,
+        //       reference,
+        //       payment_status:status,
+        //       amount
+        //     }
+        //    })
   
            
-        } else {
-          await db.paystackPayment.create({
-            data: {
-              reference,
-              userId,
-              courseId,
-              amount,
-            },
-          });
-        }
-      }
-      
-    },10000)
+        // } else {
+         
+      //   }
+    }
 
    
 
