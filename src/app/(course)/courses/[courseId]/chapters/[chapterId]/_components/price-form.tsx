@@ -20,10 +20,9 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
 import toast from "react-hot-toast";
-import ErrorBoundary from "@/components/error-boundary";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(10000, {
+  amount: zod.coerce.number().min(10, {
     message: "amount is required",
   }),
 });
