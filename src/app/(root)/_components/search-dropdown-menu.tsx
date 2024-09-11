@@ -38,7 +38,7 @@ function SearchDropdownmenu({ courses }: { courses: Course[] }) {
         setSearchedCoureses(courses);
       }
     })();
-  }, [debouncedValue]);
+  }, [debouncedValue,value,courses]);
 
   return (
     <DropdownMenu>

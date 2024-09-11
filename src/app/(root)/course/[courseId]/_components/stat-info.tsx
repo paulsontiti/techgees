@@ -46,8 +46,8 @@ function StatInfo({
           </div>
         </div>
       }
-      {!!numberOfComments &&  <div className="flex items-center gap-x-1 pr-2 border-r-2 border-black-100">
-            <MessageCircle className="w-4 h-4" /> <span>{numberOfComments}</span>
+      {!!numberOfComments &&  <div className="flex items-center gap-x-1 ">
+          <MessageCircle className="w-4 h-4" /> <span>{numberOfComments}</span>
           </div>}
     </div>
   );

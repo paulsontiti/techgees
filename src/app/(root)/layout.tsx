@@ -14,8 +14,7 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
     const {categories,error:catError} = await getCategories()
     if(catError) return <ErrorPage name={catError.name}/>
 
-
-
+  
   return (
     <div>
         <Navbar userId={userId ?? ""} courses={courses} categories={categories}/>

@@ -67,7 +67,7 @@ function ChapterComments({
 
   return (
     <div className="mt-4 p-1">
-      <div className="flex items-center gap-x-6">
+      <div className="flex items-center gap-x-4">
         <Heart
           fill={hasLiked ? "black" : "white"}
           className="cursor-pointer"
@@ -81,7 +81,7 @@ function ChapterComments({
 
         <Loader loading={loading} />
       </div>
-      <div className="mt-4 p-1 flex items-center gap-x-2">
+      <div className="mt-4 p-4 flex items-center gap-x-2">
         {!!numberOfLikes && (
           <div className="flex items-center gap-x-1">
             <Heart className="w-4 h-4" />

@@ -31,7 +31,6 @@ const courseCategories = await db.courseCategory.findMany({
         categoryId
     },include:{
         course:true,
-        category:true
         }
     
 })
@@ -40,13 +39,14 @@ const courseCategories = await db.courseCategory.findMany({
 const courseIds = courseCategories.map((cc) => cc.course.id)
 
 
-const courses = await db.course.findMany({
+let courses:any[] = []
+if(title){
+courses = await db.course.findMany({
     where:{
-        id:{
-            in: courseIds
-        },
+       
         title:{
-            contains:title
+            contains:title,
+             mode:"insensitive"
         },
         isPublished:true,
     },include:{
@@ -66,6 +66,32 @@ const courses = await db.course.findMany({
         createdAt:"desc"
     }
 })
+}else{
+    courses = await db.course.findMany({
+        where:{
+            id:{
+                in: courseIds
+            },
+            isPublished:true,
+        },include:{
+            chapters:{
+                where:{
+                    isPublished:true,
+    
+                },select:{
+                    id:true
+                }
+            },paystackPayments:{
+                where:{
+                    userId
+                }
+            }
+        },orderBy:{
+            createdAt:"desc"
+        }
+    })
+}
+
 
 const coursesWithProgressAndCategory:SearchPageCourseType[]  = 
 await Promise.all(

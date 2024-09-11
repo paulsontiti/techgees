@@ -7,7 +7,7 @@ import { verifyPayStackPayment } from "../../../../../actions/verifyPayment";
 export async function POST(req: Request) {
   try {
     const { userId } = auth();
-    const { email, amount, courseId, chapterId } = await req.json();
+    const { email, amount, courseId } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -27,6 +27,31 @@ export async function POST(req: Request) {
 
     const { authorization_url, reference } = response.data.data;
 
+    const purchase = await db.purchase.findUnique({
+      where:{
+        courseId_userId:{
+          userId,courseId
+        }
+      }
+    })
+
+    if(!purchase){
+      const course =  await db.course.findUnique({
+        where:{
+          id:courseId
+        },select:{
+          price:true
+        }
+      })
+      await db.purchase.create({
+        data:{
+          price:course?.price ?? 0,
+          courseId,
+          userId
+        }
+      })
+    }
+
     setTimeout(async()=>{
       if (reference) {
         const {
@@ -37,6 +62,7 @@ export async function POST(req: Request) {
   
         const { status } = data;
         if (status === "success") {
+
             await db.paystackPayment.create({
             data:{
               userId,

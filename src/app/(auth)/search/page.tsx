@@ -16,7 +16,7 @@ async function SearchPage(
 
   const {categories,error:catError} = await getCategories()
   if(catError) return <ErrorPage name={catError.name}/>
-  
+ 
 
   const {courses,error} = await getCourseWithProgressChapters({
     userId,categoryId,title

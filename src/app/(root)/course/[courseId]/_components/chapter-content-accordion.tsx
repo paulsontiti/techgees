@@ -67,14 +67,16 @@ export async function ChapterContentAccordion({
       className="w-full px-2 my-2 bg-slate-100"
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger className="flex items-center justify-between my-2 bg-white px-2">
+        <AccordionTrigger >
        
-            <div className="flex items-center gap-x-2">
+           <div className="w-full flex items-center justify-between my-2 bg-white p-2 ">
+           <div className="flex items-center gap-x-2">
               <BookOpen className="w-4 h-4" />
               <span className="line-clamp-1 text-sm">{chapter.title}</span>
             </div>
             <div>
-              <StatInfoDialog
+             <div className="flex items-center gap-x-2">
+             <StatInfoDialog
              numberOfComments ={numberOfComments}
              numberOfRatings={numberOfRatings}
               numberOfStudents={numberOfStudents}
@@ -92,7 +94,9 @@ export async function ChapterContentAccordion({
                   Preview
                 </Link>
               )}
+             </div>
             </div>
+           </div>
         
         </AccordionTrigger>
         <AccordionContent>

@@ -8,6 +8,8 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
+import { auth } from "@clerk/nextjs/server";
+import SignInCheck from "@/components/clerk-sign-in-check";
 
 
 
@@ -25,7 +27,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-
+const {userId} = auth()
 
   return (
     <html lang="en">
@@ -42,9 +44,12 @@ export default async function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
+        <>
+        <SignInCheck/>
         <LayoutChildren>
           {children}
         </LayoutChildren>
+        </>
           </ClerkProvider></body>
     </html>
   );

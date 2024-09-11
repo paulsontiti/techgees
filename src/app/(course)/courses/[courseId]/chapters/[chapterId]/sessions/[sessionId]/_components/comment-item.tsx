@@ -16,7 +16,7 @@ function CommentItem({ comment }: { comment: Comment }) {
   });
   if (!user)
     return (
-      <div className="flex items-start gap-x-2 mb-4">
+      <div className="flex items-start gap-x-2 mb-4 bg-slate-100 p-2">
         <UserDp imgUrl="" initials="TG" />
         <div>
           <p className="text-sm font-semibold">Anonymous</p>
@@ -25,7 +25,7 @@ function CommentItem({ comment }: { comment: Comment }) {
       </div>
     );
   return (
-    <div className="flex items-start gap-x-2 mb-4">
+    <div className="flex items-start gap-x-2 mb-4 bg-slate-100 p-2" >
       <UserDp
         imgUrl={user?.imageUrl!}
         initials={`${user?.firstName.slice(0)}${user?.lastName.slice(0)}`}

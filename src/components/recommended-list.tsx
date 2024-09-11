@@ -7,7 +7,6 @@ import { getPrerequisiteCourses } from '../../actions/getPreRequisiteCourses'
 import { getChildrenCourses } from '../../actions/getChildrenCourses'
 import { getCourseRecommendedCourses } from '../../actions/getCourseRecommendedCourses'
 import ErrorPage from './error'
-import ErrorBoundary from './error-boundary'
 
 
 function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] }) {
@@ -17,7 +16,7 @@ function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] 
     No recommended course found
   </div>
   return (
-      <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+      <div className='grid gap-2  lg:grid-cols-2 xl:grid-cols-3'>
         {courses.map(async (course, index) => {
           if (course === null) return <div key={index}>No course</div>
           const courseId = course.id

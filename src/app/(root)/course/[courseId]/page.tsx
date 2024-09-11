@@ -136,8 +136,8 @@ async function CourseIdPage({
 
 
   return (
-    <div className="px-4">
-
+    <div className=" flex items-center justify-center">
+<div className="px-4 md:w-[700px] xl:w-[900px]">
       <div className="mt-8">
         <Breadcrumb>
           <BreadcrumbList>
@@ -164,8 +164,8 @@ async function CourseIdPage({
                   <div key={cat.id}>
                     <BreadcrumbItem>
                       <DropdownMenu>
-                        <DropdownMenuTrigger className="text-xs flex">
-                          <div className="text-sky-500"> {cat.name}</div>
+                        <DropdownMenuTrigger className=" flex items-center">
+                          <div className="text-sky-500 text-xs xl:text-sm"> {cat.name}</div>
                           {Array.isArray(courses) && courses.length > 0 && (
                             <ChevronDown className="h-4 w-4" />
                           )}
@@ -192,7 +192,7 @@ async function CourseIdPage({
         </Breadcrumb>
       </div>
       <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-      <h2 className="mt-2 text-md font-medium">{course?.subTitle}</h2>
+      <h2 className="mt-2 text-md font-medium w-2/3">{course?.subTitle}</h2>
 
 
       <StatInfo
@@ -209,22 +209,22 @@ async function CourseIdPage({
 
             return <div key={wtl.id} className="flex items-start my-2 gap-2">
               <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-              <div className="text-xs">{wtl.text}</div>
+              <div className="text-xs md:text-sm">{wtl.text}</div>
             </div>
           })}
         </div>
       }
       {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
-        <Card className="mt-4">
+        <Card className="mt-4 md:w-2/3">
           <CardHeader className="text-xl font-bold">
             Benefits of taking this course
           </CardHeader>
-          <CardContent className="flex md:flex-row flex-col">
+          <CardContent className="flex flex-col">
             {course?.courseBenefits.map((benefit) => {
               return (
                 <div key={benefit.id} className="flex items-start my-2 gap-2">
                   <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-                  <div className="text-xs">{benefit.text}</div>
+                  <div className="text-xs md:text-sm">{benefit.text}</div>
                 </div>
               );
             })}
@@ -232,7 +232,7 @@ async function CourseIdPage({
         </Card>}
       <div className="mt-8">
         <h1 className="text-xl font-bold">Course content</h1>
-        <div className="mt-4 flex items-center gap-x-2 text-xs">
+        <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
           {childrenCourses.length > 0 && (
             <div className="flex items-center gap-x-1">
               {childrenCourses.length} courses
@@ -262,11 +262,11 @@ async function CourseIdPage({
         <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
         {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course) => {
           return <Link href={`/course/${course.id}`}
-            className="text-xs" key={course.id}>
+            className="text-xs md:text-sm" key={course.id}>
             {course.title}
           </Link>
         }) :
-          <p className="text-xs">None</p>}
+          <p className="text-xs md:text-sm">None</p>}
       </div>
 
       <div>
@@ -277,7 +277,7 @@ async function CourseIdPage({
               recommendedCourses.map((course,index) => {
                 return <Button size="sm" variant="outline" key={index}>
                   <Link
-                    className="text-xs" href={`/course/${course.id}`} key={course.id}>
+                    className="text-xs md:text-sm" href={`/course/${course.id}`} key={course.id}>
                     {course.title}
                   </Link>
                 </Button>
@@ -285,7 +285,7 @@ async function CourseIdPage({
               })
             }
           </div> :
-          <p className="text-xs">None</p>}
+          <p className="text-xs md:text-sm">None</p>}
       </div>
 
       <h1 className="text-lg font-semibold mt-8">Description</h1>
@@ -298,7 +298,7 @@ async function CourseIdPage({
           return <CommentItem comment={comment} key={index}/>
         })}
       </div>
-    </div>
+    </div></div>
   );
 }
 

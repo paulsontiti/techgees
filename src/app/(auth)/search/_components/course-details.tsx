@@ -5,7 +5,7 @@ import { getPrerequisiteCourses } from '../../../../../actions/getPreRequisiteCo
 import { getChildrenCourses } from '../../../../../actions/getChildrenCourses'
 import { getCourseRecommendedCourses } from '../../../../../actions/getCourseRecommendedCourses'
 import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
-import Banner from '@/components/banner'
+
 import ErrorPage from '@/components/error'
 
 
@@ -15,7 +15,7 @@ function CourseDetails(
     }
 ) {
   return (
-    <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+    <div className='grid gap-2 lg:grid-cols-2'>
     {courses.map(async(course,index)=>{
       if(!course) return null
 
