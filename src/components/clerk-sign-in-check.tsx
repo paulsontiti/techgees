@@ -6,13 +6,13 @@ import toast from 'react-hot-toast';
 
 
 export default function SignInCheck() {
-  const {isLoaded,isSignedIn} = useUser()
+  const {isLoaded,user} = useUser()
 
   React.useEffect(()=>{
-if(isLoaded && !isSignedIn){
+if(isLoaded && !user){
   toast.error("You are not signed in")
 }
-  },[isSignedIn])
+  },[user,isLoaded])
 
  return (
    <>

@@ -140,7 +140,9 @@ if (ratingError)
       />
       
           <Separator/>
-          {!userProgress?.isCompleted || !session.questions.length && <SessionTest questions={session.questions} sessionId={sessionId}/>}
+          {!!userProgress?.isCompleted || 
+          !!session.questions.length && 
+          <SessionTest questions={session.questions} sessionId={sessionId}/>}
       </div>
     </div>
   );

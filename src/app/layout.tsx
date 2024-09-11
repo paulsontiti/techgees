@@ -27,7 +27,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-const {userId} = auth()
 
   return (
     <html lang="en">
