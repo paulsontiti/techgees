@@ -79,7 +79,6 @@ function PriceForm({email,courseId,chapterId}:{
 
  
   return (
-   <ErrorBoundary>
      <div
       className="border bg-slate-100 rounded-md p-4 w-[350px]"
     >
@@ -120,7 +119,6 @@ function PriceForm({email,courseId,chapterId}:{
         </Form>
 
     </div>
-   </ErrorBoundary>
   );
 }
 
