@@ -98,7 +98,7 @@ function PriceForm({email,courseId,chapterId}:{
                     <FormControl>
                       <Input
                       type="number"
-                      step={10000}
+                      step={10}
                         disabled={isSubmitting}
                         placeholder='e.g. "20000"'
                         {...field}
