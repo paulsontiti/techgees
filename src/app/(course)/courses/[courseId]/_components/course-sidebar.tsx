@@ -9,10 +9,11 @@ import PaymentProgress from "@/components/paymentProgress";
 import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
 import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
-import Banner from "@/components/banner";
 import { hasLikedCourse } from "../../../../../../actions/hasLikedCourse";
 import { hasDisLikedCourse } from "../../../../../../actions/hasDisLikedCourse";
 import { hasRatedCourse } from "../../../../../../actions/hasRatedCourse";
+import { getTotalAmountPaidForCourse } from "../../../../../../actions/getTotalAmountPaidForCourse";
+import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -54,13 +55,15 @@ async function CourseSidebar({
   );
   if (ratedError) return  <ErrorPage name={ratedError.name}/>;
 
+
+
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="p-8 flex flex-col border-b">
         <div className="flex items-center justify-between">
           <div className="flex items-center ">
             <h1 className="font-semibold">{course.title}</h1>
-            <PaymentProgress value={purchasePercentage} size="sm" />
+            <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!}/>
           </div>
           <CourseActioDropdownMenu 
           courseId={course.id}

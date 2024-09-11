@@ -1,7 +1,6 @@
-"use client"
 
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export const CourseEnrollButton = (
     {courseId,label,chapterId}:{
@@ -10,15 +9,14 @@ export const CourseEnrollButton = (
         chapterId:string
     }
 )=>{
-
-    const router = useRouter()
+  
+    
 
     return <Button
-    onClick={()=>{
-        router.push(`/payment/${courseId}/chapters/${chapterId}`)
-    }}
     size="sm"
     className="w-full md:w-auto">
+        <Link href={`/payment/${courseId}/chapters/${chapterId}`}>
         {label}
+        </Link>
     </Button>
 }

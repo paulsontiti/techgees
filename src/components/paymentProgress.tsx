@@ -3,6 +3,7 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 import ErrorBoundary from './error-boundary'
+import { formatPrice } from '@/lib/format'
 
 const colorByVariant = {
     default: "text-sky-700",
@@ -15,14 +16,13 @@ const sizeByVariant = {
 }
 
 function PaymentProgress({
-    value, variant, size
+    value, variant, size,amountPaid
 }: {
     variant?: "default" | "success",
-    value: number,
+    value: number,amountPaid:number,
     size?: "default" | "sm"
 }) {
     return (
-        <ErrorBoundary>
             <div>
 
                 <p className={cn(
@@ -31,9 +31,9 @@ function PaymentProgress({
                     sizeByVariant[size || "default"]
                 )}>
                     {Math.round(value)}% paid
+                    {`(${formatPrice(amountPaid)})`}
                 </p>
             </div>
-        </ErrorBoundary>
     )
 }
 

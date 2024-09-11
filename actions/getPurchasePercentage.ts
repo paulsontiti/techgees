@@ -11,7 +11,6 @@ Promise<ReturnValue>=>{
         const {totalAmountPaid,error} = await getTotalAmountPaidForCourse(userId,courseId)
   if(error) throw new Error(error.message)
 
-
   const purchasePercentage = (totalAmountPaid/coursePrice!) * 100
       return {purchasePercentage,error:null}
     }catch(error:any){

@@ -20,6 +20,8 @@ import { getChapterStudentsCount } from "../../../../../../../actions/getChapter
 import { hasRatedChapter } from "../../../../../../../actions/hasRatedChapter";
 import { getChapterRating } from "../../../../../../../actions/getChapterRating";
 import Paystack from "paystack";
+import { verifyPayStackPayment } from "../../../../../../../actions/verifyPayment";
+import { updatePayment } from "../../../../../../../actions/updatePayment";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -44,14 +46,16 @@ async function ChapterIdPage({
   let payment = null;
 
   if (reference) {
-    const { paystack, error } = await getPayStackPayment(reference);
+    const { verifiedPayment, error } = await verifyPayStackPayment(reference);
+  
     if (error) return <ErrorPage name={error.name} />;
-    if (paystack) {
+    if (verifiedPayment) {
       payment = {
-        amount: paystack.amount,
-        status: paystack.payment_status,
+        amount: verifiedPayment.data.amount/100,
+        status: verifiedPayment.data.status,
       };
     }
+    await updatePayment(reference)
   }
 
   const { purchasePercentage, error: purschaseError } =
