@@ -18,7 +18,8 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
         <Navbar userId={userId ?? ""} courses={courses} categories={categories}/>
-      <main>{children}</main>
+      {children}
+     
     </div>
   );
 }

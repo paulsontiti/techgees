@@ -1,13 +1,9 @@
 "use client"
 
 import React from 'react'
-import ErrorBoundary from './error-boundary'
-
 function Footer() {
   return (
-    <ErrorBoundary>
-      <div className='mt-10'>Footer</div>
-    </ErrorBoundary>
+      <div className='h-96'>Footer</div>
   )
 }
 

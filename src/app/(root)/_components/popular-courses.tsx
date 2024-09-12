@@ -26,11 +26,11 @@ categories
     };
 
     return (
-        <section className=" bg-sky-900 mt-4 pt-4 flex flex-col items-center justify-center">
+        <section className=" bg-sky-900 my-4 py-4 flex flex-col items-center justify-center">
             <h1 className="text-2xl font-bold text-white ">
                 Choose from popular courses</h1>
 
-            <div className="md:flex flex-col mt-10 hidden">
+            <div className="md:flex flex-col mt-10 hidden min-w-[900px] max-w-[1200px]">
                 <div  className="flex items-center gap-x-4 w-full">
                     {startIndex > 0 && (
                         <ChevronLeft
@@ -41,7 +41,7 @@ categories
                             }}
                         />
                     )}
-                    <div className="md:flex flex-row min-w-[900px] max-w-[1200px] overflow-hidden">
+                    <div className="md:flex flex-row  overflow-hidden">
                         {
                             Array.isArray(categories) && !!categories.length && categories.slice(startIndex,endIndex).map((category)=>{
 

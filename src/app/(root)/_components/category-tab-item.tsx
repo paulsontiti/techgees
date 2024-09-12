@@ -1,20 +1,31 @@
 "use client"
 import Loader from '@/components/loader'
-import { Chapter, Course } from '@prisma/client'
+import { Chapter, ComboCourses, Course, PreRequisiteCourses } from '@prisma/client'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import CourseCard from './course-card'
+import CourseDetailsCard from './course-details'
 
-type CourseType = (Course & {
-    chapters:Chapter[]
-})[]
+export type CategorytabItemCourseType = {
+    course: Course & {
+        chapters:Chapter[],
+      
 
+    },
+    childrenCourses:Course[],
+    preRequisiteCourses:Course[]
+    numberOfStudents: number;
+    numberOfRatings: number;
+    numberOfComments: number,
+    likes: number;
+    disLikes: number;
+    rating: number;
+}
 function CategoryTabItem({ categoryId }: {
     categoryId: string
 }) {
 
-    const [courses, setCourses] = useState<CourseType | null>(null)
+    const [courses, setCourses] = useState<CategorytabItemCourseType[] | null>(null)
 
     useEffect(() => {
 
@@ -26,27 +37,44 @@ function CategoryTabItem({ categoryId }: {
                     setCourses(res.data)
                 } catch (error: any) {
                     toast.error(error.message)
+                } finally {
                 }
 
             }
         )()
-    },[categoryId])
+    }, [categoryId])
     return (
         <div>
-            {!courses ? <Loader loading/> : 
-            
-            <>
-                {courses.length === 0 ? <p>No course available</p>
-            :
-            
-            <div className='flex items-center gap-x-4'>
-            {courses.map((course)=>{
+            {!courses ? <Loader loading className='text-white' /> :
 
-                return <CourseCard key={course.id} chapterLength={course.chapters.length} course={course}/>
-            })}
-            </div>
-            }
-            </>}
+                <>
+                    {courses.length === 0 ? <p className='text-white'>No course available</p>
+                        :
+
+                        <div className='flex items-center flex-wrap gap-4'>
+                            {courses.map((course) => {
+
+                                return <CourseDetailsCard
+                                    key={course.course.id}
+                                    id={course.course.id}
+                                    imageUrl={course.course.imageUrl ?? ""}
+                                    title={course.course.title}
+                                    price={course.course.price!}
+                                    chapterslength={course.course.chapters.length}
+                                    preRequisiteCourses={course.preRequisiteCourses}
+                                    childrenCourses={course.childrenCourses}
+                                    likes={course.likes}
+                                    disLikes={course.disLikes}
+                                    rating={course.rating}
+                                    numberOfComments={course.numberOfComments}
+                                    numberOfRatings={course.numberOfRatings}
+                                    numberOfStudents={course.numberOfStudents}
+                                    isCombo={Array.isArray(course.childrenCourses) && !!course.childrenCourses.length}
+                                />
+                            })}
+                        </div>
+                    }
+                </>}
         </div>
     )
 }

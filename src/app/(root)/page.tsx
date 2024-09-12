@@ -4,6 +4,7 @@ import { getCategories } from "../../../actions/getCategories";
 import HomeCarousel from "./_components/home-carousel";
 import PopularCourses from "./_components/popular-courses";
 import Achievement from "./_components/stat";
+import Footer from "@/components/footer";
 export default async function Home() {
 
   const { categories, error } = await getCategories()
@@ -13,6 +14,7 @@ export default async function Home() {
       <HomeCarousel />
       <Achievement />
       <PopularCourses categories={categories} />
+      <Footer/>
     </div>
   );
 }

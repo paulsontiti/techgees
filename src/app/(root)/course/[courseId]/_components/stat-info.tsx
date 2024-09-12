@@ -8,8 +8,6 @@ export type StatInfoProps = {
   numberOfComments: number,
   likes: number;
   disLikes: number;
-  description?: string;
-  title?: string;
   rating: number;
 };
 
