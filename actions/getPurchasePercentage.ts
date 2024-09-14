@@ -1,3 +1,4 @@
+import { db } from "@/lib/db";
 import { getTotalAmountPaidForCourse } from "./getTotalAmountPaidForCourse";
 
 type ReturnValue ={
@@ -5,13 +6,24 @@ type ReturnValue ={
   error:Error | null
 }
 
-export const getPurchasePercentage = async(courseId:string,userId:string,coursePrice:number):
+export const getPurchasePercentage = async(courseId:string,userId:string,):
 Promise<ReturnValue>=>{
     try{
         const {totalAmountPaid,error} = await getTotalAmountPaidForCourse(userId,courseId)
   if(error) throw new Error(error.message)
 
-  const purchasePercentage = (totalAmountPaid/coursePrice!) * 100
+    const coursePurchase = await db.purchase.findUnique({
+      where:{
+        courseId_userId:{
+          userId,courseId
+        }
+      },
+      select:{
+        price:true
+      }
+    })
+
+  const purchasePercentage = !!coursePurchase ? (coursePurchase.price === 0 ? 100 : (totalAmountPaid/coursePurchase.price!) * 100) : 0
       return {purchasePercentage,error:null}
     }catch(error:any){
     

@@ -4,7 +4,8 @@ import { getCategories } from "../../../actions/getCategories";
 import HomeCarousel from "./_components/home-carousel";
 import PopularCourses from "./_components/popular-courses";
 import Achievement from "./_components/stat";
-import Footer from "@/components/footer";
+import XSPopularCourses from "./_components/xs-popular-courses";
+import MDPopularCourses from "./_components/md-popular-courses";
 export default async function Home() {
 
   const { categories, error } = await getCategories()
@@ -14,7 +15,9 @@ export default async function Home() {
       <HomeCarousel />
       <Achievement />
       <PopularCourses categories={categories} />
-      <Footer/>
+      <XSPopularCourses categories={categories} />
+      <MDPopularCourses categories={categories} />
+      {/* <Footer categories={categories}/> */}
     </div>
   );
 }

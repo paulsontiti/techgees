@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import StatInfo from "../course/[courseId]/_components/stat-info";
+import { Preview } from "@/components/preview";
+import { Button } from "@/components/ui/button";
 
 type CourseDetailsCardProps = {
   id: string;
@@ -16,7 +18,6 @@ type CourseDetailsCardProps = {
   imageUrl: string;
   chapterslength: number;
   price: number;
-  preRequisiteCourses: Course[];
   childrenCourses: Course[];
   isCombo: boolean;
   numberOfStudents: number;
@@ -34,14 +35,13 @@ function CourseDetailsCard({
   chapterslength,
   price,
   isCombo,
-  preRequisiteCourses,
   childrenCourses,
   numberOfRatings,
   numberOfStudents,
   numberOfComments,
   likes,
   disLikes,
-  rating,
+  rating, description
 }: CourseDetailsCardProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -53,9 +53,9 @@ function CourseDetailsCard({
   return (
     <div
       className="
-            group hover:shadow-sm transition overflow-hidden border 
+            group hover:shadow-sm transition border 
             rounded-lg p-3 relative hover:cursor-pointer
-            bg-white min-h-[500px] max-h-[500px] w-[300px]
+            bg-white min-h-[500px] max-h-[500px] w-[350px]
         "
     >
       <PageLoader label="redirecting..." isloading={loading} />
@@ -72,7 +72,7 @@ function CourseDetailsCard({
         >
           {title}
         </div>
-        
+        <Preview value={description ?? ""} />
 
         {isCombo ? (
           <div>
@@ -100,7 +100,7 @@ function CourseDetailsCard({
             )}
           </div>
         ) : (
-          <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
+          <div className=" flex items-center gap-x-2 text-sm md:text-xs">
             <div className="flex items-center gap-x-1">
               <IconBadge size={"sm"} icon={BookOpen} />
               {chapterslength} {chapterslength > 1 ? "chapters" : "chapter"}
@@ -108,47 +108,22 @@ function CourseDetailsCard({
           </div>
         )}
 
-   <StatInfo
-   numberOfComments={numberOfComments}
-   numberOfRatings={numberOfRatings}
-   numberOfStudents={numberOfStudents}
-   likes={likes}
-   disLikes={disLikes}
-   rating={rating}
-   />
-          <p
-            className="text-md md:text-sm  mt-8 font-bold
-           text-slate-700"
-          >
-            {formatPrice(price)}
-          </p>
-       
+        <StatInfo
+          numberOfComments={numberOfComments}
+          numberOfRatings={numberOfRatings}
+          numberOfStudents={numberOfStudents}
+          likes={likes}
+          disLikes={disLikes}
+          rating={rating}
+        />
+        <div className="absolute bottom-2 w-11/12">
+          <div className="flex items-center justify-between">
+            <Button variant="outline" size="sm"> {formatPrice(price)}</Button>
+            <Button size="sm">View more</Button>
+          </div>
+        </div>
 
-        {Array.isArray(preRequisiteCourses) &&
-          preRequisiteCourses.length > 0 && (
-            <div>
-              <h2
-                className="text-md md:text-sm italic mt-2 
-                group-hover:text-sky-700 transition line-clamp-2"
-              >
-                Pre-requisites:
-              </h2>
-              <div className="flex flex-wrap">
-                {preRequisiteCourses.map((course) => {
-                  return (
-                    <span
-                      key={course.id}
-                      className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
-                    >
-                      {course.title}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          )}
 
-    
       </div>
     </div>
   );

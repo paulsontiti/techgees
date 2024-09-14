@@ -8,7 +8,6 @@ import { Preview } from "@/components/preview";
 import { CourseEnrollButton } from "./_components/enroll-button";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/format";
-import { getPayStackPayment } from "../../../../../../../actions/getPayStackPayment";
 import { getPurchasePercentage } from "../../../../../../../actions/getPurchasePercentage";
 import ChapterComments from "./_components/comments";
 import { getChapterLikesCount } from "../../../../../../../actions/getChapterLikesCount";
@@ -19,9 +18,9 @@ import { hasDisLikedChapter } from "../../../../../../../actions/hasDisLikedChap
 import { getChapterStudentsCount } from "../../../../../../../actions/getChapterStudentsCount";
 import { hasRatedChapter } from "../../../../../../../actions/hasRatedChapter";
 import { getChapterRating } from "../../../../../../../actions/getChapterRating";
-import Paystack from "paystack";
 import { verifyPayStackPayment } from "../../../../../../../actions/verifyPayment";
 import { updatePayment } from "../../../../../../../actions/updatePayment";
+import { getCoursePurchase } from "../../../../../../../actions/getCoursePurchase";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -59,12 +58,11 @@ async function ChapterIdPage({
   }
 
   const { purchasePercentage, error: purschaseError } =
-    await getPurchasePercentage(courseId, userId, course.price!);
+    await getPurchasePercentage(courseId, userId);
   if (purschaseError)
     return <ErrorPage name={purschaseError.name} />;
 
   const isLocked = !chapter.isFree && purchasePercentage === 0;
-  const completeOnEnd = purchasePercentage === 0 && !userProgress?.isCompleted;
 
   const { numberOfLikes, error: likesError } = await getChapterLikesCount(
     chapterId
@@ -113,6 +111,14 @@ async function ChapterIdPage({
   if (ratingError)
     return <ErrorPage name={ratingError.name} />;
 
+  const { coursePurchase, error: purchaseError } = await getCoursePurchase(
+    courseId,userId
+  );
+  if (purchaseError)
+    return <ErrorPage name={purchaseError.name} />;
+
+  
+
   let duration = 0;
 
   chapter.sessions.map((session) => {
@@ -152,7 +158,7 @@ async function ChapterIdPage({
                 purchasePercentage === 0
                   ? `Enroll for ${formatPrice(course.price!)}`
                   : `Pay ${formatPrice(
-                      ((100 - purchasePercentage) / 100) * course.price!
+                      ((100 - purchasePercentage) / 100) * (!!coursePurchase ? coursePurchase?.price! : course.price!)
                     )}`
               }
             />

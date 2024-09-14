@@ -13,7 +13,6 @@ export type CategorytabItemCourseType = {
 
     },
     childrenCourses:Course[],
-    preRequisiteCourses:Course[]
     numberOfStudents: number;
     numberOfRatings: number;
     numberOfComments: number,
@@ -31,6 +30,7 @@ function CategoryTabItem({ categoryId }: {
 
         (
             async () => {
+                setCourses(null)
                 try {
                     const res = await axios.get(`/api/categories/courses/${categoryId}`)
 
@@ -51,7 +51,7 @@ function CategoryTabItem({ categoryId }: {
                     {courses.length === 0 ? <p className='text-white'>No course available</p>
                         :
 
-                        <div className='flex items-center flex-wrap gap-4'>
+                        <div className='flex items-center justify-center flex-wrap gap-4'>
                             {courses.map((course) => {
 
                                 return <CourseDetailsCard
@@ -59,9 +59,9 @@ function CategoryTabItem({ categoryId }: {
                                     id={course.course.id}
                                     imageUrl={course.course.imageUrl ?? ""}
                                     title={course.course.title}
+                                    description={course.course.description ?? ""}
                                     price={course.course.price!}
                                     chapterslength={course.course.chapters.length}
-                                    preRequisiteCourses={course.preRequisiteCourses}
                                     childrenCourses={course.childrenCourses}
                                     likes={course.likes}
                                     disLikes={course.disLikes}

@@ -22,7 +22,7 @@ function CategoryTabData({categories,tab}:{
     })
     
   return (
-    <div className="mt-8 flex items-center">
+    <div className="mt-8 flex items-center justify-center">
     {TabDataContent.find((data) => data.name === tab)?.content}
 </div>
   )

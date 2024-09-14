@@ -22,7 +22,7 @@ function StatInfo({
   return (
     <div
       className="flex items-center gap-x-2
-     mt-4 w-[350px] md:w-[400px]"
+      w-[350px] md:w-[400px]"
     >
       <div className="flex items-center ">
         <Rating rating={rating} />

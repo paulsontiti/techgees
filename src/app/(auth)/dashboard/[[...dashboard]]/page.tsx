@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 import ErrorPage from '@/components/error'
 import { getInProgressCourses } from '../../../../../actions/getInProgressCourses'
 import { getCompletedCourses } from '../../../../../actions/getCompletedCourses'
-import { getRecommendedCourses } from '../../../../../actions/getRecommendedCourses'
 
 import DashboardComponent from './_components/dashboard-component'
 
@@ -20,8 +19,7 @@ async function DashboardPage() {
   const { courses: completedCourses, error: errorCompleted } =
     await getCompletedCourses(userId)
 
-  const { recommendedCourses, error: errorRecommendedCourses } = await getRecommendedCourses()
-  if (errorRecommendedCourses) return <ErrorPage name={errorRecommendedCourses.name} />
+
 
   const courses = [...inProgress, ...completedCourses]
 
@@ -35,7 +33,6 @@ async function DashboardPage() {
     inProgress={inProgress.length}
     completed={completedCourses.length}
     courses={courses}
-    recommendedCourses={recommendedCourses}
     />
   )
 }

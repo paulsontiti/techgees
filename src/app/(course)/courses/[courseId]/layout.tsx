@@ -34,7 +34,7 @@ async function CourseLayout({
 
  
 
-  const {purchasePercentage,error:purschaseError} = await getPurchasePercentage(courseId,userId,course.price!)
+  const {purchasePercentage,error:purschaseError} = await getPurchasePercentage(courseId,userId)
   if (purschaseError) return <ErrorPage name={purschaseError.name} />;
 
   return (

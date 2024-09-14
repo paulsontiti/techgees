@@ -1,15 +1,14 @@
 "use client";
-import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { ReactNode, useState, useTransition } from "react";
+import React, {useState, useTransition } from "react";
 import { Category } from "@prisma/client";
-import { Button } from "@/components/ui/button";
 import CategoryTabData from "./category-tab-data";
+import { TabButton } from "./popular-courses";
 
 
 
 
-function PopularCourses({
+function MDPopularCourses({
 categories
 }:{
     categories:Category[]
@@ -17,7 +16,7 @@ categories
     const [tab, setTab] = useState(categories[0].name);
     const [isPending, startTransition] = useTransition();
     const [startIndex, setStartIndex] = useState(0);
-    const [endIndex, setEndIndex] = useState(4);
+    const [endIndex, setEndIndex] = useState(3);
 
     const handleTabChange = (id: string) => {
         startTransition(() => {
@@ -26,12 +25,12 @@ categories
     };
 
     return (
-        <section className=" bg-sky-800 mt-4 py-4 hidden xl:flex flex-col items-center justify-center">
+        <section className=" bg-sky-900 my-4 py-4 px-2 md:flex flex-col items-center justify-center hidden xl:hidden">
             <h1 className="text-2xl font-bold text-white ">
                 Choose from popular courses</h1>
 
-            <div className="flex flex-col  mt-10 min-w-[1200px] max-w-[1200px]">
-                <div  className="flex items-center justify-center gap-x-4 w-full">
+            <div className="flex flex-col mt-10">
+                <div  className="flex items-center justify-center gap-x-1 w-full p-x2">
                     {startIndex > 0 && (
                         <ChevronLeft
                             className="w-8 h-8 text-white cursor-pointer"
@@ -76,43 +75,5 @@ categories
         </section>
     );
 };
-export default PopularCourses;
+export default MDPopularCourses;
 
-export function TabButton({
-    active,
-    selectTab,
-    children,
-    child,
-}: {
-    active: boolean;
-    selectTab: () => void;
-    children: ReactNode;
-    child?: boolean;
-}) {
-    const buttonClass = active
-        ? "text-white "
-        : `text-sky-500`;
-
-    const variants = {
-        default: { width: 0 },
-        active: {
-            width: "calc(100% - 0.75rem)",
-        },
-    };
-    return (
-        <Button onClick={selectTab} className="mr-3"
-        variant={`${active ? "default": "outline"}`}
-        >
-            <p
-                className={`mr-1 hover:text-emerald-500 rounded-full ${buttonClass}`}
-            >
-                {children}
-            </p>
-            <motion.div
-                variants={variants}
-                animate={active ? "active" : "default"}
-                className="h-1 bg-primary-500 mt-2 mr-3"
-            ></motion.div>
-        </Button>
-    );
-}

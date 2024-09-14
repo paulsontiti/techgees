@@ -45,7 +45,6 @@ let returnValue:CategorytabItemCourseType[] = []
         const {averageRating} = await getCourseRating(course.id)
         const {numberOfRatings} = await getCourseNumberOfRatings(course.id)
         const {numberOfStudents} = await getCourseStudentsCount(course.id)
-        const {preRequisiteCourses} = await getPrerequisiteCourses(course.id)
         const {childrenCourses} = await getChildrenCourses(course.id)
 
         const courseToReturn:CategorytabItemCourseType =  {
@@ -56,7 +55,6 @@ let returnValue:CategorytabItemCourseType[] = []
             numberOfRatings,
             numberOfStudents,
             rating:averageRating,
-            preRequisiteCourses,
             childrenCourses
 
         }

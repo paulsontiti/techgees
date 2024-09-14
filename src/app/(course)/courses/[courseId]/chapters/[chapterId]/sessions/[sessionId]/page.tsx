@@ -14,7 +14,6 @@ import { getSessionLikesCount } from "../../../../../../../../../actions/getSess
 import { getSessionDisLikesCount } from "../../../../../../../../../actions/getSessionDisLikesCount";
 import { hasLikedSession } from "../../../../../../../../../actions/hasLikedSession";
 import { hasDisLikedSession } from "../../../../../../../../../actions/hasDisLikedSession";
-import { getSessionCommentsCount } from "../../../../../../../../../actions/getSessionCommentsCount";
 import { getSessionComments } from "../../../../../../../../../actions/getSessionComments";
 import { getSessionRating } from "../../../../../../../../../actions/getSessionRating";
 import { hasRatedSession } from "../../../../../../../../../actions/hasRatedSession";
@@ -81,6 +80,7 @@ if (ratingError)
   return <ErrorPage name={ratingError.name} />;
 
 
+
   return (
     <div className="mt-4">
       {userProgress?.isCompleted && (
@@ -140,8 +140,8 @@ if (ratingError)
       />
       
           <Separator/>
-          {!!userProgress?.isCompleted || 
-          !!session.questions.length && 
+          {(userProgress === null && 
+          session.questions.length > 0) && 
           <SessionTest questions={session.questions} sessionId={sessionId}/>}
       </div>
     </div>

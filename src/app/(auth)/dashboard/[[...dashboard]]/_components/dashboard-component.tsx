@@ -2,19 +2,16 @@
 import React from 'react'
 import { CheckCircle, Clock } from 'lucide-react'
 import InfoCard from '@/components/info-card'
-import RecommendedCoursesList from '@/components/recommended-list'
 import CoursesList from '@/app/(auth)/search/_components/courses-list'
 import { SearchPageCourseType } from '../../../../../../actions/getCourseWithProgressChapters'
-import { RecommendedCourseType } from '../../../../../../actions/getRecommendedCourses'
 
 function DashboardComponent(
     {
-        recommendedCourses, completed, courses, inProgress
+        completed, courses, inProgress
     }: {
         inProgress: number,
         completed: number,
         courses: SearchPageCourseType[],
-        recommendedCourses: RecommendedCourseType[]
     }
 ) {
     return (
@@ -37,10 +34,7 @@ grid grid-cols-1 sm:grid-cols-2 gap-4'>
                 </div>
                 <CoursesList courses={courses} label='You have not started or completed any course' />
             </div>
-            <div className='mt-8 p-4'>
-                <h2 className='text-2xl font-semibold mb-4'>Recommended courses</h2>
-                <RecommendedCoursesList courses={recommendedCourses ?? []} />
-            </div>
+       
         </div>
     )
 }

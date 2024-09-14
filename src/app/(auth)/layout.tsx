@@ -4,6 +4,7 @@ import Navbar from "./_components/navbar";
 import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
 
 
+
 export const metadata: Metadata = {
   title: "theglobalgenius",
   description: "theglobalgenius",
@@ -17,28 +18,33 @@ export default function AuthLayout({
 
   return (
     <div className="h-full">
-   
+
       <SignedOut>
-        <SignIn/>
+        <SignIn />
       </SignedOut>
-     
-     <SignedIn>
-     <UserButton />
-        <div className="h-[80px] md:pl-[250px] fixed inset-y-0 w-full z-50">
-          <Navbar />
+
+      <SignedIn>
+        <UserButton />
+        <div>
+          <div className="h-[100px] fixed inset-y-0 w-full z-50">
+            
+            <Navbar />
+          </div>
+          <div className="flex mt-[100px]">
+            <div
+              className="hidden md:flex w-[350px] inset-y-0 z-50"
+            >
+              <Sidebar />
+            </div>
+            <main className="">{children}</main>
+          </div>
         </div>
-        <div
-          className="hidden md:flex h-full w-[250px]
-    flex-col fixed inset-y-0 z-50"
-        >
-          <Sidebar />
-        </div>
-        <main className="md:pl-[250px] h-full mt-[80px]">{children}</main>
-     </SignedIn>
-     
-  
-        
-     
+        {/* <Footer /> */}
+      </SignedIn>
+
+
+
+
     </div>
   );
 }

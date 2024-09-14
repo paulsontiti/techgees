@@ -34,7 +34,7 @@ function SessionTest({ questions, sessionId }: {
     setProcessedScore(true)
     try {
       await axios.post(`/api/test/sessions`,
-        { sessionId, score }
+        { sessionId, score:res }
       )
       toast.success("Your score is saved")
       router.refresh()
@@ -60,7 +60,7 @@ function SessionTest({ questions, sessionId }: {
               <Loader loading={submitting} />
             </Button>
             {processsedScore &&
-              <div className={`p-2 ${score > 6 ? "bg-emerald-500" : "bg-red-500"}`}>{`Your score is ${score}`}</div>}
+              <div className={`p-2 mt-2 ${score > 6 ? "bg-emerald-500" : "bg-red-500"}`}>{`Your score is ${score}`}</div>}
 
           </AccordionContent>
         </AccordionItem>
