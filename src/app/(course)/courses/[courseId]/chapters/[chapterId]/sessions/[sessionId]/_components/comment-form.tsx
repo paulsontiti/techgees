@@ -15,74 +15,74 @@ import { Editor } from '@/components/editor'
 
 
 const formSchema = zod.object({
-    comment:zod.string().min(1,{
-        message:"comment is required"
+    comment: zod.string().min(1, {
+        message: "comment is required"
     })
 })
 
-function CommentForm({sessionId}:{sessionId:string}) {
-const router = useRouter()
+function CommentForm({ sessionId }: { sessionId: string }) {
+    const router = useRouter()
 
 
     const form = useForm<zod.infer<typeof formSchema>>({
-        resolver:zodResolver(formSchema),
-        defaultValues:{
+        resolver: zodResolver(formSchema),
+        defaultValues: {
             comment: ""
         }
     })
 
 
-    const {isSubmitting,isValid} = form.formState
+    const { isSubmitting, isValid } = form.formState
 
 
 
-    const onSubmit = async(values:zod.infer<typeof formSchema>)=>{
-        if(values.comment === "<p><br></p>") return
-        try{
-            await axios.post(`/api/comment/session/${sessionId}`,values)
+    const onSubmit = async (values: zod.infer<typeof formSchema>) => {
+        if (values.comment === "<p><br></p>") return
+        try {
+            await axios.post(`/api/comment/session/${sessionId}`, values)
             form.reset()
-        
+
             router.refresh()
-        }catch(err:any){
-            toast.error(err.message)
+        } catch (err: any) {
+            toast.error(err.message,{duration:5000})
         }
     }
-  return (
-    <div className='mt-6 
+    return (
+        <div className='mt-6 
     border bg-slate-100 rounded-md p-4'>
-       <Form {...form}>
-<form 
-onSubmit={form.handleSubmit(onSubmit)}
-className='space-y-4 mt-4'
->
-<FormField 
-control={form.control}
-name='comment'
-render={({field})=>{
-    return   <FormItem>
-          <FormLabel>Add a comment</FormLabel>
-          <FormControl>
-              <Editor
-             
-              {...field}
-              />
-          </FormControl>
-          <FormDescription>What do you think about this session</FormDescription>
-          <FormMessage/>
-      </FormItem>
-  }}
-/>
-<div className='flex items-center gap-x-2'>
-                        
-                           <Button
-                        type='submit'
-                       disabled={!isValid || isSubmitting}
-                        >Send <Loader loading={isSubmitting}/></Button>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className='space-y-4 mt-4'
+                >
+                    <FormField
+                        control={form.control}
+                        name='comment'
+                        render={({ field }) => {
+                            return <FormItem>
+                                <FormLabel>Add a comment</FormLabel>
+                                <FormControl>
+                                    <Editor
+
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormDescription>What do you think about this session</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        }}
+                    />
+                    <div className='flex items-center gap-x-2'>
+
+                        <Button
+                            type='submit'
+                            disabled={!isValid || isSubmitting}
+                        >Send <Loader loading={isSubmitting} /></Button>
                     </div>
-</form>
-        </Form> 
-    </div>
-  )
+                </form>
+            </Form>
+        </div>
+    )
 }
 
 export default CommentForm

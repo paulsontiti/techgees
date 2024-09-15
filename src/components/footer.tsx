@@ -48,7 +48,7 @@ function Footer({categories}:{categories:Category[]}) {
       <div className='flex flex-col gap-y-4'>
       {categories.map((category)=>{
 
-return    <Link href={`/categories/${category.id}`}>{category.name}</Link>
+return    <Link href={`/categories/${category.id}`} key={category.id}>{category.name}</Link>
 })}
       </div>
       </>

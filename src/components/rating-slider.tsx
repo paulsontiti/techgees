@@ -9,7 +9,6 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 import Loader from "./loader"
-import ErrorBoundary from "./error-boundary"
 
 type SliderProps = React.ComponentProps<typeof Slider>
 
@@ -32,7 +31,6 @@ export function RatingSlider({ className, url, ...props }: SliderProps & { url: 
   };
 
   return (
-    <ErrorBoundary>
       <div className="flex items-center gap-x-8 w-full">
         <Slider
           defaultValue={[1]}
@@ -52,6 +50,5 @@ export function RatingSlider({ className, url, ...props }: SliderProps & { url: 
           <Loader loading={loading} />
         </Button>
       </div>
-    </ErrorBoundary>
   )
 }

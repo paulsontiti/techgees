@@ -75,6 +75,7 @@ async function CourseSidebar({
 
         <div className="mt-10">
           <CourseProgress variant="success" value={progressPercentage} />
+          
         </div>
       </div>
       <div className="flex flex-col w-full">

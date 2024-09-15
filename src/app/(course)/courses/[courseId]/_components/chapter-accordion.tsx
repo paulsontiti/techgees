@@ -13,6 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Session } from "@prisma/client";
+import RefreshButton from "@/components/refresh-button";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -80,7 +81,10 @@ export function ChapterAccordion({
         </AccordionTrigger>
         <AccordionContent className="ml-16">
         <div>
-        <CourseProgress value={chapterProgress} variant="success"/>
+       <div className="flex items-center justify-between w-full px-4">
+       <CourseProgress value={chapterProgress} variant="success"/>
+       <RefreshButton/>
+       </div>
         {sessions.map((session) => {
           return (
            <SessionSidebarItem key={session.id}

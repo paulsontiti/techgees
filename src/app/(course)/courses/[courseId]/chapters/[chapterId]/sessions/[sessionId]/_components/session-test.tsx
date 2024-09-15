@@ -36,10 +36,10 @@ function SessionTest({ questions, sessionId }: {
       await axios.post(`/api/test/sessions`,
         { sessionId, score:res }
       )
-      toast.success("Your score is saved")
+      toast.success("Your score is saved",{duration:5000,position:"bottom-center"})
       router.refresh()
     } catch (err: any) {
-      toast.error(err.message)
+      toast.error(err.message,{duration:5000,position:"bottom-center"})
     } finally {
       setSubmitting(false)
     }
