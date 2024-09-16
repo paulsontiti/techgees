@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
+
  
 const f = createUploadthing();
  
@@ -20,6 +20,11 @@ courseImage: f({
 .onUploadComplete(()=>{}),
 
 sessionVideo: f({
+    video:{maxFileCount:1, maxFileSize:"1GB"}
+})
+.middleware(()=>handleAuth())
+.onUploadComplete(()=>{}),
+video: f({
     video:{maxFileCount:1, maxFileSize:"1GB"}
 })
 .middleware(()=>handleAuth())

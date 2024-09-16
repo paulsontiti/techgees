@@ -35,14 +35,7 @@ export const getInProgressCourses = async (
     }
    
    
-    const freeCourses = await db.course.findMany({
-      where: {
-        isFree:true
-      },include:{
-        chapters:true
-      }
-     
-    });
+  
     let courses: SearchPageCourseType[] = filteredPurchasedCourses.map(
       (course) => {
         return {
@@ -53,14 +46,6 @@ export const getInProgressCourses = async (
     );
     
    
-        for(let freeCourse of freeCourses){
-            if(freeCourse){
-
-                if(!courses.find((course)=> course?.id === freeCourse.id)){
-                    courses.push({...freeCourse,progressPercentage:0})
-                }
-            }
-        }
     for(let course of courses){
         const progress = await getCourseProgress(userId,course?.id ?? "")
         if(course !== null){

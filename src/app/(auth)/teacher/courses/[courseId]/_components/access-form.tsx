@@ -7,10 +7,8 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -20,26 +18,23 @@ import toast from "react-hot-toast";
 
 import * as zod from "zod";
 
-import { Course } from "@prisma/client";
+import {Course } from "@prisma/client";
 import { Pencil } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { formatPrice } from "@/lib/format";
 
 const formSchema = zod.object({
-  price: zod.coerce.number().min(0, {
-    message: "price is required",
-  }),
+  isFree: zod.boolean().default(false),
 });
 
-function PriceForm({ course }: { course: Course }) {
+function AccessForm({ course }: { course: Course }) {
   const [editing, setEditing] = useState(false);
   const router = useRouter();
 
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: course.price ?? 0,
+      isFree: !!course.isFree,
     },
   });
 
@@ -51,7 +46,9 @@ function PriceForm({ course }: { course: Course }) {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${course.id}`, values);
+      await axios.patch(`/api/courses/${course.id}`,
+        values
+      );
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -65,19 +62,18 @@ function PriceForm({ course }: { course: Course }) {
     border bg-slate-100 rounded-md p-4"
     >
       <div className="font-medium flex items-center justify-between">
-        Course price
+        Course access
         <Button variant="ghost" onClick={toggleEdit}>
           {editing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit price
+              Edit access
             </>
           )}
         </Button>
       </div>
-
       {editing ? (
         <Form {...form}>
           <form
@@ -86,21 +82,23 @@ function PriceForm({ course }: { course: Course }) {
           >
             <FormField
               control={form.control}
-              name="price"
+              name="isFree"
               render={({ field }) => {
                 return (
-                  <FormItem>
-                    <FormLabel>Course price</FormLabel>
+                  <FormItem
+                    className="flex flex-row items-start space-x-3 
+    space-y-0 rounded-md border p-4"
+                  >
                     <FormControl>
-                      <Input
-                      type="number"
-                      step={1000}
-                        disabled={isSubmitting}
-                        placeholder='e.g. "20000"'
-                        {...field}
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription>How much is your course</FormDescription>
+                    <FormDescription>
+                      Check this box if you want to make this course free for
+                      preview
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
@@ -114,17 +112,18 @@ function PriceForm({ course }: { course: Course }) {
           </form>
         </Form>
       ) : (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !course.price && "text-slate-500 italic"
-          )}
-        >
-          {course.price !== null ? formatPrice(course.price) : "No price"}
-        </p>
+       <div className={cn(
+        "text-sm mt-2",
+        !course.isFree && "text-slate-500 italic"
+       )}>
+{course.isFree ? <>
+This course is free for preview</> : (
+    <>This course is not for free</>
+)}
+       </div>
       )}
     </div>
   );
 }
 
-export default PriceForm;
+export default AccessForm;

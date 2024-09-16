@@ -35,12 +35,7 @@ function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] 
 
           return <CourseCard
             key={course.id}
-            id={course.id}
-            title={course.title}
-            imageUrl={course.imageUrl ?? ""}
-            progressPercentage={null}
-            price={course.price ?? 0}
-            chapterslength={course.chapters.length}
+            course={course}
             categories={categories ?? []}
 
             preRequisiteCourses={preRequisiteCourses}

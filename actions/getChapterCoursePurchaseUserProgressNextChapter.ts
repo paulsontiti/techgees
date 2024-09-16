@@ -1,8 +1,8 @@
 import { db } from "@/lib/db";
-import { Chapter, Session, UserProgress } from "@prisma/client";
+import { Chapter, Course, Session, UserProgress } from "@prisma/client";
 
 interface ReturnValue {
-  course: { price: number | null } | null;
+  course:Course | null;
   chapter: Chapter & {sessions:Session[]} | null;
   nextChapter: Chapter | null;
   userProgress: UserProgress | null;
@@ -24,10 +24,7 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
       where: {
         id: courseId,
         isPublished: true,
-      },
-      select: {
-        price: true,
-      },
+      }
     });
 
     const chapter = await db.chapter.findUnique({
@@ -55,13 +52,12 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
       });
     
 
-    const userProgress = await db.userProgress.findUnique({
+    const userProgress = await db.userProgress.findFirst({
       where: {
-        userId_chapterId: {
+       
           userId,
           chapterId,
         },
-      },
     });
 
     return {

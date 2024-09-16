@@ -6,18 +6,15 @@ import CourseProgress from "@/components/course-progress";
 import IconBadge from "@/components/icon-badge";
 import PageLoader from "@/components/page-loader";
 import { formatPrice } from "@/lib/format";
-import { Category, Course } from "@prisma/client";
+import { Category, Chapter, Course } from "@prisma/client";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { RecommendedCourseType } from "../../../../../actions/getRecommendedCourses";
 
 type CourseCardProps = {
-  id: string;
-  title: string;
-  imageUrl: string;
-  chapterslength: number;
-  price: number;
+course:RecommendedCourseType,
   progressPercentage?: number | null;
   categories: Category[];
   recommendedCourses: Course[];
@@ -26,11 +23,7 @@ type CourseCardProps = {
   isCombo: boolean;
 };
 function CourseCard({
-  id,
-  title,
-  imageUrl,
-  chapterslength,
-  price,
+course,
   progressPercentage,
   isCombo,
   categories,
@@ -42,9 +35,10 @@ function CourseCard({
   const [commenting, setCommenting] = useState(false)
   const router = useRouter();
 
+  if(!course) return null
   const onClick = () => {
     setLoading(true);
-    router.push(`/courses/${id}`);
+    router.push(`/courses/${course.id}`);
   };
   return (
     <div
@@ -59,14 +53,14 @@ function CourseCard({
         className="relative w-full aspect-video rounded-md overflow-hidden"
         onClick={onClick}
       >
-        <Image fill src={imageUrl} className="object-cover" alt={title} />
+        <Image fill src={course.imageUrl ?? ""} className="object-cover" alt={course.title} />
       </div>
       <div className="flex flex-col pt-2">
         <div
           className="text-lg md:text-base font-medium 
                 group-hover:text-sky-700 transition line-clamp-2"
         >
-          {title}
+          {course.title}
         </div>
         <div>
           <h2
@@ -119,7 +113,7 @@ function CourseCard({
           <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
             <div className="flex items-center gap-x-1">
               <IconBadge size={"sm"} icon={BookOpen} />
-              {chapterslength} {chapterslength > 1 ? "chapters" : "chapter"}
+              {course.chapters.length} {course.chapters.length > 1 ? "chapters" : "chapter"}
             </div>
           </div>
         )}
@@ -129,7 +123,7 @@ function CourseCard({
             className="text-md md:text-sm  mt-8 font-bold
            text-slate-700"
           >
-            {formatPrice(price)}
+            {formatPrice(course.price!)}
           </p>
         ) : (
           <CourseProgress
@@ -192,7 +186,7 @@ function CourseCard({
           }}>
           Add a comment
         </span>
-        {commenting && <CommentForm courseId={id} />}
+        {commenting && <CommentForm courseId={course.id} />}
       </div>
     </div>
   );

@@ -52,12 +52,10 @@ export const getSessionAttachmentsNextSessionuserprogress = async({
             }
         })
 
-        const userProgress = await db.userProgress.findUnique({
+        const userProgress = await db.userProgress.findFirst({
             where:{
-                userId_sessionId:{
                     userId,sessionId
                 }
-            }
         })
         return {nextSession,userProgress,
             attachments,session,error:null}

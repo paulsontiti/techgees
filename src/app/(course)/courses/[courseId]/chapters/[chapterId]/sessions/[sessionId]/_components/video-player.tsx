@@ -35,7 +35,7 @@ function VideoPlayer({
                 controls
             className='w-full'
             title={session.title}
-               
+               controlsList="nodownload"
                 onEnded={()=>{}}
                 />
         

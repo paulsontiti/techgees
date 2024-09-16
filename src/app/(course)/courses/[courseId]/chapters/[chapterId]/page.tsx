@@ -46,11 +46,11 @@ async function ChapterIdPage({
 
   if (reference) {
     const { verifiedPayment, error } = await verifyPayStackPayment(reference);
-  
+
     if (error) return <ErrorPage name={error.name} />;
     if (verifiedPayment) {
       payment = {
-        amount: verifiedPayment.data.amount/100,
+        amount: verifiedPayment.data.amount / 100,
         status: verifiedPayment.data.status,
       };
     }
@@ -78,7 +78,7 @@ async function ChapterIdPage({
     chapterId
   );
   if (commentsError)
-    return   <ErrorPage name={commentsError.name} />;
+    return <ErrorPage name={commentsError.name} />;
 
   const { hasLiked, error: hasLikedError } = await hasLikedChapter(
     chapterId,
@@ -97,7 +97,7 @@ async function ChapterIdPage({
   const { numberOfStudents, error: studentsError } =
     await getChapterStudentsCount(chapterId);
   if (studentsError)
-    return  <ErrorPage name={studentsError.name} />;
+    return <ErrorPage name={studentsError.name} />;
 
   const { hasRated, error: ratedError } = await hasRatedChapter(
     chapterId,
@@ -112,12 +112,12 @@ async function ChapterIdPage({
     return <ErrorPage name={ratingError.name} />;
 
   const { coursePurchase, error: purchaseError } = await getCoursePurchase(
-    courseId,userId
+    courseId, userId
   );
   if (purchaseError)
     return <ErrorPage name={purchaseError.name} />;
 
-  
+
 
   let duration = 0;
 
@@ -130,9 +130,8 @@ async function ChapterIdPage({
       {payment && (
         <Banner
           variant={payment.status === "success" ? "success" : "warning"}
-          label={`You payment of ${formatPrice(payment.amount)} is ${
-            payment.status === "success" ? "successful" : "been processed"
-          }`}
+          label={`You payment of ${formatPrice(payment.amount)} is ${payment.status === "success" ? "successful" : "been processed"
+            }`}
         />
       )}
       {userProgress?.isCompleted && (
@@ -150,32 +149,39 @@ async function ChapterIdPage({
       >
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
           <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
-          {purchasePercentage !== 100 && (
-            <CourseEnrollButton
-              courseId={courseId}
-              chapterId={chapterId}
-              label={
-                purchasePercentage === 0
-                  ? `Enroll for ${formatPrice(course.price!)}`
-                  : `Pay ${formatPrice(
+          {!course.isFree && <>
+            {purchasePercentage !== 100 && (
+              <CourseEnrollButton
+                courseId={courseId}
+                chapterId={chapterId}
+                label={
+                  purchasePercentage === 0
+                    ? `Enroll for ${formatPrice(course.price!)}`
+                    : `Pay ${formatPrice(
                       ((100 - purchasePercentage) / 100) * (!!coursePurchase ? coursePurchase?.price! : course.price!)
                     )}`
-              }
-            />
-          )}
+                }
+              />
+            )}</>}
         </div>
         <Separator />
         <div>
           <Preview value={chapter.description ?? ""} />
         </div>
-        <div className="flex items-center gap-x-2 font-semibold italic">
-          <div className="flex items-center gap-x-1">
-            {chapter.sessions.length} sessions
+        <div className="flex items-center justify-center gap-x-2 font-semibold italic bg-slate-100 py-4">
+          <div className="flex items-center gap-x-1 bg-sky-200 px-2 py-1  rounded-full">
+            {chapter.sessions.length} {`${chapter.sessions.length === 1 ? "session" : "sessions"}`}
           </div>
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-1 bg-sky-200 px-2 py-1  rounded-full">
             {duration} mins(total length)
           </div>
         </div>
+
+        <video
+        src={course.overviewVideoUrl ?? ""}
+        controls
+        title={course.title ?? ""}
+        />
         <ChapterComments
           chapterId={chapterId}
           numberOfDisLikes={numberOfDisLikes}

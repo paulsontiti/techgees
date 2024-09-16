@@ -2,10 +2,7 @@ import { db } from "@/lib/db"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-export async function GET(req:Request,
-    {params:{sessionId}}:{
-        params:{sessionId:string}
-    }
+export async function GET(req:Request
 ){
 
     try{
@@ -14,12 +11,10 @@ export async function GET(req:Request,
             return new NextResponse("Unautorized",{status:401})
         }
 
-    const userProgress = await db.userProgress.findUnique({
+    const userProgress = await db.userProgress.findFirst({
         where:{
-            userId_sessionId:{
                 userId,
-                sessionId
-            }
+                
         },select:{
             isCompleted:true
         }

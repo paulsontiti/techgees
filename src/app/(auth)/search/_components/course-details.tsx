@@ -34,12 +34,8 @@ if(recomError) return <ErrorPage name={recomError.name} key={index}/>
         
         return <CourseCard
         key={course.id}
-        id={course.id}
-        title={course.title}
-        imageUrl={course.imageUrl ?? ""}
-        price={course.price ?? 0}
+       course={course}
         progressPercentage={course.progressPercentage}
-        chapterslength={course.chapters.length}
         categories={categories ?? []}
         preRequisiteCourses={preRequisiteCourses}
         childrenCourses={childrenCourses}

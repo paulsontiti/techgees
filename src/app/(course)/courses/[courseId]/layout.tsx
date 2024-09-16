@@ -39,21 +39,21 @@ async function CourseLayout({
 
   return (
     <div className="h-full">
-      <div className="h-[80px] md:pl-96 fixed inset-y-0 w-full z-50">
+      <div className="h-[80px] md:pl-72 fixed inset-y-0 w-full z-50">
         <CourseNavbar
           course={course}
           progressPercentage={progressPercentage ?? 0}
           purchasePercentage={purchasePercentage}
         />
       </div>
-      <div className="hidden md:flex h-full w-92 flex-col fixed inset-y-0 z-50">
+      <div className="hidden md:flex h-full w-72 flex-col fixed inset-y-0 z-50">
         <CourseSidebar
           course={course}
           progressPercentage={progressPercentage ?? 0}
           purchasePercentage={purchasePercentage}
         />
       </div>
-      <main className="md:pl-96 h-full pt-[80px] pr-4 pl-4">{children}</main>
+      <main className="md:pl-72 h-full pt-[80px]">{children}</main>
     </div>
   );
 }

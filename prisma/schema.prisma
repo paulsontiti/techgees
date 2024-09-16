@@ -373,9 +373,7 @@ model UserProgress {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, chapterId])
-  @@unique([userId, sessionId])
-  @@unique([userId, courseId])
+ 
   @@index([chapterId])
   @@index([sessionId])
   @@index([courseId])

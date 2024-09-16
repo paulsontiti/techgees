@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Comment } from "@prisma/client";
 import { RatingSlider } from "@/components/rating-slider";
-import { CommentsDialog } from "../sessions/[sessionId]/_components/comments-dialog";
 import CommentForm from "./comment-form";
 import Rating from "@/app/(root)/course/[courseId]/_components/rating";
 
@@ -81,7 +80,7 @@ function ChapterComments({
 
         <Loader loading={loading} />
       </div>
-      <div className="mt-4 p-4 flex items-center gap-x-2">
+      <div className="mt-4 flex items-center gap-x-2">
         {!!numberOfLikes && (
           <div className="flex items-center gap-x-1">
             <Heart className="w-4 h-4" />
@@ -95,7 +94,7 @@ function ChapterComments({
             <span className="text-xs">{numberOfDisLikes}</span>
           </div>
         )}
-        {!!comments.length && <CommentsDialog comments={comments} />}
+      
         <Rating rating={rating} />
         {numberOfStudents > 0 && (
           <div className="flex items-center text-xs">
@@ -107,7 +106,7 @@ function ChapterComments({
         <h1 className="text-sm">Rate this chapter</h1>
         <RatingSlider url={`/api/rate/chapter/${chapterId}`}/>
       </div>}
-      <CommentForm chapterId={chapterId} />
+      <CommentForm chapterId={chapterId} comments={comments}/>
     </div>
   );
 }
