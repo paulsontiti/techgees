@@ -6,6 +6,7 @@ import { Button } from "./ui/button"
 import { LogOut } from "lucide-react"
 import SearchInput from "./search-input"
 import Link from "next/link"
+import Logo from "./logo"
 
 export const NavbarRoutes = () => {
     const pathname = usePathname()
@@ -16,7 +17,11 @@ export const NavbarRoutes = () => {
 
 
 
-    return <div className="w-full flex items-center justify-between">
+    return <div className="w-full flex items-center justify-between ">
+           <div className="p-6 hidden md:block">
+                <Logo />
+
+            </div>
         {
             isSearchPage && (
                 <div className="hidden md:block">
@@ -38,7 +43,7 @@ export const NavbarRoutes = () => {
                     Exit
                 </Link>
             ) : (
-                <Link href="/teacher/courses" className="flex items-center gapx-2">
+                <Link href="/teacher/courses" className="hidden md:flex items-center gapx-2">
                     Teacher mode
                 </Link>
             )}

@@ -27,36 +27,21 @@ export const getInProgressCourses = async (
 
     //filter repeated courses
     const filteredPurchasedCourses:any[] = []
+
     for(let purchasedcourse of purchasedCourses){
       if(!filteredPurchasedCourses.find((cou) => cou.id === purchasedcourse.course.id)){
         filteredPurchasedCourses.push(purchasedcourse.course)
       }
     }
    
-    const freeCourses = await db.userProgress.findMany({
+   
+    const freeCourses = await db.course.findMany({
       where: {
-        userId,
-        isCompleted: true,
-      },
-      select: {
-        session: {
-          select: {
-            chapter: {
-              select: {
-                course: {
-                  include: {
-                    chapters: {
-                      where: {
-                        isPublished: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+        isFree:true
+      },include:{
+        chapters:true
+      }
+     
     });
     let courses: SearchPageCourseType[] = filteredPurchasedCourses.map(
       (course) => {
@@ -71,8 +56,8 @@ export const getInProgressCourses = async (
         for(let freeCourse of freeCourses){
             if(freeCourse){
 
-                if(!courses.find((course)=> course?.id === freeCourse.session?.chapter.course.id)){
-                    courses.push({...freeCourse.session?.chapter.course!,progressPercentage:0})
+                if(!courses.find((course)=> course?.id === freeCourse.id)){
+                    courses.push({...freeCourse,progressPercentage:0})
                 }
             }
         }

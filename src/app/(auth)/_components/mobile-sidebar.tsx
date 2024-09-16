@@ -3,11 +3,9 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import React from 'react'
 import { Sidebar } from './sidebar'
-import ErrorBoundary from '@/components/error-boundary'
 
 function MobileSidebar() {
   return (
-    <ErrorBoundary>
       <Sheet>
         <SheetTrigger className='md:hidden pr-4 hover:opacity-75 transition'>
           <Menu />
@@ -17,7 +15,6 @@ function MobileSidebar() {
           <Sidebar />
         </SheetContent>
       </Sheet>
-    </ErrorBoundary>
   )
 }
 

@@ -136,169 +136,170 @@ async function CourseIdPage({
 
 
   return (
-    <div className=" flex items-center justify-center">
-<div className="px-4 md:w-[700px] xl:w-[900px]">
-      <div className="mt-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            {Array.isArray(categories) &&
-              categories.length > 0 &&
-              categories.map(async (cat) => {
-                const courseCategories = await db.courseCategory.findMany({
-                  where: {
-                    categoryId: cat.id,
-                  },
-                  include: {
-                    course: true,
-                  },
-                });
+    <div className=" flex items-center justify-center ">
+      <div className="w-[300px] md:w-[700px] xl:w-[900px]">
+        <div className="mt-8">
+          <Breadcrumb>
+            <BreadcrumbList>
+              {Array.isArray(categories) &&
+                categories.length > 0 &&
+                categories.map(async (cat) => {
+                  const courseCategories = await db.courseCategory.findMany({
+                    where: {
+                      categoryId: cat.id,
+                    },
+                    include: {
+                      course: true,
+                    },
+                  });
 
-                const courses = courseCategories.map((c) => {
-                  return {
-                    title: c.course.title,
-                    id: c.course.id,
-                  };
-                });
+                  const courses = courseCategories.map((c) => {
+                    return {
+                      title: c.course.title,
+                      id: c.course.id,
+                    };
+                  });
 
-                return (
-                  <div key={cat.id}>
-                    <BreadcrumbItem>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger className=" flex items-center">
-                          <div className="text-sky-500 text-xs xl:text-sm"> {cat.name}</div>
+                  return (
+                    <div key={cat.id}>
+                      <BreadcrumbItem>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className=" flex items-center">
+                            <div className="text-sky-500 text-xs xl:text-sm"> {cat.name}</div>
+                            {Array.isArray(courses) && courses.length > 0 && (
+                              <ChevronDown className="h-4 w-4" />
+                            )}
+                          </DropdownMenuTrigger>
                           {Array.isArray(courses) && courses.length > 0 && (
-                            <ChevronDown className="h-4 w-4" />
+                            <DropdownMenuContent align="start">
+                              {courses.map((course) => {
+                                return (
+                                  <DropdownMenuItem key={course.id}>
+                                    <BreadcrumbLink href={`/course/${course.id}`}>
+                                      {course.title}
+                                    </BreadcrumbLink>
+                                  </DropdownMenuItem>
+                                );
+                              })}
+                            </DropdownMenuContent>
                           )}
-                        </DropdownMenuTrigger>
-                        {Array.isArray(courses) && courses.length > 0 && (
-                          <DropdownMenuContent align="start">
-                            {courses.map((course) => {
-                              return (
-                                <DropdownMenuItem key={course.id}>
-                                  <BreadcrumbLink href={`/course/${course.id}`}>
-                                    {course.title}
-                                  </BreadcrumbLink>
-                                </DropdownMenuItem>
-                              );
-                            })}
-                          </DropdownMenuContent>
-                        )}
-                      </DropdownMenu>
-                    </BreadcrumbItem>
+                        </DropdownMenu>
+                      </BreadcrumbItem>
+                    </div>
+                  );
+                })}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
+        <h2 className="mt-2 text-md font-medium w-2/3">{course?.subTitle}</h2>
+
+
+        <StatInfo
+          numberOfRatings={numberOfRatings}
+          numberOfStudents={numberOfPayments}
+          numberOfComments={comments.length}
+          likes={numberOfLikes}
+          disLikes={numberOfDisLikes} rating={averageRating} />
+
+        {Array.isArray(course?.whatToLearn) && course.whatToLearn.length > 0 &&
+          <div className="mt-4">
+            <h2 className="text-lg font-semibold">What you will learn</h2>
+            {course.whatToLearn.map((wtl) => {
+
+              return <div key={wtl.id} className="flex items-start my-2 gap-2">
+                <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
+                <div className="text-xs md:text-sm">{wtl.text}</div>
+              </div>
+            })}
+          </div>
+        }
+        {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
+          <Card className="mt-4 md:w-2/3">
+            <CardHeader className="text-xl font-bold">
+              Benefits of taking this course
+            </CardHeader>
+            <CardContent className="flex flex-col">
+              {course?.courseBenefits.map((benefit) => {
+                return (
+                  <div key={benefit.id} className="flex items-start my-2 gap-2">
+                    <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
+                    <div className="text-xs md:text-sm">{benefit.text}</div>
                   </div>
                 );
               })}
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-      <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-      <h2 className="mt-2 text-md font-medium w-2/3">{course?.subTitle}</h2>
-
-
-      <StatInfo
-        numberOfRatings={numberOfRatings}
-        numberOfStudents={numberOfPayments}
-        numberOfComments={comments.length}
-        likes={numberOfLikes}
-        disLikes={numberOfDisLikes} rating={averageRating} />
-
-      {Array.isArray(course?.whatToLearn) && course.whatToLearn.length > 0 &&
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold">What you will learn</h2>
-          {course.whatToLearn.map((wtl) => {
-
-            return <div key={wtl.id} className="flex items-start my-2 gap-2">
-              <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-              <div className="text-xs md:text-sm">{wtl.text}</div>
-            </div>
-          })}
-        </div>
-      }
-      {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
-        <Card className="mt-4 md:w-2/3">
-          <CardHeader className="text-xl font-bold">
-            Benefits of taking this course
-          </CardHeader>
-          <CardContent className="flex flex-col">
-            {course?.courseBenefits.map((benefit) => {
-              return (
-                <div key={benefit.id} className="flex items-start my-2 gap-2">
-                  <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-                  <div className="text-xs md:text-sm">{benefit.text}</div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>}
-      <div className="mt-8">
-        <h1 className="text-xl font-bold">Course content</h1>
-        <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
-          {childrenCourses.length > 0 && (
+            </CardContent>
+          </Card>}
+        <div className="mt-8">
+          <h1 className="text-xl font-bold">Course content</h1>
+          <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
+            {childrenCourses.length > 0 && (
+              <div className="flex items-center gap-x-1">
+                {childrenCourses.length} courses
+              </div>
+            )}
             <div className="flex items-center gap-x-1">
-              {childrenCourses.length} courses
+              {chaptersLength} chapters
             </div>
-          )}
-          <div className="flex items-center gap-x-1">
-            {chaptersLength} chapters
+            <div className="flex items-center gap-x-1">
+              {sessionslength} sessions
+            </div>
+            <div className="flex items-center gap-x-1">{duration} mins(total length)</div>
           </div>
-          <div className="flex items-center gap-x-1">
-            {sessionslength} sessions
-          </div>
-          <div className="flex items-center gap-x-1">{duration} mins(total length)</div>
+        </div>
+        {
+          childrenCourses.length > 0 ?
+            childrenCourses.map((course, index) => {
+
+              return <CourseContentAccordion course={course} key={index} />
+            })
+            :
+            course?.chapters.map((chapter) => {
+              return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
+            })}
+
+        <div>
+          <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
+          {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course) => {
+            return <Link href={`/course/${course.id}`}
+              className="text-xs md:text-sm" key={course.id}>
+              {course.title}
+            </Link>
+          }) :
+            <p className="text-xs md:text-sm">None</p>}
+        </div>
+
+        <div>
+          <h1 className="text-lg font-semibold mt-8 mb-2">Recommended courses</h1>
+          {recommendedCourses.length > 0 ?
+            <div className="flex items-center flex-wrap gap-1">
+              {
+                recommendedCourses.map((course, index) => {
+                  return <Button size="sm" variant="outline" key={index}>
+                    <Link
+                      className="text-xs md:text-sm" href={`/course/${course.id}`} key={course.id}>
+                      {course.title}
+                    </Link>
+                  </Button>
+
+                })
+              }
+            </div> :
+            <p className="text-xs md:text-sm">None</p>}
+        </div>
+
+        <h1 className="text-lg font-semibold mt-8">Description</h1>
+        <Preview value={course?.description ?? ""}></Preview>
+
+        <div className="mt-4 border p-2 max-w-full">
+          <h1 className="text-lg font-semibold mb-2">Reviews</h1>
+          {comments.map((comment, index) => {
+
+            return <CommentItem comment={comment} key={index} />
+          })}
         </div>
       </div>
-      {
-        childrenCourses.length > 0 ?
-          childrenCourses.map((course,index) => {
-
-            return <CourseContentAccordion course={course} key={index}/>
-          })
-          :
-          course?.chapters.map((chapter) => {
-            return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
-          })}
-
-      <div>
-        <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
-        {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course) => {
-          return <Link href={`/course/${course.id}`}
-            className="text-xs md:text-sm" key={course.id}>
-            {course.title}
-          </Link>
-        }) :
-          <p className="text-xs md:text-sm">None</p>}
       </div>
-
-      <div>
-        <h1 className="text-lg font-semibold mt-8 mb-2">Recommended courses</h1>
-        {recommendedCourses.length > 0 ?
-          <div className="flex items-center flex-wrap gap-1">
-            {
-              recommendedCourses.map((course,index) => {
-                return <Button size="sm" variant="outline" key={index}>
-                  <Link
-                    className="text-xs md:text-sm" href={`/course/${course.id}`} key={course.id}>
-                    {course.title}
-                  </Link>
-                </Button>
-
-              })
-            }
-          </div> :
-          <p className="text-xs md:text-sm">None</p>}
-      </div>
-
-      <h1 className="text-lg font-semibold mt-8">Description</h1>
-      <Preview value={course?.description ?? ""}></Preview>
-
-      <div className="mt-4 border p-2">
-        <h1 className="text-lg font-semibold mb-2">Reviews</h1>
-        {comments.map((comment,index) => {
-
-          return <CommentItem comment={comment} key={index}/>
-        })}
-      </div>
-    </div></div>
   );
 }
 

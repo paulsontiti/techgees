@@ -12,7 +12,8 @@ export const getRecommendedCoursesForMobileSidebar = async (): Promise<ReturnVal
   try {
     const recommendedCourses = await db.course.findMany({
      where:{
-      isPublished:true
+      isPublished:true,
+      isFree:true
      },select:{
       id:true,
       title:true

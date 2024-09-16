@@ -10,16 +10,18 @@ datasource db {
 }
 
 model Course {
-  id            String  @id @default(uuid()) @map("_id")
-  userId        String
-  title         String
-  subTitle      String?
-  description   String?
-  imageUrl      String?
-  price         Float?
-  comboDiscount Float?
-  promoDiscount Float?
-  isPublished   Boolean @default(false)
+  id               String  @id @default(uuid()) @map("_id")
+  userId           String
+  title            String
+  subTitle         String?
+  description      String?
+  imageUrl         String?
+  overviewVideoUrl String?
+  price            Float?
+  comboDiscount    Float?
+  promoDiscount    Float?
+  isPublished      Boolean @default(false)
+   isFree      Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -44,9 +46,30 @@ model Course {
   purchases                 Purchase[]
   ratings                   Rating[]
   whatToLearn               WhatToLearn[]
-  courseBenefits             CourseBenefit[]
+  courseBenefits            CourseBenefit[]
 
   @@fulltext([title])
+}
+
+model SessionQuestion{
+   id       String @id @default(uuid()) @map("_id")
+  question String
+  answer   String?
+
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  
+}
+model SessionError{
+   id       String @id @default(uuid()) @map("_id")
+  errorMessage String
+  imageUrl String?
+
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  
 }
 
 model WhatToLearn {
@@ -165,6 +188,8 @@ model Session {
   ratings           Rating[]
 
   @@index([chapterId])
+  sessionQuestions SessionQuestion[]
+  sessionErrors SessionError[]
 }
 
 model DisLike {
@@ -297,9 +322,9 @@ model PaystackPayment {
   amount         Float
   payment_status String @default("pending")
   userId         String
-  user           User   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId       String
-  course         Course @relation(fields: [courseId], references: [id], onDelete: NoAction)
+  course         Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -323,7 +348,6 @@ model User {
   paystackPayments PaystackPayment[]
 
   @@unique([userId])
-  
 }
 
 enum Role {

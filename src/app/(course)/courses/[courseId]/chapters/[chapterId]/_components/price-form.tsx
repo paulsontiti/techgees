@@ -22,7 +22,7 @@ import Loader from "@/components/loader";
 import toast from "react-hot-toast";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(10, {
+  amount: zod.coerce.number().min(30000, {
     message: "amount is required",
   }),
 });
@@ -97,13 +97,13 @@ function PriceForm({email,courseId,chapterId}:{
                     <FormControl>
                       <Input
                       type="number"
-                      step={10}
+                      step={30000}
                         disabled={isSubmitting}
-                        placeholder='e.g. "20000"'
+                        placeholder='e.g. "30000"'
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>How much do you want to pay</FormDescription>
+                    <FormDescription>Note: You will be paying to Black Wizards Technology</FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
