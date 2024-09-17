@@ -2,7 +2,6 @@
 import React from 'react'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
-import ErrorBoundary from './error-boundary'
 
 const colorByVariant = {
     default: "text-sky-700",
@@ -22,7 +21,6 @@ function CourseProgress({
     size?: "default" | "sm"
 }) {
     return (
-        <ErrorBoundary>
             <div>
                 <Progress
                     value={value}
@@ -37,7 +35,6 @@ function CourseProgress({
                     {Math.round(value)}% complete
                 </p>
             </div>
-        </ErrorBoundary>
     )
 }
 

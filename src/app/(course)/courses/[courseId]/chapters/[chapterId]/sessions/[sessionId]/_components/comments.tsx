@@ -16,14 +16,14 @@ function SessionComments({
   numberOfDisLikes,
   comments,
   sessionId,hasDisLiked,
-  hasLiked,rating,numberOfStudents,hasRated
+  hasLiked,rating,numberOfStudents,hasRated,numberOfRatings
 }: {
   numberOfLikes: number | null;
   numberOfDisLikes: number | null;
   comments: Comment[];
   sessionId: string;
   hasLiked:boolean,hasDisLiked:boolean,
-  numberOfStudents:number,
+  numberOfStudents:number,numberOfRatings:number,
   rating:number,hasRated:boolean
 }) {
   const router = useRouter();
@@ -70,7 +70,7 @@ function SessionComments({
      
         <Loader loading={loading}/>
       </div>
-      <div className="mt-4 p-2 flex items-center gap-x-1">
+      <div className="mt-4 p-2 flex items-center gap-x-4">
         {!!numberOfLikes && (
           <div className="flex items-center gap-x-1">
             <Heart className="w-4 h-4" />
@@ -84,10 +84,8 @@ function SessionComments({
             <span className="text-xs">{numberOfDisLikes}</span>
           </div>
         )}
-        {!!comments.length && (
-         <CommentsDialog comments={comments}/>
-        )}
-         <Rating rating={rating} />
+       
+         <Rating rating={rating} numberOfRating={numberOfRatings}/>
       {numberOfStudents > 0 && (
         <div className="flex items-center text-xs">
           {numberOfStudents} {numberOfStudents === 1 ? "student" : "students"}
@@ -98,7 +96,7 @@ function SessionComments({
           <h1 className="text-sm">Rate this session</h1>
           <RatingSlider url={`/api/rate/session/${sessionId}`}/>
         </div>}
-        <CommentForm sessionId={sessionId}/>
+        <CommentForm sessionId={sessionId} comments={comments}/>
     </div>
   );
 }

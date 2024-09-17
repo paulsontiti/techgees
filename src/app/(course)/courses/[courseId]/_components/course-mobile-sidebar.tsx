@@ -1,6 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
 
-import { redirect } from 'next/navigation'
 import React from 'react'
 import { CourseChaptersUserProgressType } from '../../../../../../actions/getCourseChaptersUserProgress'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -16,8 +14,6 @@ type CourseMobileSidebarProps = {
 async function CourseMobileSidebar({
     course,progressPercentage,purchasePercentage
 }:CourseMobileSidebarProps) {
-    const { userId } = auth();
-    if (!userId) return redirect("/");
 
 
   return (

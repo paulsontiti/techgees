@@ -18,7 +18,7 @@ function ChapterComments({
   hasDisLiked,
   hasLiked,
   numberOfStudents,
-  rating,hasRated
+  rating,hasRated,numberOfRatings
 }: {
   numberOfLikes: number | null;
   numberOfDisLikes: number | null;
@@ -27,6 +27,7 @@ function ChapterComments({
   hasLiked: boolean;
   hasDisLiked: boolean;
   numberOfStudents: number;
+  numberOfRatings: number;
   rating: number;
   hasRated:boolean
 }) {
@@ -95,7 +96,7 @@ function ChapterComments({
           </div>
         )}
       
-        <Rating rating={rating} />
+        <Rating rating={rating} numberOfRating={numberOfRatings}/>
         {numberOfStudents > 0 && (
           <div className="flex items-center text-xs">
             {numberOfStudents} {numberOfStudents < 1 ? "student" : "students"}

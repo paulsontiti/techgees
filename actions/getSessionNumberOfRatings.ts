@@ -5,13 +5,13 @@ interface ReturnValue {
     error: Error | null
 }
 
-export const getChapterNumberOfRatings = async (
-    chapterId: string):
+export const getSessionNumberOfRatings = async (
+    sessionId: string):
     Promise<ReturnValue> => {
     try {
         const numberOfRatings = await db.rating.count({
             where: {
-                chapterId
+                sessionId
             }
 
         })
@@ -20,7 +20,7 @@ export const getChapterNumberOfRatings = async (
 
         return { numberOfRatings, error: null }
     } catch (error: any) {
-        console.log("[CHAPTER_NUMBER_OF_RATING]", error)
+        console.log("[SESSION_NUMBER_OF_RATING]", error)
         return { numberOfRatings: 0, error }
     }
 }

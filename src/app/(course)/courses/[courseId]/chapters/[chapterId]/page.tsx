@@ -21,6 +21,7 @@ import { getChapterRating } from "../../../../../../../actions/getChapterRating"
 import { verifyPayStackPayment } from "../../../../../../../actions/verifyPayment";
 import { updatePayment } from "../../../../../../../actions/updatePayment";
 import { getCoursePurchase } from "../../../../../../../actions/getCoursePurchase";
+import { getChapterNumberOfRatings } from "../../../../../../../actions/getChapterNumberOfRatings";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -117,7 +118,13 @@ async function ChapterIdPage({
   if (purchaseError)
     return <ErrorPage name={purchaseError.name} />;
 
+  const { numberOfRatings, error: numberRatingError } = await getChapterNumberOfRatings(
+    chapterId
+  );
+  if (numberRatingError)
+    return <ErrorPage name={numberRatingError.name} />;
 
+ 
 
   let duration = 0;
 
@@ -168,8 +175,8 @@ async function ChapterIdPage({
         <div>
           <Preview value={chapter.description ?? ""} />
         </div>
-        <div className="flex items-center justify-center gap-x-2 font-semibold italic bg-slate-100 py-4">
-          <div className="flex items-center gap-x-1 bg-sky-200 px-2 py-1  rounded-full">
+        <div className="my-2 flex items-center justify-center gap-x-2 font-semibold italic bg-slate-100 py-4">
+          <div className="flex items-center gap-x-1 bg-sky-200/80 px-2 py-1  rounded-full">
             {chapter.sessions.length} {`${chapter.sessions.length === 1 ? "session" : "sessions"}`}
           </div>
           <div className="flex items-center gap-x-1 bg-sky-200 px-2 py-1  rounded-full">
@@ -185,6 +192,7 @@ async function ChapterIdPage({
         <ChapterComments
           chapterId={chapterId}
           numberOfDisLikes={numberOfDisLikes}
+          numberOfRatings={numberOfRatings}
           numberOfLikes={numberOfLikes}
           comments={comments}
           hasDisLiked={hasDisLiked}

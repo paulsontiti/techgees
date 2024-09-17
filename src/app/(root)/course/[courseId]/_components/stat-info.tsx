@@ -25,8 +25,8 @@ function StatInfo({
       w-[350px] md:w-[400px]"
     >
       <div className="flex items-center ">
-        <Rating rating={rating} />
-        {!!numberOfRatings && <span className="text-xs">{`(${numberOfRatings} ${numberOfRatings === 1 ? "rating" : "ratings"})`}</span>}
+        <Rating rating={rating} numberOfRating={numberOfRatings}/>
+       
       </div>
       {numberOfStudents > 0 && (
         <div className="flex items-center text-xs">

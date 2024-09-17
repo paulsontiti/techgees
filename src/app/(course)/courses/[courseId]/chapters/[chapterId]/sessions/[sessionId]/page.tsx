@@ -18,6 +18,7 @@ import { getSessionComments } from "../../../../../../../../../actions/getSessio
 import { getSessionRating } from "../../../../../../../../../actions/getSessionRating";
 import { hasRatedSession } from "../../../../../../../../../actions/hasRatedSession";
 import { getSessionStudentsCount } from "../../../../../../../../../actions/getSessionStudentsCount";
+import { getSessionNumberOfRatings } from "../../../../../../../../../actions/getSessionNumberOfRatings";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -79,6 +80,11 @@ const { averageRating, error: ratingError } = await getSessionRating(
 if (ratingError)
   return <ErrorPage name={ratingError.name} />;
 
+const { numberOfRatings, error: numRatingError } = await getSessionNumberOfRatings(
+  sessionId
+);
+if (numRatingError)
+  return <ErrorPage name={numRatingError.name} />;
 
 
   return (
@@ -130,6 +136,7 @@ if (ratingError)
       <SessionComments 
       numberOfLikes={numberOfLikes}
       numberOfDisLikes={numberOfDisLikes}
+      numberOfRatings={numberOfRatings}
       comments={comments}
       sessionId={sessionId}
       hasLiked={hasLiked}

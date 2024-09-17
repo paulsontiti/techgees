@@ -12,19 +12,18 @@ import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { hasLikedCourse } from "../../../../../../actions/hasLikedCourse";
 import { hasDisLikedCourse } from "../../../../../../actions/hasDisLikedCourse";
 import { hasRatedCourse } from "../../../../../../actions/hasRatedCourse";
-import { getTotalAmountPaidForCourse } from "../../../../../../actions/getTotalAmountPaidForCourse";
-import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
   progressPercentage: number;
   purchasePercentage: number;
+  closeSheet?:React.Dispatch<React.SetStateAction<boolean>>
 };
 
 async function CourseSidebar({
   course,
   progressPercentage,
-  purchasePercentage,
+  purchasePercentage,closeSheet
 }: CourseSidebarProps) {
   const { userId } = auth();
   if (!userId) return redirect("/");
@@ -58,13 +57,10 @@ async function CourseSidebar({
 
 
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="p-8 flex flex-col border-b">
+    <div className="h-full mt-4 border-r flex flex-col overflow-y-auto shadow-sm">
+      <div className="py-8 px-2 flex flex-col border-b">
         <div className="flex items-center justify-between">
-          <div className="flex items-center ">
             <h1 className="font-semibold">{course.title}</h1>
-            <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!}/>
-          </div>
           <CourseActioDropdownMenu 
           courseId={course.id}
           hasDisLiked={hasDisLiked}
@@ -72,7 +68,7 @@ async function CourseSidebar({
           hasRated={hasRated}
           />
         </div>
-
+       {!course.isFree &&  <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!}/>}
         <div className="mt-10">
           <CourseProgress variant="success" value={progressPercentage} />
           

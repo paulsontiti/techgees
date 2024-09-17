@@ -8,9 +8,17 @@ interface ReturnValue{
 export const getChapterStudentsCount = async(chapterId:string):
 Promise<ReturnValue>=>{
     try{
+
+        const chapter = await db.chapter.findUnique({
+            where:{
+                id:chapterId
+            },include:{
+                sessions:true
+            }
+        })
 const numberOfStudents = await db.userProgress.count({
     where:{
-        chapterId,
+        sessionId:chapter?.sessions[0].id,
     }
 })
 

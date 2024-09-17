@@ -12,6 +12,8 @@ import toast from 'react-hot-toast'
 
 import * as zod from "zod"
 import { Editor } from '@/components/editor'
+import { CommentsDialog } from './comments-dialog'
+import { Comment } from '@prisma/client'
 
 
 const formSchema = zod.object({
@@ -20,7 +22,7 @@ const formSchema = zod.object({
     })
 })
 
-function CommentForm({ sessionId }: { sessionId: string }) {
+function CommentForm({ sessionId, comments }: { sessionId: string, comments: Comment[] }) {
     const router = useRouter()
 
 
@@ -44,7 +46,7 @@ function CommentForm({ sessionId }: { sessionId: string }) {
 
             router.refresh()
         } catch (err: any) {
-            toast.error(err.message,{duration:5000})
+            toast.error(err.message, { duration: 5000 })
         }
     }
     return (
@@ -60,7 +62,12 @@ function CommentForm({ sessionId }: { sessionId: string }) {
                         name='comment'
                         render={({ field }) => {
                             return <FormItem>
-                                <FormLabel>Add a comment</FormLabel>
+                                <FormLabel className='flex items-center justify-between'>
+                                   <div className='w-full'> Add a comment</div>
+                                    {!!comments.length && (
+                                        <CommentsDialog comments={comments} />
+                                    )}
+                                </FormLabel>
                                 <FormControl>
                                     <Editor
 
