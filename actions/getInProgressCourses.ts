@@ -34,23 +34,34 @@ export const getInProgressCourses = async (
       }
     }
    
-    const startedCourses = await db.userProgress.findMany({
+    const startedSessions = await db.userProgress.findMany({
       where: {
         userId,
       },
       select: {
-        course: {
-          include: {
-            chapters: true
-          },
-        },
+        session: {
+          include:{
+            chapter:{
+              include:{
+                course:{
+                  include: {
+                    chapters: true
+                  },
+                }
+              }
+            }
+          }
+        }
       },
     });
-    for(let startedCourse of startedCourses){
-
-      if(!filteredPurchasedCourses.find((cou) => cou.id === startedCourse.course?.id)){
-        filteredPurchasedCourses.push(startedCourse.course)
+   
+    for(let startedSession of startedSessions){
+      const course = startedSession.session?.chapter.course
+     if(course !== undefined){
+      if(!filteredPurchasedCourses.find((cou) => cou.id === course.id)){
+        filteredPurchasedCourses.push(course)
       }
+     }
     }
   
     let courses: SearchPageCourseType[] = filteredPurchasedCourses.map(

@@ -11,7 +11,7 @@ function MobileSidebar() {
           <Menu />
         </SheetTrigger>
         <SheetContent side="left"
-          className='p-0 bg-white'>
+          className='p-0 bg-white pt-20'>
           <Sidebar />
         </SheetContent>
       </Sheet>

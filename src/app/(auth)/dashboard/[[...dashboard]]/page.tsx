@@ -14,6 +14,7 @@ async function DashboardPage() {
 
   const { courses: inProgress, error: errorInProgress } = await getInProgressCourses(userId)
 
+
   if (errorInProgress) return <ErrorPage name={errorInProgress.name} />
 
   const { courses: completedCourses, error: errorCompleted } =
