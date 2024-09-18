@@ -24,6 +24,7 @@ export async function ChapterContentAccordion({
   };
 }) {
 
+  if(!chapter) return null
 
   
   const { numberOfStudents, error: error } = await getChapterStudentsCount(

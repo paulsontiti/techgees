@@ -90,13 +90,13 @@ export async function CourseContentAccordion({
 
         </AccordionTrigger>
         <AccordionContent>
-          {course.chapters.length > 0 && <div>
+          <div>
             {course.chapters.map((chapter) => {
               return (
                 <ChapterContentAccordion chapter={chapter} key={chapter.id} />
               );
             })}
-          </div>}
+          </div>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
