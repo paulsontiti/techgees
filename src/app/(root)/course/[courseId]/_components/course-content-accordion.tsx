@@ -7,7 +7,6 @@ import {
 import { Chapter, Course, Session } from "@prisma/client";
 import { ChapterContentAccordion } from "./chapter-content-accordion";
 import { StatInfoDialog } from "./stat-info-dialog";
-import { getCourseStudentsCount } from "../../../../../../actions/getCourseStudentsCount";
 import Banner from "@/components/banner";
 import { getCourseNumberOfRatings } from "../../../../../../actions/getCourseNumberOfRatings";
 import { getCourseRating } from "../../../../../../actions/getCourseRating";
@@ -91,13 +90,13 @@ export async function CourseContentAccordion({
 
         </AccordionTrigger>
         <AccordionContent>
-          <div>
+          {course.chapters.length > 0 && <div>
             {course.chapters.map((chapter) => {
               return (
                 <ChapterContentAccordion chapter={chapter} key={chapter.id} />
               );
             })}
-          </div>
+          </div>}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
