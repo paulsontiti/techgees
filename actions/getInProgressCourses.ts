@@ -47,7 +47,8 @@ export const getInProgressCourses = async (
       },
     });
     for(let startedCourse of startedCourses){
-      if(!filteredPurchasedCourses.find((cou) => cou.id === startedCourse.course.id)){
+
+      if(!filteredPurchasedCourses.find((cou) => cou.id === startedCourse.course?.id)){
         filteredPurchasedCourses.push(startedCourse.course)
       }
     }
