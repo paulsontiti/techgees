@@ -7,30 +7,32 @@ interface ReturnValue {
 }
 
 type CourseType = Course & {
-  whatToLearn:WhatToLearn[],
-  courseBenefits:CourseBenefit[],
+  whatToLearn: WhatToLearn[],
+  courseBenefits: CourseBenefit[],
   chapters: (Chapter & {
     sessions: Session[];
-   
+
   })[];
 };
 
 export const getFreeCourses = async (): Promise<ReturnValue> => {
   try {
     const freeCourses = await db.course.findMany({
-    
+      where: {
+        isFree: true
+      },
       include: {
-        whatToLearn:true,
-        courseBenefits:true,
+        whatToLearn: true,
+        courseBenefits: true,
         chapters: {
           include: {
-            
+
             sessions: {
               orderBy: {
                 position: "asc",
               },
             },
-            
+
           },
           orderBy: {
             position: "asc",

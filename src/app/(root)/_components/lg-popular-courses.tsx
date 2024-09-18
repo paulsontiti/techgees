@@ -8,7 +8,7 @@ import { TabButton } from "./popular-courses";
 
 
 
-function MDPopularCourses({
+function LGPopularCourses({
 categories
 }:{
     categories:Category[]
@@ -16,7 +16,7 @@ categories
     const [tab, setTab] = useState(categories[0].name);
     const [isPending, startTransition] = useTransition();
     const [startIndex, setStartIndex] = useState(0);
-    const [endIndex, setEndIndex] = useState(2);
+    const [endIndex, setEndIndex] = useState(3);
 
     const handleTabChange = (id: string) => {
         startTransition(() => {
@@ -25,7 +25,7 @@ categories
     };
 
     return (
-        <section className=" bg-sky-900 my-4 py-4 px-2 md:flex flex-col items-center justify-center hidden lg:hidden">
+        <section className=" bg-sky-900 my-4 py-4 px-2 lg:flex flex-col items-center justify-center hidden xl:hidden">
             <h1 className="text-2xl font-bold text-white ">
                 Choose from popular courses</h1>
 
@@ -75,5 +75,5 @@ categories
         </section>
     );
 };
-export default MDPopularCourses;
+export default LGPopularCourses;
 

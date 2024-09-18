@@ -25,7 +25,7 @@ categories
     };
 
     return (
-        <section className=" bg-sky-900 my-4 py-4 px-2 flex flex-col items-center justify-center sm:hidden">
+        <section className=" bg-sky-900 my-4 py-4 px-2 flex flex-col items-center justify-center md:hidden">
             <h1 className="text-2xl font-bold text-white ">
                 Choose from popular courses</h1>
 

@@ -1,6 +1,6 @@
 "use client"
 import Loader from '@/components/loader'
-import { Chapter, ComboCourses, Course, PreRequisiteCourses } from '@prisma/client'
+import { Chapter,Course } from '@prisma/client'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -59,17 +59,14 @@ function CategoryTabItem({ categoryId }: {
                                     id={course.course.id}
                                     imageUrl={course.course.imageUrl ?? ""}
                                     title={course.course.title}
-                                    description={course.course.description ?? ""}
+                                    subTitle={course.course.subTitle ?? ""}
                                     price={course.course.price!}
-                                    chapterslength={course.course.chapters.length}
-                                    childrenCourses={course.childrenCourses}
                                     likes={course.likes}
                                     disLikes={course.disLikes}
                                     rating={course.rating}
                                     numberOfComments={course.numberOfComments}
                                     numberOfRatings={course.numberOfRatings}
                                     numberOfStudents={course.numberOfStudents}
-                                    isCombo={Array.isArray(course.childrenCourses) && !!course.childrenCourses.length}
                                 />
                             })}
                         </div>

@@ -8,6 +8,7 @@ import XSPopularCourses from "./_components/xs-popular-courses";
 import MDPopularCourses from "./_components/md-popular-courses";
 import FreeCourses from "@/components/free-courses";
 import { getFreeCourses } from "../../../actions/getFreeCourses";
+import LGPopularCourses from "./_components/lg-popular-courses";
 export default async function Home() {
 
   const { categories, error } = await getCategories()
@@ -23,6 +24,7 @@ export default async function Home() {
       <PopularCourses categories={categories} />
       <XSPopularCourses categories={categories} />
       <MDPopularCourses categories={categories} />
+      <LGPopularCourses categories={categories} />
       {/* <Footer categories={categories}/> */}
     </div>
   );

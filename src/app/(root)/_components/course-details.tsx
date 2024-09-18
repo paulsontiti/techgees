@@ -1,47 +1,38 @@
 "use client";
 
-import IconBadge from "@/components/icon-badge";
 import PageLoader from "@/components/page-loader";
 import { formatPrice } from "@/lib/format";
-import { Category, ComboCourses, Course, PreRequisiteCourses } from "@prisma/client";
-import { BookOpen } from "lucide-react";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import StatInfo from "../course/[courseId]/_components/stat-info";
-import { Preview } from "@/components/preview";
 import { Button } from "@/components/ui/button";
 
 type CourseDetailsCardProps = {
   id: string;
   title: string;
   imageUrl: string;
-  chapterslength: number;
   price: number;
-  childrenCourses: Course[];
-  isCombo: boolean;
   numberOfStudents: number;
   numberOfRatings: number;
   numberOfComments: number,
   likes: number;
   disLikes: number;
-  description?: string;
   rating: number;
+  subTitle:string
 };
 function CourseDetailsCard({
   id,
-  title,
+  title,subTitle,
   imageUrl,
-  chapterslength,
   price,
-  isCombo,
-  childrenCourses,
   numberOfRatings,
   numberOfStudents,
   numberOfComments,
   likes,
   disLikes,
-  rating, description
+  rating
 }: CourseDetailsCardProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -55,26 +46,26 @@ function CourseDetailsCard({
       className="
             group hover:shadow-sm transition border 
             rounded-lg p-3 relative hover:cursor-pointer
-            bg-white min-h-[500px] max-h-[500px] w-[350px]
+            bg-white w-[350px]
         "
     >
       <PageLoader label="redirecting..." isloading={loading} />
       <div
         className="relative w-full aspect-video rounded-md overflow-hidden"
-        onClick={onClick}
+        
       >
         <Image fill src={imageUrl} className="object-cover" alt={title} />
       </div>
-      <div className="flex flex-col pt-2">
+      <div className="flex flex-col pt-2 mt-4 gap-y-2">
         <div
-          className="text-lg md:text-base font-medium 
-                group-hover:text-sky-700 transition line-clamp-2"
+          
         >
-          {title}
+          <h1 className="text-lg md:text-base font-bold mb-2">{title}</h1>
+          <p>{subTitle}</p>
         </div>
-        <Preview value={description ?? ""} />
+       
 
-        {isCombo ? (
+        {/* {isCombo ? (
           <div>
             {Array.isArray(childrenCourses) && childrenCourses.length > 0 && (
               <div>
@@ -106,7 +97,7 @@ function CourseDetailsCard({
               {chapterslength} {chapterslength > 1 ? "chapters" : "chapter"}
             </div>
           </div>
-        )}
+        )} */}
 
         <StatInfo
           numberOfComments={numberOfComments}
@@ -116,12 +107,11 @@ function CourseDetailsCard({
           disLikes={disLikes}
           rating={rating}
         />
-        <div className="absolute bottom-2 w-11/12">
+      
           <div className="flex items-center justify-between">
             <Button variant="outline" size="sm"> {formatPrice(price)}</Button>
-            <Button size="sm">View more</Button>
+            <Button size="sm" onClick={onClick}>View more</Button>
           </div>
-        </div>
 
 
       </div>

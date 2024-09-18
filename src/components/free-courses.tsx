@@ -2,11 +2,10 @@
 import React from 'react'
 import { RecommendedCourseType } from '../../actions/getRecommendedCourses'
 import { getCourseCategoriesByCourseId } from '../../actions/getCourseCategoriesByCourseId'
-import CourseCard from '@/app/(auth)/search/_components/course-card'
-import { getPrerequisiteCourses } from '../../actions/getPreRequisiteCourses'
+
 import { getChildrenCourses } from '../../actions/getChildrenCourses'
-import { getCourseRecommendedCourses } from '../../actions/getCourseRecommendedCourses'
 import ErrorPage from './error'
+import FreeCourseCard from '@/app/(root)/_components/free-course-card'
 
 
 function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
@@ -16,9 +15,9 @@ function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
     No free course found
   </div>
   return (
-    <div className='mt-10'>
-       <h1 className='text-2xl my-4 font-bold'>Free courses</h1>
-       <div className='grid gap-2  lg:grid-cols-2 xl:grid-cols-3'>
+    <div className='mt-10 flex items-center justify-center flex-col '>
+       <h1 className='text-2xl my-8 font-bold'>Free courses</h1>
+       <div className='grid gap-4  md:grid-cols-2  xl:grid-cols-3 max-w-[400px] md:max-w-[1400px]'>
      
      {courses.map(async (course, index) => {
        if (course === null) return <div key={index}>No course</div>
@@ -27,24 +26,16 @@ function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
        if (error) return <ErrorPage name={error.name} key={index}/>
 
 
-       const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
-       if (preError) return <ErrorPage name={preError.name} key={index}/>
-
+     
        const { childrenCourses, error: comboError } = await getChildrenCourses(courseId)
        if (comboError) return <ErrorPage name={comboError.name} key={index}/>
 
-       const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)
-       if (recomError) return <ErrorPage name={recomError.name} key={index}/>
-
-       return <CourseCard
+  
+       return <FreeCourseCard
          key={course.id}
          course={course}
-         progressPercentage={null}
          categories={categories ?? []}
-
-         preRequisiteCourses={preRequisiteCourses}
          childrenCourses={childrenCourses}
-         recommendedCourses={recommendedCourses}
          isCombo={!!childrenCourses.length}
        />
      })}

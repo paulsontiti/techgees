@@ -16,9 +16,24 @@ export default withUt({
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+     
+    }, screens: {
+      'xs': '280px',
+      // => @media (min-width: 280px) { ... }
+      'sm': '300px',
+      // => @media (min-width: 300px) { ... }
+
+      'md': '600px',
+      // => @media (min-width: 600px) { ... }
+
+      'lg': '900px',
+      // => @media (min-width: 900px) { ... }
+
+      'xl': '1200px',
+      // => @media (min-width: 1200px) { ... }
+
+      '2xl': '1500px',
+      // => @media (min-width: 1500px) { ... }
     },
     extend: {
      
