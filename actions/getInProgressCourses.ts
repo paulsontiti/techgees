@@ -34,7 +34,23 @@ export const getInProgressCourses = async (
       }
     }
    
-   
+    const startedCourses = await db.userProgress.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        course: {
+          include: {
+            chapters: true
+          },
+        },
+      },
+    });
+    for(let startedCourse of startedCourses){
+      if(!filteredPurchasedCourses.find((cou) => cou.id === startedCourse.course.id)){
+        filteredPurchasedCourses.push(startedCourse.course)
+      }
+    }
   
     let courses: SearchPageCourseType[] = filteredPurchasedCourses.map(
       (course) => {
@@ -45,7 +61,7 @@ export const getInProgressCourses = async (
       }
     );
     
-   
+  
     for(let course of courses){
         const progress = await getCourseProgress(userId,course?.id ?? "")
         if(course !== null){
