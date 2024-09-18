@@ -24,7 +24,6 @@ import { getChildrenCourses } from "../../../../../../actions/getChildrenCourses
 import RecommendedCoursesForm from "./_components/recommended-courses-form";
 import { getCourseRecommendedCourses } from "../../../../../../actions/getCourseRecommendedCourses";
 import SubTitleForm from "./_components/subtitle-form";
-import WhatToLearnForm from "./_components/what-to-learn-form";
 import CourseBenefitsForm from "./_components/course-benefits-form";
 import AccessForm from "./_components/access-form";
 import OverviewVideoForm from "./_components/overview-video-form";
@@ -72,7 +71,6 @@ async function CourseIdPage({
     course.imageUrl,
     course.price !== null,
     course.overviewVideoUrl,
-    course.whatToLearn.length > 0,
     course.courseBenefits.length > 0,
     course.courseCategories.length > 0,
     course.chapters.some((chapter: Chapter) => chapter.isPublished)
@@ -138,7 +136,6 @@ async function CourseIdPage({
               courseId={courseId}
               courses={courses}
               recommendedCourses={recommendedCourses} />
-              <WhatToLearnForm courseId={courseId} whatToLearn={course.whatToLearn}/>
               <CourseBenefitsForm courseId={courseId} benefits={course.courseBenefits}/>
           </div>
           <div className="space-y-6">

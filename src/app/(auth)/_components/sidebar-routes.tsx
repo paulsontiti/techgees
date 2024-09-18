@@ -17,6 +17,11 @@ const studentRoutes = [
     href: "/search"
   },
   {
+    icon: BarChart,
+    label: "Report card",
+    href: "/report"
+  },
+  {
     icon: Wallet,
     label: "Wallet",
     href: "/wallet"
