@@ -42,7 +42,7 @@ async function ChapterIdPage({
   const requiredFields = [
     chapter.title,
     chapter.description,
-    chapter.sessions.some(session => session.isPublished)
+    //chapter.sessions.some(session => session.isPublished)
   ];
 
   const totalFields = requiredFields.length;

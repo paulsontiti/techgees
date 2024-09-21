@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Chapter, Course, CourseBenefit, Session, WhatToLearn } from "@prisma/client";
+import { Chapter, Course, CourseBenefit, Session } from "@prisma/client";
 
 interface ReturnValue {
   freeCourses: CourseType[];
@@ -7,7 +7,6 @@ interface ReturnValue {
 }
 
 type CourseType = Course & {
-  whatToLearn: WhatToLearn[],
   courseBenefits: CourseBenefit[],
   chapters: (Chapter & {
     sessions: Session[];
@@ -22,7 +21,6 @@ export const getFreeCourses = async (): Promise<ReturnValue> => {
         isFree: true
       },
       include: {
-        whatToLearn: true,
         courseBenefits: true,
         chapters: {
           include: {

@@ -1,7 +1,6 @@
 "use client"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import ErrorBoundary from './error-boundary'
 import Image from 'next/image'
 
 function Carousel(
@@ -10,7 +9,7 @@ function Carousel(
         autoSlideInterval = 3000
 
     }: {
-        imgUrls: string[],
+        imgUrls: {url:string,redirectUrl?:string}[],
         autoSlide?: boolean,
         autoSlideInterval?: number
     }) {
@@ -38,8 +37,8 @@ function Carousel(
 
                 <div className='h-1/2 flex transition-transform ease-out duration-500'
                     style={{ transform: `translateX(-${curr * 100}%)` }}>
-                    {imgUrls.map((s, i) => (
-                        <Image src={s} alt={s} width={1200} height={400}
+                    {imgUrls.map((slide, i) => (
+                        <Image src={slide.url} alt={slide.url} width={1200} height={400}
                         key={i}
                             className='min-w-full max-w-full min-h-[300px]
                             md:min-h-[400px]  

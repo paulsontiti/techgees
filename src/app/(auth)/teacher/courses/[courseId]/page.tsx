@@ -1,5 +1,5 @@
 import IconBadge from "@/components/icon-badge";
-import { db } from "@/lib/db";
+
 import { auth } from "@clerk/nextjs/server";
 import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -13,7 +13,7 @@ import ChaptersForm from "./_components/chapters-form";
 import Banner from "@/components/banner";
 import CourseActions from "./_components/course-actions";
 import { getCourseWithCourseCategoriesAndChapters } from "../../../../../../actions/getCourseWithCourseCategoriesAndChapters";
-import { Chapter } from "@prisma/client";
+
 import { getCategories } from "../../../../../../actions/getCategories";
 import { getCourseCategoriesByCourseId } from "../../../../../../actions/getCourseCategoriesByCourseId";
 import PreRequisiteCoursesForm from "./_components/pre-requisite-courses-form";
@@ -27,6 +27,8 @@ import SubTitleForm from "./_components/subtitle-form";
 import CourseBenefitsForm from "./_components/course-benefits-form";
 import AccessForm from "./_components/access-form";
 import OverviewVideoForm from "./_components/overview-video-form";
+import CourseChildForm from "./_components/course-child-form";
+import { getCourseWithChildren } from "../../../../../../actions/getCourseWithCourseChildren";
 
 
 
@@ -42,6 +44,10 @@ async function CourseIdPage({
 
   if (error) return <div>{error.message}</div>
 
+  const { courseChildren, error:childError } = await getCourseWithChildren(courseId)
+
+  if (childError) return <div>{childError.message}</div>
+
   if (!course) return redirect("/dashboard");
 
   const { categories, error: categoriesError } = await getCategories()
@@ -54,8 +60,7 @@ async function CourseIdPage({
   const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
   if (preError) return <div>{preError.message}</div>
 
-  const { childrenCourses, error: comboError } = await getChildrenCourses(courseId)
-  if (comboError) return <div>{comboError.message}</div>
+
 
   const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)
   if (recomError) return <div>{recomError.message}</div>
@@ -70,10 +75,10 @@ async function CourseIdPage({
     course.description,
     course.imageUrl,
     course.price !== null,
-    course.overviewVideoUrl,
+    //course.overviewVideoUrl,
     course.courseBenefits.length > 0,
     course.courseCategories.length > 0,
-    course.chapters.some((chapter: Chapter) => chapter.isPublished)
+    //course.chapters.some((chapter: Chapter) => chapter.isPublished)
   ];
 
   const totalFields = requiredFields.length;
@@ -124,14 +129,18 @@ async function CourseIdPage({
               courseCategories={courseCategories ?? []}
               courseId={courseId}
             />
+                  <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={ListChecks} />
+                <h2 className="text-xl">Course children</h2>
+              </div>
+              <CourseChildForm courseChildren={courseChildren} courses={courses} courseId={course.id}/>
+            </div>
             <PreRequisiteCoursesForm
               courseId={courseId}
               courses={courses}
               preRequisiteCourses={preRequisiteCourses} />
-            <CourseChildrenForm
-              courseId={courseId}
-              courses={courses}
-              childrenCourses={childrenCourses} />
+          
             <RecommendedCoursesForm
               courseId={courseId}
               courses={courses}

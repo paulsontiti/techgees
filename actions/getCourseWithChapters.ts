@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
 import { Chapter, Course } from "@prisma/client";
+import { getCourseWithChildren } from "./getCourseWithCourseChildren";
+import { getCourseWithCourseChildrenWithChaptersAndSessions } from "./getCourseWithCourseChildrenWithChapters";
 
 type ReturnValue = {
   course: CourseChaptersUserProgressType | null;
@@ -17,7 +19,7 @@ export const getCourseWithChapters = async (
     const course = await db.course.findUnique({
       where: {
         id: courseId,
-        isPublished:true
+        //isPublished:true
       },
       include: {
         chapters: {
@@ -28,7 +30,19 @@ export const getCourseWithChapters = async (
         },
       },
     });
+if(course?.chapters.length === 0){
+  const {courseChildrenWithChaptersAndSessions,error} = await getCourseWithCourseChildrenWithChaptersAndSessions(courseId)
+  if(error) throw new Error(error.message)
 
+    if(courseChildrenWithChaptersAndSessions.length > 0){
+      for(let childCourse of courseChildrenWithChaptersAndSessions){
+        for(let chapter of childCourse.chapters){
+
+          course.chapters.push(chapter)
+        }
+      }
+    }
+}
     return { course, error: null };
   } catch (error: any) {
     console.log("[getCourseWithChapters]", error);

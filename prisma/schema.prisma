@@ -21,7 +21,7 @@ model Course {
   comboDiscount    Float?
   promoDiscount    Float?
   isPublished      Boolean @default(false)
-   isFree      Boolean @default(false)
+  isFree           Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -41,43 +41,46 @@ model Course {
   recommendedCourses        RecommendedCourses[]  @relation("recommendedCourse")
   preRequisiteParentCourses PreRequisiteCourses[]
   preRequisiteCourses       PreRequisiteCourses[] @relation("preRequisite")
-  childrenCourses           ComboCourses[]        @relation("childCourse")
-  comboParentCourses        ComboCourses[]
-  purchases                 Purchase[]
-  ratings                   Rating[]
-  whatToLearn               WhatToLearn[]
-  courseBenefits            CourseBenefit[]
+
+  purchases      Purchase[]
+  ratings        Rating[]
+  courseBenefits CourseBenefit[]
 
   @@fulltext([title])
+  childrenCourses CourseChild[] @relation("childCourse")
+  parentCourses CourseChild[]
 }
 
-model SessionQuestion{
-   id       String @id @default(uuid()) @map("_id")
+model CourseChild {
+  id            String @id @default(uuid()) @map("_id")
+  position      Int
+
+  childCourseId String
+  childCourse        Course @relation("childCourse",fields: [childCourseId], references: [id], onDelete: Cascade)
+
+  parentCourseId      String
+  parentCourse        Course @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SessionQuestion {
+  id       String  @id @default(uuid()) @map("_id")
   question String
   answer   String?
 
   sessionId String
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-
-  
 }
-model SessionError{
-   id       String @id @default(uuid()) @map("_id")
+
+model SessionError {
+  id           String  @id @default(uuid()) @map("_id")
   errorMessage String
-  imageUrl String?
+  imageUrl     String?
 
   sessionId String
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-
-  
-}
-
-model WhatToLearn {
-  id   String @id @default(uuid()) @map("_id")
-  text String
-
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model CourseBenefit {
@@ -86,22 +89,6 @@ model CourseBenefit {
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-}
-
-model ComboCourses {
-  id             String @id @default(uuid()) @map("_id")
-  parentCourseId String
-  childCourseId  String
-
-  parentCourse Course @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
-  childCourse  Course @relation("childCourse", fields: [childCourseId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([parentCourseId, childCourseId])
-  @@index([parentCourseId])
-  @@index([childCourseId])
 }
 
 model PreRequisiteCourses {
@@ -186,10 +173,10 @@ model Session {
   dislikes          DisLike[]
   comments          Comment[]
   ratings           Rating[]
+  sessionQuestions  SessionQuestion[]
+  sessionErrors     SessionError[]
 
   @@index([chapterId])
-  sessionQuestions SessionQuestion[]
-  sessionErrors SessionError[]
 }
 
 model DisLike {
@@ -373,7 +360,6 @@ model UserProgress {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
- 
   @@index([chapterId])
   @@index([sessionId])
   @@index([courseId])

@@ -6,6 +6,7 @@ import { getCourseCategoriesByCourseId } from '../../actions/getCourseCategories
 import { getChildrenCourses } from '../../actions/getChildrenCourses'
 import ErrorPage from './error'
 import FreeCourseCard from '@/app/(root)/_components/free-course-card'
+import { getCourseWithChildren } from '../../actions/getCourseWithCourseChildren'
 
 
 function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
@@ -27,7 +28,7 @@ function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
 
 
      
-       const { childrenCourses, error: comboError } = await getChildrenCourses(courseId)
+       const { courseChildren, error: comboError } = await getCourseWithChildren(courseId)
        if (comboError) return <ErrorPage name={comboError.name} key={index}/>
 
   
@@ -35,8 +36,8 @@ function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
          key={course.id}
          course={course}
          categories={categories ?? []}
-         childrenCourses={childrenCourses}
-         isCombo={!!childrenCourses.length}
+         childrenCourses={courseChildren}
+         isCombo={!!courseChildren.length}
        />
      })}
    </div>

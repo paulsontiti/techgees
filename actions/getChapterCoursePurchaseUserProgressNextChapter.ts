@@ -23,14 +23,14 @@ export const getChapterCoursePurchaseUserProgressNextChapter = async ({
     const course = await db.course.findUnique({
       where: {
         id: courseId,
-        isPublished: true,
+        //isPublished: true,
       }
     });
 
     const chapter = await db.chapter.findUnique({
       where: {
         id: chapterId,
-        isPublished: true,
+        //isPublished: true,
       },include:{
         sessions:true
       }

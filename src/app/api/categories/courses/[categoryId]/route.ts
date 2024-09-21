@@ -7,8 +7,7 @@ import { getCourseDisLikesCount } from "../../../../../../actions/getCourseDisLi
 import { getCourseRating } from "../../../../../../actions/getCourseRating";
 import { getCourseNumberOfRatings } from "../../../../../../actions/getCourseNumberOfRatings";
 import { getCourseStudentsCount } from "../../../../../../actions/getCourseStudentsCount";
-import { getPrerequisiteCourses } from "../../../../../../actions/getPreRequisiteCourses";
-import { getChildrenCourses } from "../../../../../../actions/getChildrenCourses";
+import { getCourseWithChildren } from "../../../../../../actions/getCourseWithCourseChildren";
 
 
 export async function GET(
@@ -45,7 +44,7 @@ let returnValue:CategorytabItemCourseType[] = []
         const {averageRating} = await getCourseRating(course.id)
         const {numberOfRatings} = await getCourseNumberOfRatings(course.id)
         const {numberOfStudents} = await getCourseStudentsCount(course.id)
-        const {childrenCourses} = await getChildrenCourses(course.id)
+        const {courseChildren} = await getCourseWithChildren(course.id)
 
         const courseToReturn:CategorytabItemCourseType =  {
             course,
@@ -55,7 +54,7 @@ let returnValue:CategorytabItemCourseType[] = []
             numberOfRatings,
             numberOfStudents,
             rating:averageRating,
-            childrenCourses
+            childrenCourses:courseChildren
 
         }
 

@@ -17,13 +17,12 @@ type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
   progressPercentage: number;
   purchasePercentage: number;
-  closeSheet?:React.Dispatch<React.SetStateAction<boolean>>
 };
 
 async function CourseSidebar({
   course,
   progressPercentage,
-  purchasePercentage,closeSheet
+  purchasePercentage
 }: CourseSidebarProps) {
   const { userId } = auth();
   if (!userId) return redirect("/");

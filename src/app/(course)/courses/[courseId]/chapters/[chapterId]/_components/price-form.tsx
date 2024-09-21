@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 
 import * as zod from "zod";
@@ -22,7 +22,7 @@ import Loader from "@/components/loader";
 import toast from "react-hot-toast";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(30000, {
+  amount: zod.coerce.number().min(10000, {
     message: "amount is required",
   }),
 });
@@ -97,9 +97,9 @@ function PriceForm({email,courseId,chapterId}:{
                     <FormControl>
                       <Input
                       type="number"
-                      step={30000}
+                      step={10000}
                         disabled={isSubmitting}
-                        placeholder='e.g. "30000"'
+                        placeholder='e.g. "10000"'
                         {...field}
                       />
                     </FormControl>

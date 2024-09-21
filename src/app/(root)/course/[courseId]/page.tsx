@@ -19,7 +19,6 @@ import { getCourseCategoriesByCourseId } from "../../../../../actions/getCourseC
 import Banner from "@/components/banner";
 import { getCourse } from "../../../../../actions/getCourse";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getChildrenCourses } from "../../../../../actions/getChildrenCourses";
 import { ChapterContentAccordion } from "./_components/chapter-content-accordion";
 import { CourseContentAccordion } from "./_components/course-content-accordion";
 import { Preview } from "@/components/preview";
@@ -36,6 +35,9 @@ import { getCourseNumberOfRatings } from "../../../../../actions/getCourseNumber
 import { getCourseLikesCount } from "../../../../../actions/getCourseLikesCount";
 import { getCourseDisLikesCount } from "../../../../../actions/getCourseDisLikesCount";
 import CommentItem from "@/app/(course)/courses/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
+import EnrollButton from "./_components/enroll-button";
+import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
+
 
 export type CategoryCourseType = {
   category: { id: string; name: string };
@@ -56,7 +58,9 @@ async function CourseIdPage({
   if (courseError)
     return <Banner variant="error" label={courseError.message} />;
 
-  const { childrenCourses, error: comboError } = await getChildrenCourses(
+  if(!course) return null
+
+  const { courseChildrenWithChaptersAndSessions, error: comboError } = await getCourseWithCourseChildrenWithChaptersAndSessions(
     courseId
   );
   if (comboError) return <Banner variant="error" label={comboError.message} />;
@@ -109,8 +113,8 @@ async function CourseIdPage({
   let duration = 0;
 
   if (course !== null) {
-    if (childrenCourses.length > 0) {
-      childrenCourses.map((child) => {
+    if (courseChildrenWithChaptersAndSessions.length > 0) {
+      courseChildrenWithChaptersAndSessions.map((child) => {
         chaptersLength += child.chapters.length;
         child.chapters.map((chapter) => {
           chapter.sessions.map((session) => {
@@ -137,7 +141,7 @@ async function CourseIdPage({
 
   return (
     <div className=" flex items-center justify-center ">
-      <div className="w-[300px] md:w-[700px] xl:w-[900px]">
+      <div className="w-full md:w-[700px] xl:w-[900px]">
         <div className="mt-8">
           <Breadcrumb>
             <BreadcrumbList>
@@ -192,7 +196,7 @@ async function CourseIdPage({
           </Breadcrumb>
         </div>
         <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-        <h2 className="mt-2 text-md font-medium w-2/3">{course?.subTitle}</h2>
+        <h2 className="mt-2 text-md md:w-2/3">{course?.subTitle}</h2>
 
 
         <StatInfo
@@ -202,20 +206,13 @@ async function CourseIdPage({
           likes={numberOfLikes}
           disLikes={numberOfDisLikes} rating={averageRating} />
 
-        {Array.isArray(course?.whatToLearn) && course.whatToLearn.length > 0 &&
-          <div className="mt-4">
-            <h2 className="text-lg font-semibold">What you will learn</h2>
-            {course.whatToLearn.map((wtl) => {
+<div className="my-4 w-full">
+  <video src={course?.overviewVideoUrl ?? ""} controls title="Course overview" autoPlay className="w-full"/>
+</div>
 
-              return <div key={wtl.id} className="flex items-start my-2 gap-2">
-                <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-                <div className="text-xs md:text-sm">{wtl.text}</div>
-              </div>
-            })}
-          </div>
-        }
+<EnrollButton courseId={course.id}/>
         {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
-          <Card className="mt-4 md:w-2/3">
+          <Card className="mt-4 w-full">
             <CardHeader className="text-xl font-bold">
               Benefits of taking this course
             </CardHeader>
@@ -233,9 +230,9 @@ async function CourseIdPage({
         <div className="mt-8">
           <h1 className="text-xl font-bold">Course content</h1>
           <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
-            {childrenCourses.length > 0 && (
+            {courseChildrenWithChaptersAndSessions.length > 0 && (
               <div className="flex items-center gap-x-1">
-                {childrenCourses.length} courses
+                {courseChildrenWithChaptersAndSessions.length} courses
               </div>
             )}
             <div className="flex items-center gap-x-1">
@@ -248,8 +245,8 @@ async function CourseIdPage({
           </div>
         </div>
         {
-          childrenCourses.length > 0 ?
-            childrenCourses.map((course, index) => {
+          courseChildrenWithChaptersAndSessions.length > 0 ?
+          courseChildrenWithChaptersAndSessions.map((course, index) => {
 
               return <CourseContentAccordion course={course} key={index} />
             })
@@ -291,16 +288,20 @@ async function CourseIdPage({
         <h1 className="text-lg font-semibold mt-8">Description</h1>
         <Preview value={course?.description ?? ""}></Preview>
 
-        <div className="mt-4 border p-2 max-w-full">
+ <EnrollButton courseId={course?.id}/>
+
+       {Array.isArray(comments) && comments.length > 0 &&  <div className="mt-4 border p-2 max-w-full">
           <h1 className="text-lg font-semibold mb-2">Reviews</h1>
           {comments.map((comment, index) => {
 
             return <CommentItem comment={comment} key={index} />
           })}
-        </div>
+        </div>}
       </div>
       </div>
   );
 }
 
 export default CourseIdPage;
+
+

@@ -2,11 +2,11 @@ import React from 'react'
 import CourseCard from './course-card'
 import { getCourseCategoriesByCourseId } from '../../../../../actions/getCourseCategoriesByCourseId'
 import { getPrerequisiteCourses } from '../../../../../actions/getPreRequisiteCourses'
-import { getChildrenCourses } from '../../../../../actions/getChildrenCourses'
 import { getCourseRecommendedCourses } from '../../../../../actions/getCourseRecommendedCourses'
 import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
 
 import ErrorPage from '@/components/error'
+import { getCourseWithChildren } from '../../../../../actions/getCourseWithCourseChildren'
 
 
 function CourseDetails(
@@ -27,7 +27,7 @@ function CourseDetails(
         const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
         if (preError) return <ErrorPage name={preError.name} key={index} />
 
-        const { childrenCourses, error: comboError } = await getChildrenCourses(courseId)
+        const { courseChildren, error: comboError } = await getCourseWithChildren(courseId)
         if (comboError) return <ErrorPage name={comboError.name} key={index} />
 
         const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)
@@ -39,9 +39,9 @@ function CourseDetails(
           progressPercentage={course.progressPercentage}
           categories={categories ?? []}
           preRequisiteCourses={preRequisiteCourses}
-          childrenCourses={childrenCourses}
+          childrenCourses={courseChildren}
           recommendedCourses={recommendedCourses}
-          isCombo={!!childrenCourses.length}
+          isCombo={!!courseChildren.length}
         />
       })}
     </div>

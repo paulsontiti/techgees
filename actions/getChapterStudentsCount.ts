@@ -16,11 +16,15 @@ Promise<ReturnValue>=>{
                 sessions:true
             }
         })
-const numberOfStudents = await db.userProgress.count({
-    where:{
-        sessionId:chapter?.sessions[0].id,
-    }
-})
+let numberOfStudents = 0
+if(chapter && chapter?.sessions.length > 0){
+
+    numberOfStudents = await db.userProgress.count({
+        where:{
+            sessionId:chapter?.sessions[0].id,
+        }
+    })
+}
 
       return {numberOfStudents,error:null}
     }catch(error:any){

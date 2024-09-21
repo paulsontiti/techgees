@@ -1,11 +1,9 @@
 "use client";
 
-import CommentForm from "@/app/(course)/courses/[courseId]/_components/comment-form";
-import CourseProgress from "@/components/course-progress";
+
 
 import IconBadge from "@/components/icon-badge";
 import PageLoader from "@/components/page-loader";
-import { formatPrice } from "@/lib/format";
 import { Category,Course } from "@prisma/client";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
