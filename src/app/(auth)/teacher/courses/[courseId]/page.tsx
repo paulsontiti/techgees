@@ -18,9 +18,9 @@ import { getCategories } from "../../../../../../actions/getCategories";
 import { getCourseCategoriesByCourseId } from "../../../../../../actions/getCourseCategoriesByCourseId";
 import PreRequisiteCoursesForm from "./_components/pre-requisite-courses-form";
 import { getCourses } from "../../../../../../actions/getCourses";
-import CourseChildrenForm from "./_components/children-courses-form";
+
 import { getPrerequisiteCourses } from "../../../../../../actions/getPreRequisiteCourses";
-import { getChildrenCourses } from "../../../../../../actions/getChildrenCourses";
+
 import RecommendedCoursesForm from "./_components/recommended-courses-form";
 import { getCourseRecommendedCourses } from "../../../../../../actions/getCourseRecommendedCourses";
 import SubTitleForm from "./_components/subtitle-form";

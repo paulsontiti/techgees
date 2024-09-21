@@ -3,7 +3,7 @@ import React from 'react'
 import { RecommendedCourseType } from '../../actions/getRecommendedCourses'
 import { getCourseCategoriesByCourseId } from '../../actions/getCourseCategoriesByCourseId'
 
-import { getChildrenCourses } from '../../actions/getChildrenCourses'
+
 import ErrorPage from './error'
 import FreeCourseCard from '@/app/(root)/_components/free-course-card'
 import { getCourseWithChildren } from '../../actions/getCourseWithCourseChildren'

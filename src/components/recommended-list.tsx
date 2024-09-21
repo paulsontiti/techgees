@@ -4,9 +4,10 @@ import { RecommendedCourseType } from '../../actions/getRecommendedCourses'
 import { getCourseCategoriesByCourseId } from '../../actions/getCourseCategoriesByCourseId'
 import CourseCard from '@/app/(auth)/search/_components/course-card'
 import { getPrerequisiteCourses } from '../../actions/getPreRequisiteCourses'
-import { getChildrenCourses } from '../../actions/getChildrenCourses'
+
 import { getCourseRecommendedCourses } from '../../actions/getCourseRecommendedCourses'
 import ErrorPage from './error'
+import { getCourseWithChildren } from '../../actions/getCourseWithCourseChildren'
 
 
 function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] }) {
@@ -27,7 +28,7 @@ function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] 
           const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
           if (preError) return <ErrorPage name={preError.name} key={index}/>
 
-          const { childrenCourses, error: comboError } = await getChildrenCourses(courseId)
+          const { courseChildren, error: comboError } = await getCourseWithChildren(courseId)
           if (comboError) return <ErrorPage name={comboError.name} key={index}/>
 
           const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)
@@ -39,9 +40,9 @@ function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] 
             categories={categories ?? []}
 
             preRequisiteCourses={preRequisiteCourses}
-            childrenCourses={childrenCourses}
+            childrenCourses={courseChildren}
             recommendedCourses={recommendedCourses}
-            isCombo={!!childrenCourses.length}
+            isCombo={!!courseChildren.length}
           />
         })}
       </div>

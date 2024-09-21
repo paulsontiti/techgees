@@ -22,7 +22,7 @@ function Navbar({
     <div>
       
        <div className="flex items-center justify-between w-11/12">
-       <div className="flex items-center gap-x-4">
+       <div className="flex items-center gap-x-8">
           <Logo />
           <div className="hidden md:flex items-center gap-x-4">
             <CategoryDropdownMenu categories={categories} />
@@ -31,7 +31,7 @@ function Navbar({
         </div>
         <div className="flex items-center gap-x-2">
           {userId ? (
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-4">
               <UserButton />
 
               <Link href="/dashboard">Dashboard</Link>

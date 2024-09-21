@@ -196,7 +196,7 @@ async function CourseIdPage({
           </Breadcrumb>
         </div>
         <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-        <h2 className="mt-2 text-md md:w-2/3">{course?.subTitle}</h2>
+        <h2 className="mt-2 text-md md:w-2/3 mb-10">{course?.subTitle}</h2>
 
 
         <StatInfo

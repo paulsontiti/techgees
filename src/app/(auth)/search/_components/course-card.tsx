@@ -6,7 +6,7 @@ import CourseProgress from "@/components/course-progress";
 import IconBadge from "@/components/icon-badge";
 import PageLoader from "@/components/page-loader";
 import { formatPrice } from "@/lib/format";
-import { Category, Chapter, Course } from "@prisma/client";
+import { Category,Course } from "@prisma/client";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -48,7 +48,9 @@ course,
             md:w-full
         "
     >
-      <PageLoader label="redirecting..." isloading={loading} />
+      <PageLoader
+      className="text-black"
+      label="redirecting..." isloading={loading} />
       <div
         className="relative w-full aspect-video rounded-md overflow-hidden"
         onClick={onClick}
