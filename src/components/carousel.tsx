@@ -17,6 +17,8 @@ function Carousel(
         autoSlideInterval?: number
     }) {
 
+
+        throw new Error("Bad request")
     const [curr, setCurr] = useState(0)
     const [sliding, setSliding] = useState(autoSlide)
 

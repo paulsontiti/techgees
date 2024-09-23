@@ -1,4 +1,5 @@
 import PriceForm from '@/app/(course)/courses/[courseId]/chapters/[chapterId]/_components/price-form';
+import Banner from '@/components/banner';
 
 
 import { currentUser } from '@clerk/nextjs/server';
@@ -17,7 +18,9 @@ async function CoursePaymentPage(
 
 
     return (
-            <div className='flex items-center justify-center'>
+            <div className='flex items-center justify-center flex-col gap-4'>
+                <Banner label='Please close the Paystack browser window after payment. This to enable redirection to the course page'
+                />
                 <PriceForm email={user.emailAddresses[0].emailAddress} courseId={courseId} chapterId={chapterId} />
             </div>
     )

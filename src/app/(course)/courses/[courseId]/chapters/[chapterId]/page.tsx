@@ -22,6 +22,7 @@ import { verifyPayStackPayment } from "../../../../../../../actions/verifyPaymen
 import { updatePayment } from "../../../../../../../actions/updatePayment";
 import { getCoursePurchase } from "../../../../../../../actions/getCoursePurchase";
 import { getChapterNumberOfRatings } from "../../../../../../../actions/getChapterNumberOfRatings";
+import { getCourse } from "../../../../../../../actions/getCourse";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -42,6 +43,12 @@ async function ChapterIdPage({
   if (error) return <Banner variant="error" label={error.message} />;
 
   if (!course || !chapter) return redirect("/");
+
+  //get the course the chapter belong to
+  //this is used for the course overview video
+  //for combo courses, we have to get the chapter course
+  const {course:chapterCourse, error:chapterCourseErr} = await getCourse(chapter.courseId)
+  if (chapterCourseErr) return <Banner variant="error" label={chapterCourseErr.message} />;
 
   let payment = null;
 
@@ -137,8 +144,8 @@ async function ChapterIdPage({
       {payment && (
         <Banner
           variant={payment.status === "success" ? "success" : "warning"}
-          label={`You payment of ${formatPrice(payment.amount)} is ${payment.status === "success" ? "successful" : "been processed"
-            }`}
+          label={`You payment of ${formatPrice(payment.amount)} is 
+          ${payment.status}`}
         />
       )}
       {userProgress?.isCompleted && (
@@ -185,9 +192,9 @@ async function ChapterIdPage({
         </div>
 
         <video
-        src={course.overviewVideoUrl ?? ""}
+        src={chapterCourse?.overviewVideoUrl ?? ""}
         controls
-        title={course.title ?? ""}
+        title={chapterCourse?.title ?? ""}
         />
         <ChapterComments
           chapterId={chapterId}

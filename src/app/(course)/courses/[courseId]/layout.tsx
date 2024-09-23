@@ -53,7 +53,8 @@ async function CourseLayout({
           purchasePercentage={purchasePercentage}
         />
       </div>
-      <main className="md:pl-[320px] 2xl:pl-[400px] h-full pt-[80px]">{children}</main>
+      <main className="md:pl-[320px] 2xl:pl-[400px] h-full pt-[80px]">
+        {children}</main>
     </div>
   );
 }
