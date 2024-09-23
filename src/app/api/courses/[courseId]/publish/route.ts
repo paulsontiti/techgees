@@ -6,7 +6,7 @@ export async function PATCH(
   req: Request,
   {
     params: { courseId },
-  }: { params: { courseId: string} }
+  }: { params: { courseId: string } }
 ) {
   try {
     const { userId } = auth();
@@ -15,29 +15,30 @@ export async function PATCH(
 
     const course = await db.course.findUnique({
       where: {
-          id: courseId,
-          userId,
-        
-      },include:{
-        chapters:true,
-        courseCategories:true
+        id: courseId,
+        userId,
+
+      }, include: {
+        chapters: true,
+        courseCategories: true,
+        childrenCourses: true
       }
     });
-  
 
- 
-      if(!course || !course.title || !course.description || !course.imageUrl ||
-        !course.courseCategories.length ||
-        !course.chapters.some((chapter)=>chapter.isPublished)){
-            return  new NextResponse("Missing required fields", { status: 404 });
-      }
+
+
+    if (!course || !course.title || !course.description || !course.imageUrl ||
+      !course.courseCategories.length
+    ) {
+      return new NextResponse("Missing required fields", { status: 404 });
+    }
 
     await db.course.update({
       where: {
         id: courseId
       },
       data: {
-        isPublished:true,
+        isPublished: true,
       },
     });
 

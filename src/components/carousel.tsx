@@ -1,8 +1,6 @@
 "use client"
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Button } from './ui/button'
 import PageLoader from './page-loader'
 import { useRouter } from 'next/navigation'
 
@@ -18,7 +16,7 @@ function Carousel(
     }) {
 
 
-        throw new Error("Bad request")
+     
     const [curr, setCurr] = useState(0)
     const [sliding, setSliding] = useState(autoSlide)
 

@@ -12,10 +12,11 @@ const slides = [
 ]
 
 function HomeCarousel() {
-  throw new Error("Bad request")
+
   return (
    <div className="max-w-full  mt-4 flex items-center justify-center">
-     <Carousel imgUrls={slides} autoSlide={true} />
+
+    <Carousel imgUrls={slides} autoSlide={true} />
    </div>
   )
 }
