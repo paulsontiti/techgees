@@ -1,14 +1,16 @@
 import { db } from "@/lib/db";
-import { Attachment, Question, Session } from "@prisma/client";
+import { Assignment, Attachment, Question, Session } from "@prisma/client";
 
 
 interface ReturnValue{
-    session:Session &{attachments:Attachment[],questions:Question[]} | null,
+    session:Session &{
+      assignments:Assignment[],
+      attachments:Attachment[],questions:Question[]} | null,
     error:Error | null
 }
 
 
-export const getSessionWithAttachment = async(sessionId:string,chapterId : string):
+export const getSessionWithAttachmentQuestionsAssignments = async(sessionId:string,chapterId : string):
 Promise<ReturnValue>=>{
     try{
         const session = await db.session.findUnique({
@@ -17,6 +19,7 @@ Promise<ReturnValue>=>{
               chapterId,
             },include:{
               questions:true,
+              assignments:true,
               attachments:{
                 where:{
                   sessionId

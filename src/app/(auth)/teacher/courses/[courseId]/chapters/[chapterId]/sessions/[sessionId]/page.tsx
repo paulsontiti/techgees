@@ -1,7 +1,6 @@
 import IconBadge from "@/components/icon-badge";
-import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft, Eye, File, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, File, LayoutDashboard, Video } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 import LinkButton from "@/components/link-button";
@@ -12,9 +11,10 @@ import VideoDurationForm from "./_components/video-duration-form";
 import Banner from "@/components/banner";
 import SessionActions from "./_components/session-actions";
 import SessionAttachmentForm from "./_components/attachment-form";
-import { getSessionWithAttachment } from "../../../../../../../../../../actions/getSessionWithAttachments";
+import {getSessionWithAttachmentQuestionsAssignments } from "../../../../../../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
 import ErrorPage from "@/components/error";
 import SessionQuestionsForm from "./_components/session-questions-form";
+import SessionAssignmentForm from "./_components/session-assignment-form";
 
 async function SessionIdPage({
   params: { chapterId, courseId, sessionId },
@@ -24,7 +24,7 @@ async function SessionIdPage({
   const { userId } = auth();
   if (!userId) return redirect("/dashboard");
 
- const {session,error} = await getSessionWithAttachment(sessionId,chapterId)
+ const {session,error} = await getSessionWithAttachmentQuestionsAssignments(sessionId,chapterId)
 if(error) return <ErrorPage name={error.name}/>
 
 
@@ -93,6 +93,7 @@ if(error) return <ErrorPage name={error.name}/>
             <SessionAttachmentForm 
               courseId={courseId}
             session={session}/>
+            <SessionAssignmentForm courseId={courseId} session={session}/>
             <div>
               <div className="flex items-center gap-x-2 mt-4">
                 <IconBadge icon={Video} />

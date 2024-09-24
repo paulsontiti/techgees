@@ -19,6 +19,8 @@ import { getSessionRating } from "../../../../../../../../../actions/getSessionR
 import { hasRatedSession } from "../../../../../../../../../actions/hasRatedSession";
 import { getSessionStudentsCount } from "../../../../../../../../../actions/getSessionStudentsCount";
 import { getSessionNumberOfRatings } from "../../../../../../../../../actions/getSessionNumberOfRatings";
+import NextSessionButton from "./_components/next-session-button";
+import AssignmentAccordion from "./_components/assignment-accordion";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -32,7 +34,7 @@ async function SessionIdPage({
     session,
     nextSession,
     attachments,
-
+assignments,
     userProgress,
     error,
   } = await getSessionAttachmentsNextSessionuserprogress({
@@ -133,6 +135,11 @@ if (numRatingError)
           courseId={courseId}
           nextSessionId={nextSession?.id ?? ""}
         />
+       {
+        nextSession &&  <div className="my-4 flex items-center justify-end">
+        <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id}/>
+      </div>
+       }
       <SessionComments 
       numberOfLikes={numberOfLikes}
       numberOfDisLikes={numberOfDisLikes}
@@ -150,6 +157,17 @@ if (numRatingError)
           {(userProgress === null && 
           session.questions.length > 0) && 
           <SessionTest questions={session.questions} sessionId={sessionId}/>}
+                 <Separator/>
+              
+                 {assignments.length > 0 && <>
+                  <h2 className='text-xl my-2 font-bold'>Assignments</h2>
+                 {
+                  assignments.map((assignment)=>{
+
+                    return <AssignmentAccordion assignment={assignment} sessionId={sessionId}/>
+                   })
+                 }
+                 </>}
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import Loader from '@/components/loader'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { useConfettiStore } from '../../../../../../../../../../hooks/use-confetti-store'
 
 function SessionTest({ questions, sessionId }: {
   questions: Question[], sessionId: string
@@ -20,6 +21,7 @@ function SessionTest({ questions, sessionId }: {
   const [submitting, setSubmitting] = useState(false)
 
   const router = useRouter()
+  const confetti = useConfettiStore()
 
   const onSubmit = async () => {
     setProcessedScore(false)
@@ -36,6 +38,10 @@ function SessionTest({ questions, sessionId }: {
       await axios.post(`/api/test/sessions`,
         { sessionId, score:res }
       )
+      if(res > 6){
+        confetti.onOpen()
+        toast.success("Congratulations!!!!!!",{duration:5000,position:"bottom-center"})
+      }
       toast.success("Your score is saved",{duration:5000,position:"bottom-center"})
       router.refresh()
     } catch (err: any) {

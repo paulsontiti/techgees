@@ -42,24 +42,25 @@ model Course {
   preRequisiteParentCourses PreRequisiteCourses[]
   preRequisiteCourses       PreRequisiteCourses[] @relation("preRequisite")
 
-  purchases      Purchase[]
-  ratings        Rating[]
-  courseBenefits CourseBenefit[]
+  purchases       Purchase[]
+  ratings         Rating[]
+  courseBenefits  CourseBenefit[]
+  childrenCourses CourseChild[]   @relation("childCourse")
+  parentCourses   CourseChild[]
+  assignments     Assignment[]
 
   @@fulltext([title])
-  childrenCourses CourseChild[] @relation("childCourse")
-  parentCourses CourseChild[]
 }
 
 model CourseChild {
-  id            String @id @default(uuid()) @map("_id")
-  position      Int
+  id       String @id @default(uuid()) @map("_id")
+  position Int
 
   childCourseId String
-  childCourse        Course @relation("childCourse",fields: [childCourseId], references: [id], onDelete: Cascade)
+  childCourse   Course @relation("childCourse", fields: [childCourseId], references: [id], onDelete: Cascade)
 
-  parentCourseId      String
-  parentCourse        Course @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
+  parentCourseId String
+  parentCourse   Course @relation(fields: [parentCourseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -145,6 +146,7 @@ model Chapter {
   likes             Like[]
   dislikes          DisLike[]
   ratings           Rating[]
+  assignments       Assignment[]
 
   @@unique([id, courseId])
   @@index([courseId])
@@ -175,6 +177,7 @@ model Session {
   ratings           Rating[]
   sessionQuestions  SessionQuestion[]
   sessionErrors     SessionError[]
+  assignments       Assignment[]
 
   @@index([chapterId])
 }
@@ -249,6 +252,43 @@ model Comment {
   @@index([sessionId])
   @@index([chapterId])
   @@index([courseId])
+}
+
+model Assignment {
+  id   String @id @default(uuid()) @map("_id")
+  text String
+
+  sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  assignmentAnswers AssignmentAnswer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([chapterId])
+  @@index([courseId])
+}
+
+model AssignmentAnswer {
+  id     String  @id @default(uuid()) @map("_id")
+  userId String
+  passed Boolean @default(false)
+
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([assignmentId])
 }
 
 model Question {

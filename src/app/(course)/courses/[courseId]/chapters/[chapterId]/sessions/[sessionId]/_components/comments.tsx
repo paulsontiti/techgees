@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import CommentForm from "./comment-form";
 import { Comment } from "@prisma/client";
-import { CommentsDialog } from "./comments-dialog";
 import { RatingSlider } from "@/components/rating-slider";
 import Rating from "@/app/(root)/course/[courseId]/_components/rating";
 

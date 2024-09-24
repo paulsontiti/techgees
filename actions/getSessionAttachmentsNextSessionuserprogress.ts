@@ -1,5 +1,5 @@
 import { db } from "@/lib/db"
-import { Attachment, Chapter, Question, Session, UserProgress } from "@prisma/client"
+import { Assignment, Attachment, Question, Session, UserProgress } from "@prisma/client"
 
 
 
@@ -8,7 +8,7 @@ interface ReturnValue{
     attachments:Attachment[],
     nextSession : Session | null,
     userProgress : UserProgress | null,
-    
+    assignments:Assignment[]
 
     error:Error | null
 }
@@ -29,7 +29,11 @@ export const getSessionAttachmentsNextSessionuserprogress = async({
             }
         })
 
-   
+        const assignments = await db.assignment.findMany({
+            where:{
+                sessionId
+            }
+        })
 
         const session = await db.session.findUnique({
             where:{
@@ -57,13 +61,13 @@ export const getSessionAttachmentsNextSessionuserprogress = async({
                     userId,sessionId
                 }
         })
-        return {nextSession,userProgress,
+        return {nextSession,userProgress,assignments,
             attachments,session,error:null}
 
     }catch(error:any){
 
         console.log("[getSession]",error)
-        return {nextSession:null,userProgress:null,
+        return {nextSession:null,userProgress:null,assignments:[],
            attachments:[],session:null,error}
     }
 
