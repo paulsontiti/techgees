@@ -164,7 +164,7 @@ if (numRatingError)
                  {
                   assignments.map((assignment)=>{
 
-                    return <AssignmentAccordion assignment={assignment} sessionId={sessionId} key={assignment.id}/>
+                    return <AssignmentAccordion assignment={assignment} key={assignment.id}/>
                    })
                  }
                  </>}

@@ -1,18 +1,34 @@
-"use client"
+
 import { Assignment } from '@prisma/client'
 import React from 'react'
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import AssignmentForm from './assignment-form'
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs/server'
+import { Preview } from '@/components/preview'
+import { CheckCircle } from 'lucide-react'
 
 
-function AssignmentAccordion({sessionId,assignment }: {
-  assignment: Assignment, sessionId: string
+async function AssignmentAccordion({assignment }: {
+  assignment: Assignment
 }) {
-
-
-
   
+  const {userId} = auth()
+  const ans = await db.assignmentAnswer.findUnique({
+    where:{
+      userId_assignmentId:{
+userId:userId ?? "",
+assignmentId:assignment.id
+      }
+    }
+  })
+
+  const remark = await db.assignmentAnswerRemarks.findUnique({
+    where:{
+      assignmentAnswerId:ans?.id ?? ""
+    }
+  })
 
   return (
     <div className='mt-4'>
@@ -23,7 +39,22 @@ function AssignmentAccordion({sessionId,assignment }: {
             <h2>{assignment.text}</h2>
           </AccordionTrigger>
           <AccordionContent>
-            <AssignmentForm sessionId={sessionId}/>
+          {
+            ans && <div>
+              <div className='flex items-center gap-x-2'>
+              <h2 className='text-xl font-semibold '>Your answer </h2>
+             {ans.passed &&  <CheckCircle className='text-emerald-500 w-4 h-4'/>}
+              </div>
+              <Preview value={ans.answer}/>
+           {remark && <>
+            <h2 className='mt-4 mb-2 text-xl font-semibold'>Instructor's remark</h2>
+            <Preview value={remark.remark}/>
+           </>}
+            </div>
+          }
+         {
+          ans && !ans.passed &&    <AssignmentForm assignmentId={assignment.id}/>
+         }
           </AccordionContent>
         </AccordionItem>
       </Accordion>

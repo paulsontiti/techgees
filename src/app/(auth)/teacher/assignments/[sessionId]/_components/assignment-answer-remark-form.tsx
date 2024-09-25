@@ -15,19 +15,19 @@ import { Editor } from '@/components/editor'
 
 
 const formSchema = zod.object({
-    answer: zod.string().min(1, {
-        message: "assignment is required"
+    remark: zod.string().min(1, {
+        message: "remark is required"
     })
 })
 
-function AssignmentForm({ assignmentId }: { assignmentId: string}) {
+function AssignmentAnswerRemark({ assignmentAnswerId }: { assignmentAnswerId: string}) {
     const router = useRouter()
 
 
     const form = useForm<zod.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            answer: ""
+            remark: ""
         }
     })
 
@@ -37,10 +37,10 @@ function AssignmentForm({ assignmentId }: { assignmentId: string}) {
 
 
     const onSubmit = async (values: zod.infer<typeof formSchema>) => {
-        if (values.answer === "<p><br></p>") return
+        if (values.remark === "<p><br></p>") return
         try {
-            await axios.post(`/api/assignment/${assignmentId}`, values)
-            toast.success("Your answer is submitted", { duration: 5000 })
+            await axios.post(`/api/assignment/remark/${assignmentAnswerId}`, values)
+            toast.success("Your remark is submitted", { duration: 5000 })
             form.reset()
             router.refresh()
         } catch (err: any) {
@@ -57,11 +57,11 @@ function AssignmentForm({ assignmentId }: { assignmentId: string}) {
                 >
                     <FormField
                         control={form.control}
-                        name='answer'
+                        name='remark'
                         render={({ field }) => {
                             return <FormItem>
                                 <FormLabel>
-                                   <div className='w-full'> Add your answer</div>
+                                   <div className='w-full'> Add your remark</div>
                                    
                                 </FormLabel>
                                 <FormControl>
@@ -70,7 +70,7 @@ function AssignmentForm({ assignmentId }: { assignmentId: string}) {
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormDescription>What is your answer?</FormDescription>
+                                <FormDescription>What is your remark?</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         }}
@@ -88,4 +88,4 @@ function AssignmentForm({ assignmentId }: { assignmentId: string}) {
     )
 }
 
-export default AssignmentForm
+export default AssignmentAnswerRemark

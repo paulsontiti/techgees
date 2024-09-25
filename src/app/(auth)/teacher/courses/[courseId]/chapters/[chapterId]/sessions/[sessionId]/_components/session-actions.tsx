@@ -4,7 +4,7 @@ import Loader from '@/components/loader'
 import ConfirmModal from '@/components/modals/confirm-modal'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
-import { Trash } from 'lucide-react'
+import { Eye, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -17,6 +17,7 @@ chapterId,courseId,sessionId,disabled,isPublished
 
     const [isPublishing,setIsPublishing] = useState(false)
     const [isDeleting,setIsDeleting] = useState(false)
+    const [isViewing,setIsViewing] = useState(false)
 
     const router = useRouter()
 
@@ -55,6 +56,13 @@ chapterId,courseId,sessionId,disabled,isPublished
             setIsDeleting(false)
         }
     }
+
+const onViewing = ()=>{
+    setIsViewing(true)
+
+    router.push(`/teacher/assignments/${sessionId}`)
+}
+
   return (
     <div className='flex items-center gap-x-2'>
         <Button
@@ -74,6 +82,17 @@ chapterId,courseId,sessionId,disabled,isPublished
             <Loader loading={isDeleting}/>
         </Button>
        </ConfirmModal>
+       <Button
+            onClick={onViewing}
+            disabled={isViewing}
+            variant="outline"
+            size="sm"
+            className='flex items-center gap-x-2'
+        >
+            <Eye/>
+            View assignments
+            <Loader loading={isViewing}/>
+        </Button>
     </div>
   )
 }

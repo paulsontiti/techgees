@@ -7,6 +7,7 @@ import { LogOut } from "lucide-react"
 import SearchInput from "./search-input"
 import Link from "next/link"
 import Logo from "./logo"
+import NotificationComponent from "./notification"
 
 export const NavbarRoutes = () => {
     const pathname = usePathname()
@@ -17,7 +18,7 @@ export const NavbarRoutes = () => {
 
 
 
-    return <div className="w-full flex items-center justify-between ">
+    return <div className="flex items-center w-full px-4 ">
            <div className="p-6 hidden md:block">
                 <Logo />
 
@@ -29,7 +30,7 @@ export const NavbarRoutes = () => {
                 </div>
             )
         }
-        <div className="flex gap-x-2 ml-auto">
+        <div className="flex items-center gap-x-4 ml-auto">
             <Button
                 variant="link"
                 size="sm"
@@ -48,6 +49,7 @@ export const NavbarRoutes = () => {
                 </Link>
             )}
             <UserButton />
+            <NotificationComponent/>
         </div>
     </div>
 }

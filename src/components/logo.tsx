@@ -4,7 +4,7 @@ import React from 'react'
 
 function Logo() {
 
-    return <div className='flex items-center '>
+    return <div>
         <Image
             height={100}
             width={100}

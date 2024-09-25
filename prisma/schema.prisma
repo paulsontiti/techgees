@@ -280,15 +280,50 @@ model Assignment {
 model AssignmentAnswer {
   id     String  @id @default(uuid()) @map("_id")
   userId String
+  answer String
   passed Boolean @default(false)
 
   assignmentId String
   assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
 
+  assignmentAnswerRemark AssignmentAnswerRemarks?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([assignmentId])
+  @@unique([userId,assignmentId])
+}
+
+model AssignmentAnswerRemarks {
+  id     String  @id @default(uuid()) @map("_id")
+  userId String
+  remark String
+
+  assignmentAnswerId String @unique
+  assignmentAnswer   AssignmentAnswer @relation(fields: [assignmentAnswerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model Notification {
+  id     String  @id @default(uuid()) @map("_id")
+  senderId String
+  title String
+ message String
+ receiverId String @default("all")
+ status Status @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  Pending
+  Delivered
+  Read
 }
 
 model Question {

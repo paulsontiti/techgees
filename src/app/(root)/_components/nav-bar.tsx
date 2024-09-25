@@ -4,9 +4,9 @@ import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import React from "react";
 import SearchInput from "./search-input";
 import { Category, Course } from "@prisma/client";
-import Link from "next/link";
 import { CategoryDropdownMenu } from "./category-dropdown-menu";
 import MobileMenu from "./mobile-menu";
+import DashboardLink from "./dashboard-link";
 
 function Navbar({
   userId,
@@ -34,7 +34,8 @@ function Navbar({
             <div className="flex items-center gap-x-4">
               <UserButton />
 
-              <Link href="/dashboard">Dashboard</Link>
+<DashboardLink/>
+              
             </div>
           ) : (
             <>
