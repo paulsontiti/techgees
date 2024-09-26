@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Session } from "@prisma/client";
 import axios from "axios";
 import { CheckCheck, Lock, PlayCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,6 +14,7 @@ type SessionSidebarItemProps = {
   isLocked: boolean;
   chapterId: string,
   sessionId: string,
+  
 };
 
 function SessionSidebarItem({
@@ -28,15 +28,16 @@ function SessionSidebarItem({
   const pathname = usePathname();
   const router = useRouter();
   const [isCompleted, setIsCompleted] = useState(false)
+  const [isPrvSessionCompleted, setIsPrvSessionCompleted] = useState(false)
 
   useEffect(() => {
     (
       async () => {
         try {
-          const data = await axios.get(`/api/user-progress/sessions/${sessionId}`)
+          const data = await axios.get(`/api/user-progress/sessions/${sessionId}?chapterId=${chapterId}`,)
           
           if(data.data){
-            setIsCompleted(data.data.isCompleted)
+            setIsCompleted(data.data)
           }
          
 
@@ -47,7 +48,27 @@ function SessionSidebarItem({
     )()
   }, [sessionId])
 
-  const Icon = isLocked ? Lock : isCompleted ? CheckCheck : PlayCircle;
+  useEffect(() => {
+    (
+      async () => {
+        try {
+          const data = await axios.get(`/api/user-progress/previous-session/${sessionId}`)
+          
+          if(data.data){
+            setIsPrvSessionCompleted(data.data)
+          }
+         
+
+        } catch (err: any) {
+          toast.error(err.message, { duration: 5000 })
+        }
+      }
+    )()
+  }, [sessionId])
+
+ 
+
+  const Icon = (isLocked || !isPrvSessionCompleted) ? Lock : isCompleted ? CheckCheck : PlayCircle;
   const isActive = pathname?.includes(id);
 
   const onClick = () => {

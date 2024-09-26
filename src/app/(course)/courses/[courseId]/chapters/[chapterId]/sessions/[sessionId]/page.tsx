@@ -32,7 +32,7 @@ async function SessionIdPage({
 
   const {
     session,
-    nextSession,
+    nextSession,previousSession,
     attachments,
 assignments,
     userProgress,
@@ -42,6 +42,8 @@ assignments,
     chapterId,
     sessionId,
   });
+
+  console.log(previousSession?.title)
   if (error) return <ErrorPage name={error.name} />;
 
   if (!session) return redirect("/");

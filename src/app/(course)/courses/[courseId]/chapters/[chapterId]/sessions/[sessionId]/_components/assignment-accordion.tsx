@@ -7,7 +7,7 @@ import AssignmentForm from './assignment-form'
 import { db } from '@/lib/db'
 import { auth } from '@clerk/nextjs/server'
 import { Preview } from '@/components/preview'
-import { CheckCircle } from 'lucide-react'
+import { BadgeCheck, CircleEllipsis } from 'lucide-react'
 
 
 async function AssignmentAccordion({assignment }: {
@@ -41,19 +41,21 @@ assignmentId:assignment.id
           <AccordionContent>
           {
             ans && <div>
-              <div className='flex items-center gap-x-2'>
+              <div className='flex items-start'>
               <h2 className='text-xl font-semibold '>Your answer </h2>
-             {ans.passed &&  <CheckCircle className='text-emerald-500 w-4 h-4'/>}
+             {ans.passed ?  <BadgeCheck className='text-emerald-900 w-4 h-4'/> : <CircleEllipsis className='text-yellow-900 w-4 h-4'/>}
               </div>
               <Preview value={ans.answer}/>
+              {!ans.passed &&    <AssignmentForm assignmentId={assignment.id}/>}
            {remark && <>
             <h2 className='mt-4 mb-2 text-xl font-semibold'>Instructor's remark</h2>
             <Preview value={remark.remark}/>
+        
            </>}
             </div>
           }
          {
-          ans && !ans.passed &&    <AssignmentForm assignmentId={assignment.id}/>
+          !ans && <AssignmentForm assignmentId={assignment.id}/>
          }
           </AccordionContent>
         </AccordionItem>

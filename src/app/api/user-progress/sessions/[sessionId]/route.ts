@@ -24,7 +24,7 @@ export async function GET(req: Request, { params: { sessionId } }: { params: { s
 
 
 
-        return NextResponse.json(userProgress)
+        return NextResponse.json(userProgress ? userProgress.isCompleted : false)
     } catch (err) {
 
         console.log("[GET_USER_SESSION_PROGRESS]", err)
