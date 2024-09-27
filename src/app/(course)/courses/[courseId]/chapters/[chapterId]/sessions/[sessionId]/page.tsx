@@ -21,6 +21,7 @@ import { getSessionStudentsCount } from "../../../../../../../../../actions/getS
 import { getSessionNumberOfRatings } from "../../../../../../../../../actions/getSessionNumberOfRatings";
 import NextSessionButton from "./_components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
+import { getSessionProgress } from "../../../../../../../../../actions/getSessionProgress";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -32,9 +33,9 @@ async function SessionIdPage({
 
   const {
     session,
-    nextSession,previousSession,
+    nextSession, previousSession,
     attachments,
-assignments,
+    assignments,
     userProgress,
     error,
   } = await getSessionAttachmentsNextSessionuserprogress({
@@ -43,52 +44,58 @@ assignments,
     sessionId,
   });
 
-  console.log(previousSession?.title)
+
   if (error) return <ErrorPage name={error.name} />;
 
   if (!session) return redirect("/");
 
   const completeOnEnd = !userProgress?.isCompleted;
 
-  const {numberOfLikes,error:likesError} = await getSessionLikesCount(sessionId)
+  const { numberOfLikes, error: likesError } = await getSessionLikesCount(sessionId)
   if (likesError) return <ErrorPage name={likesError.name} />;
 
 
-  const {numberOfDisLikes,error:dislikesError} = await getSessionDisLikesCount(sessionId)
+  const { numberOfDisLikes, error: dislikesError } = await getSessionDisLikesCount(sessionId)
   if (dislikesError) return <ErrorPage name={dislikesError.name} />;
 
 
-  const {comments,error:commentsError} = await getSessionComments(sessionId)
+  const { comments, error: commentsError } = await getSessionComments(sessionId)
   if (commentsError) return <ErrorPage name={commentsError.name} />;
 
-  const {hasLiked,error:hasLikedError} = await hasLikedSession(sessionId,userId)
+  const { hasLiked, error: hasLikedError } = await hasLikedSession(sessionId, userId)
   if (hasLikedError) return <ErrorPage name={hasLikedError.name} />;
 
-  const {hasDisLiked,error:hasDisLikedError} = await hasDisLikedSession(sessionId,userId)
+  const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedSession(sessionId, userId)
   if (hasDisLikedError) return <ErrorPage name={hasDisLikedError.name} />;
 
   const { numberOfStudents, error: studentsError } =
-  await getSessionStudentsCount(sessionId);
-if (studentsError)
-  return <ErrorPage name={studentsError.name} />;
+    await getSessionStudentsCount(sessionId);
+  if (studentsError)
+    return <ErrorPage name={studentsError.name} />;
 
-const { hasRated, error: ratedError } = await hasRatedSession(
-  sessionId,
-  userId
-);
-if (ratedError) return <ErrorPage name={ratedError.name} />;
+  const { hasRated, error: ratedError } = await hasRatedSession(
+    sessionId,
+    userId
+  );
+  if (ratedError) return <ErrorPage name={ratedError.name} />;
 
-const { averageRating, error: ratingError } = await getSessionRating(
-  sessionId
-);
-if (ratingError)
-  return <ErrorPage name={ratingError.name} />;
+  const { averageRating, error: ratingError } = await getSessionRating(
+    sessionId
+  );
+  if (ratingError)
+    return <ErrorPage name={ratingError.name} />;
 
-const { numberOfRatings, error: numRatingError } = await getSessionNumberOfRatings(
-  sessionId
-);
-if (numRatingError)
-  return <ErrorPage name={numRatingError.name} />;
+  const { numberOfRatings, error: numRatingError } = await getSessionNumberOfRatings(
+    sessionId
+  );
+  if (numRatingError)
+    return <ErrorPage name={numRatingError.name} />;
+
+  //check if the previous session has been completed
+  const prvSessionId = previousSession?.id ?? "";
+  const { sessionProgress: prvSessionProgress, error: progressError } = await getSessionProgress(prvSessionId, userId)
+  if (progressError)
+    return <ErrorPage name={progressError.name} />;
 
 
   return (
@@ -101,7 +108,7 @@ if (numRatingError)
         className="
         flex flex-col max-w-4xl mx-auto pb-20 mt-4"
       >
-          <div >
+        <div >
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">{session.title}</h2>
           </div>
@@ -122,7 +129,7 @@ if (numRatingError)
                       className="
                 flex items-center p-3 w-full bg-sky-200 border text-sky-700 rounded-md hover:underline"
                     >
-                      <File className="mr-2"/>
+                      <File className="mr-2" />
                       <p className="line-clamp-1">{attachment.name}</p>
                     </a>
                   );
@@ -131,45 +138,52 @@ if (numRatingError)
             </>
           )}
         </div>
-        <VideoPlayer
+        {prvSessionProgress?.isCompleted ? <>
+        
+          <VideoPlayer
           session={session}
           completeOnEnd={completeOnEnd}
           courseId={courseId}
           nextSessionId={nextSession?.id ?? ""}
         />
-       {
-        nextSession &&  <div className="my-4 flex items-center justify-end">
-        <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id}/>
-      </div>
-       }
-      <SessionComments 
-      numberOfLikes={numberOfLikes}
-      numberOfDisLikes={numberOfDisLikes}
-      numberOfRatings={numberOfRatings}
-      comments={comments}
-      sessionId={sessionId}
-      hasLiked={hasLiked}
-      hasDisLiked={hasDisLiked}
-      numberOfStudents={numberOfStudents}
-      rating={averageRating}
-      hasRated={hasRated}
-      />
-      
-          <Separator/>
-          {(userProgress === null && 
-          session.questions.length > 0) && 
-          <SessionTest questions={session.questions} sessionId={sessionId}/>}
-                 <Separator/>
-              
-                 {assignments.length > 0 && <>
-                  <h2 className='text-xl my-2 font-bold'>Assignments</h2>
-                 {
-                  assignments.map((assignment)=>{
+          {
+          nextSession && <div className="my-4 flex items-center justify-end">
+            <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
+          </div>
+        }
+        <SessionComments
+          numberOfLikes={numberOfLikes}
+          numberOfDisLikes={numberOfDisLikes}
+          numberOfRatings={numberOfRatings}
+          comments={comments}
+          sessionId={sessionId}
+          hasLiked={hasLiked}
+          hasDisLiked={hasDisLiked}
+          numberOfStudents={numberOfStudents}
+          rating={averageRating}
+          hasRated={hasRated}
+        />
 
-                    return <AssignmentAccordion assignment={assignment} key={assignment.id}/>
-                   })
-                 }
-                 </>}
+        <Separator />
+        {(userProgress === null &&
+          session.questions.length > 0) &&
+          <SessionTest questions={session.questions} sessionId={sessionId} />}
+        <Separator />
+
+        {assignments.length > 0 && <>
+          <h2 className='text-xl my-2 font-bold'>Assignments</h2>
+          {
+            assignments.map((assignment) => {
+
+              return <AssignmentAccordion assignment={assignment} key={assignment.id} />
+            })
+          }
+        </>}
+        </>  :
+          <div>
+            <Banner variant="warning" label="You can't access this session because you have not completed the previous session" />
+          </div>}
+      
       </div>
     </div>
   );

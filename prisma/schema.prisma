@@ -291,30 +291,29 @@ model AssignmentAnswer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([userId, assignmentId])
   @@index([assignmentId])
-  @@unique([userId,assignmentId])
 }
 
 model AssignmentAnswerRemarks {
-  id     String  @id @default(uuid()) @map("_id")
+  id     String @id @default(uuid()) @map("_id")
   userId String
   remark String
 
-  assignmentAnswerId String @unique
+  assignmentAnswerId String           @unique
   assignmentAnswer   AssignmentAnswer @relation(fields: [assignmentAnswerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 model Notification {
-  id     String  @id @default(uuid()) @map("_id")
-  senderId String
-  title String
- message String
- receiverId String @default("all")
- status Status @default(Pending)
+  id         String @id @default(uuid()) @map("_id")
+  senderId   String
+  title      String
+  message    String
+  receiverId String @default("all")
+  status     Status @default(Pending)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -384,7 +383,7 @@ model PaystackPayment {
   amount         Float
   payment_status String @default("pending")
   userId         String
-  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           DBUser   @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId       String
   course         Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
@@ -394,20 +393,25 @@ model PaystackPayment {
   @@unique([reference])
 }
 
-model User {
+model DBUser {
   id        String  @id @default(uuid()) @map("_id")
   userId    String
-  firstName String
-  lastName  String
-  email     String
-  imageUrl  String
+  firstName String?
+  lastName  String?
+  email     String?
+  imageUrl  String?
   phone     String?
-  role      Role    @default(Student)
+  whatsapp  String?
+
+  refererId String?  @unique
+  referer   DBUser?  @relation("referal", fields: [refererId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  referees  DBUser[] @relation("referal")
+
+  role             Role              @default(Student)
+  paystackPayments PaystackPayment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  paystackPayments PaystackPayment[]
 
   @@unique([userId])
 }

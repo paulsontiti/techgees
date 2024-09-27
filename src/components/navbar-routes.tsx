@@ -3,11 +3,13 @@
 import { UserButton } from "@clerk/nextjs"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "./ui/button"
-import { LogOut } from "lucide-react"
+import {Layout } from "lucide-react"
 import SearchInput from "./search-input"
 import Link from "next/link"
 import Logo from "./logo"
 import NotificationComponent from "./notification"
+import { useState } from "react"
+import Loader from "./loader"
 
 export const NavbarRoutes = () => {
     const pathname = usePathname()
@@ -16,13 +18,14 @@ export const NavbarRoutes = () => {
     const isCoursePage = pathname?.includes("/courses")
     const isSearchPage = pathname === "/search"
 
+    const [loading, setLoading] = useState(false)
 
 
     return <div className="flex items-center w-full px-4 ">
-           <div className="p-6 hidden md:block">
-                <Logo />
+        <div className="p-6 hidden md:block">
+            <Logo />
 
-            </div>
+        </div>
         {
             isSearchPage && (
                 <div className="hidden md:block">
@@ -39,17 +42,25 @@ export const NavbarRoutes = () => {
                 }}
             >Home</Button>
             {isTeacherPage || isCoursePage ? (
-                <Link href="/dashboard" className="flex items-center gapx-2">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Exit
-                </Link>
+                <Button
+size="sm" variant="outline"
+                    onClick={
+                        () => {
+                            setLoading(true)
+                            router.push("/dashboard")
+                        }
+                    } className="flex items-center gapx-2">
+                    <Layout className="h-4 w-4 mr-2" />
+                    Dashboard
+                    <Loader loading={loading} />
+                </Button>
             ) : (
                 <Link href="/teacher/courses" className="hidden md:flex items-center gapx-2">
                     Teacher mode
                 </Link>
             )}
             <UserButton />
-            <NotificationComponent/>
+            <NotificationComponent />
         </div>
     </div>
 }
