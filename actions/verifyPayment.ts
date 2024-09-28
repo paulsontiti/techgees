@@ -22,7 +22,7 @@ Promise<ReturnValue>=>{
 
       return {verifiedPayment:response.data,error:null}
     }catch(error:any){
-    console.log("[VERIFY_PAYSTACK_PAYMENT]",error)
+    console.error("[VERIFY_PAYSTACK_PAYMENT]",error)
         return {verifiedPayment:null,error}
     }
     }

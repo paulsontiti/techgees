@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
 import { Chapter, Course } from "@prisma/client";
-import { getCourseWithChildren } from "./getCourseWithCourseChildren";
 import { getCourseWithCourseChildrenWithChaptersAndSessions } from "./getCourseWithCourseChildrenWithChapters";
 
 type ReturnValue = {
