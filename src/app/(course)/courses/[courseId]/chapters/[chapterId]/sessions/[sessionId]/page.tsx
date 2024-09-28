@@ -22,6 +22,7 @@ import { getSessionNumberOfRatings } from "../../../../../../../../../actions/ge
 import NextSessionButton from "./_components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
 import { getSessionProgress } from "../../../../../../../../../actions/getSessionProgress";
+import PrvSessionButton from "./_components/prv-session-button";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -180,8 +181,13 @@ async function SessionIdPage({
           }
         </>}
         </>  :
-          <div>
-            <Banner variant="warning" label="You can't access this session because you have not completed the previous session" />
+          <div className="flex flex-col gap-y-2">
+            <Banner variant="warning" 
+            label="You can't access this session because you have not completed the previous session" />
+            {previousSession && 
+            <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId}/>
+            
+            }
           </div>}
       
       </div>
