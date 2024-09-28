@@ -139,57 +139,61 @@ async function SessionIdPage({
             </>
           )}
         </div>
-        {prvSessionProgress?.isCompleted ? <>
-        
-          <VideoPlayer
-          session={session}
-          completeOnEnd={completeOnEnd}
-          courseId={courseId}
-          nextSessionId={nextSession?.id ?? ""}
-        />
-          {
-          nextSession && <div className="my-4 flex items-center justify-end">
-            <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
-          </div>
+        {
+          previousSession && !prvSessionProgress?.isCompleted ? <div className="flex flex-col gap-y-2">
+            <Banner variant="warning"
+              label="You can't access this session because you have not completed the previous session" />
+
+            <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />
+
+          </div> :
+
+            <>
+
+              <VideoPlayer
+                session={session}
+                completeOnEnd={completeOnEnd}
+                courseId={courseId}
+                nextSessionId={nextSession?.id ?? ""}
+              />
+              {
+                nextSession && <div className="my-4 flex items-center justify-end">
+                  <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
+                </div>
+              }
+              <SessionComments
+                numberOfLikes={numberOfLikes}
+                numberOfDisLikes={numberOfDisLikes}
+                numberOfRatings={numberOfRatings}
+                comments={comments}
+                sessionId={sessionId}
+                hasLiked={hasLiked}
+                hasDisLiked={hasDisLiked}
+                numberOfStudents={numberOfStudents}
+                rating={averageRating}
+                hasRated={hasRated}
+              />
+
+              <Separator />
+              {(userProgress === null &&
+                session.questions.length > 0) &&
+                <SessionTest questions={session.questions} sessionId={sessionId} />}
+              <Separator />
+
+              {assignments.length > 0 && <>
+                <h2 className='text-xl my-2 font-bold'>Assignments</h2>
+                {
+                  assignments.map((assignment) => {
+
+                    return <AssignmentAccordion assignment={assignment} key={assignment.id} />
+                  })
+                }
+              </>}
+            </>
         }
-        <SessionComments
-          numberOfLikes={numberOfLikes}
-          numberOfDisLikes={numberOfDisLikes}
-          numberOfRatings={numberOfRatings}
-          comments={comments}
-          sessionId={sessionId}
-          hasLiked={hasLiked}
-          hasDisLiked={hasDisLiked}
-          numberOfStudents={numberOfStudents}
-          rating={averageRating}
-          hasRated={hasRated}
-        />
 
-        <Separator />
-        {(userProgress === null &&
-          session.questions.length > 0) &&
-          <SessionTest questions={session.questions} sessionId={sessionId} />}
-        <Separator />
 
-        {assignments.length > 0 && <>
-          <h2 className='text-xl my-2 font-bold'>Assignments</h2>
-          {
-            assignments.map((assignment) => {
 
-              return <AssignmentAccordion assignment={assignment} key={assignment.id} />
-            })
-          }
-        </>}
-        </>  :
-          <div className="flex flex-col gap-y-2">
-            <Banner variant="warning" 
-            label="You can't access this session because you have not completed the previous session" />
-            {previousSession && 
-            <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId}/>
-            
-            }
-          </div>}
-      
       </div>
     </div>
   );
