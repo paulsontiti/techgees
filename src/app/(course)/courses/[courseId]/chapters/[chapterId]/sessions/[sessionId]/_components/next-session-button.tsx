@@ -17,7 +17,7 @@ function NextSessionButton({
         router.push(`/courses/${courseId}/chapters/${chapterId}/sessions/${nextSessionId}`)
     }}
     className='flex items-center gap-x-2'
-    >Next Session <Loader loading={loading} /></Button>
+    >Go to next session <Loader loading={loading} /></Button>
 
 }
 
