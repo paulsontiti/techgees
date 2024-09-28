@@ -10,7 +10,7 @@ params:{userId}
     try{
        
 
- const user = await db.user.findUnique({
+ const user = await db.dBUser.findUnique({
    where:{
     userId
    }

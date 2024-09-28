@@ -1,12 +1,12 @@
 "use client"
 import { Preview } from "@/components/preview";
 import { UserDp } from "@/components/user-dp";
-import { Comment, User } from "@prisma/client";
+import { Comment, DBUser} from "@prisma/client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 function CommentItem({ comment }: { comment: Comment }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<DBUser | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -24,11 +24,16 @@ function CommentItem({ comment }: { comment: Comment }) {
         </div>
       </div>
     );
+
+//get the initiials of the names
+const firstNameInitials = `${user.firstName ? user.firstName.slice(0) : ""}`
+const secondNameInitials  = `${user.lastName ? user.lastName.slice(0) : ""}`
+
   return (
     <div className="flex items-start gap-x-2 mb-4 bg-slate-100 p-2" >
       <UserDp
         imgUrl={user?.imageUrl!}
-        initials={`${user?.firstName.slice(0)}${user?.lastName.slice(0)}`}
+        initials={`${firstNameInitials}${secondNameInitials}`}
       />
       <div>
         <p className="text-sm font-semibold">

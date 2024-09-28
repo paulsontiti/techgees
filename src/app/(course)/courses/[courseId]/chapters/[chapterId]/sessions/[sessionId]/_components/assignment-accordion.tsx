@@ -48,7 +48,7 @@ assignmentId:assignment.id
               <Preview value={ans.answer}/>
               {!ans.passed &&    <AssignmentForm assignmentId={assignment.id}/>}
            {remark && <>
-            <h2 className='mt-4 mb-2 text-xl font-semibold'>Instructor's remark</h2>
+            <h2 className='mt-4 mb-2 text-xl font-semibold'>{`Instructor's remark`}</h2>
             <Preview value={remark.remark}/>
         
            </>}

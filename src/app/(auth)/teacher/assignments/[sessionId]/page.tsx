@@ -17,7 +17,7 @@ async function AssignmentPage({
     <div>
       {assignments.length > 0 && assignments.map((assignment)=>{
 
-        return <AssignmentAccordion assignment={assignment}/>
+        return <AssignmentAccordion assignment={assignment} key={assignment.id}/>
       })}
     </div>
   )
