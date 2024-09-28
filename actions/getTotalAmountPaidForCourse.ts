@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { verifyPayStackPayment } from "./verifyPayment";
 
 
 interface ReturnValue {
@@ -13,11 +14,22 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
         const payments = await db.paystackPayment.findMany({
             where: {
                 userId,
-                courseId,
-                payment_status:"success"
+                courseId
+            },select:{
+                reference:true,
+                amount:true
             }
         });
-        const paymentAmounts = payments.map(payment => payment.amount)
+
+        let paymentAmounts:number[] = []
+
+      for(let payment of payments){
+        const {verifiedPayment,error} = await verifyPayStackPayment(payment.reference)
+        if(error) throw new Error(error.message)
+            if(verifiedPayment.data.status === "success"){
+                paymentAmounts.push(verifiedPayment.data.amount)
+            }
+      }
 
         const totalAmountPaid = paymentAmounts.length === 0 ? 0 : paymentAmounts.reduce((total, curr) => total + curr)
 
