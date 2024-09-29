@@ -8,10 +8,14 @@ import SearchInput from "./search-input"
 import Link from "next/link"
 import Logo from "./logo"
 import NotificationComponent from "./notification"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Loader from "./loader"
+import { DBUser } from "@prisma/client"
+import axios from "axios"
+import toast from "react-hot-toast"
+import { Skeleton } from "./ui/skeleton"
 
-export const NavbarRoutes = () => {
+export const NavbarRoutes = ({userId}:{userId:string}) => {
     const pathname = usePathname()
     const router = useRouter()
     const isTeacherPage = pathname?.startsWith("/teacher")
@@ -19,7 +23,23 @@ export const NavbarRoutes = () => {
     const isSearchPage = pathname === "/search"
 
     const [loading, setLoading] = useState(false)
+    const [loadingUser, setLoadingUser] = useState(false)
 
+    const [user, setUser] = useState<DBUser | null>(null);
+
+    useEffect(() => {
+      (async () => {
+        try {
+            setLoadingUser(true)
+          const res = await axios.get(`/api/user/${userId}`);
+          setUser(res.data);
+        } catch (errror: any) {
+          toast.error("Error occurred while trying to fetch user details")
+        }finally{
+            setLoadingUser(false)
+        }
+      })();
+    },[userId]);
 
     return <div className="flex items-center w-full px-4 ">
         <div className="p-6 hidden md:block">
@@ -41,6 +61,8 @@ export const NavbarRoutes = () => {
                     router.push("/")
                 }}
             >Home</Button>
+            {loadingUser ? <Skeleton className="h-6 w-[200px]" /> :
+            <>
             {isTeacherPage || isCoursePage ? (
                 <Button
 size="sm" variant="outline"
@@ -55,10 +77,13 @@ size="sm" variant="outline"
                     <Loader loading={loading} />
                 </Button>
             ) : (
-                <Link href="/teacher/courses" className="hidden md:flex items-center gapx-2">
+               <>
+               {user?.role === "Admin" &&  <Link href="/teacher/courses" className="hidden md:flex items-center gapx-2">
                     Teacher mode
-                </Link>
-            )}
+                </Link>}
+               </>
+            )}</>
+            }
             <UserButton />
             <NotificationComponent />
         </div>

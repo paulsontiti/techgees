@@ -17,10 +17,10 @@ import { Pencil } from 'lucide-react'
 
 
 const formSchema = zod.object({
-    phone:zod.string().length(14).startsWith("+234").trim(),
+    whatsapp:zod.string().length(14).startsWith("+234").trim(),
 })
 
-function PhoneForm({user}:{user:DBUser}) {
+function WhatsAppForm({user}:{user:DBUser}) {
 const [editing,setEditing] = useState(false)
 const router = useRouter()
 
@@ -28,7 +28,7 @@ const router = useRouter()
     const form = useForm<zod.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            phone:user.phone ?? ""
+            whatsapp:user.whatsapp ?? ""
         }
     })
 
@@ -55,14 +55,14 @@ const router = useRouter()
     <div className='mt-6 
     border bg-slate-100 rounded-md p-4'>
         <div className='font-medium flex items-center justify-between'>
-            Phone
+            WhatsApp
             <Button variant="ghost" onClick={toggleEdit}>
              {editing ? (
                 <>Cancel</>
              ):(
                 <>
                 <Pencil className='h-4 w-4 mr-2'/>
-                Edit phone
+                Edit  number
                 </>
              )}
             </Button>
@@ -74,10 +74,10 @@ className='space-y-4 mt-4'
 >
 <FormField 
 control={form.control}
-name='phone'
+name='whatsapp'
 render={({field})=>{
     return   <FormItem>
-          <FormLabel>Phone</FormLabel>
+          <FormLabel>WhatsApp number</FormLabel>
           <FormControl>
               <Input
               disabled={isSubmitting}
@@ -85,7 +85,7 @@ render={({field})=>{
               {...field}
               />
           </FormControl>
-          <FormDescription>What is your mobile phone number</FormDescription>
+          <FormDescription>What is your whatsapp number</FormDescription>
           <FormMessage/>
       </FormItem>
   }}
@@ -99,10 +99,10 @@ render={({field})=>{
                     </div>
 </form>
         </Form> : <p className='text-sm mt-2'>
-        {user.phone}</p>
+        {user.whatsapp}</p>
         }
     </div>
   )
 }
 
-export default PhoneForm
+export default WhatsAppForm

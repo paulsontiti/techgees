@@ -25,7 +25,7 @@ export function CommentsDialog({comments}:{comments:Comment[]}) {
 
       </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="min-w-[300px] md:min-w-[600px] overflow-y-scroll max-h-[600px]">
         <DialogHeader>
           <DialogTitle>All comments</DialogTitle>
           {/* <DialogDescription>

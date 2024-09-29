@@ -8,6 +8,9 @@ import FirstNameForm from "./_components/first-name-form";
 import { createUser } from "../../../../actions/createUser";
 import LastNameForm from "./_components/last-name-form";
 import PhoneForm from "./_components/phone-form";
+import WhatsAppForm from "./_components/whatsapp-form";
+import ImageForm from "./_components/image-form";
+import UserId from "./_components/user-id";
 
 
 
@@ -50,56 +53,24 @@ async function ProfilePage() {
           </div>
          
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-16">
-          <div>
-            <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 mt-4">
               <IconBadge icon={User} size="sm" />
               <h2 className="text-xl">Setup your Profile</h2>
             </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
+          <div>
+           <UserId userId={userId}/>
             <FirstNameForm user={user}/>
             <LastNameForm user={user}/>
-            <PhoneForm user={user}/>
-          </div>
-          {/* <div className="space-y-6">
-            <CategoryForm
-              categories={categories}
-              courseCategories={courseCategories ?? []}
-              courseId={courseId}
-            />
-                  <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={ListChecks} />
-                <h2 className="text-xl">Course children</h2>
-              </div>
-              <CourseChildForm courseChildren={courseChildren} courses={courses} courseId={course.id}/>
-            </div>
-            <PreRequisiteCoursesForm
-              courseId={courseId}
-              courses={courses}
-              preRequisiteCourses={preRequisiteCourses} />
-          
-            <RecommendedCoursesForm
-              courseId={courseId}
-              courses={courses}
-              recommendedCourses={recommendedCourses} />
-              <CourseBenefitsForm courseId={courseId} benefits={course.courseBenefits}/>
+         
           </div>
           <div className="space-y-6">
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={ListChecks} />
-                <h2 className="text-xl">Course chapters</h2>
-              </div>
-              <ChaptersForm course={course} />
-            </div>
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={CircleDollarSign} />
-                <h2 className="text-xl">Sell your course</h2>
-              </div>
-              <PriceForm course={course} />
-            </div>
-          </div> */}
+          <PhoneForm user={user}/>
+          <WhatsAppForm user={user}/>
+          </div>
+          <div className="space-y-6">
+           <ImageForm user={user}/>
+          </div>
         </div>
       </div>
       

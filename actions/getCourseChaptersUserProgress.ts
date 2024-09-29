@@ -57,6 +57,7 @@ export const getCourseChaptersUserProgress = async (
         let position = 0;
         for (let childCourse of courseChildrenWithChaptersAndSessions) {
           for (let chapter of childCourse.chapters) {
+            console.log(chapter.title,chapter.position)
             chapter.position = position
             course.chapters.push(chapter)
             position++

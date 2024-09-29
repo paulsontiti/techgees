@@ -45,7 +45,7 @@ const router = useRouter()
 
     const onSubmit = async(values:zod.infer<typeof formSchema>)=>{
         try{
-            await axios.patch(`/api/users/${user.id}`,values)
+            await axios.patch(`/api/user`,values)
             toast.success("Profile updated")
             toggleEdit()
             router.refresh()
@@ -101,7 +101,7 @@ render={({field})=>{
                     </div>
 </form>
         </Form> : <p className='text-sm mt-2'>
-            {`${user.firstName?.slice(0,1).toUpperCase()}${user.firstName?.slice(1)}`}</p>}
+            {user.firstName}</p>}
     </div>
   )
 }

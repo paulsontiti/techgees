@@ -22,7 +22,7 @@ params:{userId}
  return NextResponse.json(user)
     }catch(err){
 
-        console.log("[USER_SIGNUP]",err)
+        console.log("[GET_USER]",err)
         return new NextResponse("Internal Error",{
             status:500
         })

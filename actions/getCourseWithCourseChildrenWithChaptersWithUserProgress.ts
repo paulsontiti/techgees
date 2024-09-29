@@ -35,6 +35,8 @@ export const getCourseWithCourseChildrenWithChaptersWithUserProgress = async (
                   },
                 },
                 sessions:true
+              },orderBy:{
+                position:"asc"
               }
             }
           }
