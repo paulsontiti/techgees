@@ -156,11 +156,13 @@ async function SessionIdPage({
                 courseId={courseId}
                 nextSessionId={nextSession?.id ?? ""}
               />
+              <div className="flex items-center justify-between my-4">
+                {previousSession &&  <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />}
               {
-                nextSession && <div className="my-4 flex items-center justify-end">
-                  <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
-                </div>
+                nextSession && <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
+                
               }
+              </div>
               <SessionComments
                 numberOfLikes={numberOfLikes}
                 numberOfDisLikes={numberOfDisLikes}
