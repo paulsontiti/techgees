@@ -12,14 +12,9 @@ export async function GET(req: Request) {
 
         const notifications = await db.notification.findMany({
             where: {
-                OR: [
-                    {
-                        receiverId: "all"
-                    },
-                    {
-                        receiverId: userId
-                    }
-                ]
+               
+                        receiverId: userId,
+                        status:"Pending"
 
             }
         })
@@ -57,5 +52,32 @@ export async function POST(req: Request) {
         return new NextResponse("Internal Error", {
             status: 500
         })
+    }
+}
+export async function PATCH(
+    req:Request){
+
+    try{
+        
+const {userId} = auth()
+if(!userId)  return new NextResponse("Unauthoried",{status:401})
+
+
+
+        await db.notification.updateMany({
+            where:{
+                    receiverId:userId
+                
+            },
+            data:{
+                status:"Read"
+            }
+        })
+
+        return NextResponse.json("")
+    
+    }catch(err){
+        console.log("[NOTIFICATION_UPDATE]",err)
+        return new NextResponse("Internal error",{status:500})
     }
 }

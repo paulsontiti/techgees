@@ -87,7 +87,7 @@ const instructorId = session ? session.chapter.course.userId :(chapter ? chapter
 //construct title
 const title = session ? session.title :(chapter ? chapter.title : (course ? course.title : ""))
 //construct 
-const message = `Your assignment answer for ${title} got a remark from your instructor`
+const message = `Assignment answer for ${title} has been submitted`
 
 await db.notification.create({
     data:{

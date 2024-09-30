@@ -101,7 +101,7 @@ export function RefererForm({users,error,setEditing}:{
       </PopoverContent>
     </Popover>
     <p className="text-xs my-2 p-2">
-      {`Search for Facebook or Instagram if that's how you got to know about us`}
+      {`Search for social media if that's how you got to know about us`}
     </p>
 
     <div className='flex items-center gap-x-2'>

@@ -312,7 +312,7 @@ model Notification {
   senderId   String
   title      String
   message    String
-  receiverId String @default("all")
+  receiverId String 
   status     Status @default(Pending)
 
   createdAt DateTime @default(now())
