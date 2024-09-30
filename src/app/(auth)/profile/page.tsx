@@ -11,6 +11,10 @@ import PhoneForm from "./_components/phone-form";
 import WhatsAppForm from "./_components/whatsapp-form";
 import ImageForm from "./_components/image-form";
 import UserId from "./_components/user-id";
+import { getUsersForReferal } from "../../../../actions/getUsers";
+import UsernameForm from "./_components/user-name-form";
+import RefererComponent from "./_components/referer-component";
+import { getReferer } from "../../../../actions/getReferer";
 
 
 
@@ -28,13 +32,17 @@ async function ProfilePage() {
   if (error) return <ErrorPage name={error.name}/>
   if (!user) return <ErrorPage name={"Unknown error"}/>
 
+  const {referers,error:usersError} = await getUsersForReferal()
+  const {referer,error:refererError} = await getReferer(userId)
 
   const requiredFields = [
     user.firstName,
     user.lastName,
     user.email,
     user.phone,
-    user.whatsapp
+    user.whatsapp,
+    user.userName,
+    user.refererId
   ];
 
   const totalFields = requiredFields.length;
@@ -62,11 +70,22 @@ async function ProfilePage() {
            <UserId userId={userId}/>
             <FirstNameForm user={user}/>
             <LastNameForm user={user}/>
+            <UsernameForm user={user}/>
          
           </div>
           <div className="space-y-6">
           <PhoneForm user={user}/>
           <WhatsAppForm user={user}/>
+          <RefererComponent users={[...referers,
+            {id:"Facebook",userName:"Facebook"},
+            {id:"Instagram",userName:"Instagram"},
+            {id:"Youtube",userName:"Youtube"},
+            {id:"Tiktok",userName:"Tiktok"},
+            {id:"Google ads",userName:"Google ads"},
+            ]} 
+            error={usersError ?? refererError}
+            referer={referer}
+            />
           </div>
           <div className="space-y-6">
            <ImageForm user={user}/>

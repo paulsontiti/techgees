@@ -383,7 +383,7 @@ model PaystackPayment {
   amount         Float
   payment_status String @default("pending")
   userId         String
-  user           DBUser   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           DBUser @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId       String
   course         Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
@@ -402,9 +402,10 @@ model DBUser {
   imageUrl  String?
   phone     String?
   whatsapp  String?
+  userName  String? @unique
 
-  refererId String?  @unique
-  referer   DBUser?  @relation("referal", fields: [refererId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  refererId String?
+  referer   DBUser?  @relation("referal", fields: [refererId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   referees  DBUser[] @relation("referal")
 
   role             Role              @default(Student)

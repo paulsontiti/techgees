@@ -18,9 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
  
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as zod from "zod";
+
 
 import { Course } from '@prisma/client'
 import { useState } from "react"
