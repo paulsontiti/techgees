@@ -46,6 +46,59 @@ export async function POST(req: Request,
         }
 
 
+
+//construct a message including the assignment session title
+
+//get the assignment
+const assignment = await db.assignment.findUnique({
+    where:{
+        id:assignmentId
+    }
+})
+
+//get the session,chapter or course if available
+const session = await db.session.findUnique({
+    where:{
+        id:assignment?.sessionId ?? ""
+    },include:{
+        chapter:{
+            select:{
+                course:true
+            }
+        }
+    }
+})
+const chapter = await db.chapter.findUnique({
+    where:{
+        id:assignment?.chapterId ?? ""
+    },include:{
+        course:true
+    }
+})
+const course = await db.course.findUnique({
+    where:{
+        id:assignment?.sessionId ?? ""
+    }
+})
+
+//get instructor's id
+const instructorId = session ? session.chapter.course.userId :(chapter ? chapter.course.userId : (course ? course.userId : ""))
+
+//construct title
+const title = session ? session.title :(chapter ? chapter.title : (course ? course.title : ""))
+//construct 
+const message = `Your assignment answer for ${title} got a remark from your instructor`
+
+await db.notification.create({
+    data:{
+        receiverId:instructorId,
+        message,
+        senderId:userId,
+        title:"An answer to assignment was submitted"
+
+    }
+})
+
         return NextResponse.json("");
     } catch (err) {
         console.log("[ASSIGNMENT_ANSWER]", err);

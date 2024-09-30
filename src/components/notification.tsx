@@ -24,11 +24,13 @@ useEffect(()=>{
     )()
 },[])
 
-    if (notification.length === 0) return null
+    if (notification.length === 0) return  <Bell className='w-7 h-7' />
     return (
         <div className='relative'>
-            <Bell className='w-6 h-6' />
-            <div className='w-4 h-4 bg-sky-950 text-white'>
+            <Bell className='w-7 h-7' />
+            <div className='w-5 h-5 bg-sky-950 text-white 
+            text-xs
+            rounded-full absolute -top-2 -right-2 flex items-center justify-center'>
                 {notification.length}
             </div>
         </div>
