@@ -27,21 +27,18 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
         const {verifiedPayment,error} = await verifyPayStackPayment(payment.reference)
         if(!error){
             if(verifiedPayment.data.status === "success"){
-        
+                paymentAmounts.push(verifiedPayment.data.amount/100)
 
 
-                const pay = await db.paystackPayment.update({
+                await db.paystackPayment.update({
                     where:{
                         reference:payment.reference
                     },
                     data:{
                         payment_status:verifiedPayment.data.status,
-                        amount:payment.amount
-                        
-                        
+                        amount:verifiedPayment.data.amount
                     }
                 })
-                paymentAmounts.push(pay.amount)
             }
         }
             
