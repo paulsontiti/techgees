@@ -35,7 +35,9 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
                         reference:payment.reference
                     },
                     data:{
-                        payment_status:verifiedPayment.data.status
+                        payment_status:verifiedPayment.data.status,
+                        amount:payment.amount
+                        
                         
                     }
                 })
