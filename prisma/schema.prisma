@@ -402,7 +402,7 @@ model DBUser {
   imageUrl  String?
   phone     String?
   whatsapp  String?
-  userName  String? @unique
+  userName  String? 
 
   refererId String?
   referer   DBUser?  @relation("referal", fields: [refererId], references: [id], onDelete: NoAction, onUpdate: NoAction)
