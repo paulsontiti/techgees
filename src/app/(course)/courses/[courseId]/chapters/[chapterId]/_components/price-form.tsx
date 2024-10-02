@@ -22,7 +22,7 @@ import Loader from "@/components/loader";
 import toast from "react-hot-toast";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(10000, {
+  amount: zod.coerce.number().min(0, {
     message: "amount is required",
   }),
 });
