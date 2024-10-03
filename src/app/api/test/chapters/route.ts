@@ -6,24 +6,24 @@ export async function POST(req: Request) {
 
     try {
         const { userId } = auth()
-        const { sessionId, score } = await req.json()
+        const { chapterId, score } = await req.json()
 
         if (!userId) {
             return new NextResponse("Unautorized", { status: 401 })
         }
 
-        await db.sessionTestScore.create({
+        await db.chapterTestScore.create({
             data: {
                 userId,
                 score,
-                sessionId
+                chapterId
             }
         })
 
         if (score > 6) {
             await db.userProgress.create({
                 data: {
-                    sessionId,
+                    chapterId,
                     isCompleted: true,
                     userId
                 }
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
         return NextResponse.json('')
     } catch (err) {
 
-        console.log("[SESSION_TEST]", err)
+        console.log("[CHAPTER_TEST]", err)
         return new NextResponse("Internal Error", {
             status: 500
         })

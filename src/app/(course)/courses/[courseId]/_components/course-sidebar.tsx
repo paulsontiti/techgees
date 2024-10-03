@@ -12,6 +12,8 @@ import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { hasLikedCourse } from "../../../../../../actions/hasLikedCourse";
 import { hasDisLikedCourse } from "../../../../../../actions/hasDisLikedCourse";
 import { hasRatedCourse } from "../../../../../../actions/hasRatedCourse";
+import { getPreviousChapter } from "../../../../../../actions/getPreviousChapter";
+import { getUserChapterProgress } from "../../../../../../actions/getUserChapterProgress";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -31,27 +33,27 @@ async function CourseSidebar({
     course.id!,
     purchasePercentage
   );
-  if (error) return  <ErrorPage name={error.name}/>;
+  if (error) return <ErrorPage name={error.name} />;
 
   const { hasLiked, error: hasLikedError } = await hasLikedCourse(
     course.id,
     userId
   );
   if (hasLikedError)
-    return  <ErrorPage name={hasLikedError.name}/>;
+    return <ErrorPage name={hasLikedError.name} />;
 
   const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedCourse(
     course.id,
     userId
   );
   if (hasDisLikedError)
-    return <ErrorPage name={hasDisLikedError.name}/>;
+    return <ErrorPage name={hasDisLikedError.name} />;
 
   const { hasRated, error: ratedError } = await hasRatedCourse(
     course.id,
     userId
   );
-  if (ratedError) return  <ErrorPage name={ratedError.name}/>;
+  if (ratedError) return <ErrorPage name={ratedError.name} />;
 
 
 
@@ -59,18 +61,18 @@ async function CourseSidebar({
     <div className="h-full mt-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
         <div className="flex items-center justify-between">
-            <h1 className="font-semibold">{course.title}</h1>
-          <CourseActioDropdownMenu 
-          courseId={course.id}
-          hasDisLiked={hasDisLiked}
-          hasLiked={hasLiked}
-          hasRated={hasRated}
+          <h1 className="font-semibold">{course.title}</h1>
+          <CourseActioDropdownMenu
+            courseId={course.id}
+            hasDisLiked={hasDisLiked}
+            hasLiked={hasLiked}
+            hasRated={hasRated}
           />
         </div>
-       {!course.isFree &&  <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!}/>}
+        {!course.isFree && <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!} />}
         <div className="mt-10">
           <CourseProgress variant="success" value={progressPercentage} />
-          
+
         </div>
       </div>
       <div className="flex flex-col w-full">
@@ -85,6 +87,17 @@ async function CourseSidebar({
 
           const chapterPaidFor = paidPositions.indexOf(chapter.position);
 
+          const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
+          if (previousError)
+            return <ErrorPage name={previousError.name} key={previousError.name} />;
+
+          //get previous chapter user progress
+          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+            await getUserChapterProgress(userId, previousChapter?.id ?? "")
+          if (progressError)
+            return <ErrorPage name={progressError.name} key={progressError.name} />;
+
+
           return (
             <ChapterAccordion
               key={chapter.id}
@@ -93,10 +106,12 @@ async function CourseSidebar({
               isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
               courseId={course.id}
               isLocked={
-                (!chapter.isPublished || !chapter.isFree) && chapterPaidFor < 0
+                previousChapter && !previousUserChapterProgress?.isCompleted || ((!chapter.isPublished || !chapter.isFree) && chapterPaidFor < 0)
               }
               sessions={chapter.sessions ?? []}
               chapterProgress={progressPercentage ?? 0}
+              previousUserChapterProgress={previousUserChapterProgress}
+              prviousChapter={previousChapter}
             />
           );
         })}

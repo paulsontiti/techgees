@@ -23,6 +23,9 @@ import { updatePayment } from "../../../../../../../actions/updatePayment";
 import { getCoursePurchase } from "../../../../../../../actions/getCoursePurchase";
 import { getChapterNumberOfRatings } from "../../../../../../../actions/getChapterNumberOfRatings";
 import { getCourse } from "../../../../../../../actions/getCourse";
+import ChapterTest from "./_components/chapter-test";
+import AssignmentAccordion from "./sessions/[sessionId]/_components/assignment-accordion";
+import { Question } from "@prisma/client";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -34,7 +37,7 @@ async function ChapterIdPage({
   const { userId } = auth();
   if (!userId) return redirect("/");
 
-  const { course, chapter, nextChapter, userProgress, error } =
+  const { course, chapter, userProgress, error } =
     await getChapterCoursePurchaseUserProgressNextChapter({
       userId,
       courseId,
@@ -47,7 +50,7 @@ async function ChapterIdPage({
   //get the course the chapter belong to
   //this is used for the course overview video
   //for combo courses, we have to get the chapter course
-  const {course:chapterCourse, error:chapterCourseErr} = await getCourse(chapter.courseId)
+  const { course: chapterCourse, error: chapterCourseErr } = await getCourse(chapter.courseId)
   if (chapterCourseErr) return <Banner variant="error" label={chapterCourseErr.message} />;
 
   let payment = null;
@@ -131,7 +134,7 @@ async function ChapterIdPage({
   if (numberRatingError)
     return <ErrorPage name={numberRatingError.name} />;
 
- 
+
 
   let duration = 0;
 
@@ -139,6 +142,19 @@ async function ChapterIdPage({
     duration += session.videoDuration ?? 0;
   });
 
+  //create 10 random questions from all the questions
+  const randonQuestions: Question[] = [];
+
+  if (chapter.questions.length > 0) {
+    for (let i = 0; i < 10; i++) {
+      const index = Math.floor(Math.random() * chapter.questions.length)
+
+      if (!randonQuestions.find((que) => que.id === chapter.questions[index].id)) {
+        randonQuestions.push(chapter.questions[index])
+      }
+    }
+
+  }
   return (
     <div>
       {payment && (
@@ -192,9 +208,9 @@ async function ChapterIdPage({
         </div>
 
         <video
-        src={chapterCourse?.overviewVideoUrl ?? ""}
-        controls
-        title={chapterCourse?.title ?? ""}
+          src={chapterCourse?.overviewVideoUrl ?? ""}
+          controls
+          title={chapterCourse?.title ?? ""}
         />
         <ChapterComments
           chapterId={chapterId}
@@ -208,6 +224,22 @@ async function ChapterIdPage({
           hasRated={hasRated}
           numberOfStudents={numberOfStudents}
         />
+
+        <Separator />
+        {(userProgress === null &&
+          randonQuestions.length > 0) &&
+          <ChapterTest questions={randonQuestions} chapterId={chapter.id} />}
+        <Separator />
+
+        {chapter.assignments.length > 0 && <>
+          <h2 className='text-xl my-2 font-bold'>Assignments</h2>
+          {
+            chapter.assignments.map((assignment) => {
+
+              return <AssignmentAccordion assignment={assignment} key={assignment.id} />
+            })
+          }
+        </>}
       </div>
     </div>
   );

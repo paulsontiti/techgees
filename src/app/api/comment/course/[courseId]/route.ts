@@ -3,11 +3,11 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request,
-    {
-        params:{courseId}
-    }:{
-        params:{courseId:string}
-    }
+  {
+    params: { courseId }
+  }: {
+    params: { courseId: string }
+  }
 ) {
   try {
     const { userId } = auth();
@@ -16,15 +16,42 @@ export async function POST(req: Request,
     if (!userId) {
       return new NextResponse("Unautorized", { status: 401 });
     }
-  
-      await db.comment.create({
-        data: {
-          userId,
-          courseId,
-          comment
-        },
-      });
-    
+
+    await db.comment.create({
+      data: {
+        userId,
+        courseId,
+        comment
+      },
+    });
+
+
+    //send notification to the instructor
+    //get the session
+    const course = await db.course.findUnique({
+      where: {
+        id: courseId
+      }
+    })
+
+
+    //get instructor's id
+    const instructorId = course?.userId ?? ""
+
+    //construct title
+    const title = course?.title
+    //construct 
+    const message = `Course with title ${title} has a new comment`
+
+    await db.notification.create({
+      data: {
+        receiverId: instructorId,
+        message,
+        senderId: userId,
+        title: "New comment"
+
+      }
+    })
 
     return NextResponse.json("");
   } catch (err) {
