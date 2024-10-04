@@ -1,29 +1,28 @@
 import React from 'react'
-import { CourseChaptersUserProgressType } from '../../../../../../actions/getCourseChaptersUserProgress'
 import { NavbarRoutes } from '@/components/navbar-routes'
 import CourseMobileSidebar from './course-mobile-sidebar'
 import { auth } from '@clerk/nextjs/server'
+import { CourseChaptersUserProgressType } from '../../../../../../../../actions/getCourseChaptersUserProgress'
+
 type CourseNavbarProps = {
-    course:CourseChaptersUserProgressType,
-    progressPercentage:number,
-    purchasePercentage:number
+  course: CourseChaptersUserProgressType,
+  progressPercentage: number,
 
 }
 
 async function CourseNavbar({
-    course,progressPercentage,purchasePercentage
-}:CourseNavbarProps) {
-  
-  const {userId} = auth()
+  course, progressPercentage
+}: CourseNavbarProps) {
+
+  const { userId } = auth()
 
   return (
     <div className='p-4 border-b h-full flex items-center bg-white shadow-sm'>
-          <CourseMobileSidebar
+      <CourseMobileSidebar
         course={course}
         progressPercentage={progressPercentage ?? 0}
-        purchasePercentage={purchasePercentage}
-        />
-       <NavbarRoutes userId={userId ?? ""}/>
+      />
+      <NavbarRoutes userId={userId ?? ""} />
     </div>
   )
 }

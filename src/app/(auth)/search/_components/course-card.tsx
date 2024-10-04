@@ -1,20 +1,21 @@
 "use client";
 
-import CommentForm from "@/app/(course)/courses/[courseId]/_components/comment-form";
+
 import CourseProgress from "@/components/course-progress";
 
 import IconBadge from "@/components/icon-badge";
 import PageLoader from "@/components/page-loader";
 import { formatPrice } from "@/lib/format";
-import { Category,Course } from "@prisma/client";
+import { Category, Course } from "@prisma/client";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { RecommendedCourseType } from "../../../../../actions/getRecommendedCourses";
+import CommentForm from "@/app/(course)/courses/single/[courseId]/_components/comment-form";
 
 type CourseCardProps = {
-course:RecommendedCourseType,
+  course: RecommendedCourseType,
   progressPercentage?: number | null;
   categories: Category[];
   recommendedCourses: Course[];
@@ -23,7 +24,7 @@ course:RecommendedCourseType,
   isCombo: boolean;
 };
 function CourseCard({
-course,
+  course,
   progressPercentage,
   isCombo,
   categories,
@@ -35,7 +36,7 @@ course,
   const [commenting, setCommenting] = useState(false)
   const router = useRouter();
 
-  if(!course) return null
+  if (!course) return null
   const onClick = () => {
     setLoading(true);
     router.push(`/courses/${course.id}`);
@@ -49,8 +50,8 @@ course,
         "
     >
       <PageLoader
-      className="text-black"
-      label="redirecting..." isloading={loading} />
+        className="text-black"
+        label="redirecting..." isloading={loading} />
       <div
         className="relative w-full aspect-video rounded-md overflow-hidden"
         onClick={onClick}

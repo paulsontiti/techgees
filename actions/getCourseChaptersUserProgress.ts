@@ -10,8 +10,8 @@ type ReturnValue = {
 
 export type CourseChaptersUserProgressType = Course & {
   chapters: (Chapter & {
-    sessions: Session[] | null
-    userProgresses: UserProgress[] | null
+    sessions: Session[]
+    userProgresses: UserProgress[]
   })[]
 }
 

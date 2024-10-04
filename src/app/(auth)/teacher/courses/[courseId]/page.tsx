@@ -28,7 +28,7 @@ import CourseBenefitsForm from "./_components/course-benefits-form";
 import AccessForm from "./_components/access-form";
 import OverviewVideoForm from "./_components/overview-video-form";
 import CourseChildForm from "./_components/course-child-form";
-import { getCourseWithChildren } from "../../../../../../actions/getCourseWithCourseChildren";
+import { getCourseChildren } from "../../../../../../actions/getCourseChildren";
 
 
 
@@ -44,7 +44,7 @@ async function CourseIdPage({
 
   if (error) return <div>{error.message}</div>
 
-  const { courseChildren, error:childError } = await getCourseWithChildren(courseId)
+  const { courseChildren, error: childError } = await getCourseChildren(courseId)
 
   if (childError) return <div>{childError.message}</div>
 
@@ -120,8 +120,8 @@ async function CourseIdPage({
             <SubTitleForm course={course} />
             <DescriptionForm course={course} />
             <ImageForm course={course} />
-            <OverviewVideoForm course={course}/>
-            <AccessForm course={course}/>
+            <OverviewVideoForm course={course} />
+            <AccessForm course={course} />
           </div>
           <div className="space-y-6">
             <CategoryForm
@@ -129,23 +129,23 @@ async function CourseIdPage({
               courseCategories={courseCategories ?? []}
               courseId={courseId}
             />
-                  <div>
+            <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={ListChecks} />
                 <h2 className="text-xl">Course children</h2>
               </div>
-              <CourseChildForm courseChildren={courseChildren} courses={courses} courseId={course.id}/>
+              <CourseChildForm courseChildren={courseChildren} courses={courses} courseId={course.id} />
             </div>
             <PreRequisiteCoursesForm
               courseId={courseId}
               courses={courses}
               preRequisiteCourses={preRequisiteCourses} />
-          
+
             <RecommendedCoursesForm
               courseId={courseId}
               courses={courses}
               recommendedCourses={recommendedCourses} />
-              <CourseBenefitsForm courseId={courseId} benefits={course.courseBenefits}/>
+            <CourseBenefitsForm courseId={courseId} benefits={course.courseBenefits} />
           </div>
           <div className="space-y-6">
             <div>

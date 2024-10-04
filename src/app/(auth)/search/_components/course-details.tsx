@@ -6,7 +6,7 @@ import { getCourseRecommendedCourses } from '../../../../../actions/getCourseRec
 import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
 
 import ErrorPage from '@/components/error'
-import { getCourseWithChildren } from '../../../../../actions/getCourseWithCourseChildren'
+import { getCourseChildren } from '../../../../../actions/getCourseChildren'
 
 
 function CourseDetails(
@@ -27,7 +27,7 @@ function CourseDetails(
         const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
         if (preError) return <ErrorPage name={preError.name} key={index} />
 
-        const { courseChildren, error: comboError } = await getCourseWithChildren(courseId)
+        const { courseChildren, error: comboError } = await getCourseChildren(courseId)
         if (comboError) return <ErrorPage name={comboError.name} key={index} />
 
         const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)

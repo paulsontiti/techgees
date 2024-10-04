@@ -1,18 +1,17 @@
 "use client"
 import { Question } from '@prisma/client'
 import React, { useState } from 'react'
-import { QuestionItemForm } from './question-item-form'
-import { useSessionTestStore } from '../../../../../../../../../../store/session-test-store'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 import Loader from '@/components/loader'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { useConfettiStore } from '../../../../../../../../../../hooks/use-confetti-store'
+import { QuestionItemForm } from '../sessions/[sessionId]/_components/question-item-form'
+import { useSessionTestStore } from '../../../../../../../../../store/session-test-store'
+import { useConfettiStore } from '../../../../../../../../../hooks/use-confetti-store'
 
-function SessionTest({ questions, sessionId }: {
-  questions: Question[], sessionId: string
+function ChapterTest({ questions, chapterId }: {
+  questions: Question[], chapterId: string
 }) {
 
   const testQuestions = useSessionTestStore((state) => state.questions)
@@ -31,8 +30,8 @@ function SessionTest({ questions, sessionId }: {
     }
     try {
       if (res > 6) {
-        await axios.post(`/api/test/sessions`,
-          { sessionId, score: res }
+        await axios.post(`/api/test/chapters`,
+          { chapterId, score: res }
         )
         toast.success(`Congratulations!!!!!! Your score is ${res}`, { duration: 10000, position: "bottom-center" })
 
@@ -51,6 +50,7 @@ function SessionTest({ questions, sessionId }: {
       }, 10000)
     }
   }
+
 
   return (
     <div className='mt-4'>
@@ -78,4 +78,4 @@ function SessionTest({ questions, sessionId }: {
   )
 }
 
-export default SessionTest
+export default ChapterTest

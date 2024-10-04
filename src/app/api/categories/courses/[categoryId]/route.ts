@@ -7,7 +7,7 @@ import { getCourseDisLikesCount } from "../../../../../../actions/getCourseDisLi
 import { getCourseRating } from "../../../../../../actions/getCourseRating";
 import { getCourseNumberOfRatings } from "../../../../../../actions/getCourseNumberOfRatings";
 import { getCourseStudentsCount } from "../../../../../../actions/getCourseStudentsCount";
-import { getCourseWithChildren } from "../../../../../../actions/getCourseWithCourseChildren";
+import { getCourseChildren } from "../../../../../../actions/getCourseChildren";
 
 
 export async function GET(
@@ -16,7 +16,7 @@ export async function GET(
 ) {
 
     try {
-let returnValue:CategorytabItemCourseType[] = []
+        let returnValue: CategorytabItemCourseType[] = []
 
 
         const courseCategories = await db.courseCategory.findMany({
@@ -32,35 +32,35 @@ let returnValue:CategorytabItemCourseType[] = []
                 id: {
                     in: courseIds
                 },
-            },include:{
-                chapters:true,
+            }, include: {
+                chapters: true,
             },
         })
 
-       for(let course of courses){
-        const {numberOfComments} = await getCourseCommentsCount(course.id)
-        const {numberOfLikes} = await getCourseLikesCount(course.id)
-        const {numberOfDisLikes} = await getCourseDisLikesCount(course.id)
-        const {averageRating} = await getCourseRating(course.id)
-        const {numberOfRatings} = await getCourseNumberOfRatings(course.id)
-        const {numberOfStudents} = await getCourseStudentsCount(course.id)
-        const {courseChildren} = await getCourseWithChildren(course.id)
+        for (let course of courses) {
+            const { numberOfComments } = await getCourseCommentsCount(course.id)
+            const { numberOfLikes } = await getCourseLikesCount(course.id)
+            const { numberOfDisLikes } = await getCourseDisLikesCount(course.id)
+            const { averageRating } = await getCourseRating(course.id)
+            const { numberOfRatings } = await getCourseNumberOfRatings(course.id)
+            const { numberOfStudents } = await getCourseStudentsCount(course.id)
+            const { courseChildren } = await getCourseChildren(course.id)
 
-        const courseToReturn:CategorytabItemCourseType =  {
-            course,
-            likes:numberOfLikes,
-            disLikes:numberOfDisLikes,
-            numberOfComments,
-            numberOfRatings,
-            numberOfStudents,
-            rating:averageRating,
-            childrenCourses:courseChildren
+            const courseToReturn: CategorytabItemCourseType = {
+                course,
+                likes: numberOfLikes,
+                disLikes: numberOfDisLikes,
+                numberOfComments,
+                numberOfRatings,
+                numberOfStudents,
+                rating: averageRating,
+                childrenCourses: courseChildren
 
+            }
+
+            returnValue.push(courseToReturn)
         }
 
-        returnValue.push(courseToReturn)
-       }
-       
         return NextResponse.json(returnValue)
 
     } catch (err) {

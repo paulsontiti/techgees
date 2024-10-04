@@ -1,10 +1,10 @@
-import PriceForm from '@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/_components/price-form';
 import Banner from '@/components/banner';
 
 
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react'
+import PriceForm from './_components/price-form';
 
 async function CoursePaymentPage(
     { params: { courseId, chapterId } }: {

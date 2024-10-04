@@ -8,7 +8,7 @@ export interface ReturnValue {
 
 
 
-export const getCourseWithChildren = async (
+export const getCourseChildren = async (
   courseId: string
 ): Promise<ReturnValue> => {
   try {
@@ -19,11 +19,11 @@ export const getCourseWithChildren = async (
 
       include: {
         childCourse: true
-      },orderBy: {
+      }, orderBy: {
         position: "asc",
       },
     });
-   const courseChildren = courseWithChildren.map((c)=> c.childCourse)
+    const courseChildren = courseWithChildren.map((c) => c.childCourse)
     return { courseChildren, error: null };
   } catch (error: any) {
     return { courseChildren: [], error };

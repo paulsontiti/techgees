@@ -1,19 +1,19 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
-import { CourseChaptersUserProgressType } from "../../../../../../actions/getCourseChaptersUserProgress";
 import ErrorPage from "@/components/error";
 import CourseProgress from "@/components/course-progress";
-import { getChapterProgress } from "../../../../../../actions/getChapterProgress";
 import PaymentProgress from "@/components/paymentProgress";
-import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
 import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
-import { hasLikedCourse } from "../../../../../../actions/hasLikedCourse";
-import { hasDisLikedCourse } from "../../../../../../actions/hasDisLikedCourse";
-import { hasRatedCourse } from "../../../../../../actions/hasRatedCourse";
-import { getPreviousChapter } from "../../../../../../actions/getPreviousChapter";
-import { getUserChapterProgress } from "../../../../../../actions/getUserChapterProgress";
+import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
+import { getPaidChapterPositions } from "../../../../../../../actions/getPaidChapterPositions";
+import { hasLikedCourse } from "../../../../../../../actions/hasLikedCourse";
+import { hasDisLikedCourse } from "../../../../../../../actions/hasDisLikedCourse";
+import { hasRatedCourse } from "../../../../../../../actions/hasRatedCourse";
+import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
+import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
+import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;

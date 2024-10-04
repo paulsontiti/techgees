@@ -34,9 +34,10 @@ import { getCourseComments } from "../../../../../actions/getCourseComments";
 import { getCourseNumberOfRatings } from "../../../../../actions/getCourseNumberOfRatings";
 import { getCourseLikesCount } from "../../../../../actions/getCourseLikesCount";
 import { getCourseDisLikesCount } from "../../../../../actions/getCourseDisLikesCount";
-import CommentItem from "@/app/(course)/courses/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
+
 import EnrollButton from "./_components/enroll-button";
 import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
+import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 
 
 export type CategoryCourseType = {
@@ -58,7 +59,7 @@ async function CourseIdPage({
   if (courseError)
     return <Banner variant="error" label={courseError.message} />;
 
-  if(!course) return null
+  if (!course) return null
 
   const { courseChildrenWithChaptersAndSessions, error: comboError } = await getCourseWithCourseChildrenWithChaptersAndSessions(
     courseId
@@ -206,11 +207,11 @@ async function CourseIdPage({
           likes={numberOfLikes}
           disLikes={numberOfDisLikes} rating={averageRating} />
 
-<div className="my-4 w-full">
-  <video src={course?.overviewVideoUrl ?? ""} controls title="Course overview" autoPlay className="w-full"/>
-</div>
+        <div className="my-4 w-full">
+          <video src={course?.overviewVideoUrl ?? ""} controls title="Course overview" autoPlay className="w-full" />
+        </div>
 
-<EnrollButton courseId={course.id}/>
+        <EnrollButton courseId={course.id} />
         {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
           <Card className="mt-4 w-full">
             <CardHeader className="text-xl font-bold">
@@ -246,7 +247,7 @@ async function CourseIdPage({
         </div>
         {
           courseChildrenWithChaptersAndSessions.length > 0 ?
-          courseChildrenWithChaptersAndSessions.map((course, index) => {
+            courseChildrenWithChaptersAndSessions.map((course, index) => {
 
               return <CourseContentAccordion course={course} key={index} />
             })
@@ -288,9 +289,9 @@ async function CourseIdPage({
         <h1 className="text-lg font-semibold mt-8">Description</h1>
         <Preview value={course?.description ?? ""}></Preview>
 
- <EnrollButton courseId={course?.id}/>
+        <EnrollButton courseId={course?.id} />
 
-       {Array.isArray(comments) && comments.length > 0 &&  <div className="mt-4 border p-2 max-w-full">
+        {Array.isArray(comments) && comments.length > 0 && <div className="mt-4 border p-2 max-w-full">
           <h1 className="text-lg font-semibold mb-2">Reviews</h1>
           {comments.map((comment, index) => {
 
@@ -298,7 +299,7 @@ async function CourseIdPage({
           })}
         </div>}
       </div>
-      </div>
+    </div>
   );
 }
 

@@ -1,31 +1,31 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
-import { getChapterCoursePurchaseUserProgressNextChapter } from "../../../../../../../actions/getChapterCoursePurchaseUserProgressNextChapter";
 import ErrorPage from "@/components/error";
 import Banner from "@/components/banner";
 import { Preview } from "@/components/preview";
 import { CourseEnrollButton } from "./_components/enroll-button";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/format";
-import { getPurchasePercentage } from "../../../../../../../actions/getPurchasePercentage";
 import ChapterComments from "./_components/comments";
-import { getChapterLikesCount } from "../../../../../../../actions/getChapterLikesCount";
-import { getChapterDisLikesCount } from "../../../../../../../actions/getChapterDisLikesCount";
-import { getChapterComments } from "../../../../../../../actions/getChapterComments";
-import { hasLikedChapter } from "../../../../../../../actions/hasLikedChapter";
-import { hasDisLikedChapter } from "../../../../../../../actions/hasDisLikedChapter";
-import { getChapterStudentsCount } from "../../../../../../../actions/getChapterStudentsCount";
-import { hasRatedChapter } from "../../../../../../../actions/hasRatedChapter";
-import { getChapterRating } from "../../../../../../../actions/getChapterRating";
-import { verifyPayStackPayment } from "../../../../../../../actions/verifyPayment";
-import { updatePayment } from "../../../../../../../actions/updatePayment";
-import { getCoursePurchase } from "../../../../../../../actions/getCoursePurchase";
-import { getChapterNumberOfRatings } from "../../../../../../../actions/getChapterNumberOfRatings";
-import { getCourse } from "../../../../../../../actions/getCourse";
 import ChapterTest from "./_components/chapter-test";
 import AssignmentAccordion from "./sessions/[sessionId]/_components/assignment-accordion";
 import { Question } from "@prisma/client";
+import { getChapterCoursePurchaseUserProgressNextChapter } from "../../../../../../../../actions/getChapterCoursePurchaseUserProgressNextChapter";
+import { getCourse } from "../../../../../../../../actions/getCourse";
+import { verifyPayStackPayment } from "../../../../../../../../actions/verifyPayment";
+import { updatePayment } from "../../../../../../../../actions/updatePayment";
+import { getPurchasePercentage } from "../../../../../../../../actions/getPurchasePercentage";
+import { getChapterLikesCount } from "../../../../../../../../actions/getChapterLikesCount";
+import { getChapterDisLikesCount } from "../../../../../../../../actions/getChapterDisLikesCount";
+import { getChapterComments } from "../../../../../../../../actions/getChapterComments";
+import { hasLikedChapter } from "../../../../../../../../actions/hasLikedChapter";
+import { hasDisLikedChapter } from "../../../../../../../../actions/hasDisLikedChapter";
+import { getChapterStudentsCount } from "../../../../../../../../actions/getChapterStudentsCount";
+import { hasRatedChapter } from "../../../../../../../../actions/hasRatedChapter";
+import { getChapterRating } from "../../../../../../../../actions/getChapterRating";
+import { getCoursePurchase } from "../../../../../../../../actions/getCoursePurchase";
+import { getChapterNumberOfRatings } from "../../../../../../../../actions/getChapterNumberOfRatings";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
