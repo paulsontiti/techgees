@@ -49,21 +49,21 @@ export const getCourseChaptersUserProgress = async (
       },
     });
 
-    // if (course?.chapters.length === 0) {
-    //   const { courseChildrenWithChaptersAndSessions, error } = await getCourseWithCourseChildrenWithChaptersWithUserProgress(courseId, userId)
-    //   if (error) throw new Error(error.message)
+    if (course?.chapters.length === 0) {
+      const { courseChildrenWithChaptersAndSessions, error } = await getCourseWithCourseChildrenWithChaptersWithUserProgress(courseId, userId)
+      if (error) throw new Error(error.message)
 
-    //   if (courseChildrenWithChaptersAndSessions.length > 0) {
-    //     let position = 0;
-    //     for (let childCourse of courseChildrenWithChaptersAndSessions) {
-    //       for (let chapter of childCourse.chapters) {
-    //         chapter.position = position
-    //         course.chapters.push(chapter)
-    //         position++
-    //       }
-    //     }
-    //   }
-    // }
+      if (courseChildrenWithChaptersAndSessions.length > 0) {
+        let position = 0;
+        for (let childCourse of courseChildrenWithChaptersAndSessions) {
+          for (let chapter of childCourse.chapters) {
+            chapter.position = position
+            course.chapters.push(chapter)
+            position++
+          }
+        }
+      }
+    }
 
     return { course, error: null }
   } catch (error: any) {
