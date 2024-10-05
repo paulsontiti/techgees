@@ -14,7 +14,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Question } from "@prisma/client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useSessionTestStore } from "../../../../../../../../../../../../../store/session-test-store"
+import { SessionTestSoreQuestion, useSessionTestStore } from "../../../../../../../../../../../../../store/session-test-store"
 
 const FormSchema = z.object({
   type: z.enum(["optionA", "optionB", "optionC", "optionD"], {

@@ -6,12 +6,12 @@ import { CourseChaptersUserProgressType } from '../../../../../../../../actions/
 
 type CourseNavbarProps = {
   course: CourseChaptersUserProgressType,
-  progressPercentage: number,
+  progressPercentage: number, parentId: string
 
 }
 
 async function CourseNavbar({
-  course, progressPercentage
+  course, progressPercentage, parentId
 }: CourseNavbarProps) {
 
   const { userId } = auth()
@@ -20,6 +20,7 @@ async function CourseNavbar({
     <div className='p-4 border-b h-full flex items-center bg-white shadow-sm'>
       <CourseMobileSidebar
         course={course}
+        parentId={parentId}
         progressPercentage={progressPercentage ?? 0}
       />
       <NavbarRoutes userId={userId ?? ""} />

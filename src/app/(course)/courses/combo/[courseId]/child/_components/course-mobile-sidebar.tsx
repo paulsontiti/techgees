@@ -7,11 +7,11 @@ import { CourseChaptersUserProgressType } from '../../../../../../../../actions/
 
 type CourseMobileSidebarProps = {
     course: CourseChaptersUserProgressType,
-    progressPercentage: number,
+    progressPercentage: number, parentId: string
 }
 
 async function CourseMobileSidebar({
-    course, progressPercentage
+    course, progressPercentage, parentId
 }: CourseMobileSidebarProps) {
 
 
@@ -26,7 +26,9 @@ async function CourseMobileSidebar({
                 <CourseSidebar
                     progressPercentage={progressPercentage}
                     chapters={course.chapters}
-                    course={course} />
+                    course={course}
+                    parentId={parentId}
+                />
             </SheetContent>
         </Sheet>
     )
