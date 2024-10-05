@@ -208,7 +208,8 @@ async function CourseIdPage({
           disLikes={numberOfDisLikes} rating={averageRating} />
 
         <div className="my-4 w-full">
-          <video src={course?.overviewVideoUrl ?? ""} controls title="Course overview" autoPlay className="w-full" />
+          <video src={course?.overviewVideoUrl ?? ""}
+            controls title="Course overview" className="w-full" />
         </div>
 
         <EnrollButton courseId={course.id} />

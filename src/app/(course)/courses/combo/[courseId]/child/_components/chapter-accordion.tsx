@@ -24,7 +24,8 @@ type CourseSidebarItemProps = {
   sessions: Session[];
   chapterProgress: number,
   previousUserChapterProgress: UserProgress | null,
-  prviousChapter: Chapter | null
+  prviousChapter: Chapter | null,
+  parentId: string
 };
 
 export function ChapterAccordion({
@@ -32,7 +33,7 @@ export function ChapterAccordion({
   title,
   isCompleted,
   isLocked,
-  courseId,
+  courseId, parentId,
   sessions, chapterProgress, previousUserChapterProgress, prviousChapter
 }: CourseSidebarItemProps) {
 
@@ -43,7 +44,7 @@ export function ChapterAccordion({
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
-    router.push(`/courses/single/${courseId}/chapters/${id}`);
+    router.push(`/courses/combo/${parentId}/child/${courseId}/chapters/${id}`);
   };
   return (
     <Accordion type="single" collapsible className="w-full px-2">
@@ -96,6 +97,7 @@ export function ChapterAccordion({
                   chapterId={session.chapterId}
                   courseId={courseId}
                   id={session.id}
+                  parentId={parentId}
                   sessionId={session.id}
                   isLocked={isLocked || !session.isPublished}
 

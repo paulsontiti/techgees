@@ -14,9 +14,9 @@ function NextSessionButton({
     const [loading, setLoading] = useState(false)
     return <Button onClick={() => {
         setLoading(true)
-        router.push(`/courses/${courseId}/chapters/${chapterId}/sessions/${nextSessionId}`)
+        router.push(`/courses/single/${courseId}/chapters/${chapterId}/sessions/${nextSessionId}`)
     }}
-    className='flex items-center gap-x-2'
+        className='flex items-center gap-x-2'
     >Go to next session <Loader loading={loading} /></Button>
 
 }

@@ -12,22 +12,22 @@ import SessionComments from "./_components/comments";
 import NextSessionButton from "./_components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
 import PrvSessionButton from "./_components/prv-session-button";
-import { getSessionAttachmentsNextSessionuserprogress } from "../../../../../../../../../../actions/getSessionAttachmentsNextSessionuserprogress";
-import { getSessionLikesCount } from "../../../../../../../../../../actions/getSessionLikesCount";
-import { getSessionDisLikesCount } from "../../../../../../../../../../actions/getSessionDisLikesCount";
-import { getSessionComments } from "../../../../../../../../../../actions/getSessionComments";
-import { hasLikedSession } from "../../../../../../../../../../actions/hasLikedSession";
-import { hasDisLikedSession } from "../../../../../../../../../../actions/hasDisLikedSession";
-import { getSessionStudentsCount } from "../../../../../../../../../../actions/getSessionStudentsCount";
-import { hasRatedSession } from "../../../../../../../../../../actions/hasRatedSession";
-import { getSessionRating } from "../../../../../../../../../../actions/getSessionRating";
-import { getSessionNumberOfRatings } from "../../../../../../../../../../actions/getSessionNumberOfRatings";
-import { getSessionProgress } from "../../../../../../../../../../actions/getSessionProgress";
+import { getSessionAttachmentsNextSessionuserprogress } from "../../../../../../../../../../../../actions/getSessionAttachmentsNextSessionuserprogress";
+import { getSessionLikesCount } from "../../../../../../../../../../../../actions/getSessionLikesCount";
+import { getSessionDisLikesCount } from "../../../../../../../../../../../../actions/getSessionDisLikesCount";
+import { getSessionComments } from "../../../../../../../../../../../../actions/getSessionComments";
+import { hasLikedSession } from "../../../../../../../../../../../../actions/hasLikedSession";
+import { hasDisLikedSession } from "../../../../../../../../../../../../actions/hasDisLikedSession";
+import { getSessionStudentsCount } from "../../../../../../../../../../../../actions/getSessionStudentsCount";
+import { hasRatedSession } from "../../../../../../../../../../../../actions/hasRatedSession";
+import { getSessionRating } from "../../../../../../../../../../../../actions/getSessionRating";
+import { getSessionNumberOfRatings } from "../../../../../../../../../../../../actions/getSessionNumberOfRatings";
+import { getSessionProgress } from "../../../../../../../../../../../../actions/getSessionProgress";
 
 async function SessionIdPage({
-  params: { courseId, chapterId, sessionId },
+  params: { courseId, chapterId, sessionId, childId },
 }: {
-  params: { courseId: string; chapterId: string; sessionId: string };
+  params: { courseId: string; childId: string, chapterId: string; sessionId: string };
 }) {
   const { userId } = auth();
   if (!userId) return redirect("/");
@@ -144,8 +144,7 @@ async function SessionIdPage({
             <Banner variant="warning"
               label="You can't access this session because you have not completed the previous session" />
 
-            <PrvSessionButton
-              prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />
+            <PrvSessionButton url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${prvSessionId}`} />
 
           </div> :
 
@@ -158,9 +157,11 @@ async function SessionIdPage({
                 nextSessionId={nextSession?.id ?? ""}
               />
               <div className="flex items-center justify-between my-4">
-                {previousSession && <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />}
+                {previousSession && <PrvSessionButton
+                  url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${prvSessionId}`} />}
                 {
-                  nextSession && <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
+                  nextSession && <NextSessionButton
+                    url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${nextSession.id}`} />
 
                 }
               </div>

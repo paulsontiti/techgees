@@ -13,6 +13,7 @@ import Banner from '@/components/banner'
 import { verifyPayStackPayment } from '../../../../../../actions/verifyPayment'
 import { updatePayment } from '../../../../../../actions/updatePayment'
 import { getPaidChapters } from '../../../../../../actions/getPaidChapters'
+import BackButton from '@/components/back-button'
 
 async function ComboCoursePage(
     { params: { courseId }, searchParams: { reference }, }: {
@@ -78,6 +79,7 @@ async function ComboCoursePage(
                     className="
         flex flex-col  mx-auto pb-20"
                 >
+                    <BackButton label='Dashboard' url='/dashboard' />
                     <div className="p-4  flex flex-col md:flex-row items-center justify-between">
                         <h2 className="text-2xl font-semibold mb-2">{course.title}</h2>
                         {!course.isFree && <>

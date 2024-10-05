@@ -5,20 +5,20 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-function PrvSessionButton({
-    courseId, chapterId, prvSessionId
+function NextSessionButton({
+    url
 }: {
-    courseId: string, chapterId: string, prvSessionId: string
+    url: string
 }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     return <Button onClick={() => {
         setLoading(true)
-        router.push(`/courses/single/${courseId}/chapters/${chapterId}/sessions/${prvSessionId}`)
+        router.push(url)
     }}
         className='flex items-center gap-x-2'
-    >Go back to previous session <Loader loading={loading} /></Button>
+    >Go to next session <Loader loading={loading} /></Button>
 
 }
 
-export default PrvSessionButton
+export default NextSessionButton
