@@ -19,7 +19,7 @@ export const getCourseNumberOfChapters = async (
 
     return { numberOfChapters, error: null };
   } catch (error: any) {
-    console.log("[getCourseWithChapters]", error);
+    console.log("[getCourseNumberOfChapters]", error);
     return { numberOfChapters: 0, error };
   }
 };

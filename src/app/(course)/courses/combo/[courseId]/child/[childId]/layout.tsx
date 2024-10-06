@@ -8,6 +8,7 @@ import { getCourseChaptersUserProgress } from "../../../../../../../../actions/g
 import { getCourseProgress } from "../../../../../../../../actions/getCourseProgress";
 import { getPaidChapters } from "../../../../../../../../actions/getPaidChapters";
 import { getPurchasePercentage } from "../../../../../../../../actions/getPurchasePercentage";
+import { getCourseNumberOfFreeChapters } from "../../../../../../../../actions/getCourseNumberOfFreeChapters";
 async function ChildCourseLayout({
   children,
   params: { courseId: parentId, childId }
@@ -45,6 +46,10 @@ async function ChildCourseLayout({
   const chapter = paidChapters.find((chapter) => chapter.courseId === childCourse.id);
   const numberOfPaidChapters = chapter?.numberOfChapter ?? 0;
 
+  //get number of free chapters
+  const { numberOfFreeChapters, error: freeChapError } = await getCourseNumberOfFreeChapters(childId)
+  if (freeChapError) return <ErrorPage name={freeChapError.name} />;
+
 
   return (
     <div className="h-full">
@@ -60,7 +65,7 @@ async function ChildCourseLayout({
           course={childCourse}
           parentId={parentId}
           progressPercentage={progressPercentage ?? 0}
-          chapters={childCourse.chapters.slice(0, numberOfPaidChapters)}
+          chapters={childCourse.chapters.slice(0, (numberOfPaidChapters === 0 ? numberOfFreeChapters : numberOfPaidChapters))}
         />
       </div>
       <main className="md:pl-[320px] 2xl:pl-[400px] h-full pt-[80px]">

@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import ErrorPage from '@/components/error'
 import { getCourseNumberOfChapters } from '../../../../../../../actions/getCourseNumberOfChapters '
 import { PaidChapterType } from '../../../../../../../actions/getPaidChapters'
+import { getCourseNumberOfFreeChapters } from '../../../../../../../actions/getCourseNumberOfFreeChapters'
 
 
 function CourseDetails(
@@ -37,6 +38,10 @@ function CourseDetails(
         const { numberOfChapters, error: chapNumError } = await getCourseNumberOfChapters(courseId)
         if (chapNumError) return <ErrorPage key={index} name={chapNumError.name} />;
 
+        //get number of free chapters
+        const { numberOfFreeChapters, error: freeChapError } = await getCourseNumberOfFreeChapters(courseId)
+        if (freeChapError) return <ErrorPage key={index} name={freeChapError.name} />;
+
         return <CourseCard
           key={course.id}
           course={course}
@@ -44,6 +49,7 @@ function CourseDetails(
           progressPercentage={isNaN(progressPercentage ?? 0) ? 0 : (progressPercentage ?? 0)}
           numberOfPaidChapters={numberOfPaidChapters}
           numberOfChapters={numberOfChapters}
+          numberOfFreeChapters={numberOfFreeChapters}
 
         />
       })}

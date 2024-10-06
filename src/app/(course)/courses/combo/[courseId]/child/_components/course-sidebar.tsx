@@ -80,8 +80,8 @@ async function CourseSidebar({
               courseId={course.id}
               parentId={parentId}
               isLocked={
-                previousChapter && !previousUserChapterProgress?.isCompleted ||
-                ((!chapter.isPublished || !chapter.isFree))
+                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
+                !chapter.isPublished
               }
               sessions={chapter.sessions ?? []}
               chapterProgress={progressPercentage ?? 0}

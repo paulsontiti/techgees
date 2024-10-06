@@ -17,11 +17,11 @@ type CourseCardProps = {
   progressPercentage: number;
   parentId: string,
   numberOfPaidChapters: number,
-  numberOfChapters: number
+  numberOfChapters: number, numberOfFreeChapters: number
 };
 function CourseCard({
   course, numberOfPaidChapters,
-  progressPercentage, parentId, numberOfChapters
+  progressPercentage, parentId, numberOfChapters, numberOfFreeChapters
 
 }: CourseCardProps) {
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ function CourseCard({
 
   if (!course) return null
   const onClick = () => {
-    if (numberOfPaidChapters > 0) {
+    if (numberOfFreeChapters > 0 || numberOfPaidChapters > 0) {
       setLoading(true);
       router.push(`/courses/combo/${parentId}/child/${course.id}`);
     } else {
@@ -67,6 +67,10 @@ function CourseCard({
           <div className="flex items-center gap-x-2">
             <BookOpen className="h-4 w-4 text-sky-500" />
             {`${numberOfChapters} ${numberOfChapters > 1 ? "chapters" : "chapter"}`}
+          </div>
+          <div className="flex items-center gap-x-2">
+            <BookOpen className="h-4 w-4 text-sky-500" />
+            {`${numberOfFreeChapters} ${numberOfFreeChapters > 1 ? "free chapters" : "free chapter"}`}
           </div>
           <div className="flex items-center gap-x-2">
             <BookOpen className="h-4 w-4 text-sky-500" />

@@ -106,7 +106,9 @@ async function CourseSidebar({
               isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
               courseId={course.id}
               isLocked={
-                previousChapter && !previousUserChapterProgress?.isCompleted || ((!chapter.isPublished || !chapter.isFree) && chapterPaidFor < 0)
+                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
+                ((!chapter.isPublished || !chapter.isFree)
+                  && chapterPaidFor < 0)
               }
               sessions={chapter.sessions ?? []}
               chapterProgress={progressPercentage ?? 0}
