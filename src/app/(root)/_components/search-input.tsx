@@ -38,7 +38,7 @@ function SearchInput({ courses }: { courses: Course[] }) {
   }, [debouncedValue,value,courses]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-[200px] md:w-full ">
       <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
       <Input
         value={value}

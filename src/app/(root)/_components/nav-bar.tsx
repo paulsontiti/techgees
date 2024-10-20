@@ -10,6 +10,8 @@ import SignIn from "./sign-in-button";
 import SignUp from "./sign-up-button";
 import { getCourses } from "../../../../actions/getCourses";
 import { auth } from "@clerk/nextjs/server";
+import { NavLinks } from "./nav-links";
+import { Separator } from "@/components/ui/separator";
 
 async function Navbar() {
 
@@ -17,16 +19,18 @@ async function Navbar() {
   const {courses,error} = await getCourses()
 
   return (
-    <div className="text-white">
+    <header>
 
-      <div className="flex items-center justify-between w-11/12 p-2">
+      <div className="flex items-center justify-around py-4 px-2">
         <div className="flex items-center gap-x-8">
-          {/* <Logo /> */}
-          <div className="hidden md:flex items-center gap-x-4">
-            <SearchInput courses={courses}/>
-          </div>
+          <Logo />
+         
         </div>
-        <div className="flex items-center gap-x-2">
+        <div className="hidden md:flex items-center gap-x-4">
+        <NavLinks/>
+          </div>
+            <SearchInput courses={courses}/>
+        <div className="hidden md:flex items-center gap-x-2">
           {userId ? (
             <div className="flex items-center gap-x-4">
               <UserButton />
@@ -41,13 +45,15 @@ async function Navbar() {
             </>
           )}
         </div>
-      </div>
-      <div className="px-1 md:hidden flex items-center gap-x-4">
-        {/* <CategoryDropdownMenu categories={categories} /> */}
         <MobileMenu />
-        <SearchInput courses={courses} />
       </div>
-    </div>
+      <Separator/>
+      <div className="px-1 md:hidden flex items-center gap-x-4 mt-4">
+        {/* <CategoryDropdownMenu categories={categories} /> */}
+       
+        {/* <SearchInput courses={courses} /> */}
+      </div>
+    </header>
   );
 }
 
