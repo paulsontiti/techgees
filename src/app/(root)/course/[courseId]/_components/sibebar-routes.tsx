@@ -1,33 +1,43 @@
 "use client"
 
-import {GraduationCap, Home} from 'lucide-react'
+import {GraduationCap, Home, Info, Layout, Mail, Rss} from 'lucide-react'
 import React from 'react'
 import SidebarItem from './sidebar-item'
 import { Separator } from '@/components/ui/separator'
 
 const routes =[
-    {
-        icon:Home,
-        label:"Home",
-        href:"/"
-    },
-    {
-        icon:GraduationCap,
-        label:"What can you teach?",
-        href:""
-    },
-    
+  {
+      icon:Home,
+      label:"Home",
+      href:"/"
+  },
+  {
+      icon:Info,
+      label:"About Us",
+      href:""
+  },
+  {
+    icon:GraduationCap,
+    label:"Courses",
+    href:""
+},
+{
+  icon:Mail,
+  label:"Contact Us",
+  href:""
+},
+{
+icon:Rss,
+label:"Blog",
+href:""
+},
+  
 ]
 
 
 
 
- function SidebarRoutes({
-  recommendedCourses,error
-}:{
-  recommendedCourses:{id:string,title:string}[],
-  error:Error | null
-}) {
+ function SidebarRoutes() {
 
 
 
@@ -48,19 +58,14 @@ const routes =[
             )
         })
       }
-      <Separator className='my-2'/>
-        {error ? null  : <>
-        <h2 className='text-sm ml-4 my-2 font-semibold'>Recommended courses</h2>
-          {recommendedCourses.map((course)=>{
-
-            return <SidebarItem
-            key={course?.id}
-            icon={GraduationCap}
-            label={course?.title ?? ""}
-            href={`/course/${course?.id}`}
-            />
-          })}
-        </>}
+    <Separator className='my-2 bg-[#111587]'/>
+    <SidebarItem
+        
+        
+        icon={Layout}
+        label={"Dashboard"}
+        href={"/dashboard"}
+        />
     </div>
   )
 }

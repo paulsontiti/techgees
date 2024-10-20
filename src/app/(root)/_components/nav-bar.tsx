@@ -2,13 +2,10 @@ import Logo from "@/components/logo";
 import { UserButton } from "@clerk/nextjs";
 import React from "react";
 import SearchInput from "./search-input";
-import { Category, Course } from "@prisma/client";
-import { CategoryDropdownMenu } from "./category-dropdown-menu";
 import MobileMenu from "./mobile-menu";
 import DashboardLink from "./dashboard-link";
 import SignIn from "./sign-in-button";
 import SignUp from "./sign-up-button";
-import { getCourses } from "../../../../actions/getCourses";
 import { auth } from "@clerk/nextjs/server";
 import { NavLinks } from "./nav-links";
 import { Separator } from "@/components/ui/separator";
@@ -16,8 +13,6 @@ import { Separator } from "@/components/ui/separator";
 async function Navbar() {
 
   const {userId} = auth();
-  const {courses,error} = await getCourses()
-
   return (
     <header>
 

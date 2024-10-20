@@ -10,7 +10,7 @@ const [loading,setLoading] = useState(false)
 
 
     return     <Button 
-    className="flex items-center gap-x-2 bg-[@111587]"
+    className="flex items-center gap-x-2 border-[#111587] text-[#111587] md:bg-[#111587] md:text-white"
     variant="outline"
     size="sm" onClick={()=>{
         setLoading(true)
