@@ -17,7 +17,9 @@ export default withUt({
       center: true,
       padding: "2rem",
      
-    }, screens: {
+    },
+ 
+     screens: {
       'xs': '280px',
       // => @media (min-width: 280px) { ... }
       'sm': '300px',

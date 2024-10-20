@@ -8,26 +8,22 @@ import MobileMenu from "./mobile-menu";
 import DashboardLink from "./dashboard-link";
 import SignIn from "./sign-in-button";
 import SignUp from "./sign-up-button";
+import { getCourses } from "../../../../actions/getCourses";
+import { auth } from "@clerk/nextjs/server";
 
-function Navbar({
-  userId,
-  courses,
-  categories,
-}: {
-  userId: string;
-  courses: Course[];
-  categories: Category[];
-}) {
+async function Navbar() {
+
+  const {userId} = auth();
+  const {courses,error} = await getCourses()
 
   return (
-    <div>
+    <div className="text-white">
 
-      <div className="flex items-center justify-between w-11/12">
+      <div className="flex items-center justify-between w-11/12 p-2">
         <div className="flex items-center gap-x-8">
-          <Logo />
+          {/* <Logo /> */}
           <div className="hidden md:flex items-center gap-x-4">
-            <CategoryDropdownMenu categories={categories} />
-            <SearchInput courses={courses} />
+            <SearchInput courses={courses}/>
           </div>
         </div>
         <div className="flex items-center gap-x-2">

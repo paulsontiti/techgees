@@ -9,6 +9,8 @@ import MDPopularCourses from "./_components/md-popular-courses";
 import FreeCourses from "@/components/free-courses";
 import { getFreeCourses } from "../../../actions/getFreeCourses";
 import LGPopularCourses from "./_components/lg-popular-courses";
+import HomeBgImage from "./_components/home-bg-image";
+import HomePage from "./_components/home-page";
 export default async function Home() {
 
   const { categories, error } = await getCategories()
@@ -17,14 +19,16 @@ export default async function Home() {
   const { freeCourses,error:courseError } = await getFreeCourses()
   if (courseError) return <ErrorPage name={courseError.name} />
   return (
-    <div className="relative w-full h-[600px]" >
-      <HomeCarousel />
+    <div className="relative">
+      <HomePage/>
+
+      {/* <HomeCarousel />
       <Achievement />
       <FreeCourses courses={freeCourses}/>
       <PopularCourses categories={categories} />
       <XSPopularCourses categories={categories} />
       <MDPopularCourses categories={categories} />
-      <LGPopularCourses categories={categories} />
+      <LGPopularCourses categories={categories} /> */}
       {/* <Footer categories={categories}/> */}
     </div>
   );
