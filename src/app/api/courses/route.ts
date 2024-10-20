@@ -28,3 +28,19 @@ export async function POST(req:Request){
         })
     }
 }
+
+export async function GET(req:Request){
+
+    try{
+    
+        const courses = await db.course.findMany()
+
+        return NextResponse.json(courses)
+    }catch(err){
+
+        console.log("[GET_COURSES]",err)
+        return new NextResponse("Internal Error",{
+            status:500
+        })
+    }
+}

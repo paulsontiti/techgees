@@ -21,15 +21,11 @@ async function Navbar() {
   return (
     <header>
 
-      <div className="flex items-center justify-around py-4 px-2">
-        <div className="flex items-center gap-x-8">
+      <div className="flex items-center justify-around w-full py-4 md:px-2">
+      
           <Logo />
-         
-        </div>
-        <div className="hidden md:flex items-center gap-x-4">
-        <NavLinks/>
-          </div>
-            <SearchInput courses={courses}/>
+    <div>  <NavLinks/></div>
+           <div> <SearchInput/></div>
         <div className="hidden md:flex items-center gap-x-2">
           {userId ? (
             <div className="flex items-center gap-x-4">
