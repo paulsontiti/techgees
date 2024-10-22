@@ -28,6 +28,7 @@ import PageLoader from "@/components/page-loader";
 
 import { Assignment, Session } from "@prisma/client";
 import SessionAssignmentList from "./session-assignment-list";
+import { Editor } from "@/components/editor";
 
 const formSchema = zod.object({
   text: zod.string().min(1, {
@@ -112,12 +113,11 @@ Course Assignments
                   <FormItem>
                     <FormLabel>Course assignment </FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        placeholder='e.g. "After the course you will be able to build ANY website you want."'
-                        {...field}
-                      />
-                    </FormControl>
+              <Editor
+          
+              {...field}
+              />
+          </FormControl>
                     <FormDescription>
                       {`What should students do after the course`}
                     </FormDescription>

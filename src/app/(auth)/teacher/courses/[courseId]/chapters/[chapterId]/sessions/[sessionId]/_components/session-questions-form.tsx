@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import PageLoader from "@/components/page-loader";
 import SessionQuestionsList from "./session-questions-list";
+import { Editor } from "@/components/editor";
 
 const formSchema = zod.object({
   question: zod.string().min(1, {
@@ -130,12 +131,11 @@ if(isAnsValid){
                   <FormItem>
                     <FormLabel>Question </FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        placeholder='e.g. "3 + 4 is equal to"'
-                        {...field}
-                      />
-                    </FormControl>
+              <Editor
+          
+              {...field}
+              />
+          </FormControl>
                     <FormDescription>
                       {`What's the question`}
                     </FormDescription>
