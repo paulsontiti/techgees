@@ -28,7 +28,7 @@ async function AssignmentAccordion({ assignment }: {
       <Accordion type="single" collapsible className='w-[900px]'>
         <AccordionItem value="item-1">
           <AccordionTrigger>
-            <h2>{assignment.text}</h2>
+          <Preview value={assignment.text}/>
           </AccordionTrigger>
           <AccordionContent>
             {

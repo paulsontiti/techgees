@@ -15,6 +15,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Question } from "@prisma/client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { SessionTestSoreQuestion, useSessionTestStore } from "../../../../../../../../../../../store/session-test-store"
+import { Preview } from "@/components/preview"
 
 const FormSchema = z.object({
   type: z.enum(["optionA", "optionB", "optionC", "optionD"], {
@@ -42,7 +43,9 @@ export function QuestionItemForm({
   return (
     <Card className="my-4">
       <CardHeader>
-        <CardTitle className="text-xl">{question.question}</CardTitle>
+        <CardTitle className="text-xl">
+        <Preview value={question.question}/>
+        </CardTitle>
 
       </CardHeader>
       <CardContent>

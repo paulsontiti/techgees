@@ -36,7 +36,7 @@ assignmentId:assignment.id
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>
-            <h2>{assignment.text}</h2>
+            <Preview value={assignment.text}/>
           </AccordionTrigger>
           <AccordionContent>
           {
