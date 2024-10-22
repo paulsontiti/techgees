@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { Grip, Pencil } from "lucide-react";
 import PageLoader from "@/components/page-loader";
+import { Preview } from "@/components/preview";
 
 interface SessionAssignmentListProps {
   assignments: Assignment[];
@@ -29,7 +30,7 @@ function SessionAssignmentList({
           >
             <div className="flex items-center gap-x-2">
               <Grip className="h-5 w-5" />
-              {assignment.text}
+            <Preview value={assignment.text}/>
             </div>
 
             <Pencil

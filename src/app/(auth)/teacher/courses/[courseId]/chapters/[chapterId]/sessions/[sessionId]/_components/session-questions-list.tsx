@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { Grip, Pencil } from "lucide-react";
 import PageLoader from "@/components/page-loader";
+import { Preview } from "@/components/preview";
 
 interface SessionQuestionsListProps {
   questions: Question[];
@@ -28,7 +29,7 @@ function SessionQuestionsList({
           >
             <div className="flex items-center gap-x-2">
               <Grip className="h-5 w-5" />
-              {question.question}
+              <Preview value={question.question}/>
             </div>
 
             <Pencil
