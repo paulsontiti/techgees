@@ -1,5 +1,6 @@
 
 import Navbar from "./nav-bar";
+import { WelcomeMessage } from "./welcome-message";
 
 const HomePage = async () => {
 
@@ -8,6 +9,7 @@ const HomePage = async () => {
 
 
         <Navbar />
+        <WelcomeMessage/>
 
     </div>
 }
