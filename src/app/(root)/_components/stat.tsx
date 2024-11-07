@@ -1,4 +1,5 @@
 "use client";
+import { bgPrimaryColor, textSecondaryColor } from "@/utils/colors";
 import React from "react";
 import AnimatedNumbers from "react-animated-numbers"
 
@@ -26,13 +27,11 @@ const achievementList: Achievement[] = [
 ];
 const Achievement = () => {
   return (
-    <div
-      className=""
-    >
+   
       <div
-        className="border-sky-500 border rounded-md
+        className={`${bgPrimaryColor} text-white border rounded-lg
   flex items-center justify-around mt-20 mx-2 
-  md:mx-auto md:w-2/3 py-8"
+  md:mx-auto md:w-2/3 py-4`}
       >
         {achievementList.map((achivement) => (
           <div
@@ -51,13 +50,12 @@ const Achievement = () => {
               />
               +
             </h2>
-            <p className=" mt-2 text-xs md:text-base text-center ">
+            <p className={` text-xs md:text-base text-center ${textSecondaryColor}`}>
               {achivement.metric}
             </p>
           </div>
         ))}
       </div>
-    </div>
   );
 };
 

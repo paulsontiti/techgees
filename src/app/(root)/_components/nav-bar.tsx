@@ -12,16 +12,18 @@ import { Separator } from "@/components/ui/separator";
 
 async function Navbar() {
 
-  const {userId} = auth();
+  const { userId } = auth();
   return (
-    <header>
+    <nav>
 
-      <div className="flex items-center justify-around w-full py-4 md:px-2">
-      
+      <ul className="flex items-center justify-around w-full py-4 md:px-2">
+        <li>
           <Logo />
-    <div>  <NavLinks/></div>
-           <div> <SearchInput/></div>
-        <div className="hidden md:flex items-center gap-x-2">
+        </li>
+
+        <li>  <NavLinks /></li>
+        <li> <SearchInput /></li>
+        <li className="hidden md:flex items-center gap-x-2">
           {userId ? (
             <div className="flex items-center gap-x-4">
               <UserButton />
@@ -35,16 +37,16 @@ async function Navbar() {
               <SignUp />
             </>
           )}
-        </div>
-        <MobileMenu />
-      </div>
-      <Separator/>
+        </li>
+        <li>   <MobileMenu /></li>
+      </ul>
+      <Separator />
       <div className="px-1 md:hidden flex items-center gap-x-4 mt-4">
         {/* <CategoryDropdownMenu categories={categories} /> */}
-       
+
         {/* <SearchInput courses={courses} /> */}
       </div>
-    </header>
+    </nav>
   );
 }
 
