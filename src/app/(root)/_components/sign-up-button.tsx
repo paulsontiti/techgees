@@ -11,8 +11,7 @@ const [loading,setLoading] = useState(false)
 
 
     return     <Button 
-    className={`flex items-center gap-x-2 md:${bgSecondaryColor} md:${textPrimaryColor}
-     text-white ${bgPrimaryColor} hover:bg-white hover:${textPrimaryColor}`}
+    className={`flex items-center gap-x-2 `}
     size="sm" onClick={()=>{
         setLoading(true)
     }}>

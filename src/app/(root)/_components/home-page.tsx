@@ -5,6 +5,7 @@ import { WelcomeMessage } from "./welcome-message";
 import WhyGlobalGenius from "./why-global-genius";
 import Achievement from "./stat";
 import HomepageCourses from "./homepage-courses";
+import FreeCourses from "./free-courses";
 
 const HomePage = async () => {
 
@@ -13,7 +14,7 @@ const HomePage = async () => {
     return <div className="bg-[#EFF6FF]">
 
 
-        <header className={` ${bgPrimaryColor} text-white min-h-[70vh] w-full`}
+        <header className={` ${bgPrimaryColor} text-white w-full`}
      style={{backgroundImage:`url("/assets/home-bg.png")`,backgroundRepeat:"no-repeat",backgroundSize:"cover"}}>
         <Navbar />
 
@@ -22,6 +23,7 @@ const HomePage = async () => {
         <main >
             <WhyGlobalGenius/>
             <Achievement/>
+            <FreeCourses/>
             <HomepageCourses/>
         </main>
         <footer>
