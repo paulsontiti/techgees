@@ -26,9 +26,9 @@ function Rating({ rating,numberOfRating }: { rating: number,numberOfRating?:numb
       {rating.toFixed(1)}
       <div className='flex items-center'>
         {stars.map((star) => {
-          return <Star key={star} fill='orange' className=' w-3 h-3' />
+          return <Star key={star} fill='#f0fe03' className=' w-3 h-3' />
         })}
-        {!isNaN(decimalNum) && <StarHalf fill='orange' className=' w-3 h-3' />}
+        {!isNaN(decimalNum) && <StarHalf fill='#f0fe03' className=' w-3 h-3' />}
       </div>
     </div>
  {

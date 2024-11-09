@@ -6,6 +6,7 @@ import WhyGlobalGenius from "./why-global-genius";
 import Achievement from "./stat";
 import HomepageCourses from "./homepage-courses";
 import FreeCourses from "./free-courses";
+import Testimonials from "./testimonials";
 
 const HomePage = async () => {
 
@@ -24,6 +25,7 @@ const HomePage = async () => {
             <WhyGlobalGenius/>
             <Achievement/>
             <FreeCourses/>
+            <Testimonials/>
             <HomepageCourses/>
         </main>
         <footer>
