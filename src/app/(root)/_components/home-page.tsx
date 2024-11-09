@@ -7,6 +7,7 @@ import Achievement from "./stat";
 import HomepageCourses from "./homepage-courses";
 import FreeCourses from "./free-courses";
 import Testimonials from "./testimonials";
+import FAQ from "@/app/faq";
 
 const HomePage = async () => {
 
@@ -26,11 +27,10 @@ const HomePage = async () => {
             <Achievement/>
             <FreeCourses/>
             <Testimonials/>
+            <FAQ/>
             <HomepageCourses/>
         </main>
-        <footer>
-
-        </footer>
+      
 
     </div>
 }

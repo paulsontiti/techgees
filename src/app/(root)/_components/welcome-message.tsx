@@ -7,7 +7,10 @@ export const WelcomeMessage = ()=>{
     return <section>
         <div className="py-16 flex items-center justify-center">
            <div className="flex flex-col items-center justify-center">
-           <h1 className={`text-4xl md:text-6xl lg:text-8xl ${textSecondaryColor}`}>
+           <h1 
+           style={{fontFamily:"Pacifico, cursive"}} 
+           className={`text-4xl md:text-6xl lg:text-8xl my-4
+             ${textSecondaryColor}`}>
                 The Global Genius
             </h1>
             <p className=" text-xl md:text-2xl  lg:text-4xl mt-4 w-10/12 md:w-3/5">Bridging the Technological gap in Africa and challenging the world's status quo</p>

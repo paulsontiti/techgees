@@ -1,20 +1,15 @@
-"use client"
 
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Separator } from './ui/separator'
-import { Category } from '@prisma/client'
-import Loader from './loader'
-function Footer({categories}:{categories:Category[]}) {
-  const [stateCategories,setStateCategories] = useState<Category[] | null>(null)
+import { bgPrimaryColor } from '@/utils/colors'
 
-  useEffect(()=>{
-    setStateCategories(categories)
-  })
 
+function Footer() {
+ 
 
   return (
-    <div className='bg-sky-950 flex items-start justify-center gap-x-10 p-8 text-white'>
+    <footer className={`mt-16 flex items-start justify-center gap-x-10 p-8 text-white ${bgPrimaryColor}`}>
       <div className='flex flex-col items-center justify-center gap-y-2'>
         <h1 className='text-xl mb-4 flex flex-col gap-2'>Company</h1>
         <Link href="/about">About</Link>
@@ -41,19 +36,19 @@ function Footer({categories}:{categories:Category[]}) {
           </svg>
         </div>
       </div>
-      <div>
-      <h1 className='text-xl mb-4 flex flex-col gap-2'>Categories</h1>
-      <>
-      {!stateCategories && <Loader loading/>}
-      <div className='flex flex-col gap-y-4'>
-      {categories.map((category)=>{
+      {/* <div>
+        <h1 className='text-xl mb-4 flex flex-col gap-2'>Categories</h1>
+        <>
+          {!stateCategories && <Loader loading />}
+          <div className='flex flex-col gap-y-4'>
+            {categories.map((category) => {
 
-return    <Link href={`/categories/${category.id}`} key={category.id}>{category.name}</Link>
-})}
-      </div>
-      </>
-      </div>
-    </div>
+              return <Link href={`/categories/${category.id}`} key={category.id}>{category.name}</Link>
+            })}
+          </div>
+        </>
+      </div> */}
+    </footer>
   )
 }
 

@@ -28,6 +28,7 @@ course
       className="
             group hover:shadow-sm transition overflow-hidden border 
             rounded-lg p-3 relative hover:cursor-pointer w-full md:w-[300px]
+            bg-white
         "
         onClick={onClick}
     >

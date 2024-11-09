@@ -9,6 +9,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
 import SignInCheck from "@/components/clerk-sign-in-check";
+import Footer from "@/components/footer";
 
 
 
@@ -46,6 +47,7 @@ export default async function RootLayout({
         <SignInCheck/>
         <LayoutChildren>
           {children}
+          <Footer/>
         </LayoutChildren>
           </ClerkProvider></body>
     </html>
