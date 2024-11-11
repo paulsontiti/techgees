@@ -6,7 +6,7 @@ function FaqCard(
     }
 ) {
   return (
-    <div className='my-4 p-8 min-h-[200px]'>
+    <div className='my-1 p-8 min-h-[200px] w-full'>
     <h1 className='text-xl font-bold mb-4'>{question}</h1>
     <p>
        {answer}

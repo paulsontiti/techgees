@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 
-export default async function RootLayout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -47,7 +47,7 @@ export default async function RootLayout({
         <SignInCheck/>
         <LayoutChildren>
           {children}
-          <Footer/>
+          {/* <Footer/> */}
         </LayoutChildren>
           </ClerkProvider></body>
     </html>

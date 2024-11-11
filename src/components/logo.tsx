@@ -6,8 +6,8 @@ function Logo() {
 
     return <div>
         <Image
-            height={50}
-            width={50}
+            height={100}
+            width={100}
             alt="Logo"
             src="/assets/logo.jpg"
         />

@@ -5,12 +5,7 @@ import { UserButton } from "@clerk/nextjs";
 import SignIn from "@/app/(root)/_components/sign-in-button";
 import SignUp from "@/app/(root)/_components/sign-up-button";
 
-export const Sidebar = ({
-    recommendedCourses,error
-  }:{
-    recommendedCourses:{id:string,title:string}[],
-    error:Error | null
-  })=>{
+export const Sidebar = ()=>{
 
     const {userId} = auth();
     return <div className="
@@ -28,7 +23,7 @@ export const Sidebar = ({
            
         </div>
         <div className="flex flex-col w-full">
-        <SidebarRoutes />
+        <SidebarRoutes userId={userId ?? ""}/>
         </div>
     </div>
 }

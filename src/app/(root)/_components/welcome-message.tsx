@@ -5,7 +5,10 @@ import { CirclePlay } from "lucide-react"
 export const WelcomeMessage = ()=>{
 
     return <section>
-        <div className="py-16 flex items-center justify-center">
+        <div 
+  
+        style={{backgroundImage:`url("/assets/home-bg.png")`,backgroundRepeat:"no-repeat",backgroundSize:"cover"}}
+        className="py-16 flex items-center justify-center bg-[#1c05ea] text-white w-full">
            <div className="flex flex-col items-center justify-center">
            <h1 
            style={{fontFamily:"Pacifico, cursive"}} 

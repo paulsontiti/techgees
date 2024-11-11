@@ -8,7 +8,7 @@ async function HomepageCourses() {
 
     if(error) return <ErrorPage name={error.name}/>
   return (
-    <div className='flex flex-col items-center justify-center mt-16 px-4'>
+    <section id='courses' className='flex flex-col items-center justify-center mt-16 px-4'>
         <h2 className={`text-2xl md:text-4xl font-bold text-center`}>Skills You Can Learn From The Global Genius</h2>
              <div className='mt-8 flex flex-col md:flex-row gap-4 justify-center flex-wrap w-full'>
                 {
@@ -22,7 +22,7 @@ async function HomepageCourses() {
       <XSPopularCourses categories={categories} />
       <MDPopularCourses categories={categories} />
       <LGPopularCourses categories={categories} /> */}
-    </div>
+    </section>
   )
 }
 

@@ -1,71 +1,72 @@
 "use client"
 
-import {GraduationCap, Home, Info, Layout, Mail, Rss} from 'lucide-react'
+import { GraduationCap, Home, Info, Layout, Mail, Rss } from 'lucide-react'
 import React from 'react'
 import SidebarItem from './sidebar-item'
 import { Separator } from '@/components/ui/separator'
 
-const routes =[
+const routes = [
   {
-      icon:Home,
-      label:"Home",
-      href:"/"
+    icon: Home,
+    label: "Home",
+    href: "/"
   },
   {
-      icon:Info,
-      label:"About Us",
-      href:""
+    icon: Info,
+    label: "About Us",
+    href: "/about-us"
   },
-  {
-    icon:GraduationCap,
-    label:"Courses",
-    href:""
-},
-{
-  icon:Mail,
-  label:"Contact Us",
-  href:""
-},
-{
-icon:Rss,
-label:"Blog",
-href:""
-},
   
+  {
+    icon: Mail,
+    label: "Contact Us",
+    href: "/contact-us"
+  },
+  {
+    icon: GraduationCap,
+    label: "Courses",
+    href: "/courses"
+  },
+  {
+    icon: Rss,
+    label: "Blog",
+    href: ""
+  },
+
 ]
 
 
 
 
- function SidebarRoutes() {
-
-
-
+function SidebarRoutes({userId}:{userId:string}) {
 
   return (
     <div className='flex flex-col w-full'>
       {
-        routes.map((route)=>{
+        routes.map((route) => {
 
-            return(
-                <SidebarItem
-        
-                key={route.href}
-                icon={route.icon}
-                label={route.label}
-                href={route.href}
-                />
-            )
+          return (
+            <SidebarItem
+
+              key={route.href}
+              icon={route.icon}
+              label={route.label}
+              href={route.href}
+            />
+          )
         })
       }
-    <Separator className='my-2 bg-[#111587]'/>
-    <SidebarItem
-        
-        
-        icon={Layout}
-        label={"Dashboard"}
-        href={"/dashboard"}
+
+      {userId && <>
+        <Separator className='my-2 bg-[#111587]' />
+        <SidebarItem
+
+
+          icon={Layout}
+          label={"Dashboard"}
+          href={"/dashboard"}
         />
+      </>}
     </div>
   )
 }

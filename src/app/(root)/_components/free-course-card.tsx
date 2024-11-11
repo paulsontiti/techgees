@@ -26,7 +26,7 @@ course
     onClick={onClick}
       className="
             group hover:shadow-sm transition overflow-hidden border 
-            rounded-lg p-3 min-h-[450px] relative hover:cursor-pointer
+            rounded-lg p-3  md:min-h-[500px] relative hover:cursor-pointer
             min-w-[300px] md:w-[350px] lg:[400px] bg-white
         "
     >
@@ -47,7 +47,7 @@ course
         </div>
       
 
-       <footer className="my-4 absolute bottom-0">
+       <footer className="my-4 md:absolute md:bottom-0">
         <Button>Start for free</Button>
        </footer>
        

@@ -10,6 +10,9 @@ export const getCourses = async():
 Promise<ReturnValue>=>{
     try{
         const courses = await db.course.findMany({
+            where:{
+            isPublished:true
+            },
             orderBy:{
                 title:"asc"
             }
