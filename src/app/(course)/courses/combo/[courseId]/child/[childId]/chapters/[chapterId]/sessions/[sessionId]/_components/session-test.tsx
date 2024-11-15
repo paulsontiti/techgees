@@ -14,9 +14,8 @@ function SessionTest({ questions, sessionId }: {
   questions: Question[], sessionId: string
 }) {
 
-  const testQuestions = useSessionTestStore((state) => state.questions)
+  const {questions:testQuestions,updateShowAnswers} = useSessionTestStore((state) => state)
   const [submitting, setSubmitting] = useState(false)
-
 
   const confetti = useConfettiStore()
 
@@ -33,6 +32,8 @@ function SessionTest({ questions, sessionId }: {
         await axios.post(`/api/test/sessions`,
           { sessionId, score: res }
         )
+
+      updateShowAnswers();
         toast.success(`Congratulations!!!!!! Your score is ${res}`, { duration: 10000, position: "bottom-center" })
 
 
@@ -47,7 +48,7 @@ function SessionTest({ questions, sessionId }: {
       setSubmitting(false)
       setTimeout(function () {
         location.reload()
-      }, 10000)
+      }, 50000)
     }
   }
 

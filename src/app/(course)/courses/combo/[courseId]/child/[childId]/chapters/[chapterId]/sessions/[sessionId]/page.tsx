@@ -4,10 +4,8 @@ import React from "react";
 import ErrorPage from "@/components/error";
 import Banner from "@/components/banner";
 import { Preview } from "@/components/preview";
-import VideoPlayer from "./_components/video-player";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
-import SessionTest from "./_components/session-test";
 import SessionComments from "./_components/comments";
 import NextSessionButton from "./_components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
@@ -23,6 +21,8 @@ import { hasRatedSession } from "../../../../../../../../../../../../actions/has
 import { getSessionRating } from "../../../../../../../../../../../../actions/getSessionRating";
 import { getSessionNumberOfRatings } from "../../../../../../../../../../../../actions/getSessionNumberOfRatings";
 import { getSessionProgress } from "../../../../../../../../../../../../actions/getSessionProgress";
+import VideoPlayer from "@/components/video-player";
+import SessionTest from "./_components/session-test";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId, childId },
@@ -151,10 +151,8 @@ async function SessionIdPage({
             <>
 
               <VideoPlayer
-                session={session}
-                completeOnEnd={completeOnEnd}
-                courseId={courseId}
-                nextSessionId={nextSession?.id ?? ""}
+               url={session?.videoUrl ?? ""}
+               title={session?.title}
               />
               <div className="flex items-center justify-between my-4">
                 {previousSession && <PrvSessionButton

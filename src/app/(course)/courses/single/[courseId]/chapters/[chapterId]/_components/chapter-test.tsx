@@ -6,15 +6,15 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from '@/components/loader'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { QuestionItemForm } from '../sessions/[sessionId]/_components/question-item-form'
 import { useSessionTestStore } from '../../../../../../../../../store/session-test-store'
 import { useConfettiStore } from '../../../../../../../../../hooks/use-confetti-store'
+import { QuestionItemForm } from '@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/question-item-form'
 
 function ChapterTest({ questions, chapterId }: {
   questions: Question[], chapterId: string
 }) {
 
-  const testQuestions = useSessionTestStore((state) => state.questions)
+  const {questions:testQuestions,updateShowAnswers} = useSessionTestStore((state) => state)
   const [submitting, setSubmitting] = useState(false)
 
 
@@ -33,6 +33,7 @@ function ChapterTest({ questions, chapterId }: {
         await axios.post(`/api/test/chapters`,
           { chapterId, score: res }
         )
+        updateShowAnswers();
         toast.success(`Congratulations!!!!!! Your score is ${res}`, { duration: 10000, position: "bottom-center" })
 
 
@@ -47,7 +48,7 @@ function ChapterTest({ questions, chapterId }: {
       setSubmitting(false)
       setTimeout(function () {
         location.reload()
-      }, 10000)
+      }, 50000)
     }
   }
 

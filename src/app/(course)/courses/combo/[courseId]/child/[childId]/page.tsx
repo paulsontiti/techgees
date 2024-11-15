@@ -18,8 +18,6 @@ import {
 import Banner from "@/components/banner";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 import { getCourseCategoriesByCourseId } from "../../../../../../../../actions/getCourseCategoriesByCourseId";
 import { getCourse } from "../../../../../../../../actions/getCourse";

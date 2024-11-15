@@ -29,7 +29,7 @@ export function QuestionItemForm({
   question: Question
 }) {
 
-  const updateQuestions = useSessionTestStore((state) => state.updateQuestions)
+  const{updateQuestions,showAnswers} = useSessionTestStore((state) => state)
 
   const options = JSON.parse(JSON.stringify(question.options))
   const { optionA, optionB, optionC, optionD } = options
@@ -113,6 +113,9 @@ export function QuestionItemForm({
 
           </form>
         </Form>
+      {
+        showAnswers &&   <p className="mt-4"><strong className="text-emerald-700">Ans:</strong> {question.answer}</p>
+      }
       </CardContent>
     </Card>
   )

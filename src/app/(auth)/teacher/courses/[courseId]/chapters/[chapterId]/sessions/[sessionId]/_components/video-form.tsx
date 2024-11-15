@@ -13,6 +13,7 @@ import * as zod from "zod"
 import { Session } from '@prisma/client'
 import {Pencil, PlusCircle, VideoIcon } from 'lucide-react'
 import FileUploadButton from '@/components/file-upload-button'
+import VideoPlayer from '@/components/video-player'
 
 
 const formSchema = zod.object({
@@ -77,12 +78,8 @@ const router = useRouter()
         <>
             {session.videoUrl ? 
             <div className='relative aspect-video mt-2'>
-                 <video 
-                 controls
-                 src={session.videoUrl ?? ""} 
+                <VideoPlayer url={session.videoUrl ?? ""} title={session.title}/>
                 
-                 className='w-full rounded-md'
-                 />
 
             </div> :
             <div  className='flex items-center justify-center h-60 *:bg-slate-200 rounded-md'>

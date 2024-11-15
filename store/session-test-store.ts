@@ -3,6 +3,8 @@ import { create } from "zustand"
 
 type SessionTestStore={
     questions:SessionTestSoreQuestion[],
+    showAnswers:boolean,
+    updateShowAnswers:()=>void,
     updateQuestions:(question:SessionTestSoreQuestion)=>void
 }
 
@@ -14,6 +16,12 @@ export type SessionTestSoreQuestion={
 
 export const useSessionTestStore = create<SessionTestStore>((set)=>({
     questions:[],
+    showAnswers:false,
+    updateShowAnswers:()=>{
+        set(()=> {
+            return {showAnswers:true}
+        })
+    },
     updateQuestions:(question)=>{
        set((state)=>{
         if(state.questions.find(q=>q.questionId === question.questionId)){

@@ -38,6 +38,7 @@ import { getCourseDisLikesCount } from "../../../../../actions/getCourseDisLikes
 import EnrollButton from "./_components/enroll-button";
 import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
+import VideoPlayer from "@/components/video-player";
 
 
 export type CategoryCourseType = {
@@ -208,8 +209,7 @@ async function CourseIdPage({
           disLikes={numberOfDisLikes} rating={averageRating} />
 
         <div className="my-4 w-full">
-          <video src={course?.overviewVideoUrl ?? ""}
-            controls title="Course overview" className="w-full" />
+          <VideoPlayer url={course?.overviewVideoUrl ?? ""} title="Course overview"/>
         </div>
 
         <EnrollButton courseId={course.id} />
