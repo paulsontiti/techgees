@@ -15,7 +15,7 @@ async function Navbar() {
   return (
     <nav className="bg-[#1c05ea]">
 
-      <ul className="flex items-center justify-around w-full py-4 md:px-2">
+      <ul className="flex items-center justify-around w-full md:px-2">
         <li>
           <Logo />
         </li>
@@ -40,11 +40,7 @@ async function Navbar() {
         <li>   <MobileMenu /></li>
       </ul>
  
-      <div className="px-1 md:hidden flex items-center gap-x-4 mt-4">
-        {/* <CategoryDropdownMenu categories={categories} /> */}
-
-        {/* <SearchInput courses={courses} /> */}
-      </div>
+    
     </nav>
   );
 }

@@ -27,7 +27,7 @@ course
       className="
             group hover:shadow-sm transition overflow-hidden border 
             rounded-lg p-3  md:min-h-[500px] relative hover:cursor-pointer
-            min-w-[300px] md:w-[350px] lg:[400px] bg-white
+            min-w-[300px] md:w-[350px] lg:w-[400px] bg-white
         "
     >
       <PageLoader label="redirecting..." isloading={loading} />

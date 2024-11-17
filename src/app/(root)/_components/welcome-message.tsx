@@ -16,7 +16,8 @@ export const WelcomeMessage = ()=>{
              ${textSecondaryColor}`}>
                 The Global Genius
             </h1>
-            <p className=" text-xl md:text-2xl  lg:text-4xl mt-4 w-10/12 md:w-3/5">Bridging the Technological gap in Africa and challenging the world's status quo</p>
+            <p className=" text-xl md:text-2xl  lg:text-4xl mt-4 w-10/12 md:w-3/5">
+            {`Bridging the Technological gap in Africa and challenging the world's status quo`}</p>
             <p className="text-sm md:text-medium mt-4 w-10/12 md:w-1/2">
             A Learning Management System, a platform where you can learn anything and everything with its pioneer in TECH and Software Development
             </p>

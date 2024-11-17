@@ -1,12 +1,7 @@
 
 import React from 'react'
 import { RecommendedCourseType } from '../../actions/getRecommendedCourses'
-import { getCourseCategoriesByCourseId } from '../../actions/getCourseCategoriesByCourseId'
-
-
-import ErrorPage from './error'
 import FreeCourseCard from '@/app/(root)/_components/free-course-card'
-import { getCourseChildren } from '../../actions/getCourseChildren'
 
 
 function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
@@ -22,22 +17,13 @@ function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
 
         {courses.map(async (course, index) => {
           if (course === null) return <div key={index}>No course</div>
-          const courseId = course.id
-          const { categories, error } = await getCourseCategoriesByCourseId(courseId)
-          if (error) return <ErrorPage name={error.name} key={index} />
-
-
-
-          const { courseChildren, error: comboError } = await getCourseChildren(courseId)
-          if (comboError) return <ErrorPage name={comboError.name} key={index} />
+       
+         
 
 
           return <FreeCourseCard
             key={course.id}
             course={course}
-            categories={categories ?? []}
-            childrenCourses={courseChildren}
-            isCombo={!!courseChildren.length}
           />
         })}
       </div>
