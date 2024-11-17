@@ -16,9 +16,9 @@ export default async function Home() {
 
     <WelcomeMessage />
     <Chat/>
+    <FreeCourses />
     <WhyGlobalGenius />
     <Achievement />
-    <FreeCourses />
     <Testimonials />
     <FAQ />
     <HomepageCourses />

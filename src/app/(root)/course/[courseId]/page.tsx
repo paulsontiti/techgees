@@ -38,6 +38,8 @@ import { getCourseDisLikesCount } from "../../../../../actions/getCourseDisLikes
 import EnrollButton from "./_components/enroll-button";
 import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
+import CourseWelcomeMessage from "./_components/course-welcome-message";
+
 
 
 export type CategoryCourseType = {
@@ -141,7 +143,12 @@ async function CourseIdPage({
 
 
   return (
-    <div className=" flex items-center justify-center ">
+    <div >
+      <CourseWelcomeMessage
+      title={course?.title}
+      subTitle={course.subTitle ?? ""}
+      />
+      <div className={`flex  items-center justify-center`}>
       <div className="w-full md:w-[700px] xl:w-[900px]">
         <div className="mt-8">
           <Breadcrumb>
@@ -299,6 +306,7 @@ async function CourseIdPage({
             return <CommentItem comment={comment} key={index} />
           })}
         </div>}
+      </div>
       </div>
     </div>
   );

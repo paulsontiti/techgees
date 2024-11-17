@@ -18,10 +18,7 @@ async function HomepageCourses() {
                     })
                 }
              </div>
-             {/* <PopularCourses categories={categories} />
-      <XSPopularCourses categories={categories} />
-      <MDPopularCourses categories={categories} />
-      <LGPopularCourses categories={categories} /> */}
+          
     </section>
   )
 }

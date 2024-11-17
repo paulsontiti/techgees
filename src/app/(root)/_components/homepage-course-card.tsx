@@ -20,7 +20,7 @@ course
 
     const onClick = ()=>{
         setLoading(true)
-        router.push(`/courses/${course.id}`)
+        router.push(`/course/${course.id}`)
     }
     if(!course) return null
   return (

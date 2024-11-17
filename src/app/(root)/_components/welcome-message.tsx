@@ -1,9 +1,11 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { textSecondaryColor } from "@/utils/colors"
 import { CirclePlay } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export const WelcomeMessage = ()=>{
-
+    const router = useRouter()
     return <section>
         <div 
   
@@ -22,15 +24,19 @@ export const WelcomeMessage = ()=>{
             A Learning Management System, a platform where you can learn anything and everything with its pioneer in TECH and Software Development
             </p>
 
-           <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-y-2 gap-x-2 mt-16 px-2">
-           <Button
+           <div className="w-full md:w-auto flex flex-col md:flex-row 
+           items-center gap-y-2 gap-x-2 mt-16 px-2 ">
+           {/* <Button
             variant="outline"
             className=" w-10/12  md:w-[250px] rounded-full flex items-center justify-center p-2 gap-x-2"
             >
             <CirclePlay/>
             <span className="font-semibold">Start exploring today</span>
-            </Button>
+            </Button> */}
            <Button
+           onClick={()=>{
+                router.push("/#free-courses")
+           }}
             variant="secondary"
             className=" w-10/12  md:w-[250px] rounded-full flex items-center justify-center p-2 gap-x-2"
             >
