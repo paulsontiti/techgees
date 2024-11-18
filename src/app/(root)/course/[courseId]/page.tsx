@@ -39,6 +39,9 @@ import EnrollButton from "./_components/enroll-button";
 import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 import CourseWelcomeMessage from "./_components/course-welcome-message";
+import { formatPrice } from "@/lib/format";
+import Separator from "@/components/separator";
+import { bgNeutralColor, textPrimaryColor } from "@/utils/colors";
 
 
 
@@ -143,83 +146,48 @@ async function CourseIdPage({
 
 
   return (
-    <div >
-      <CourseWelcomeMessage
+  <div>
+         <CourseWelcomeMessage
       title={course?.title}
-      subTitle={course.subTitle ?? ""}
+      subTitle={course?.subTitle ?? ""}
+      numberOfDisLikes={numberOfDisLikes}
+      numberOfLikes={numberOfLikes}
+      numberOfPayments={numberOfPayments}
+      numberOfRatings={numberOfRatings}
+      averageRating={averageRating}
+      commentLength={comments.length}
+
       />
-      <div className={`flex  items-center justify-center`}>
-      <div className="w-full md:w-[700px] xl:w-[900px]">
-        <div className="mt-8">
-          <Breadcrumb>
-            <BreadcrumbList>
-              {Array.isArray(categories) &&
-                categories.length > 0 &&
-                categories.map(async (cat) => {
-                  const courseCategories = await db.courseCategory.findMany({
-                    where: {
-                      categoryId: cat.id,
-                    },
-                    include: {
-                      course: true,
-                    },
-                  });
-
-                  const courses = courseCategories.map((c) => {
-                    return {
-                      title: c.course.title,
-                      id: c.course.id,
-                    };
-                  });
-
-                  return (
-                    <div key={cat.id}>
-                      <BreadcrumbItem>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger className=" flex items-center">
-                            <div className="text-sky-500 text-xs xl:text-sm"> {cat.name}</div>
-                            {Array.isArray(courses) && courses.length > 0 && (
-                              <ChevronDown className="h-4 w-4" />
-                            )}
-                          </DropdownMenuTrigger>
-                          {Array.isArray(courses) && courses.length > 0 && (
-                            <DropdownMenuContent align="start">
-                              {courses.map((course) => {
-                                return (
-                                  <DropdownMenuItem key={course.id}>
-                                    <BreadcrumbLink href={`/course/${course.id}`}>
-                                      {course.title}
-                                    </BreadcrumbLink>
-                                  </DropdownMenuItem>
-                                );
-                              })}
-                            </DropdownMenuContent>
-                          )}
-                        </DropdownMenu>
-                      </BreadcrumbItem>
-                    </div>
-                  );
-                })}
-            </BreadcrumbList>
-          </Breadcrumb>
+     
+      <div className={`flex flex-col  items-center justify-center ${bgNeutralColor}`}>    
+      <div className="border-black border-2 my-16 w-8/12 py-8 rounded-xl flex items-center justify-around">
+      
+        <div className="flex flex-col items-center justify-center gap-y-4">
+          <h2 className={`${textPrimaryColor}`}>Course status</h2>
+          <Button variant="destructive" size="sm">Not started</Button>
         </div>
-        <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-        <h2 className="mt-2 text-md md:w-2/3 mb-10">{course?.subTitle}</h2>
-
-
-        <StatInfo
-          numberOfRatings={numberOfRatings}
-          numberOfStudents={numberOfPayments}
-          numberOfComments={comments.length}
-          likes={numberOfLikes}
-          disLikes={numberOfDisLikes} rating={averageRating} />
-
+        <Separator/>
+        <div className="flex flex-col items-center justify-center gap-y-4">
+          <h2 className={`${textPrimaryColor}`}>Price</h2>
+          <p className="font-bold">{formatPrice(course?.price ?? 0)}</p>
+        </div>
+        <Separator/>
+        <div className="flex flex-col items-center justify-center gap-y-4">
+          <h2 className={`${textPrimaryColor}`}>Get started</h2>
+          <Button size="sm">Take this course</Button>
+        </div>
+      </div>
+      <div className="w-full md:w-[700px] xl:w-[900px]">
         <div className="my-4 w-full">
           <video src={course?.overviewVideoUrl ?? ""}
             controls title="Course overview" className="w-full" />
         </div>
 
         <EnrollButton courseId={course.id} />
+        <div className="my-8">
+          <h1 className={`${textPrimaryColor} text-xl font-bold`}>Course Details</h1>
+          <Preview value={course?.description ?? ""}/>
+        </div>
         {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
           <Card className="mt-4 w-full">
             <CardHeader className="text-xl font-bold">
@@ -237,21 +205,8 @@ async function CourseIdPage({
             </CardContent>
           </Card>}
         <div className="mt-8">
-          <h1 className="text-xl font-bold">Course content</h1>
-          <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
-            {courseChildrenWithChaptersAndSessions.length > 0 && (
-              <div className="flex items-center gap-x-1">
-                {courseChildrenWithChaptersAndSessions.length} courses
-              </div>
-            )}
-            <div className="flex items-center gap-x-1">
-              {chaptersLength} chapters
-            </div>
-            <div className="flex items-center gap-x-1">
-              {sessionslength} sessions
-            </div>
-            <div className="flex items-center gap-x-1">{duration} mins(total length)</div>
-          </div>
+          <h1 className={`text-xl font-bold ${textPrimaryColor}`}>Course content</h1>
+         
         </div>
         {
           courseChildrenWithChaptersAndSessions.length > 0 ?
@@ -308,7 +263,7 @@ async function CourseIdPage({
         </div>}
       </div>
       </div>
-    </div>
+  </div>
   );
 }
 
