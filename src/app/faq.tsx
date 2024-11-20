@@ -4,7 +4,7 @@ import FaqCard from './(root)/_components/faq-card'
 
 function FAQ() {
   return (
-    <section className='flex flex-col items-center justify-center my-16 p-2 md:p-16 bg-white'>
+    <section id='faq' className='flex flex-col items-center justify-center my-16 p-2 md:p-16 bg-white'>
         <h1 className={`text-4xl ${textPrimaryColor} p-4 font-bold`}>
             Frequently Asked Questions</h1>
 

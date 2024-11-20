@@ -10,6 +10,7 @@ import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
 import SignInCheck from "@/components/clerk-sign-in-check";
 import Footer from "@/components/footer";
+import Chat from "./(root)/_components/chat";
 
 
 
@@ -30,7 +31,7 @@ export default async function Layout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} relative`}>
         <ClerkProvider >
           <ConfettiProvider/>
           <ToastProvider/>
@@ -46,8 +47,9 @@ export default async function Layout({
       
         <SignInCheck/>
         <LayoutChildren>
+        <Chat/>
           {children}
-          {/* <Footer/> */}
+          <Footer/>
         </LayoutChildren>
           </ClerkProvider></body>
     </html>

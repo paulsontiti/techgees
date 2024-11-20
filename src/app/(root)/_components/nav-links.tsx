@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export const NavLinks = ()=>{
 
-    return <nav className="hidden lg:flex items-center">
-        <Button variant="link" size="sm" className="text-white">Home</Button>
-        <Button variant="link" size="sm" className="text-white">About Us</Button>
-        <Button variant="link" size="sm" className="text-white">Courses</Button>
-        <Button variant="link" size="sm" className="text-white">Contact Us</Button>
-        <Button variant="link" size="sm" className="text-white">Blog</Button>
+    return <nav className="hidden lg:flex items-center gap-x-4">
+        <Link href="/">Home</Link>
+        <Link href="/about-us">About Us</Link>
+        <Link href="/contact-us">Contact Us</Link>
+        <Link href="">Blog</Link>
     </nav>
 }

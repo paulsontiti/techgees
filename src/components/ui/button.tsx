@@ -20,7 +20,7 @@ const buttonVariants = cva(
           `${bgSecondaryColor} ${textPrimaryColor} hover:bg-white hover:${textPrimaryColor}`,
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        tgg: "bg-white text-primary hover:bg-white/90",
+        success: `bg-emerald-700 ${textSecondaryColor} hover:bg-white/90`,
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { currentUser, User } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { DBUser } from "@prisma/client";
 
 interface ReturnValue {

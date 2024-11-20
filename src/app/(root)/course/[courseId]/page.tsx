@@ -1,21 +1,7 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-} from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { db } from "@/lib/db";
+
 import {
   Check,
-  ChevronDown,
 } from "lucide-react";
-import { getCourseCategoriesByCourseId } from "../../../../../actions/getCourseCategoriesByCourseId";
 import Banner from "@/components/banner";
 import { getCourse } from "../../../../../actions/getCourse";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -28,7 +14,6 @@ import { getCourseRecommendedCourses } from "../../../../../actions/getCourseRec
 import { Button } from "@/components/ui/button";
 import { getCountOfPaymentByCourseId } from "../../../../../actions/getCountOfPaymentByCourseId";
 
-import StatInfo from "./_components/stat-info";
 import { getCourseRating } from "../../../../../actions/getCourseRating";
 import { getCourseComments } from "../../../../../actions/getCourseComments";
 import { getCourseNumberOfRatings } from "../../../../../actions/getCourseNumberOfRatings";
@@ -39,9 +24,11 @@ import EnrollButton from "./_components/enroll-button";
 import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 import CourseWelcomeMessage from "./_components/course-welcome-message";
-import { formatPrice } from "@/lib/format";
+
 import Separator from "@/components/separator";
 import { bgNeutralColor, textPrimaryColor } from "@/utils/colors";
+import { hasStartedACourse } from "../../../../../actions/hasStartedACourse";
+import ErrorPage from "@/components/error";
 
 
 
@@ -55,10 +42,6 @@ async function CourseIdPage({
 }: {
   params: { courseId: string };
 }) {
-  const { categories, error } =
-    await getCourseCategoriesByCourseId(courseId);
-
-  if (error) return <Banner variant="error" label={error.message} />;
 
   const { course, error: courseError } = await getCourse(courseId);
   if (courseError)
@@ -113,6 +96,9 @@ async function CourseIdPage({
   );
   if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
 
+  //check if student has started this course
+  const {startedCourse,error} = await hasStartedACourse(course.id)
+  if(error) return <ErrorPage name={error.name}/>
 
   let chaptersLength = 0;
   let sessionslength = 0;
@@ -145,126 +131,123 @@ async function CourseIdPage({
   }
 
 
-  return (
-  <div>
-         <CourseWelcomeMessage
-      title={course?.title}
-      subTitle={course?.subTitle ?? ""}
-      numberOfDisLikes={numberOfDisLikes}
-      numberOfLikes={numberOfLikes}
-      numberOfPayments={numberOfPayments}
-      numberOfRatings={numberOfRatings}
-      averageRating={averageRating}
-      commentLength={comments.length}
+return <>
+   <CourseWelcomeMessage
+        title={course?.title}
+        subTitle={course?.subTitle ?? ""}
+        numberOfDisLikes={numberOfDisLikes}
+        numberOfLikes={numberOfLikes}
+        numberOfPayments={numberOfPayments}
+        numberOfRatings={numberOfRatings}
+        averageRating={averageRating}
+        commentLength={comments.length}
+        courseId={course.id}
 
       />
-     
-      <div className={`flex flex-col  items-center justify-center ${bgNeutralColor}`}>    
-      <div className="border-black border-2 my-16 w-8/12 py-8 rounded-xl flex items-center justify-around">
-      
-        <div className="flex flex-col items-center justify-center gap-y-4">
-          <h2 className={`${textPrimaryColor}`}>Course status</h2>
-          <Button variant="destructive" size="sm">Not started</Button>
-        </div>
-        <Separator/>
-        <div className="flex flex-col items-center justify-center gap-y-4">
-          <h2 className={`${textPrimaryColor}`}>Price</h2>
-          <p className="font-bold">{formatPrice(course?.price ?? 0)}</p>
-        </div>
-        <Separator/>
-        <div className="flex flex-col items-center justify-center gap-y-4">
-          <h2 className={`${textPrimaryColor}`}>Get started</h2>
-          <Button size="sm">Take this course</Button>
-        </div>
-      </div>
-      <div className="w-full md:w-[700px] xl:w-[900px]">
-        <div className="my-4 w-full">
-          <video src={course?.overviewVideoUrl ?? ""}
-            controls title="Course overview" className="w-full" />
-        </div>
 
-        <EnrollButton courseId={course.id} />
-        <div className="my-8">
-          <h1 className={`${textPrimaryColor} text-xl font-bold`}>Course Details</h1>
-          <Preview value={course?.description ?? ""}/>
-        </div>
-        {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
-          <Card className="mt-4 w-full">
-            <CardHeader className="text-xl font-bold">
-              Benefits of taking this course
-            </CardHeader>
-            <CardContent className="flex flex-col">
-              {course?.courseBenefits.map((benefit) => {
-                return (
-                  <div key={benefit.id} className="flex items-start my-2 gap-2">
-                    <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-                    <div className="text-xs md:text-sm">{benefit.text}</div>
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>}
-        <div className="mt-8">
-          <h1 className={`text-xl font-bold ${textPrimaryColor}`}>Course content</h1>
+      <div className={`flex flex-col  items-center justify-center ${bgNeutralColor} p-4`}>
+    <div className="border-black border-2 my-16 w-full md:w-8/12 py-8 px-2 rounded-xl 
+        flex items-center justify-around gap-x-2">
+
+          <div className="flex flex-col items-center justify-center gap-y-4">
+            <h2 className={`${textPrimaryColor}`}>Course status</h2>
+            <Button variant={`${startedCourse ? "success" : "destructive"}`} size="sm">
+              {`${startedCourse ? "Started" : "Not started"}`}</Button>
+          </div>
+          <Separator />
          
+          <div className="flex flex-col items-center justify-center gap-y-4">
+            <h2 className={`${textPrimaryColor}`}>Get started</h2>
+            <EnrollButton courseId={course.id} label={`${startedCourse ? "Go to class" : "Start with 20K"}`}/>
+          
+          </div>
         </div>
-        {
-          courseChildrenWithChaptersAndSessions.length > 0 ?
-            courseChildrenWithChaptersAndSessions.map((course, index) => {
+        <div className="w-full md:w-[700px] xl:w-[900px]">
+          <div className="my-4 w-full">
+            <video src={course?.overviewVideoUrl ?? ""}
+              controls title="Course overview" className="w-full" />
+          </div>
 
-              return <CourseContentAccordion course={course} key={index} />
-            })
-            :
-            course?.chapters.map((chapter) => {
-              return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
+          <EnrollButton courseId={course.id} />
+          <div className="my-8 p-4">
+            <h1 className={`${textPrimaryColor} text-xl font-bold`}>Course Details</h1>
+            <Preview value={course?.description ?? ""} />
+          </div>
+          {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
+            <Card className="mt-4 w-full">
+              <CardHeader className="text-xl font-bold">
+                Benefits of taking this course
+              </CardHeader>
+              <CardContent className="flex flex-col">
+                {course?.courseBenefits.map((benefit) => {
+                  return (
+                    <div key={benefit.id} className="flex items-start my-2 gap-2">
+                      <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
+                      <div className="text-xs md:text-sm">{benefit.text}</div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>}
+          <div className="mt-8 p-4">
+            <h1 className={`text-xl font-bold ${textPrimaryColor}`}>Course content</h1>
+
+          </div>
+          {
+            courseChildrenWithChaptersAndSessions.length > 0 ?
+              courseChildrenWithChaptersAndSessions.map((course, index) => {
+
+                return <CourseContentAccordion course={course} key={index} />
+              })
+              :
+              course?.chapters.map((chapter) => {
+                return <ChapterContentAccordion chapter={chapter} key={chapter.id} />;
+              })}
+
+
+          <div>
+            <h1 className={`text-lg font-semibold mt-8 mb-2 ${textPrimaryColor}`}>Pre-requisite</h1>
+            {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course) => {
+              return <Link href={`/course/${course.id}`}
+                className="text-xs md:text-sm" key={course.id}>
+                {course.title}
+              </Link>
+            }) :
+              <p className="text-xs md:text-sm">None</p>}
+          </div>
+
+          <div>
+            <h1 className={`text-lg font-semibold mt-8 mb-2 ${textPrimaryColor}`}>Recommended courses</h1>
+            {recommendedCourses.length > 0 ?
+              <div className="flex items-center flex-wrap gap-1">
+                {
+                  recommendedCourses.map((course, index) => {
+                    return <Button size="sm" variant="outline" key={index}>
+                      <Link
+                        className="text-xs md:text-sm" href={`/course/${course.id}`} key={course.id}>
+                        {course.title}
+                      </Link>
+                    </Button>
+
+                  })
+                }
+              </div> :
+              <p className="text-xs md:text-sm">None</p>}
+          </div>
+
+         
+          <EnrollButton courseId={course?.id} />
+
+          {Array.isArray(comments) && comments.length > 0 && <div className="mt-4 border p-2 max-w-full">
+            <h1 className={`text-lg font-semibold mt-8 mb-2 ${textPrimaryColor}`}>Reviews</h1>
+            {comments.map((comment, index) => {
+
+              return <CommentItem comment={comment} key={index} />
             })}
-
-        <div>
-          <h1 className="text-lg font-semibold mt-8 mb-2">Pre-requisite</h1>
-          {preRequisiteCourses.length > 0 ? preRequisiteCourses.map((course) => {
-            return <Link href={`/course/${course.id}`}
-              className="text-xs md:text-sm" key={course.id}>
-              {course.title}
-            </Link>
-          }) :
-            <p className="text-xs md:text-sm">None</p>}
+          </div>}
         </div>
-
-        <div>
-          <h1 className="text-lg font-semibold mt-8 mb-2">Recommended courses</h1>
-          {recommendedCourses.length > 0 ?
-            <div className="flex items-center flex-wrap gap-1">
-              {
-                recommendedCourses.map((course, index) => {
-                  return <Button size="sm" variant="outline" key={index}>
-                    <Link
-                      className="text-xs md:text-sm" href={`/course/${course.id}`} key={course.id}>
-                      {course.title}
-                    </Link>
-                  </Button>
-
-                })
-              }
-            </div> :
-            <p className="text-xs md:text-sm">None</p>}
-        </div>
-
-        <h1 className="text-lg font-semibold mt-8">Description</h1>
-        <Preview value={course?.description ?? ""}></Preview>
-
-        <EnrollButton courseId={course?.id} />
-
-        {Array.isArray(comments) && comments.length > 0 && <div className="mt-4 border p-2 max-w-full">
-          <h1 className="text-lg font-semibold mb-2">Reviews</h1>
-          {comments.map((comment, index) => {
-
-            return <CommentItem comment={comment} key={index} />
-          })}
-        </div>}
       </div>
-      </div>
-  </div>
-  );
+</>
 }
 
 export default CourseIdPage;

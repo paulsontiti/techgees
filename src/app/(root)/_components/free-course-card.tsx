@@ -19,16 +19,18 @@ course
   if(!course) return null
   const onClick = () => {
     setLoading(true);
-    router.push(`/courses/${course.id}`);
+    router.push(`/course/${course.id}`);
   };
   return (
     <div
     onClick={onClick}
+ 
       className="
             group hover:shadow-sm transition overflow-hidden border 
-            rounded-lg p-3  md:min-h-[500px] relative hover:cursor-pointer
-            min-w-[300px] md:w-[350px] lg:w-[400px] bg-white
+            rounded-lg p-2 md:p-8  md:min-h-[500px] relative hover:cursor-pointer
+             bg-white w-full md:w-1/2 xl:w-1/3 
         "
+        
     >
       <PageLoader label="redirecting..." isloading={loading} />
       <div

@@ -25,9 +25,9 @@ export async function ChapterContentAccordion({
   };
 }) {
 
-  if(!chapter) return null
+  if (!chapter) return null
 
-  
+
   const { numberOfStudents, error: error } = await getChapterStudentsCount(
     chapter.id
   );
@@ -41,7 +41,7 @@ export async function ChapterContentAccordion({
 
 
 
-  const {averageRating, error: numRatingError } = await getChapterRating(
+  const { averageRating, error: numRatingError } = await getChapterRating(
     chapter.id
   );
   if (numRatingError) return <Banner variant="error" label={numRatingError.message} />;
@@ -61,7 +61,7 @@ export async function ChapterContentAccordion({
     chapter.id
   );
 
-  if(commentsError) return <Banner variant="error" label={commentsError.message}/>
+  if (commentsError) return <Banner variant="error" label={commentsError.message} />
   return (
     <Accordion
       type="single"
@@ -69,38 +69,39 @@ export async function ChapterContentAccordion({
       className={`w-full px-2 my-2 ${bgNeutralColor2} ${textPrimaryColor}`}
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger >
-       
-           <div className="w-full flex items-center justify-between my-2 p-2 ">
-           <div className="flex items-center gap-x-2">
-              <BookOpen className="w-4 h-4" />
-              <span className="line-clamp-1 text-sm">{chapter.title}</span>
+        <AccordionTrigger className="px-2 gap-x-2">
+
+          <div className="flex items-center justify-start w-full">
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-x-2 w-9/12">
+                <BookOpen className="w-4 h-4" />
+                <span className="text-sm text-left">{chapter.title}</span>
+              </div>
+              <div className="flex justify-end">
+                <StatInfoDialog
+                  numberOfComments={numberOfComments}
+                  numberOfRatings={numberOfRatings}
+                  numberOfStudents={numberOfStudents}
+                  likes={numberOfLikes}
+                  disLikes={numberOfDisLikes}
+                  title={chapter.title}
+                  description={chapter.description ?? ""}
+                  rating={averageRating}
+                />
+
+              </div>
             </div>
-            <div>
-             <div className="flex items-center gap-x-2">
-             <StatInfoDialog
-             numberOfComments ={numberOfComments}
-             numberOfRatings={numberOfRatings}
-              numberOfStudents={numberOfStudents}
-              likes={numberOfLikes}
-              disLikes={numberOfDisLikes}
-              title={chapter.title}
-              description={chapter.description  ?? ""}
-              rating={averageRating}
-              />
-             
-             </div>
-            </div>
-           </div>
-        
+
+          </div>
+
         </AccordionTrigger>
         <AccordionContent>
           <div>
             {chapter.sessions.map((session) => {
               return (
                 <div
-                key={session.id}
-                className="my-2 bg-white p-2 flex items-center justify-between">
+                  key={session.id}
+                  className="my-2 bg-white p-2 flex items-center justify-between">
                   <div className="flex items-center gap-x-2">
                     <Video className="h-4" />
                     <span className="line-clamp-1">{session.title}</span>

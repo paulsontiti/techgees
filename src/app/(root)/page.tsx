@@ -6,20 +6,19 @@ import Testimonials from "./_components/testimonials";
 import FAQ from "../faq";
 import HomepageCourses from "./_components/homepage-courses";
 import FreeCourses from "./_components/free-courses";
-import Chat from "./_components/chat";
 
 export default async function Home() {
 
 
-    return <div className="bg-[#EFF6FF] relative">
+    return <div className="bg-[#EFF6FF]">
 
 
     <WelcomeMessage />
-    <Chat/>
-    <FreeCourses />
+   
     <WhyGlobalGenius />
     <Achievement />
     <Testimonials />
+    <FreeCourses />
     <FAQ />
     <HomepageCourses />
 

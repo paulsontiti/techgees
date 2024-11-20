@@ -11,7 +11,7 @@ async function FreeCourses() {
   return (
     <section id='#free-courses' className='mt-16 flex flex-col justify-center items-center px-4 w-full'>
         <h1 className='text-2xl md:text-4xl font-bold mb-4'>Free Courses</h1>
-      <div className='flex flex-col md:flex-row flex-wrap justify-center gap-4 w-full'>
+      <div className='flex flex-col md:flex-row flex-wrap justify-center w-full'>
       {
             freeCourses.map((course)=>{
 
