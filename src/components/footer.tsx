@@ -1,7 +1,6 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { Separator } from './ui/separator'
 import { textSecondaryColor } from '@/utils/colors'
 import CourseLinks from './course-links'
 import Logo from './logo'
@@ -11,7 +10,8 @@ function Footer() {
 
 
   return (
-    <footer className={`mt-16 items-start justify-center p-2 md:p-8 text-white bg-[#1c05ea] h-auto`}>
+    <footer className={`mt-16 items-start justify-center p-2 md:p-8 text-white
+     bg-[#1c05ea]`}>
       <div className='md:border-2 border-white rounded-xl flex flex-col md:flex-row justify-center
        gap-4 h-auto w-full'>
         <div className='px-2'>

@@ -31,7 +31,7 @@ export default async function Layout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} relative`}>
+      <body className={`${inter.className} relative min-h-[100vh]`}>
         <ClerkProvider >
           <ConfettiProvider/>
           <ToastProvider/>
@@ -48,7 +48,10 @@ export default async function Layout({
         <SignInCheck/>
         <LayoutChildren>
         <Chat/>
-          {children}
+      
+       <div className="min-h-[80vh]">
+       {children}
+       </div>
           <Footer/>
         </LayoutChildren>
           </ClerkProvider></body>

@@ -13,7 +13,7 @@ export default function EnrollButton({courseId,label}:{courseId:string,label?:st
         setLoading(true)
       router.push(`/courses/${courseId}`)
     }}
-    className="w-full md:w-[400px] flex items-center justify-center">
+    className="w-full md:w-11/12 flex items-center justify-center">
       {label ?? "Start for free"}
       <Loader loading={loading}/>
     </Button>
