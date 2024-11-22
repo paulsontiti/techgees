@@ -11,6 +11,7 @@ import LayoutChildren from "@/components/layout-children";
 import SignInCheck from "@/components/clerk-sign-in-check";
 import Footer from "@/components/footer";
 import Chat from "./(root)/_components/chat";
+import { bgNeutralColor } from "@/utils/colors";
 
 
 
@@ -31,7 +32,7 @@ export default async function Layout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} relative min-h-[100vh]`}>
+      <body className={`${inter.className} relative ${bgNeutralColor}`}>
         <ClerkProvider >
           <ConfettiProvider/>
           <ToastProvider/>

@@ -3,10 +3,10 @@ import React from 'react'
 
 function AboutUsPage
 () {
-  return <section className=' flex flex-col items-start justify-center'>
+  return <section className={`flex flex-col items-center justify-center`}>
     <WelcomeMessage/>
-    <div className='flex flex-col items-center justify-center mt-8'>
-    <h1 className='text-2xl font-bold mb-4'>
+    <div className='flex flex-col items-center justify-center mt-8 w-full px-2'>
+    <h1 className='text-2xl text-center font-bold mb-4'>
     Welcome To The Global Genius
     </h1>
  <div className='w-10/12'>
