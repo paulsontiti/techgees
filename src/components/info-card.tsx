@@ -16,7 +16,7 @@ function InfoCard(
 ) {
     return (
             <div className='
-    border rounded-md flex items-center gap-x-2 p-3'>
+    border rounded-md flex items-center gap-x-2 p-3 bg-white'>
 
                 <IconBadge
                     icon={Icon}

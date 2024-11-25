@@ -1,16 +1,17 @@
 "use client"
-import Image from 'next/image'
 import React from 'react'
 
-function Logo({height,width}:{height?:number,width?:number}) {
+function Logo() {
 
     return <div>
-        <Image
-            height={height ?? 100}
-            width={width ?? 100}
-            alt="Logo"
-            src="/assets/logo.jpg"
-        />
+        <h1
+            className='text-4xl logo'
+           style={{
+            fontFamily:`Creepster`,
+            fontWeight:400,
+            fontStyle:"normal"
+           }}
+        >The Global Genius</h1>
        
     </div>
 }

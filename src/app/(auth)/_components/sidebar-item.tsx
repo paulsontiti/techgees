@@ -3,6 +3,7 @@
 import ErrorBoundary from '@/components/error-boundary'
 import Loader from '@/components/loader'
 import { cn } from '@/lib/utils'
+import { bgPrimaryColor, textSecondaryColor } from '@/utils/colors'
 import { LucideIcon } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -36,14 +37,14 @@ function SidebarItem({ icon: Icon, href, label }: SidebarItemProps) {
                 onClick={onClick}
                 className={cn(
                     "flex items-center gap-x-2 text-slate-500 text-sm  font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
-                    isActive && "text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:text-sky-700"
+                    isActive && `${textSecondaryColor} ${bgPrimaryColor} hover:bg-sky-200/20 hover:text-sky-700`
                 )}>
                 <div className='flex items-center gap-x-2 py-4'>
                     <Icon
                         size={22}
                         className={cn(
                             "text-slate-500",
-                            isActive && "text-sky-700"
+                            isActive && `${textSecondaryColor}`
                         )}
                     />
                     {label}

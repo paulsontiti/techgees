@@ -1,5 +1,5 @@
 "use client"
-import { textSecondaryColor } from '@/utils/colors'
+import { textPrimaryColor, textSecondaryColor } from '@/utils/colors'
 import { Loader2 } from 'lucide-react'
 import React from 'react'
 
@@ -13,7 +13,7 @@ function PageLoader({ isloading, label,className }:
     right-0 rounded-m flex flex-col items-center justify-center ${className}
     `}>
         <Loader2 className={`animate-spin h-6 w-6  z-50 ${className}`}/>
-        <p className={className}>{label}</p>
+        <p className={`${textPrimaryColor}`}>{label}</p>
       </div>
   )
 }

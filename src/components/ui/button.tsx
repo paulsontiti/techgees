@@ -18,8 +18,8 @@ const buttonVariants = cva(
            hover:bg-[#f0fe03] hover:text-[#111587]`,
         secondary:
           `${bgSecondaryColor} ${textPrimaryColor} hover:bg-white hover:${textPrimaryColor}`,
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        ghost: `hover:bg-accent hover:text-accent-foreground ${textPrimaryColor}`,
+        link: "text-white underline-offset-4 hover:underline",
         success: `bg-emerald-700 ${textSecondaryColor} hover:bg-white/90`,
       },
       size: {

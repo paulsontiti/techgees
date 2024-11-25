@@ -27,7 +27,7 @@ course
  
       className="
             group hover:shadow-sm transition overflow-hidden border 
-            rounded-lg p-2 md:p-8  md:min-h-[500px] relative hover:cursor-pointer
+            rounded-lg p-2 md:p-8 min-h-[500px] xl:min-h-[550px] relative hover:cursor-pointer
              bg-white w-full md:w-1/2 xl:w-1/3 
         "
         

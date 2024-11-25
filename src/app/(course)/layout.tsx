@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Sidebar } from "./_components/sidebar";
-import Navbar from "./_components/navbar";
 import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
+import Navbar from "../(auth)/_components/navbar";
 
 
 
@@ -31,11 +30,7 @@ export default function AuthLayout({
             <Navbar />
           </div>
           <div className="flex mt-[100px]">
-            <div
-              className="hidden md:flex w-[350px] inset-y-0"
-            >
-              <Sidebar />
-            </div>
+           
             <main className="relative w-full">{children}</main>
           </div>
         </div>

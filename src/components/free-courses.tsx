@@ -13,7 +13,7 @@ function FreeCourses({ courses }: { courses: RecommendedCourseType[] }) {
   return (
     <div className='mt-12 flex items-center justify-center flex-col '>
       <h1 className='text-2xl my-8 font-bold'>Free courses</h1>
-      <div className='grid gap-4  md:grid-cols-2  xl:grid-cols-3 max-w-[400px] md:max-w-[1400px]'>
+      <div className='grid gap-4  md:grid-cols-2  xl:grid-cols-3'>
 
         {courses.map(async (course, index) => {
           if (course === null) return <div key={index}>No course</div>

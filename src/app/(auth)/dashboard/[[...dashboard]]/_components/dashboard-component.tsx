@@ -4,9 +4,8 @@ import { CheckCircle, Clock } from 'lucide-react'
 import InfoCard from '@/components/info-card'
 import CoursesList from '@/app/(auth)/search/_components/courses-list'
 import { SearchPageCourseType } from '../../../../../../actions/getCourseWithProgressChapters'
-import FreeCourses from '@/components/free-courses'
+import FreeCourses from '@/app/(root)/_components/free-courses'
 
-import { getFreeCourses } from '../../../../../../actions/getFreeCourses'
 
 async function DashboardComponent(
     {
@@ -18,12 +17,11 @@ async function DashboardComponent(
     }
 ) {
 
-    const {freeCourses} = await getFreeCourses()
     return (
-        <div>
-            <div className='p-6 space-y-4'>
-                <div className='
-grid md:grid-cols-2 gap-4'>
+        <div className='flex flex-col items-center justify-center'>
+
+            <div className='p-6 xl:w-10/12 '>
+                <div className='w-full grid md:grid-cols-2 gap-4 mb-8'>
                     <InfoCard
                         icon={Clock}
                         label="In Progress"
@@ -38,9 +36,8 @@ grid md:grid-cols-2 gap-4'>
 
                 </div>
                 <CoursesList courses={courses} label='You have not started or completed any course' />
-                <FreeCourses courses={freeCourses}/>
+                <FreeCourses />
             </div>
-       
         </div>
     )
 }

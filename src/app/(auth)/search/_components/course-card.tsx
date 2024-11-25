@@ -46,7 +46,7 @@ function CourseCard({
       className="
             group hover:shadow-sm transition overflow-hidden border 
             rounded-lg p-3 h-full relative hover:cursor-pointer
-            md:w-full
+            w-full bg-white
         "
     >
       <PageLoader
@@ -88,30 +88,13 @@ function CourseCard({
         </div>
 
         {isCombo ? (
-          <div>
-            {Array.isArray(childrenCourses) && childrenCourses.length > 0 && (
-              <div>
-                <h2
-                  className="text-md md:text-sm italic mt-2 
-                group-hover:text-sky-700 transition line-clamp-2 font-semibold"
-                >
-                  Courses:
-                </h2>
-                <div className="flex flex-wrap">
-                  {childrenCourses.map((course) => {
-                    return (
-                      <span
-                        key={course.id}
-                        className="text-xs mr-2 italic p-2 bg-sky-100 rounded-full mt-4 py-1 px-2"
-                      >
-                        {course.title}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
+            
+              <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
+              <div className="flex items-center gap-x-1">
+                <IconBadge size={"sm"} icon={BookOpen} />
+                {childrenCourses.length} courses
+              </div>    
+         </div>
         ) : (
           <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
             <div className="flex items-center gap-x-1">
