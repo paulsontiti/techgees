@@ -13,9 +13,11 @@ function TestimonialCard() {
   return (
 <>
 <MobileTestimonialCard/>
+{/* hidden on mobile devices */}
         <div 
       
-        className={`${bgNeutralColor} hidden rounded-lg md:flex flex-col justify-center p-8 md:w-[350px] lg:w-[400px]`}>
+        className={`${bgNeutralColor} hidden rounded-lg md:flex flex-col justify-center
+         p-8 w-full`}>
                 <div className='flex items-start gap-x-4'>
                 <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />

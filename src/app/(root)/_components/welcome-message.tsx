@@ -1,14 +1,15 @@
 'use client'
 import StartFreeClassButton from "@/components/start-free-class-button"
 
-import { textSecondaryColor } from "@/utils/colors"
+import { bgPrimaryColor, textSecondaryColor } from "@/utils/colors"
 
 export const WelcomeMessage = ()=>{
     return <section>
         <div 
   
         style={{backgroundImage:`url("/assets/home-bg.png")`,backgroundRepeat:"no-repeat",backgroundSize:"cover"}}
-        className="py-16 flex items-center justify-center bg-[#1c05ea] text-white w-full">
+        className={`py-16 flex items-center justify-center ${bgPrimaryColor}
+         text-white w-full`}>
            <div className="flex flex-col items-center justify-center">
            <h1 
            style={{fontFamily:"Pacifico, cursive"}} 

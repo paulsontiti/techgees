@@ -216,10 +216,10 @@ async function CourseIdPage({
             <p className="text-xs md:text-sm">None</p>}
         </div>
 
-        <div>
-          <h1 className={`text-lg font-semibold mt-8 mb-2 ${textPrimaryColor}`}>Recommended courses</h1>
+        <div className="bg-white p-4 mt-8">
+          <h1 className={`text-lg font-semibold mb-2 ${textPrimaryColor}`}>Recommended courses</h1>
           {recommendedCourses.length > 0 ?
-            <div className="flex items-center flex-wrap gap-1">
+            <div className="flex items-center flex-wrap gap-4">
               {
                 recommendedCourses.map((course, index) => {
                   return <Button size="sm" variant="outline" key={index}>
@@ -236,7 +236,9 @@ async function CourseIdPage({
         </div>
 
 
-        <EnrollButton courseId={course?.id} />
+       <div className="mt-8">
+       <EnrollButton courseId={course?.id} />
+       </div>
 
         {Array.isArray(comments) && comments.length > 0 && <div className="mt-4 border p-2 max-w-full">
           <h1 className={`text-lg font-semibold mt-8 mb-2 ${textPrimaryColor}`}>Reviews</h1>

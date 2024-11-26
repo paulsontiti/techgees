@@ -27,8 +27,8 @@ course
  
       className="
             group hover:shadow-sm transition overflow-hidden border 
-            rounded-lg p-2 md:p-8 min-h-[500px] xl:min-h-[550px] relative hover:cursor-pointer
-             bg-white w-full md:w-1/2 xl:w-1/3 
+            rounded-lg p-2 md:p-8 relative hover:cursor-pointer
+             bg-white w-full min-h-[600px]
         "
         
     >
@@ -49,11 +49,11 @@ course
         </div>
       
 
-       <footer className="my-4 md:absolute md:bottom-0">
-        <Button>Start for free</Button>
-       </footer>
        
       </div>
+       <footer className="my-4 absolute bottom-0">
+        <Button>Start for free</Button>
+       </footer>
     </div>
   );
 }

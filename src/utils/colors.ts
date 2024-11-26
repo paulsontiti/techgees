@@ -5,3 +5,4 @@ export const textSecondaryColor = "text-[#f0fe03]";
 export const bgNeutralColor = "bg-[#EFF6FF]";
 export const bgNeutralColor2 = "bg-[#D0D5EF]"
 export const bgTempPrimaryColor = "bg-[#D0D5EF]"
+export const hoverBgNeutralColor2 = "hover:bg-[#D0D5EF]"

@@ -40,7 +40,7 @@ function WhyGlobalGenius() {
   return (
     <section id='whyus' className='flex flex-col items-center justify-center mt-16 w-full'>
         <h1 className={`text-2xl md:text-4xl font-bold m-4`}>Why Learn From The Global Genius</h1>
-        <div className='mt-8 hidden md:flex md:flex-row gap-4 justify-center flex-wrap'>
+        <div className='mt-8 hidden md:grid md:grid-cols-2 xl:grid-cols-3 p-4 gap-4 justify-center max-w-full'>
           {
             WhyUsCards.map((card,i)=>(
            <WhyUsCard key={card.num} num={card.num} title={card.title} description={card.description}/>

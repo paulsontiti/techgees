@@ -27,7 +27,7 @@ course
     <div
       className="
             group hover:shadow-sm transition overflow-hidden border 
-            rounded-lg p-3 relative hover:cursor-pointer w-full md:w-[300px]
+            rounded-lg p-3 relative hover:cursor-pointer w-full
             bg-white
         "
         onClick={onClick}

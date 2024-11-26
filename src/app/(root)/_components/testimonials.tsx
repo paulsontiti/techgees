@@ -8,7 +8,7 @@ function Testimonials() {
   return (
     <section id='testimonials' className={`${bgPrimaryColor} w-full flex flex-col justify-center items-center py-8 mt-8`}>
         <h1 className='text-white text-2xl px-4 md:text-4xl mb-8'>Testimonials From Our Students</h1>
-        <div className='hidden md:flex flex-wrap gap-4 justify-center w-full'>
+        <div className='hidden md:grid md:grid-cols-2 xl:grid-cols-3 p-8 gap-4 w-full'>
         {[1,2,3,4,5].map((card)=>(
                <TestimonialCard key={card}/>
             ))}

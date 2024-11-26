@@ -4,7 +4,7 @@ import React from 'react'
 
 function Loading() {
   return (
-    <LoadingComponent/>
+      <LoadingComponent/>
   )
 }
 

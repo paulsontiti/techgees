@@ -58,7 +58,7 @@ async function CourseSidebar({
 
 
   return (
-    <div className="h-full mt-4 border-r flex flex-col overflow-y-auto shadow-sm">
+    <div className="h-full mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
         <div className="flex items-center justify-between">
           <h1 className="font-semibold">{course.title}</h1>

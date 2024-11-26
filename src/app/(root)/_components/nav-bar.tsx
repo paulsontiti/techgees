@@ -8,12 +8,13 @@ import SignIn from "./sign-in-button";
 import SignUp from "./sign-up-button";
 import { auth } from "@clerk/nextjs/server";
 import { NavLinks } from "./nav-links";
+import { bgPrimaryColor } from "@/utils/colors";
 
 async function Navbar() {
 
   const { userId } = auth();
   return (
-    <nav className="bg-[#1c05ea]">
+    <nav className={`${bgPrimaryColor} py-8 px-4`}>
 
       <ul className="flex items-center justify-around w-full md:px-2">
         <li>

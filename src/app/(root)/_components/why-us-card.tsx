@@ -14,7 +14,7 @@ const {screenWidth} = useScreenWidth();
 
   return (
     <>
-        <Card className={`md:flex flex-col hidden items-center justify-center md:w-[350px] xl:w-[400px]` }>
+        <Card className={`md:flex flex-col hidden items-center justify-center w-full` }>
         <CardHeader>
         <div className={`w-8 h-8 rounded-full ${bgPrimaryColor} text-white flex items-center justify-center`}>
             {num}
