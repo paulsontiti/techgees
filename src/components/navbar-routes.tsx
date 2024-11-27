@@ -41,11 +41,9 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
       })();
     },[userId]);
 
-    return <div className="flex items-center w-full px-4 ">
-        <div className="p-6 hidden md:block">
+    return <div className="flex items-center justify-around w-full text-white">
+    
             <Logo />
-
-        </div>
         {
             isSearchPage && (
                 <div className="hidden md:block">

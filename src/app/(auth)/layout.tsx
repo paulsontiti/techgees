@@ -36,7 +36,7 @@ export default function AuthLayout({
             >
               <Sidebar />
             </div>
-            <main className="relative w-full">{children}</main>
+            <div className="relative w-full">{children}</div>
           </div>
         </div>
         {/* <Footer /> */}

@@ -158,7 +158,7 @@ async function CourseIdPage({
 
         <div className="flex flex-col items-center justify-center gap-y-4">
           <h2 className={`${textPrimaryColor}`}>Get started</h2>
-          <EnrollButton courseId={course.id} label={`${startedCourse ? "Go to class" : "Start with 20K"}`} />
+          <EnrollButton courseId={course.id} label={`${startedCourse ? "Go to class" : "Start for free"}`} />
 
         </div>
       </div>
@@ -168,7 +168,7 @@ async function CourseIdPage({
             controls title="Course overview" className="w-full" />
         </div>
 
-        <EnrollButton courseId={course.id} />
+        <EnrollButton courseId={course.id} label={`${startedCourse ? "Go to class" : "Start for free"}`}/>
         <div className="my-8 p-4">
           <h1 className={`${textPrimaryColor} text-xl font-bold`}>Course Details</h1>
           <Preview value={course?.description ?? ""} />
@@ -237,7 +237,7 @@ async function CourseIdPage({
 
 
        <div className="mt-8">
-       <EnrollButton courseId={course?.id} />
+       <EnrollButton courseId={course?.id} label={`${startedCourse ? "Go to class" : "Start for free"}`}/>
        </div>
 
         {Array.isArray(comments) && comments.length > 0 && <div className="mt-4 border p-2 max-w-full">

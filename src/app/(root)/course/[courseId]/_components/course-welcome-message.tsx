@@ -2,7 +2,7 @@
 import React from 'react'
 import StatInfo from './stat-info'
 import StartFreeClassButton from '@/components/start-free-class-button'
-import { textSecondaryColor } from '@/utils/colors'
+import { bgPrimaryColor, textSecondaryColor } from '@/utils/colors'
 
 type CourseDetailsProps = {
   title: string, subTitle: string,
@@ -23,7 +23,7 @@ function CourseWelcomeMessage({
     <div
 
       style={{ backgroundImage: `url("/assets/home-bg.png")`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
-      className="py-16 bg-[#1c05ea] text-white w-full">
+      className={`py-16 text-white w-full ${bgPrimaryColor}`}>
       <div className='w-full md:w-2/3 px-8 '>
         <h1
           style={{ fontFamily: "Pacifico, cursive" }}

@@ -209,11 +209,7 @@ async function ChapterIdPage({
           </div>
         </div>
 
-        <video
-          src={chapterCourse?.overviewVideoUrl ?? ""}
-          controls
-          title={chapterCourse?.title ?? ""}
-        />
+       
         <ChapterComments
           chapterId={chapterId}
           numberOfDisLikes={numberOfDisLikes}

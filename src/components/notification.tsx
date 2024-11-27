@@ -61,7 +61,7 @@ function NotificationComponent() {
 
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[300px]  md:w-[400px] h-[600px] overflow-y-scroll flex flex-col gap-y-2">
+            <DropdownMenuContent className="w-[300px]  md:w-[400px] h-[600px] overflow-y-scroll flex flex-col gap-y-4">
                 <Button size="sm"
                     className='my-2 p-2'
                     onClick={readAllNotifications}>Mark all as read  <Loader loading={loading} /></Button>

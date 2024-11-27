@@ -14,6 +14,7 @@ import { verifyPayStackPayment } from '../../../../../../actions/verifyPayment'
 import { updatePayment } from '../../../../../../actions/updatePayment'
 import { getPaidChapters } from '../../../../../../actions/getPaidChapters'
 import BackButton from '@/components/back-button'
+import ComboCourseNavbar from './_components/combo-navbar'
 
 async function ComboCoursePage(
     { params: { courseId }, searchParams: { reference }, }: {
@@ -64,40 +65,42 @@ async function ComboCoursePage(
 
     return (
 
+        <div>
 
-        <div className='flex flex-col items-center justify-center '>
-            <div className='w-full md:w-[600px] lg:w-[900px]'>
-                {payment && (
-                    <Banner
-                        variant={payment.status === "success" ? "success" : "warning"}
-                        label={`You payment of ${formatPrice(payment.amount)} is 
+            <ComboCourseNavbar />
+            <div className='flex flex-col items-center justify-center '>
+                <div className='w-full md:w-[600px] lg:w-[900px]'>
+                    {payment && (
+                        <Banner
+                            variant={payment.status === "success" ? "success" : "warning"}
+                            label={`You payment of ${formatPrice(payment.amount)} is 
           ${payment.status}`}
-                    />
-                )}
+                        />
+                    )}
 
-                <div
-                    className="
+                    <div
+                        className="
         flex flex-col  mx-auto pb-20"
-                >
-                    <BackButton label='Dashboard' url='/dashboard' />
-                    <div className="p-4  flex flex-col md:flex-row items-center justify-between">
-                        <h2 className="text-2xl font-semibold mb-2">{course.title}</h2>
-                        {!course.isFree && <>
-                            {purchasePercentage !== 100 && (
-                                <ComboCourseEnrollButton
-                                    courseId={courseId}
-                                    label={
-                                        purchasePercentage === 0
-                                            ? `Enroll for ${formatPrice(course.price!)}`
-                                            : `Pay ${formatPrice(
-                                                ((100 - purchasePercentage) / 100) * (!!coursePurchase ? coursePurchase?.price! : course.price!)
-                                            )}`
-                                    }
-                                />
-                            )}</>}
-                    </div>
-                    <Separator />
-                    {/* <div>
+                    >
+
+                        <div className="p-4  flex flex-col md:flex-row items-center justify-between">
+                            <h2 className="text-2xl font-semibold mb-2">{course.title}</h2>
+                            {!course.isFree && <>
+                                {purchasePercentage !== 100 && (
+                                    <ComboCourseEnrollButton
+                                        courseId={courseId}
+                                        label={
+                                            purchasePercentage === 0
+                                                ? `Enroll for ${formatPrice(course.price!)}`
+                                                : `Pay ${formatPrice(
+                                                    ((100 - purchasePercentage) / 100) * (!!coursePurchase ? coursePurchase?.price! : course.price!)
+                                                )}`
+                                        }
+                                    />
+                                )}</>}
+                        </div>
+                        <Separator />
+                        {/* <div>
                         <Preview value={course.description ?? ""} />
                     </div>
 
@@ -107,7 +110,7 @@ async function ComboCoursePage(
                         controls
                         title={course.title}
                     /> */}
-                    {/* <CourseComm
+                        {/* <CourseComm
           chapterId={chapterId}
           numberOfDisLikes={numberOfDisLikes}
           numberOfRatings={numberOfRatings}
@@ -122,9 +125,10 @@ async function ComboCoursePage(
 
 
 
+                    </div>
                 </div>
+                <CoursesList courseId={courseId} paidChapters={paidChapters} />
             </div>
-            <CoursesList courseId={courseId} paidChapters={paidChapters} />
         </div>
     )
 }
