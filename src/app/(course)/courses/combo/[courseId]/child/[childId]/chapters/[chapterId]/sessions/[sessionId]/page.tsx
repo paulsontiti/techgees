@@ -23,6 +23,7 @@ import { hasRatedSession } from "../../../../../../../../../../../../actions/has
 import { getSessionRating } from "../../../../../../../../../../../../actions/getSessionRating";
 import { getSessionNumberOfRatings } from "../../../../../../../../../../../../actions/getSessionNumberOfRatings";
 import { getSessionProgress } from "../../../../../../../../../../../../actions/getSessionProgress";
+import NextPrevSessionButton from "@/components/next-prev-session-button";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId, childId },
@@ -156,15 +157,13 @@ async function SessionIdPage({
                 courseId={courseId}
                 nextSessionId={nextSession?.id ?? ""}
               />
-              <div className="flex items-center justify-between my-4">
-                {previousSession && <PrvSessionButton
-                  url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${prvSessionId}`} />}
-                {
-                  nextSession && <NextSessionButton
-                    url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${nextSession.id}`} />
-
-                }
-              </div>
+              <NextPrevSessionButton
+              hasNextSession={!!nextSession}
+              hasPreviousSession={!!previousSession}
+              nextSessionUrl={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${nextSession?.id}`}
+              prevSessionUrl={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${prvSessionId}`} />
+           
+              
               <SessionComments
                 numberOfLikes={numberOfLikes}
                 numberOfDisLikes={numberOfDisLikes}

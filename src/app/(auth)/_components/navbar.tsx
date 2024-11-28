@@ -8,7 +8,7 @@ import { bgPrimaryColor } from '@/utils/colors'
 function Navbar() {
   const {userId} = auth()
   return (
-      <div className={` p-4 h-full flex items-center justify-between shadow-sm text-white ${bgPrimaryColor}`}>
+      <div className={` p-4 h-full flex items-center justify-center shadow-sm text-white ${bgPrimaryColor}`}>
    
         <MobileSidebar />
         <NavbarRoutes userId={userId ?? ""}/>

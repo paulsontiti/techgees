@@ -23,7 +23,7 @@ const {screenWidth} = useScreenWidth();
         <CardContent className='flex flex-col items-center justify-center'>
 
         <h2 className='text-xl font-bold'>{title}</h2>
-        <p className='mt-4'>
+        <p className='mt-4 p-1'>
             {description}
         </p>
         </CardContent>

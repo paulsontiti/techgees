@@ -41,9 +41,11 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
       })();
     },[userId]);
 
-    return <div className="flex items-center justify-around w-full text-white">
+    return <div className="flex items-center justify-around w-11/12 md:w-10/12 xl:w-9/12 text-white">
     
-            <Logo />
+           <div className="hidden md:block">
+           <Logo />
+           </div>
         {
             isSearchPage && (
                 <div className="hidden md:block">
@@ -51,7 +53,7 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
                 </div>
             )
         }
-        <div className="flex items-center gap-x-4 ml-auto">
+        <div className="px-2 flex items-center gap-x-2 md:gap-x-4 ml-auto">
             <Button
                 variant="link"
                 size="sm"

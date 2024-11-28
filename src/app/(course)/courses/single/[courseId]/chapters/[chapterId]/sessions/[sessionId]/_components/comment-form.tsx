@@ -12,8 +12,8 @@ import toast from 'react-hot-toast'
 
 import * as zod from "zod"
 import { Editor } from '@/components/editor'
-import { CommentsDialog } from './comments-dialog'
 import { Comment } from '@prisma/client'
+import { CommentsDialog } from '@/components/comments-dialog'
 
 
 const formSchema = zod.object({

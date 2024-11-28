@@ -5,12 +5,14 @@ import { MessageSquareText } from "lucide-react";
 import { bgSecondaryColor, textPrimaryColor } from "@/utils/colors";
 import { useRouter } from 'next/navigation';
 
-function Chat() {
+function Chat({isAStudent}:{isAStudent:boolean}) {
     const router = useRouter()
   return (
     <div className={` fixed bottom-10 right-5 z-50`}
     onClick={()=>{
-        router.push("https://chat.whatsapp.com/Gz21TOy5nH02wxkiF2wnQN")
+        router.push(`${isAStudent ? 
+          "https://chat.whatsapp.com/Gz21TOy5nH02wxkiF2wnQN" : 
+          "https://chat.whatsapp.com/KTSeKL2iujUIGNIeVTotUI"}`)
     }}
     >
     <div  className={`${bgSecondaryColor} ${textPrimaryColor}

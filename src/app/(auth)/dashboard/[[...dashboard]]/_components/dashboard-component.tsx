@@ -18,7 +18,7 @@ async function DashboardComponent(
     return (
         <div className='flex flex-col items-center justify-center'>
 
-            <div className='p-6 xl:w-10/12 '>
+            <div className='p-6 xl:w-10/12 w-full'>
                 <div className='w-full grid md:grid-cols-2 gap-4 mb-8'>
                     <InfoCard
                         icon={Clock}

@@ -5,18 +5,14 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-function NextSessionButton({
-    courseId, chapterId, nextSessionId
-}: {
-    courseId: string, chapterId: string, nextSessionId: string
-}) {
+function NextSessionButton({url}:{url:string}) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     return <Button onClick={() => {
         setLoading(true)
-        router.push(`/courses/single/${courseId}/chapters/${chapterId}/sessions/${nextSessionId}`)
+        router.push(url)
     }}
-        className='flex items-center gap-x-2'
+        className='flex items-center gap-x-2 w-full'
     >Go to next session <Loader loading={loading} /></Button>
 
 }

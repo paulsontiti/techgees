@@ -78,7 +78,8 @@ function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
       toast.success("Sessions reordered")
       router.refresh()
     }catch(err:any){
-      toast.error("Something went wrong",err.message)
+
+      toast.error(err.message,{duration:2000})
     }finally{
       setIsUpdating(false)
     }

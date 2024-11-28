@@ -1,12 +1,13 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { isCourseOwner } from "../../../../../../../../../actions/isCourseOwner";
 
 export async function PATCH(
   req: Request,
   {
-    params: { courseId, chapterId, sessionId },
-  }: { params: { courseId: string; chapterId: string; sessionId: string } }
+    params: { courseId, sessionId },
+  }: { params: { courseId: string; sessionId: string } }
 ) {
   try {
     const { userId } = auth();
@@ -15,14 +16,10 @@ export async function PATCH(
 
     const { isPublished, ...values } = await req.json();
 
-    const course = await db.course.findUnique({
-      where: {
-          id: courseId,
-          userId,
-      },
-    });
-  
-    if(!course)  return new NextResponse("Unauthorized,you are not the creator of this course",{status:401})
+    const {isCourseCreator,error} = await isCourseOwner(courseId)
+    if (error) return new NextResponse("An error occured", { status: 505 });
+    if (!isCourseCreator) return new NextResponse("Unauthorised", { status: 401 });
+
 
     await db.session.update({
       where: {

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { Comment } from "@prisma/client"
 
-import CommentItem from "./comment-item"
+import CommentItem from "../app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item"
 
 export function CommentsDialog({comments}:{comments:Comment[]}) {
     const numberOfComments = comments.length
@@ -21,7 +21,7 @@ export function CommentsDialog({comments}:{comments:Comment[]}) {
    <div className="w-10/12">
      <Dialog>
       <DialogTrigger asChild>
-      <Button size="sm" variant="link"> {numberOfComments === 1 ? "View comment" :`View all ${numberOfComments} comments`}
+      <Button size="sm" variant="tgg_link"> {numberOfComments === 1 ? "View comment" :`View all ${numberOfComments} comments`}
 
       </Button>
       </DialogTrigger>

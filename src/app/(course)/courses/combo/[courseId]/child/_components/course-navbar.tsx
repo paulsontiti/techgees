@@ -23,7 +23,7 @@ async function CourseNavbar({
   const { userId } = auth()
 
   return (
-    <div className={`p-4 border-b h-full flex items-center
+    <div className={`p-4 border-b h-full flex items-center justify-center w-full
       text-white ${bgPrimaryColor} shadow-sm`}>
       <CourseMobileSidebar
         course={course}

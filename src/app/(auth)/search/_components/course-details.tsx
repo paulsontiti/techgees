@@ -16,7 +16,7 @@ function CourseDetails(
     }
 ) {
   return (
-    <div className='grid gap-4 xl:grid-cols-2'>
+    <div className='grid gap-4 lg:grid-cols-2'>
       {courses.map(async (course, index) => {
         if (!course) return null
 

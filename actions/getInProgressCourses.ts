@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { getCourseProgress } from "./getCourseProgress";
 import { SearchPageCourseType } from "./getCourseWithProgressChapters";
+import { Course } from "@prisma/client";
 
 type ReturnValue = {
   courses: SearchPageCourseType[];
@@ -15,6 +16,7 @@ export const getInProgressCourses = async (
     const purchasedCourses = await db.paystackPayment.findMany({
       where: {
         userId,
+        payment_status:"success"
       },
       select: {
         course: {
@@ -25,49 +27,26 @@ export const getInProgressCourses = async (
       },
     });
 
-    //filter repeated courses
-    const filteredPurchasedCourses:any[] = []
-
-    for(let purchasedcourse of purchasedCourses){
-      if(!filteredPurchasedCourses.find((cou) => cou.id === purchasedcourse.course.id)){
-        filteredPurchasedCourses.push(purchasedcourse.course)
-      }
-    }
-   
-    // const startedSessions = await db.userProgress.findMany({
-    //   where: {
-    //     userId,
-    //   },
-    //   select: {
-    //     session: {
-    //       include:{
-    //         chapter:{
-    //           include:{
-    //             course:{
-    //               include: {
-    //                 chapters: true
-    //               },
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   },
-    // });
-   
-    // for(let startedSession of startedSessions){
-    //   const course = startedSession.session?.chapter.course
-    //  if(course !== undefined){
-    //   if(!filteredPurchasedCourses.find((cou) => cou.id === course.id)){
-    //     filteredPurchasedCourses.push(course)
-    //   }
-    //  }
-    // }
+  //filter courses from paystack payment because there could be multiple payments for a course
   
-    let courses: SearchPageCourseType[] = filteredPurchasedCourses.map(
-      (course) => {
+  const filteredCourses : any[] = [];
+  purchasedCourses.map((paidCourse)=>{
+    /*
+      paid course is of type  Course &{
+      chapters:{id:string}[],
+      progressPercentage:number | null,
+      } | null
+    */
+    const course = paidCourse.course; 
+    if(!filteredCourses.find((filterredCourse) => filterredCourse.id === course.id)){
+      filteredCourses.push(course)
+    }
+  })
+  
+    let courses: SearchPageCourseType[] = filteredCourses.map(
+      (purchasedcourse) => {
         return {
-            ...course,
+            ...purchasedcourse,
             progressPercentage:0
         }
       }

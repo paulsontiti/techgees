@@ -9,9 +9,9 @@ import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
 import SessionTest from "./_components/session-test";
 import SessionComments from "./_components/comments";
-import NextSessionButton from "./_components/next-session-button";
+import NextSessionButton from "../../../../../../../../../components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
-import PrvSessionButton from "./_components/prv-session-button";
+import PrvSessionButton from "../../../../../../../../../components/prv-session-button";
 import { getSessionAttachmentsNextSessionuserprogress } from "../../../../../../../../../../actions/getSessionAttachmentsNextSessionuserprogress";
 import { getSessionLikesCount } from "../../../../../../../../../../actions/getSessionLikesCount";
 import { getSessionDisLikesCount } from "../../../../../../../../../../actions/getSessionDisLikesCount";
@@ -23,6 +23,7 @@ import { hasRatedSession } from "../../../../../../../../../../actions/hasRatedS
 import { getSessionRating } from "../../../../../../../../../../actions/getSessionRating";
 import { getSessionNumberOfRatings } from "../../../../../../../../../../actions/getSessionNumberOfRatings";
 import { getSessionProgress } from "../../../../../../../../../../actions/getSessionProgress";
+import NextPrevSessionButton from "@/components/next-prev-session-button";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -145,7 +146,7 @@ async function SessionIdPage({
               label="You can't access this session because you have not completed the previous session" />
 
             <PrvSessionButton
-              prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />
+               url={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`} />
 
           </div> :
 
@@ -157,13 +158,11 @@ async function SessionIdPage({
                 courseId={courseId}
                 nextSessionId={nextSession?.id ?? ""}
               />
-              <div className="flex items-center justify-between my-4">
-                {previousSession && <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />}
-                {
-                  nextSession && <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
-
-                }
-              </div>
+           <NextPrevSessionButton
+           hasNextSession={!!nextSession}
+           prevSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`}
+          nextSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${nextSession?.id}`}
+           hasPreviousSession={!!previousSession}/>
               <SessionComments
                 numberOfLikes={numberOfLikes}
                 numberOfDisLikes={numberOfDisLikes}

@@ -10,8 +10,10 @@ import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
 import SignInCheck from "@/components/clerk-sign-in-check";
 import Footer from "@/components/footer";
-import Chat from "./(root)/_components/chat";
+import Chat from "../components/chat";
 import { bgNeutralColor } from "@/utils/colors";
+import { isAStudent } from "../../actions/isAStudent";
+import toast from "react-hot-toast";
 
 
 
@@ -29,6 +31,8 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
 
+  const {isStudent} = await isAStudent()
+ 
 
   return (
     <html lang="en">
@@ -48,7 +52,7 @@ export default async function Layout({
       
         <SignInCheck/>
         <LayoutChildren>
-        <Chat/>
+        <Chat isAStudent={isStudent}/>
       
        <div className="min-h-[80vh]">
        {children}

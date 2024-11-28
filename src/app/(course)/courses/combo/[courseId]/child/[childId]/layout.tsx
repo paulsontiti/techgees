@@ -62,7 +62,7 @@ async function ChildCourseLayout({
         />
       </div>
       <div className="flex mt-10 justify-center">
-      <div className="hidden max-h-[100vh]  md:flex w-1/3 flex-col inset-y-0 z-50">
+      <div className="hidden max-h-[100vh]  md:flex w-1/3 xl:w-3/12 flex-col inset-y-0 z-50">
         <CourseSidebar
           course={childCourse}
           parentId={parentId}
@@ -70,7 +70,7 @@ async function ChildCourseLayout({
           chapters={childCourse.chapters.slice(0, (numberOfPaidChapters === 0 ? numberOfFreeChapters : numberOfPaidChapters))}
         />
       </div>
-      <div className="px-4 md:w-2/3">
+      <div className="px-4 md:w-2/3 xl:w-9/12">
         {children}
         </div>
       </div>
