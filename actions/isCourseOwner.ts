@@ -7,7 +7,7 @@ interface ReturnValue {
 }
 /**
  * Checks if a user created a course.
- * @param {courseId} courseId - id of the course 
+ * @param {string} courseId - id of the course 
  * @return {ReturnValue} boolean or error.
  */
 export const isCourseOwner = async (courseId:string):
