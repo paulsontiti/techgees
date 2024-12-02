@@ -16,7 +16,7 @@ function DashboardLink() {
         setLoading(true)
         router.push("/dashboard")
     }}
-    className='flex items-center gap-x-2'
+    className='flex items-center gap-x-2 text-white'
     >Dashboard <Loader loading={loading}/></Button>
   )
 }

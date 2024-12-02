@@ -1,22 +1,23 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { isCourseOwner } from "../../../../../../../../../actions/isCourseOwner";
 
 export async function PUT(
   req: Request,
-  { params: { courseId } }: { params: { courseId: string } }
+  {
+    params: { courseId},
+  }: { params: { courseId: string;} }
 ) {
   try {
     const { userId } = auth();
     if (!userId) return new NextResponse("Unauthorised", { status: 401 });
-    const course = await db.course.findUnique({
-      where: {
-        id: courseId,
-        userId,
-      },
-    });
 
-    if (!course) return new NextResponse("Unauthorised", { status: 401 });
+    //check for course ownership
+    
+    // const {isCourseCreator,error} = await isCourseOwner(courseId)
+    // if (error) return new NextResponse("An error occured", { status: 505 });
+    // if (!isCourseCreator) return new NextResponse("Unauthorised", { status: 401 });
 
     const { reorderSessions } = await req.json();
 
@@ -28,6 +29,7 @@ export async function PUT(
     }
     return NextResponse.json("");
   } catch (err) {
+
     console.log("[SESSION_REORDER]", err);
     return new NextResponse("Internal server error", { status: 500 });
   }

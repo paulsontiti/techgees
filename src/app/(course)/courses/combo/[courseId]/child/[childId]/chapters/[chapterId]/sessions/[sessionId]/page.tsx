@@ -7,7 +7,6 @@ import { Preview } from "@/components/preview";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
 import SessionComments from "./_components/comments";
-import NextSessionButton from "./_components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
 import PrvSessionButton from "./_components/prv-session-button";
 import { getSessionAttachmentsNextSessionuserprogress } from "../../../../../../../../../../../../actions/getSessionAttachmentsNextSessionuserprogress";
@@ -21,6 +20,7 @@ import { hasRatedSession } from "../../../../../../../../../../../../actions/has
 import { getSessionRating } from "../../../../../../../../../../../../actions/getSessionRating";
 import { getSessionNumberOfRatings } from "../../../../../../../../../../../../actions/getSessionNumberOfRatings";
 import { getSessionProgress } from "../../../../../../../../../../../../actions/getSessionProgress";
+import NextPrevSessionButton from "@/components/next-prev-session-button";
 import VideoPlayer from "@/components/video-player";
 import SessionTest from "./_components/session-test";
 
@@ -154,15 +154,13 @@ async function SessionIdPage({
                url={session?.videoUrl ?? ""}
                title={session?.title}
               />
-              <div className="flex items-center justify-between my-4">
-                {previousSession && <PrvSessionButton
-                  url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${prvSessionId}`} />}
-                {
-                  nextSession && <NextSessionButton
-                    url={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${nextSession.id}`} />
-
-                }
-              </div>
+              <NextPrevSessionButton
+              hasNextSession={!!nextSession}
+              hasPreviousSession={!!previousSession}
+              nextSessionUrl={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${nextSession?.id}`}
+              prevSessionUrl={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${prvSessionId}`} />
+           
+              
               <SessionComments
                 numberOfLikes={numberOfLikes}
                 numberOfDisLikes={numberOfDisLikes}

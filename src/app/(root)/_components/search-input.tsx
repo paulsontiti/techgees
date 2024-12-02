@@ -6,39 +6,54 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { Search, X } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDebounce } from "../../../../hooks/use-debounce";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 
-function SearchInput({ courses }: { courses: Course[] }) {
+function SearchInput() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+
+ 
   const [searchedCourses, setSearchedCoureses] =
-    React.useState<Course[]>(courses);
+    React.useState<Course[]>([]);
 
     const router = useRouter()
 
   const debouncedValue = useDebounce(value);
+
   useEffect(() => {
     (async () => {
-      if (value) {
         try {
-          const res = await axios.get(`/api/courses/search/${value}`);
+          const res = await axios.get(`/api/courses`);
           setSearchedCoureses(res.data);
         } catch (err: any) {
           toast.error(err.message);
         }
-      } else {
-        setSearchedCoureses(courses);
+      }
+    )();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (value) {
+     
+        try {
+          const res = await axios.get(`/api/courses/search/${value}`);
+          setSearchedCoureses(res.data);
+          console.log(res.data)
+        } catch (err: any) {
+          toast.error(err.message);
+        }
       }
     })();
-  }, [debouncedValue,value,courses]);
+  }, [debouncedValue,value]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-[200px] md:w-full text-primary ">
       <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
       <Input
         value={value}
@@ -72,7 +87,7 @@ function SearchInput({ courses }: { courses: Course[] }) {
                 ) : (
                   <div className="min-w-[200px]">
                     <div className="mt-4">
-                      {courses.map((course,index) => {
+                      {searchedCourses.map((course,index) => {
                         return (
                           <div 
                           key={index}
@@ -81,7 +96,7 @@ function SearchInput({ courses }: { courses: Course[] }) {
                             router.push(`/course/${course.id}`)
                             setOpen(false)
                           }}
-                          className="text-xs p-2 hover:bg-slate-100 hover:cursor-pointer">
+                          className="text-xs text-primary p-2 hover:bg-slate-100 hover:cursor-pointer">
                           {course.title}
                         </div>
                         );

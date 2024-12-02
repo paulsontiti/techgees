@@ -27,21 +27,19 @@ const onClick = ()=>{
     <button
     onClick={onClick}
     className={cn(
-        "flex items-center gap-x-2 text-slate-500 text-sm  font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
-        isActive && "text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:text-sky-700" 
+        "flex items-center gap-x-2 text-[#111587] text-sm  font-[500] pl-6 transition-all",
+        isActive && " bg-[#D0D5EF]" 
     )}>
         <div className='flex items-center gap-x-2 py-4'>
             <Icon
                 size={22}
-                className={cn(
-                    "text-slate-500",
-                    isActive && "text-sky-700"
-                )}
+                className= "text-[#111587]"
+                
             />
             {label}
         </div>
         <div className={cn(
-            'ml-auto opacity-0 border-2 border-sky-700 h-full transition-all',
+            'ml-auto opacity-0 border-2 border-[#111587] h-full transition-all',
             isActive && "opacity-100")}/>
     </button>
   )

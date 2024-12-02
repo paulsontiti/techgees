@@ -19,7 +19,7 @@ function BackButton(
         }}
         size="sm"
         variant="ghost"
-        className='flex items-center gap-x-1 w-[200px] text-sky-500'>
+        className='flex items-center gap-x-1 w-[200px]'>
         <ArrowLeft className="h-4 w-4" />
         {`Back to ${label}`}
         <Loader loading={loading} />

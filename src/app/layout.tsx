@@ -9,6 +9,11 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
 import SignInCheck from "@/components/clerk-sign-in-check";
+import Footer from "@/components/footer";
+import Chat from "../components/chat";
+import { bgNeutralColor } from "@/utils/colors";
+import { isAStudent } from "../../actions/isAStudent";
+import toast from "react-hot-toast";
 
 
 
@@ -20,16 +25,18 @@ export const metadata: Metadata = {
 };
 
 
-export default async function RootLayout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
+  const {isStudent} = await isAStudent()
+ 
 
   return (
     <html lang="en">
-      <body className={`${inter.className} p-2`}>
+      <body className={`${inter.className} relative ${bgNeutralColor}`}>
         <ClerkProvider >
           <ConfettiProvider/>
           <ToastProvider/>
@@ -45,7 +52,12 @@ export default async function RootLayout({
       
         <SignInCheck/>
         <LayoutChildren>
-          {children}
+        <Chat isAStudent={isStudent}/>
+      
+       <div className="min-h-[80vh]">
+       {children}
+       </div>
+          <Footer/>
         </LayoutChildren>
           </ClerkProvider></body>
     </html>

@@ -14,6 +14,7 @@ import { hasRatedCourse } from "../../../../../../../actions/hasRatedCourse";
 import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
 import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
 import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
+import Heading from "@/components/heading";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -58,10 +59,11 @@ async function CourseSidebar({
 
 
   return (
-    <div className="h-full mt-4 border-r flex flex-col overflow-y-auto shadow-sm">
+    <div className="h-full mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
         <div className="flex items-center justify-between">
-          <h1 className="font-semibold">{course.title}</h1>
+          <Heading type={1} text={course.title} className="font-semibold"/>
+          
           <CourseActioDropdownMenu
             courseId={course.id}
             hasDisLiked={hasDisLiked}

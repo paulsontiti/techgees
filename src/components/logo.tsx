@@ -1,19 +1,16 @@
 "use client"
-import Image from 'next/image'
 import React from 'react'
 
 function Logo() {
 
-    return <div>
-        <h1>The Gobal Genius</h1>
-        {/* <Image
-            height={100}
-            width={100}
-            alt="Logo"
-            src="/assets/logo.jpg"
-        /> */}
-       
-    </div>
+    return <h1
+            className='text-2xl xl:text-4xl text-white'
+           style={{
+            fontFamily:`Creepster`,
+            //fontWeight:400,
+            fontStyle:"normal"
+           }}
+        >TGG</h1>
 }
 
 export default Logo

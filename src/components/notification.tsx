@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 import { Button } from './ui/button'
 import Loader from './loader'
 import SingleNotification from './single-notification'
+import { bgNeutralColor, bgPrimaryColor, textPrimaryColor } from '@/utils/colors'
 
 function NotificationComponent() {
 
@@ -51,16 +52,16 @@ function NotificationComponent() {
                 <div className='relative cursor-pointer'
 
                 >
-                    <Bell className='w-7 h-7' />
-                    <div className='w-5 h-5 bg-sky-950 text-white 
+                    <Bell className='w-7 h-7 text-white' />
+                    <div className={`w-5 h-5 ${bgNeutralColor} ${textPrimaryColor}
          text-xs
-         rounded-full absolute -top-2 -right-2 flex items-center justify-center'>
+         rounded-full absolute -top-2 -right-2 flex items-center justify-center`}>
                         {notifications.length}
                     </div>
 
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[300px]  md:w-[400px] h-[600px] overflow-y-scroll flex flex-col gap-y-2">
+            <DropdownMenuContent className="w-[300px]  md:w-[400px] h-[600px] overflow-y-scroll flex flex-col gap-y-4">
                 <Button size="sm"
                     className='my-2 p-2'
                     onClick={readAllNotifications}>Mark all as read  <Loader loading={loading} /></Button>

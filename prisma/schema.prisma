@@ -50,6 +50,7 @@ model Course {
   parentCourses   CourseChild[]
   assignments     Assignment[]
 
+
   @@fulltext([title])
 }
 

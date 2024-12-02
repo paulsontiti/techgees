@@ -122,7 +122,7 @@ async function ChapterIdPage({
 
     }
     return (
-        <div>
+        <div className="bg-white p-4">
 
             {userProgress?.isCompleted && (
                 <>

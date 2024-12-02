@@ -12,7 +12,7 @@ async function CoursesList({ courseId, paidChapters }: { courseId: string, paidC
   if (childrenError) return <ErrorPage name={childrenError.name} />
 
   return (
-    <div className=''>
+    <div className='w-full'>
       <CourseDetails courses={courseChildren} parentId={courseId} paidChapters={paidChapters} />
     </div>
   )

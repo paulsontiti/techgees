@@ -32,11 +32,11 @@ export default function AuthLayout({
           </div>
           <div className="flex mt-[100px]">
             <div
-              className="hidden md:flex w-[350px] inset-y-0 z-50"
+              className="hidden md:flex w-[350px] inset-y-0"
             >
               <Sidebar />
             </div>
-            <main className="relative w-full">{children}</main>
+            <div className="relative w-full">{children}</div>
           </div>
         </div>
         {/* <Footer /> */}

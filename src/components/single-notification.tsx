@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from './loader'
+import { bgNeutralColor } from '@/utils/colors'
 
 function SingleNotification({ notification }: {
     notification: Notification
@@ -24,7 +25,7 @@ function SingleNotification({ notification }: {
         }
     }
 
-    return <div className='bg-slate-100 p-4'>
+    return <div className={`${bgNeutralColor} p-4`}>
         <h1 className='font-semibold text-sm'>{notification.title}</h1>
         <p className='text-sm mt-2'>{notification.message}</p>
         <Button size="sm"

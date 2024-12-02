@@ -26,6 +26,8 @@ import { hasRatedChapter } from "../../../../../../../../actions/hasRatedChapter
 import { getChapterRating } from "../../../../../../../../actions/getChapterRating";
 import { getCoursePurchase } from "../../../../../../../../actions/getCoursePurchase";
 import { getChapterNumberOfRatings } from "../../../../../../../../actions/getChapterNumberOfRatings";
+import { bgPrimaryColor, textSecondaryColor } from "@/utils/colors";
+import ChapterSessionDetails from "@/components/chapter-session-details";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -198,20 +200,9 @@ async function ChapterIdPage({
         <div>
           <Preview value={chapter.description ?? ""} />
         </div>
-        <div className="my-2 flex items-center justify-center gap-x-2 font-semibold italic bg-slate-100 py-4">
-          <div className="flex items-center gap-x-1 bg-sky-200/80 px-2 py-1  rounded-full">
-            {chapter.sessions.length} {`${chapter.sessions.length === 1 ? "session" : "sessions"}`}
-          </div>
-          <div className="flex items-center gap-x-1 bg-sky-200 px-2 py-1  rounded-full">
-            {duration} mins(total length)
-          </div>
-        </div>
+        <ChapterSessionDetails sessionLength={chapter.sessions.length} duration={duration}/>
 
-        <video
-          src={chapterCourse?.overviewVideoUrl ?? ""}
-          controls
-          title={chapterCourse?.title ?? ""}
-        />
+       
         <ChapterComments
           chapterId={chapterId}
           numberOfDisLikes={numberOfDisLikes}

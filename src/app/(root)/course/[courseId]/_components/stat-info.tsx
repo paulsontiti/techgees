@@ -1,6 +1,7 @@
 import React from "react";
 import Rating from "./rating";
 import { MessageCircle, ThumbsDown, ThumbsUp } from "lucide-react";
+import { bgNeutralColor, textPrimaryColor } from "@/utils/colors";
 
 export type StatInfoProps = {
   numberOfStudents: number;
@@ -35,7 +36,8 @@ function StatInfo({
       )}
 
       {(!!likes || !!disLikes) &&
-        <div className="flex items-center gap-x-2 text-xs rounded-full bg-slate-100 p-2">
+        <div className={`flex items-center gap-x-2 text-xs rounded-full ${bgNeutralColor} ${textPrimaryColor}
+         p-2`}>
           <div className="flex items-center gap-x-1 pr-2 border-r-2 border-black-100">
             <ThumbsUp className="w-4 h-4" /> <span>{likes}</span>
           </div>

@@ -4,14 +4,19 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import CourseSidebar from './course-sidebar'
 import { CourseChaptersUserProgressType } from '../../../../../../../../actions/getCourseChaptersUserProgress'
+import { Chapter, Session, UserProgress } from '@prisma/client'
 
 type CourseMobileSidebarProps = {
     course: CourseChaptersUserProgressType,
-    progressPercentage: number, parentId: string
+    progressPercentage: number, parentId: string, chapters: (Chapter & {
+        sessions: Session[],
+        userProgresses: UserProgress[]
+    
+      })[]
 }
 
 async function CourseMobileSidebar({
-    course, progressPercentage, parentId
+    course, progressPercentage, parentId,chapters
 }: CourseMobileSidebarProps) {
 
 
@@ -25,7 +30,7 @@ async function CourseMobileSidebar({
         p-0 bg-white w-72'>
                 <CourseSidebar
                     progressPercentage={progressPercentage}
-                    chapters={course.chapters}
+                    chapters={chapters}
                     course={course}
                     parentId={parentId}
                 />

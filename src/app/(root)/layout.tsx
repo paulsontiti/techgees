@@ -1,27 +1,35 @@
-import React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+
 import Navbar from "./_components/nav-bar";
-import { auth } from "@clerk/nextjs/server";
-import { getCourses } from "../../../actions/getCourses";
-import ErrorPage from "@/components/error";
-import { getCategories } from "../../../actions/getCategories";
+import { Separator } from "@/components/ui/separator";
 
-async function RootLayout({ children }: { children: React.ReactNode }) {
-    const {userId} = auth()
 
-    const {courses,error} = await getCourses()
-    if(error) return <ErrorPage name={error.name}/>
 
-    const {categories,error:catError} = await getCategories()
-    if(catError) return <ErrorPage name={catError.name}/>
- 
-  
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "The Global Genius",
+  description: "A Learning Management System, a platform where you can learn any and everything with its pioneer in TECH and Software Development",
+};
+
+
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+
+
   return (
-    <div>
-        <Navbar userId={userId ?? ""} courses={courses} categories={categories}/>
-      {children}
-     
-    </div>
+   <div>
+          <header className="text-white">
+        <Navbar />
+        <Separator />
+        </header>
+    <main>
+    {children}
+    </main>
+   </div>
   );
 }
-
-export default RootLayout;

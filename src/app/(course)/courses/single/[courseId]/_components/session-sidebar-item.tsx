@@ -46,7 +46,7 @@ function SessionSidebarItem({
         }
       }
     )()
-  }, [sessionId])
+  }, [sessionId,chapterId])
 
 
 

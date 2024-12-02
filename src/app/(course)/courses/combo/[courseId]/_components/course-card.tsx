@@ -43,7 +43,7 @@ function CourseCard({
       className="
             group hover:shadow-sm transition overflow-hidden border 
             rounded-lg p-3 h-full relative hover:cursor-pointer
-            md:w-full
+            w-full bg-white
         "
     >
       <PageLoader

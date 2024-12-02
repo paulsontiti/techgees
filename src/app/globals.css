@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+.logo {
+  font-family: "Creepster", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;

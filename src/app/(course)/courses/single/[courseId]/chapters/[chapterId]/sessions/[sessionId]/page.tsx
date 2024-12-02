@@ -7,9 +7,8 @@ import { Preview } from "@/components/preview";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
 import SessionComments from "./_components/comments";
-import NextSessionButton from "./_components/next-session-button";
 import AssignmentAccordion from "./_components/assignment-accordion";
-import PrvSessionButton from "./_components/prv-session-button";
+import PrvSessionButton from "../../../../../../../../../components/prv-session-button";
 import { getSessionAttachmentsNextSessionuserprogress } from "../../../../../../../../../../actions/getSessionAttachmentsNextSessionuserprogress";
 import { getSessionLikesCount } from "../../../../../../../../../../actions/getSessionLikesCount";
 import { getSessionDisLikesCount } from "../../../../../../../../../../actions/getSessionDisLikesCount";
@@ -21,6 +20,7 @@ import { hasRatedSession } from "../../../../../../../../../../actions/hasRatedS
 import { getSessionRating } from "../../../../../../../../../../actions/getSessionRating";
 import { getSessionNumberOfRatings } from "../../../../../../../../../../actions/getSessionNumberOfRatings";
 import { getSessionProgress } from "../../../../../../../../../../actions/getSessionProgress";
+import NextPrevSessionButton from "@/components/next-prev-session-button";
 import VideoPlayer from "@/components/video-player";
 import SessionTest from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/session-test";
 
@@ -145,20 +145,21 @@ async function SessionIdPage({
               label="You can't access this session because you have not completed the previous session" />
 
             <PrvSessionButton
-              prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />
+               url={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`} />
 
           </div> :
 
             <>
 
-             <VideoPlayer url={session.videoUrl ?? ""} title={session.title}/>
-              <div className="flex items-center justify-between my-4">
-                {previousSession && <PrvSessionButton prvSessionId={previousSession.id} courseId={courseId} chapterId={chapterId} />}
-                {
-                  nextSession && <NextSessionButton courseId={courseId} chapterId={chapterId} nextSessionId={nextSession.id} />
-
-                }
-              </div>
+              <VideoPlayer
+              url={session?.videoUrl ?? ""}
+              title={session.title}
+              />
+           <NextPrevSessionButton
+           hasNextSession={!!nextSession}
+           prevSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`}
+          nextSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${nextSession?.id}`}
+           hasPreviousSession={!!previousSession}/>
               <SessionComments
                 numberOfLikes={numberOfLikes}
                 numberOfDisLikes={numberOfDisLikes}
