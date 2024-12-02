@@ -19,7 +19,7 @@ export default async function Home() {
     <Achievement />
     <Testimonials />
     <FreeCourses />
-    <FAQ />
+    {/* <FAQ /> */}
     <HomepageCourses />
 
 </div>

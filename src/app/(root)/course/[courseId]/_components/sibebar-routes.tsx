@@ -11,27 +11,27 @@ const routes = [
     label: "Home",
     href: "/"
   },
-  {
-    icon: Info,
-    label: "About Us",
-    href: "/about-us"
-  },
+  // {
+  //   icon: Info,
+  //   label: "About Us",
+  //   href: "/about-us"
+  // },
   
-  {
-    icon: Mail,
-    label: "Contact Us",
-    href: "/contact-us"
-  },
+  // {
+  //   icon: Mail,
+  //   label: "Contact Us",
+  //   href: "/contact-us"
+  // },
   {
     icon: GraduationCap,
     label: "Courses",
     href: "/courses"
   },
-  {
-    icon: Rss,
-    label: "Blog",
-    href: ""
-  },
+  // {
+  //   icon: Rss,
+  //   label: "Blog",
+  //   href: ""
+  // },
 
 ]
 

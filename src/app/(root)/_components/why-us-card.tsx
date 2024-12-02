@@ -2,13 +2,13 @@
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { bgPrimaryColor } from '@/utils/colors'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import useScreenWidth from '../../../../hooks/useScreenWidth'
 
 function WhyUsCard({
 num,title,description
 }:
-{num:string,title:string,description:string}) {
+{num:string,title:string,description:ReactNode}) {
 
 const {screenWidth} = useScreenWidth();
 

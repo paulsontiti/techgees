@@ -7,7 +7,7 @@ export const WelcomeMessage = ()=>{
     return <section>
         <div 
   
-        style={{backgroundImage:`url("/assets/home-bg.png")`,backgroundRepeat:"no-repeat",backgroundSize:"cover"}}
+        style={{backgroundImage:`url("/assets/home-bg.png")`,backgroundBlendMode:"lighten",backgroundRepeat:"no-repeat",backgroundSize:"cover"}}
         className={`py-16 flex items-center justify-center ${bgPrimaryColor}
          text-white w-full`}>
            <div className="flex flex-col items-center justify-center">
