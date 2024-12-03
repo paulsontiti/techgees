@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { ToastProvider } from "@/components/providers/toaster-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import LayoutChildren from "@/components/layout-children";
-import SignInCheck from "@/components/clerk-sign-in-check";
 import Footer from "@/components/footer";
 import Chat from "../components/chat";
 import { bgNeutralColor } from "@/utils/colors";
 import { isAStudent } from "../../actions/isAStudent";
-import toast from "react-hot-toast";
-
+import SignInCheck from "@/components/sign-in-check";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,13 +28,13 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
 
-  const {isStudent} = await isAStudent()
- 
+  //const {isStudent} = await isAStudent()
+
 
   return (
     <html lang="en">
       <body className={`${inter.className} relative ${bgNeutralColor}`}>
-        <ClerkProvider >
+   
           <ConfettiProvider/>
           <ToastProvider/>
           <NextSSRPlugin
@@ -52,14 +49,14 @@ export default async function Layout({
       
         <SignInCheck/>
         <LayoutChildren>
-        <Chat isAStudent={isStudent}/>
+        {/* <Chat isAStudent={isStudent}/> */}
       
        <div className="min-h-[80vh]">
        {children}
        </div>
           <Footer/>
         </LayoutChildren>
-          </ClerkProvider></body>
+          </body>
     </html>
   );
 }

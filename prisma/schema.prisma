@@ -397,7 +397,7 @@ model PaystackPayment {
 
 model DBUser {
   id        String  @id @default(uuid()) @map("_id")
-  userId    String
+  userId    String @default(uuid())
   firstName String?
   lastName  String?
   email     String?
@@ -405,6 +405,8 @@ model DBUser {
   phone     String?
   whatsapp  String?
   userName  String? 
+  password  String? 
+   salt  String? 
 
   refererId String?
   referer   DBUser?  @relation("referal", fields: [refererId], references: [id], onDelete: NoAction, onUpdate: NoAction)

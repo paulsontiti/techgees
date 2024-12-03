@@ -21,10 +21,11 @@ export default async function RootLayout({
 }>) {
 
 
+
   return (
    <div>
           <header className="text-white">
-        <Navbar />
+        <Navbar/>
         <Separator />
         </header>
     <main>

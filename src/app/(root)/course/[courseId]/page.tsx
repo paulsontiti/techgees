@@ -31,6 +31,8 @@ import { hasStartedACourse } from "../../../../../actions/hasStartedACourse";
 import ErrorPage from "@/components/error";
 
 import VideoPlayer from "@/components/video-player";
+import { useCurrentUser } from "../../../../../store/current-user-store";
+import GetStarted from "./_components/get-started";
 
 
 export type CategoryCourseType = {
@@ -43,6 +45,9 @@ async function CourseIdPage({
 }: {
   params: { courseId: string };
 }) {
+
+  const {user} = useCurrentUser();
+  const userId = user?.userId ?? "";
 
   const { course, error: courseError } = await getCourse(courseId);
   if (courseError)
@@ -98,7 +103,7 @@ async function CourseIdPage({
   if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
 
   //check if student has started this course
-  const { startedCourse, error } = await hasStartedACourse(course.id)
+  const { startedCourse, error } = await hasStartedACourse(userId,course.id)
   if (error) return <ErrorPage name={error.name} />
 
   let chaptersLength = 0;
@@ -157,11 +162,7 @@ async function CourseIdPage({
         </div>
         <Separator />
 
-        <div className="flex flex-col items-center justify-center gap-y-4">
-          <h2 className={`${textPrimaryColor}`}>Get started</h2>
-          <EnrollButton courseId={course.id} label={`${startedCourse ? "Go to class" : "Start for free"}`} />
-
-        </div>
+       <GetStarted courseId={course.id}/>
       </div>
       <div className="w-full md:w-[700px] xl:w-[900px]">
         <div className="my-4 w-full">
