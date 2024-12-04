@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserCookie } from "@/lib/get-user-cookie";
 import { NextResponse } from "next/server";
 
 
@@ -12,7 +12,7 @@ export async function PATCH(req: Request,
 ) {
     
     try {
-        const { userId } = auth();
+        const userId = await getUserCookie();
 
         if (!userId) {
             return new NextResponse("Unautorized", { status: 401 });

@@ -1,11 +1,11 @@
-import { auth } from "@clerk/nextjs/server";
+import { getUserCookie } from "@/lib/get-user-cookie";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
  
 const f = createUploadthing();
  
-const handleAuth = () => {
-     const {userId} = auth()
+const handleAuth = async() => {
+     const userId = await getUserCookie();
      if(!userId) throw new Error("Unauthorized")
 
         return {userId}

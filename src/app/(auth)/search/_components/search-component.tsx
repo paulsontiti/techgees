@@ -14,11 +14,11 @@ function SearchComponent({
 
 }) {
     return (
-        <div>
+        <div className='w-full'>
             <div className='px-6 pt-6 md:hidden md:mb-0 block'>
                 <SearchInput />
             </div>
-            <div className='p-6 space-y-4'>
+            <div className='p-6 space-y-4 w-full'>
                 <Categories categories={categories} />
                 <CoursesList courses={courses ?? []} label='No course found' />
             </div>

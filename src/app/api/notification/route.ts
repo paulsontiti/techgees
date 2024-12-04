@@ -1,11 +1,11 @@
 import { db } from "@/lib/db"
-import { auth } from "@clerk/nextjs/server"
+import { getUserCookie } from "@/lib/get-user-cookie"
 import { NextResponse } from "next/server"
 
 export async function GET(req: Request) {
 
     try {
-        const { userId } = auth()
+        const userId = await getUserCookie();
         if (!userId) {
             return new NextResponse("Unautorized", { status: 401 })
         }
@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
 
     try {
-        const { userId } = auth()
+        const userId = await getUserCookie();
         if (!userId) {
             return new NextResponse("Unautorized", { status: 401 })
         }
@@ -59,7 +59,7 @@ export async function PATCH(
 
     try{
         
-const {userId} = auth()
+const userId = await getUserCookie();
 if(!userId)  return new NextResponse("Unauthoried",{status:401})
 
 

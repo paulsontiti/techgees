@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+
 import { redirect } from "next/navigation";
 import React from "react";
 import ErrorPage from "@/components/error";
@@ -23,13 +23,14 @@ import { getSessionProgress } from "../../../../../../../../../../actions/getSes
 import NextPrevSessionButton from "@/components/next-prev-session-button";
 import VideoPlayer from "@/components/video-player";
 import SessionTest from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/session-test";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
 }: {
   params: { courseId: string; chapterId: string; sessionId: string };
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/");
 
   const {

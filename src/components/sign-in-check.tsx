@@ -1,6 +1,7 @@
+
 import React from 'react'
 
-function SignInCheck() {
+async function SignInCheck() {
   return (
     <div>SignInCheck</div>
   )

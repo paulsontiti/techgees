@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
 import ErrorPage from "@/components/error";
@@ -26,8 +25,8 @@ import { hasRatedChapter } from "../../../../../../../../actions/hasRatedChapter
 import { getChapterRating } from "../../../../../../../../actions/getChapterRating";
 import { getCoursePurchase } from "../../../../../../../../actions/getCoursePurchase";
 import { getChapterNumberOfRatings } from "../../../../../../../../actions/getChapterNumberOfRatings";
-import { bgPrimaryColor, textSecondaryColor } from "@/utils/colors";
 import ChapterSessionDetails from "@/components/chapter-session-details";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function ChapterIdPage({
   params: { courseId, chapterId },
@@ -36,7 +35,7 @@ async function ChapterIdPage({
   params: { courseId: string; chapterId: string };
   searchParams: { reference: string };
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/");
 
   const { course, chapter, userProgress, error } =

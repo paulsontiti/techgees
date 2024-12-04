@@ -10,7 +10,7 @@ export async function PUT(
   }: { params: { courseId: string;} }
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await getUserCookie();
     if (!userId) return new NextResponse("Unauthorised", { status: 401 });
 
     //check for course ownership

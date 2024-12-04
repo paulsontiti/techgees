@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+
 import { redirect } from "next/navigation";
 import React from "react";
 import ErrorPage from "@/components/error";
@@ -9,6 +9,7 @@ import { getCourseProgress } from "../../../../../../../../actions/getCourseProg
 import { getPaidChapters } from "../../../../../../../../actions/getPaidChapters";
 import { getPurchasePercentage } from "../../../../../../../../actions/getPurchasePercentage";
 import { getCourseNumberOfFreeChapters } from "../../../../../../../../actions/getCourseNumberOfFreeChapters";
+import { getUserCookie } from "@/lib/get-user-cookie";
 async function ChildCourseLayout({
   children,
   params: { courseId: parentId, childId }
@@ -17,7 +18,7 @@ async function ChildCourseLayout({
   params: { courseId: string, childId: string },
 
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/sign-in");
 
   //get the child course

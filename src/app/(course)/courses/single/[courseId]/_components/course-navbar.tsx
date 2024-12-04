@@ -1,9 +1,9 @@
 import React from 'react'
 import { NavbarRoutes } from '@/components/navbar-routes'
 import CourseMobileSidebar from './course-mobile-sidebar'
-import { auth } from '@clerk/nextjs/server'
 import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress'
 import { bgPrimaryColor } from '@/utils/colors'
+import { getUserCookie } from '@/lib/get-user-cookie'
 type CourseNavbarProps = {
   course: CourseChaptersUserProgressType,
   progressPercentage: number,
@@ -15,7 +15,7 @@ async function CourseNavbar({
   course, progressPercentage, purchasePercentage
 }: CourseNavbarProps) {
 
-  const { userId } = auth()
+  const  userId  = await getUserCookie();
 
   return (
     <div className={`p-4 border-b h-full flex items-center

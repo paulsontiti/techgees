@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = await getUserCookie();
     const { courseId } = await req.json();
 
     if (!userId) {

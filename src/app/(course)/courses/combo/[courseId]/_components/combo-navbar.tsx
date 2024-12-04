@@ -1,13 +1,13 @@
 import React from 'react'
 import { NavbarRoutes } from '@/components/navbar-routes'
-import { auth } from '@clerk/nextjs/server'
 import { bgPrimaryColor } from '@/utils/colors'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
 
 
 async function ComboCourseNavbar() {
 
-  const { userId } = auth()
+  const userId = await getUserCookie();
 
   return (
     <div className={`p-4 border-b h-full flex items-center

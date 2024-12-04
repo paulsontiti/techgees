@@ -56,7 +56,7 @@ const [isLoading,setIsLoading] = useState(false);
           const response = await axios.post(`/api/user/sign-up`,values)
           if(response.data.successful){
             toast.success(response.data.message)
-            updateUser(response.data.user)
+            updateUser(response.data.user.userId)
             router.push("/")
           }else{
             toast.error(response.data.message)

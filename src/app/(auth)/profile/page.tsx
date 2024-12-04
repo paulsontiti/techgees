@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUser } from "../../../../actions/getUser";
 import ErrorPage from "@/components/error";
@@ -15,11 +14,12 @@ import { getUsersForReferal } from "../../../../actions/getUsers";
 import UsernameForm from "./_components/user-name-form";
 import RefererComponent from "./_components/referer-component";
 import { getReferer } from "../../../../actions/getReferer";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 
 
 async function ProfilePage() {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/dashboard");
 
   let { user, error } = await getUser(userId)

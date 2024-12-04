@@ -1,5 +1,4 @@
 import IconBadge from "@/components/icon-badge";
-import { auth } from "@clerk/nextjs/server";
 import { ArrowLeft, File, LayoutDashboard, Video } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -15,13 +14,14 @@ import {getSessionWithAttachmentQuestionsAssignments } from "../../../../../../.
 import ErrorPage from "@/components/error";
 import SessionQuestionsForm from "./_components/session-questions-form";
 import SessionAssignmentForm from "./_components/session-assignment-form";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function SessionIdPage({
   params: { chapterId, courseId, sessionId },
 }: {
   params: { chapterId: string; courseId: string; sessionId: string };
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/dashboard");
 
  const {session,error} = await getSessionWithAttachmentQuestionsAssignments(sessionId,chapterId)

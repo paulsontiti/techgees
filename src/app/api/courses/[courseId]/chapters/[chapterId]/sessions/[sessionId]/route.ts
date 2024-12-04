@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { isCourseOwner } from "../../../../../../../../../actions/isCourseOwner";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 export async function PATCH(
   req: Request,
@@ -10,7 +10,7 @@ export async function PATCH(
   }: { params: { courseId: string; sessionId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const userId = await getUserCookie();
   
     if (!userId) return new NextResponse("Unauthorized user", { status: 401 });
 
@@ -44,7 +44,7 @@ export async function DELETE(
 
     try{
         
-const {userId} = auth()
+const userId = await getUserCookie();
 if(!userId)  return new NextResponse("Unauthoried",{status:401})
 
 

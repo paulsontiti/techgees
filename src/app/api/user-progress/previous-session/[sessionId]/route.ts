@@ -8,7 +8,7 @@ export async function GET(req: Request,
 ) {
 
     try {
-        const { userId } = auth()
+        const { userId } = await getUserCookie()
 
         if (!userId) {
             return new NextResponse("Unautorized", { status: 401 })

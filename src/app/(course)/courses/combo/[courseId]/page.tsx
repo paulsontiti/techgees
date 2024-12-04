@@ -15,6 +15,7 @@ import { updatePayment } from '../../../../../../actions/updatePayment'
 import { getPaidChapters } from '../../../../../../actions/getPaidChapters'
 import BackButton from '@/components/back-button'
 import ComboCourseNavbar from './_components/combo-navbar'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
 async function ComboCoursePage(
     { params: { courseId }, searchParams: { reference }, }: {
@@ -26,7 +27,7 @@ async function ComboCoursePage(
     if (!course) return redirect("/dashboard")
 
     //get clerk user id
-    const { userId } = auth()
+    const userId = await getUserCookie();
     if (!userId) return redirect("/")
 
     const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)

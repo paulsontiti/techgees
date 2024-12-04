@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+
 import { redirect } from "next/navigation";
 import React from "react";
 import ErrorPage from "@/components/error";
@@ -15,6 +15,7 @@ import { getChapterProgress } from "../../../../../../../actions/getChapterProgr
 import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
 import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
 import Heading from "@/components/heading";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -27,7 +28,7 @@ async function CourseSidebar({
   progressPercentage,
   purchasePercentage
 }: CourseSidebarProps) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/");
 
   const { paidPositions, error } = await getPaidChapterPositions(

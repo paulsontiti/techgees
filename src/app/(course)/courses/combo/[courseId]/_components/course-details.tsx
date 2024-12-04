@@ -2,22 +2,22 @@ import React from 'react'
 import CourseCard from './course-card'
 import { Course } from '@prisma/client'
 import { getCourseProgress } from '../../../../../../../actions/getCourseProgress'
-import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import ErrorPage from '@/components/error'
 import { getCourseNumberOfChapters } from '../../../../../../../actions/getCourseNumberOfChapters '
 import { PaidChapterType } from '../../../../../../../actions/getPaidChapters'
 import { getCourseNumberOfFreeChapters } from '../../../../../../../actions/getCourseNumberOfFreeChapters'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
 
-function CourseDetails(
+async function CourseDetails(
   { courses, parentId, paidChapters }:
     {
       courses: Course[], parentId: string, paidChapters: PaidChapterType[]
     }
 ) {
 
-  const { userId } = auth()
+  const userId = await getUserCookie();
   if (!userId) return redirect("/")
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>

@@ -2,15 +2,16 @@
 import React from 'react'
 import ErrorPage from '@/components/error'
 import { getCoursesByUserId } from '../../../../../actions/getCoursesByUserId'
-import { auth } from '@clerk/nextjs/server'
+
 import { redirect } from 'next/navigation'
 import { CategoriesDataTable } from './_components/data-table'
 import { columns } from './_components/columns'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
 async function Page() {
 
 
-  const {userId} = auth()
+  const userId = await getUserCookie();
   if(!userId) return redirect("/sign-in")
 
   const {courses,error} = await getCoursesByUserId(userId)

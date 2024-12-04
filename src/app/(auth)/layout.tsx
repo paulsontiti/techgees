@@ -19,13 +19,17 @@ export default function AuthLayout({
   return (
     <div className="h-full">
 
-      <SignedOut>
+      {/* <SignedOut>
         <SignIn />
       </SignedOut>
 
       <SignedIn>
         <UserButton />
-        <div>
+      
+      
+      </SignedIn> */}
+
+      <div>
           <div className="h-[100px] fixed inset-y-0 w-full z-50">
             
             <Navbar />
@@ -39,10 +43,6 @@ export default function AuthLayout({
             <div className="relative w-full">{children}</div>
           </div>
         </div>
-        {/* <Footer /> */}
-      </SignedIn>
-
-
 
 
     </div>

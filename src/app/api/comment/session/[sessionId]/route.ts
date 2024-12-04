@@ -10,7 +10,7 @@ export async function POST(req: Request,
   }
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await getUserCookie();
     const { comment } = await req.json();
 
     if (!userId) {

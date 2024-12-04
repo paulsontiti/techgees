@@ -11,13 +11,14 @@ import LinkButton from "@/components/link-button";
 import AccessForm from "./_components/access-form";
 import Banner from "@/components/banner";
 import ChapterActions from "./_components/chapter-actions";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function ChapterIdPage({
   params: { chapterId,courseId },
 }: {
   params: { chapterId: string,courseId:string };
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/dashboard");
 
   const chapter = await db.chapter.findUnique({

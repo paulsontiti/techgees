@@ -5,16 +5,16 @@ import React from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import AssignmentForm from './assignment-form'
 import { db } from '@/lib/db'
-import { auth } from '@clerk/nextjs/server'
 import { Preview } from '@/components/preview'
 import { BadgeCheck, CircleEllipsis } from 'lucide-react'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
 
 async function AssignmentAccordion({assignment }: {
   assignment: Assignment
 }) {
   
-  const {userId} = auth()
+  const userId = await getUserCookie()
   const ans = await db.assignmentAnswer.findUnique({
     where:{
       userId_assignmentId:{

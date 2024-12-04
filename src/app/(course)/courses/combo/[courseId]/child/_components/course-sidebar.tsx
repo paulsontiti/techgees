@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
 import ErrorPage from "@/components/error";
@@ -10,6 +9,7 @@ import { getUserChapterProgress } from "../../../../../../../../actions/getUserC
 
 import BackButton from "@/components/back-button";
 import { ChapterAccordion } from "./chapter-accordion";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 type CourseSidebarProps = {
   course: Course;
@@ -26,7 +26,7 @@ async function CourseSidebar({
   course, chapters,
   progressPercentage, parentId
 }: CourseSidebarProps) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/");
 
 

@@ -7,7 +7,7 @@ export async function POST(
   { params: { courseId } }: { params: { courseId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await getUserCookie();
     const selectedCategoryIds: string[] = await req.json();
 
     if (!userId) {

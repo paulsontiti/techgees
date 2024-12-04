@@ -1,13 +1,13 @@
 
-import { auth } from "@clerk/nextjs/server"
 import SidebarRoutes from "./sibebar-routes"
 import { UserButton } from "@clerk/nextjs";
 import SignIn from "@/app/(root)/_components/sign-in-button";
 import SignUp from "@/app/(root)/_components/sign-up-button";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
-export const Sidebar = ()=>{
+export const Sidebar = async()=>{
 
-    const {userId} = auth();
+    const userId = await getUserCookie();
     return <div className="
         h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm
     ">

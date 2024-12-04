@@ -1,15 +1,15 @@
 import React from 'react'
-import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import ErrorPage from '@/components/error'
 import { getInProgressCourses } from '../../../../../actions/getInProgressCourses'
 import { getCompletedCourses } from '../../../../../actions/getCompletedCourses'
 
 import DashboardComponent from './_components/dashboard-component'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
 async function DashboardPage() {
 
-  const { userId } = auth()
+  const userId = await getUserCookie();
   if (!userId) return redirect("/")
 
   const { courses: inProgress, error: errorInProgress } = await getInProgressCourses(userId)

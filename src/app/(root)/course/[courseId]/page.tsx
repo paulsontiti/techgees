@@ -31,8 +31,7 @@ import { hasStartedACourse } from "../../../../../actions/hasStartedACourse";
 import ErrorPage from "@/components/error";
 
 import VideoPlayer from "@/components/video-player";
-import { useCurrentUser } from "../../../../../store/current-user-store";
-import GetStarted from "./_components/get-started";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 
 export type CategoryCourseType = {
@@ -46,8 +45,7 @@ async function CourseIdPage({
   params: { courseId: string };
 }) {
 
-  const {user} = useCurrentUser();
-  const userId = user?.userId ?? "";
+  const userId = await getUserCookie() ?? "";
 
   const { course, error: courseError } = await getCourse(courseId);
   if (courseError)
@@ -162,7 +160,11 @@ async function CourseIdPage({
         </div>
         <Separator />
 
-       <GetStarted courseId={course.id}/>
+        <div className="flex flex-col items-center justify-center gap-y-4">
+          <h2 className={`${textPrimaryColor}`}>Get started</h2>
+          <EnrollButton courseId={courseId} label={`${startedCourse ? "Go to class" : "Start for free"}`} />
+
+        </div>
       </div>
       <div className="w-full md:w-[700px] xl:w-[900px]">
         <div className="my-4 w-full">

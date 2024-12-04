@@ -1,5 +1,5 @@
 import { db } from "@/lib/db"
-import { auth } from "@clerk/nextjs/server"
+import { getUserCookie } from "@/lib/get-user-cookie"
 import { NextResponse } from "next/server"
 
 export async function POST(req:Request,
@@ -9,7 +9,7 @@ export async function POST(req:Request,
 ){
 
     try{
-        const {userId} = auth()
+        const userId = await getUserCookie()
         const {text} = await req.json()
 
         if(!userId){

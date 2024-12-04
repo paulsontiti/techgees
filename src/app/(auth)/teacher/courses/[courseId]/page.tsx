@@ -1,6 +1,5 @@
 import IconBadge from "@/components/icon-badge";
 
-import { auth } from "@clerk/nextjs/server";
 import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -29,6 +28,7 @@ import AccessForm from "./_components/access-form";
 import OverviewVideoForm from "./_components/overview-video-form";
 import CourseChildForm from "./_components/course-child-form";
 import { getCourseChildren } from "../../../../../../actions/getCourseChildren";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 
 
@@ -37,7 +37,7 @@ async function CourseIdPage({
 }: {
   params: { courseId: string };
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/dashboard");
 
   const { course, error } = await getCourseWithCourseCategoriesAndChapters(userId, courseId)

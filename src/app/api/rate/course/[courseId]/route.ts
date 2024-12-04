@@ -8,7 +8,7 @@ params:{courseId}
   params:{courseId:string}
 }) {
   try {
-    const { userId } = auth();
+    const { userId } = await getUserCookie();
     const { value } = await req.json();
 
     if (!userId) {

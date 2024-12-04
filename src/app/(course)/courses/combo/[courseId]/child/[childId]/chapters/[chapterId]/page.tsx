@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
 import ErrorPage from "@/components/error";
@@ -19,6 +18,7 @@ import { getChapterCoursePurchaseUserProgressNextChapter } from "../../../../../
 import ChapterComments from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/_components/comments";
 import ChapterTest from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/_components/chapter-test";
 import AssignmentAccordion from "@/app/(auth)/teacher/assignments/[sessionId]/_components/assignment-accordion";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function ChapterIdPage({
     params: { childId, chapterId }
@@ -26,7 +26,7 @@ async function ChapterIdPage({
     params: { childId: string; chapterId: string };
 
 }) {
-    const { userId } = auth();
+    const userId = await getUserCookie();
     if (!userId) return redirect("/");
 
 

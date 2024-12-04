@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+
 import { redirect } from "next/navigation";
 import React from "react";
 import CourseSidebar from "./_components/course-sidebar";
@@ -7,6 +7,7 @@ import CourseNavbar from "./_components/course-navbar";
 import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
 import { getCourseProgress } from "../../../../../../actions/getCourseProgress";
 import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function CourseLayout({
   children,
@@ -15,7 +16,7 @@ async function CourseLayout({
   children: React.ReactNode;
   params: { courseId: string }
 }) {
-  const { userId } = auth();
+  const userId = await getUserCookie();
   if (!userId) return redirect("/sign-in");
 
   const { course, error: courseError } = await getCourseChaptersUserProgress(

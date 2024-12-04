@@ -9,7 +9,7 @@ export async function PATCH(
   }: { params: { courseId: string} }
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await getUserCookie();
     if (!userId) return new NextResponse("Unauthoried", { status: 401 });
 
 
