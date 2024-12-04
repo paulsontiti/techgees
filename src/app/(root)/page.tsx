@@ -16,10 +16,10 @@ export default async function Home() {
     <WelcomeMessage />
    
     <WhyGlobalGenius />
-    <Achievement />
+    {/* <Achievement /> */}
     <Testimonials />
     <FreeCourses />
-    {/* <FAQ /> */}
+    <FAQ />
     <HomepageCourses />
 
 </div>

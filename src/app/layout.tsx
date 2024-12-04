@@ -11,7 +11,6 @@ import Footer from "@/components/footer";
 import Chat from "../components/chat";
 import { bgNeutralColor } from "@/utils/colors";
 import { isAStudent } from "../../actions/isAStudent";
-import SignInCheck from "@/components/sign-in-check";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -47,12 +46,12 @@ export default async function Layout({
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
       
-        <SignInCheck/>
+    
         <LayoutChildren>
         {/* <Chat isAStudent={isStudent}/> */}
       
        <div className="min-h-[80vh]">
-       {children}
+    {children}
        </div>
           <Footer/>
         </LayoutChildren>

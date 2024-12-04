@@ -4,8 +4,6 @@ import { Inter } from "next/font/google";
 import Navbar from "./_components/nav-bar";
 import { Separator } from "@/components/ui/separator";
 
-
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,7 +27,8 @@ export default async function RootLayout({
         <Separator />
         </header>
     <main>
-    {children}
+      {children}
+   
     </main>
    </div>
   );
