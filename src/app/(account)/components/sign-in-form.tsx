@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 import * as zod from "zod"
 import { useCurrentUser } from '../../../../store/current-user-store'
 import Link from 'next/link'
+import { bgNeutralColor, textPrimaryColor } from '@/utils/colors'
 
 
 
@@ -69,8 +70,8 @@ const [isLoading,setIsLoading] = useState(false);
         }
     }
   return (
-    <div className='mt-6 
-    border bg-slate-100 rounded-md p-4 w-full'>
+    <div className={`mt-6 
+  border ${bgNeutralColor} ${textPrimaryColor} rounded-md p-4 w-full`}>
        
       <Form {...form}>
 <form 
@@ -124,7 +125,7 @@ render={({field})=>{
                        className='w-full'
                         >Login <Loader loading={isSubmitting}/></Button>
                         <div className='my-10 flex items-center'>
-                            Don't have an account? <Button type="button" variant="tgg_link" onClick={()=>{
+                            {`Don't have an account?`} <Button type="button" variant="tgg_link" onClick={()=>{
                                 setIsLoading(true);
                                 router.push("/sign-up")
                             }}>Sign Up <Loader loading={isLoading}/></Button>

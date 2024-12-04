@@ -122,7 +122,7 @@ async function ChapterIdPage({
 
     }
     return (
-        <div className="bg-white p-4">
+        <div className="bg-white p-4" id="top">
 
             {userProgress?.isCompleted && (
                 <>
@@ -167,7 +167,11 @@ async function ChapterIdPage({
                 <Separator />
                 {(userProgress === null &&
                     randonQuestions.length > 0) &&
-                    <ChapterTest questions={randonQuestions} chapterId={chapter.id} />}
+                    <ChapterTest 
+                    questions={randonQuestions} 
+                    chapterId={chapter.id} 
+                    chapterUrl={`/courses/single/${course.id}/chapters/${chapterId}`}
+                    />}
                 <Separator />
 
                 {chapter.assignments.length > 0 && <>

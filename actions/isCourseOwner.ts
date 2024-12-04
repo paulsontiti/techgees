@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 interface ReturnValue {
     isCourseCreator: boolean,
@@ -13,12 +13,12 @@ interface ReturnValue {
 export const isCourseOwner = async (courseId:string):
     Promise<ReturnValue> => {
     try {
-        const user = await currentUser();
-        if(!user) return { isCourseCreator : false, error: null }
+        const userId = await getUserCookie()
+        if(!userId) return { isCourseCreator : false, error: null }
         const course = await db.course.findUnique({
             where: {
                 id: courseId,
-                userId:user.id,
+                userId,
             },
           });
       

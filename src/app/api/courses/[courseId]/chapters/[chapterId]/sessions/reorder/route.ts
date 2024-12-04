@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { isCourseOwner } from "../../../../../../../../../actions/isCourseOwner";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 export async function PUT(
   req: Request,
@@ -10,7 +9,7 @@ export async function PUT(
   }: { params: { courseId: string;} }
 ) {
   try {
-    const { userId } = await getUserCookie();
+    const userId = await getUserCookie();
     if (!userId) return new NextResponse("Unauthorised", { status: 401 });
 
     //check for course ownership

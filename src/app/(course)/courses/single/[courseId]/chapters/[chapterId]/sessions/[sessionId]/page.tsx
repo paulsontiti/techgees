@@ -24,6 +24,7 @@ import NextPrevSessionButton from "@/components/next-prev-session-button";
 import VideoPlayer from "@/components/video-player";
 import SessionTest from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/session-test";
 import { getUserCookie } from "@/lib/get-user-cookie";
+import { isTheLastSession } from "../../../../../../../../../../actions/isTheLastSession";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId },
@@ -100,8 +101,12 @@ async function SessionIdPage({
     return <ErrorPage name={progressError.name} />;
 
 
+//check if is the last session
+const {isLastSession,error:lastSessionError} = await isTheLastSession(chapterId,session.position ?? 0);
+if (lastSessionError)  return <ErrorPage name={lastSessionError.name} />
+
   return (
-    <div className="mt-4">
+    <div id="top" className="mt-4 bg-white px-2">
       {userProgress?.isCompleted && (
         <Banner variant="success" label="You already completed this session." />
       )}
@@ -141,55 +146,63 @@ async function SessionIdPage({
           )}
         </div>
         {
-          previousSession && !prvSessionProgress?.isCompleted ? <div className="flex flex-col gap-y-2">
-            <Banner variant="warning"
-              label="You can't access this session because you have not completed the previous session" />
+               prvSessionId && !prvSessionProgress?.isCompleted ?
+                  <div className="flex flex-col gap-y-2">
 
-            <PrvSessionButton
-               url={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`} />
+                    <Banner variant="warning"
+                      label="You can't access this session because you have not completed the previous session" />
 
-          </div> :
+                    <PrvSessionButton
+                      url={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`} />
 
-            <>
+                  </div> :
 
-              <VideoPlayer
-              url={session?.videoUrl ?? ""}
-              title={session.title}
-              />
-           <NextPrevSessionButton
-           hasNextSession={!!nextSession}
-           prevSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`}
-          nextSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${nextSession?.id}`}
-           hasPreviousSession={!!previousSession}/>
-              <SessionComments
-                numberOfLikes={numberOfLikes}
-                numberOfDisLikes={numberOfDisLikes}
-                numberOfRatings={numberOfRatings}
-                comments={comments}
-                sessionId={sessionId}
-                hasLiked={hasLiked}
-                hasDisLiked={hasDisLiked}
-                numberOfStudents={numberOfStudents}
-                rating={averageRating}
-                hasRated={hasRated}
-              />
+                  <>
 
-              <Separator />
-              {(userProgress === null &&
-                session.questions.length > 0) &&
-                <SessionTest questions={session.questions} sessionId={sessionId} />}
-              <Separator />
+                    <VideoPlayer
+                      url={session?.videoUrl ?? ""}
+                      title={session.title}
+                    />
+                    <NextPrevSessionButton
+                      hasNextSession={!!nextSession}
+                      prevSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${previousSession?.id}`}
+                      nextSessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${nextSession?.id}`}
+                      hasPreviousSession={!!previousSession} />
+                    <SessionComments
+                      numberOfLikes={numberOfLikes}
+                      numberOfDisLikes={numberOfDisLikes}
+                      numberOfRatings={numberOfRatings}
+                      comments={comments}
+                      sessionId={sessionId}
+                      hasLiked={hasLiked}
+                      hasDisLiked={hasDisLiked}
+                      numberOfStudents={numberOfStudents}
+                      rating={averageRating}
+                      hasRated={hasRated}
+                    />
 
-              {assignments.length > 0 && <>
-                <h2 className='text-xl my-2 font-bold'>Assignments</h2>
-                {
-                  assignments.map((assignment) => {
+                    <Separator />
+                    {(userProgress === null &&
+                      session.questions.length > 0) &&
+                      <SessionTest questions={session.questions} sessionId={sessionId}
+                      isLastSession={isLastSession}
+                      chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}`}
+                      sessionurl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/${sessionId}`}
+                      />}
+                    <Separator />
 
-                    return <AssignmentAccordion assignment={assignment} key={assignment.id} />
-                  })
-                }
-              </>}
-            </>
+                    {assignments.length > 0 && <>
+                      <h2 className='text-xl my-2 font-bold'>Assignments</h2>
+                      {
+                        assignments.map((assignment) => {
+
+                          return <AssignmentAccordion assignment={assignment} key={assignment.id} />
+                        })
+                      }
+                    </>}
+                  </>
+          
+
         }
 
 

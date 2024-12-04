@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 
 import * as zod from "zod"
 import { useCurrentUser } from '../../../../store/current-user-store'
+import { bgNeutralColor, textPrimaryColor } from '@/utils/colors'
 
 
 
@@ -68,8 +69,8 @@ const [isLoading,setIsLoading] = useState(false);
         }
     }
   return (
-    <div className='mt-6 
-    border bg-slate-100 rounded-md p-4 w-full'>
+    <div className={`mt-6 
+      border ${bgNeutralColor} ${textPrimaryColor} rounded-md p-4 w-full`}>
        
       <Form {...form}>
 <form 

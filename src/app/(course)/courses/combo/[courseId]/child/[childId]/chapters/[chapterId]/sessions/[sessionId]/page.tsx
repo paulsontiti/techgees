@@ -23,6 +23,7 @@ import NextPrevSessionButton from "@/components/next-prev-session-button";
 import VideoPlayer from "@/components/video-player";
 import SessionTest from "./_components/session-test";
 import { getUserCookie } from "@/lib/get-user-cookie";
+import { isTheLastSession } from "../../../../../../../../../../../../actions/isTheLastSession";
 
 async function SessionIdPage({
   params: { courseId, chapterId, sessionId, childId },
@@ -97,6 +98,10 @@ async function SessionIdPage({
   const { sessionProgress: prvSessionProgress, error: progressError } = await getSessionProgress(prvSessionId, userId)
   if (progressError)
     return <ErrorPage name={progressError.name} />;
+
+//check if is the last session
+const {isLastSession,error:lastSessionError} = await isTheLastSession(chapterId,session.position ?? 0);
+if (lastSessionError)  return <ErrorPage name={lastSessionError.name} />
 
 
   return (
@@ -177,7 +182,12 @@ async function SessionIdPage({
               <Separator />
               {(userProgress === null &&
                 session.questions.length > 0) &&
-                <SessionTest questions={session.questions} sessionId={sessionId} />}
+                <SessionTest questions={session.questions} 
+                sessionId={sessionId} 
+                sessionurl={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}/sessions/${sessionId}`}
+                chapterUrl={`/courses/combo/${courseId}/child/${childId}/chapters/${chapterId}`}
+                isLastSession={isLastSession}
+                />}
               <Separator />
 
               {assignments.length > 0 && <>

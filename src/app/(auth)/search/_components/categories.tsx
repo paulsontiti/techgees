@@ -8,7 +8,7 @@ function Categories({ categories }: {
   categories: Category[]
 }) {
   return (
-      <div className='flex items-center gap-x-2 w-[300px] md:w-[500px] lg:max-w-full
+      <div className='flex items-center gap-x-2 w-10/12
     overflow-x-scroll pb-2'>
         {categories.map((category) => {
 

@@ -218,7 +218,9 @@ async function ChapterIdPage({
         <Separator />
         {(userProgress === null &&
           randonQuestions.length > 0) &&
-          <ChapterTest questions={randonQuestions} chapterId={chapter.id} />}
+          <ChapterTest questions={randonQuestions} chapterId={chapter.id} 
+          chapterUrl={`/courses/single/${courseId}/child/${courseId}/chapters/${chapterId}`}
+          />}
         <Separator />
 
         {chapter.assignments.length > 0 && <>

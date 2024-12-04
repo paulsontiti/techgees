@@ -7,6 +7,7 @@ import { useDebounce } from '../../hooks/use-debounce'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import qs from "query-string"
 import ErrorBoundary from './error-boundary'
+import { textPrimaryColor } from '@/utils/colors'
 
 function SearchInput() {
     const [value, setValue] = useState("")
@@ -39,7 +40,7 @@ function SearchInput() {
                 <Input
                     value={value}
                     onChange={(e) => { setValue(e.target.value) }}
-                    className='w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200'
+                    className={`w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200 ${textPrimaryColor}`}
                     placeholder='Search for a course'
                 />
             </div>

@@ -9,15 +9,18 @@ import Loader from '@/components/loader'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { useSessionTestStore } from '../../../../../../../../../../../../../store/session-test-store'
 import { useConfettiStore } from '../../../../../../../../../../../../../hooks/use-confetti-store'
+import { useRouter } from 'next/navigation'
 
-function SessionTest({ questions, sessionId }: {
-  questions: Question[], sessionId: string
+function SessionTest({ questions, sessionId,isLastSession,chapterUrl,sessionurl }: {
+  questions: Question[], sessionId: string,isLastSession:boolean,chapterUrl:string,sessionurl:string
 }) {
 
   const {questions:testQuestions,updateShowAnswers} = useSessionTestStore((state) => state)
   const [submitting, setSubmitting] = useState(false)
 
   const confetti = useConfettiStore()
+  const router = useRouter();
+
 
   const onSubmit = async () => {
     setSubmitting(true)
@@ -34,21 +37,28 @@ function SessionTest({ questions, sessionId }: {
         )
 
       updateShowAnswers();
-        toast.success(`Congratulations!!!!!! Your score is ${res}`, { duration: 10000, position: "bottom-center" })
+        toast.success(`Congratulations!!!!!! Your score is ${res}`, { duration: 10000})
 
-
-        confetti.onOpen()
+        router.push(`${sessionurl}/#top`);
+        setTimeout(()=>{
+          confetti.onOpen()
+        },2000);
+     
+        if(isLastSession){
+          router.push(chapterUrl);
+        }
       } else {
         toast.error(`Your score is ${res}. This is poor. You have to retake this test`, { duration: 10000, position: "bottom-center" })
       }
 
     } catch (err: any) {
       toast.error(err.message, { duration: 5000, position: "bottom-center" })
-    } finally {
-      setSubmitting(false)
       setTimeout(function () {
         location.reload()
-      }, 50000)
+      }, 5000)
+    } finally {
+      setSubmitting(false)
+      
     }
   }
 
@@ -63,9 +73,10 @@ function SessionTest({ questions, sessionId }: {
             {questions.map((question) => {
               return <QuestionItemForm question={question} key={question.id} />
             })}
+           
             <Button onClick={onSubmit} disabled={submitting}>Submit
-              <Loader loading={submitting} />
-            </Button>
+            <Loader loading={submitting} />
+          </Button>
 
 
           </AccordionContent>

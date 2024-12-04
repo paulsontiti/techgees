@@ -7,7 +7,7 @@ export async function setCookie(cookieName:string,value:any) {
     
     cookieStore.set(cookieName, value, {
         httpOnly: true,
-        maxAge: 60 * 10,
+        maxAge: 60 * 60 * 24,
         secure: true,
     })
 }

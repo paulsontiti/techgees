@@ -40,10 +40,10 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
       })();
     },[userId]);
 
-    return <div className="flex items-center justify-around w-11/12 md:w-10/12 xl:w-9/12
+    return <div className="flex items-center justify-between w-full
      text-white">
     
-           <div className="hidden md:flex items-center justify-around w-full">
+           <div className="hidden md:flex items-center gap-x-4 w-1/2">
            <Logo />
            {
             isSearchPage && (
@@ -53,7 +53,7 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
         }
            </div>
        
-        <div className="px-2 flex items-center gap-x-2 md:gap-x-4 ml-auto">
+        <div className="px-2 flex items-center justify-end gap-x-2 md:gap-x-4 ml-auto w-1/2">
             <Button
                 variant="link"
                 size="sm"
@@ -84,7 +84,7 @@ size="sm" variant="outline"
                </>
             )}</>
             }
-           <div>Userbutton</div>
+         
             <NotificationComponent />
         </div>
     </div>

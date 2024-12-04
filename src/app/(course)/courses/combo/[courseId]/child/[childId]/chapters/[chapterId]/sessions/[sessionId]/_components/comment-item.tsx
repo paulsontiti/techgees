@@ -1,6 +1,7 @@
 "use client"
 import { Preview } from "@/components/preview";
 import { UserDp } from "@/components/user-dp";
+import { getFullNameInitials } from "@/utils/getNameInitials";
 import { Comment, DBUser } from "@prisma/client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -36,16 +37,15 @@ function CommentItem({ comment }: { comment: Comment }) {
     </div>
     );
 
-  //get the initiials of the names
-  const firstNameInitials = `${user.firstName ? user.firstName.slice(0) : ""}`
-  const secondNameInitials = `${user.lastName ? user.lastName.slice(0) : ""}`
 
-  return (
+
+  const initials = getFullNameInitials(`${user.firstName} ${user.lastName}`)
+    return (
     <div className=" mb-4 bg-slate-100 p-2" >
       <div className="flex items-center gap-x-2">
         <UserDp
           imgUrl={user.imageUrl ?? ""}
-          initials={`${firstNameInitials}${secondNameInitials}`}
+          initials={initials}
         />
         <p className="text-sm font-semibold">
           {`${user.firstName} ${user.lastName}`}

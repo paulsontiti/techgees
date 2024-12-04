@@ -1,10 +1,10 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserCookie } from "@/lib/get-user-cookie";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await getUserCookie();
+    const userId = await getUserCookie();
     const { chapterId } = await req.json();
 
     if (!userId) {

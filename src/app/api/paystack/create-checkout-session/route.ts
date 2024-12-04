@@ -1,12 +1,12 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserCookie } from "@/lib/get-user-cookie";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await getUserCookie();
+    const userId = await getUserCookie();
     const { email, amount, courseId } = await req.json();
 
     if (!userId) {

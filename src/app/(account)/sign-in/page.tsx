@@ -8,10 +8,10 @@ function Page() {
   return (
     <div className='flex justify-center mt-10'>
     <Account>
-    <div className='w-11/12 flex flex-col justify-center'>
+    <div className='w-11/12 flex flex-col justify-center items-center'>
       <h1 className={`${textPrimaryColor} text-2xl font-bold text-center`}>
         Login to your account</h1>
-        <p>Welcome, please fill in the details to get started</p>
+        <p className='text-xs md:text-sm mt-2'>Welcome, please fill in the details to get started</p>
         <SignInForm/>
       </div>
     </Account>

@@ -9,16 +9,18 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useSessionTestStore } from '../../../../../../../../../store/session-test-store'
 import { useConfettiStore } from '../../../../../../../../../hooks/use-confetti-store'
 import { QuestionItemForm } from '@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/question-item-form'
+import { useRouter } from 'next/navigation'
 
-function ChapterTest({ questions, chapterId }: {
-  questions: Question[], chapterId: string
+function ChapterTest({ questions, chapterId,chapterUrl}: {
+  questions: Question[], chapterId: string,chapterUrl:string
 }) {
 
-  const {questions:testQuestions,updateShowAnswers} = useSessionTestStore((state) => state)
+  const {questions:testQuestions} = useSessionTestStore((state) => state)
   const [submitting, setSubmitting] = useState(false)
 
 
   const confetti = useConfettiStore()
+  const router = useRouter();
 
   const onSubmit = async () => {
     setSubmitting(true)
@@ -33,22 +35,26 @@ function ChapterTest({ questions, chapterId }: {
         await axios.post(`/api/test/chapters`,
           { chapterId, score: res }
         )
-        updateShowAnswers();
-        toast.success(`Congratulations!!!!!! Your score is ${res}`, { duration: 10000, position: "bottom-center" })
+    
+        router.push(`${chapterUrl}/#top`);
+        setTimeout(()=>{
+          confetti.onOpen()
+        },2000);
+        toast.success(`Congratulations!!!!!! Your score is ${res}`, 
+          { duration: 5000 })
 
 
-        confetti.onOpen()
       } else {
         toast.error(`Your score is ${res}. This is poor. You have to retake this test`, { duration: 10000, position: "bottom-center" })
       }
 
     } catch (err: any) {
-      toast.error(err.message, { duration: 5000, position: "bottom-center" })
+      toast.error(err.message, { duration: 5000})
     } finally {
       setSubmitting(false)
       setTimeout(function () {
         location.reload()
-      }, 50000)
+      }, 2000)
     }
   }
 

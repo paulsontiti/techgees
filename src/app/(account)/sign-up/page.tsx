@@ -10,7 +10,7 @@ function Page() {
     <Account>
       <div className='w-10/12 flex flex-col justify-center'>
       <h1 className={`${textPrimaryColor} text-2xl font-bold text-center`}>Create an account</h1>
-        <p>Welcome, please fill in the details to get started</p>
+        <p className='text-sm'>Welcome, please fill in the details to get started</p>
         <SignUpForm/>
       </div>
     </Account>
