@@ -16,9 +16,9 @@ export async function POST(req: Request) {
                 email
             }
         })
-    
+   
         //check if user already has account
-        if(user && user.password !== ''){
+        if(user && !!user.password){
            
             return NextResponse.json({successful:false,user:null,message:"Email already exists"})
         }
