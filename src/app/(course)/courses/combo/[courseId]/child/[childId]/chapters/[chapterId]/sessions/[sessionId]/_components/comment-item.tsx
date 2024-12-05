@@ -38,8 +38,8 @@ function CommentItem({ comment }: { comment: Comment }) {
     );
 
 
-
-  const initials = getFullNameInitials(`${user.firstName} ${user.lastName}`)
+  const initials = user.firstName !== null && user.lastName !== null ?
+   getFullNameInitials(`${user?.firstName} ${user?.lastName}`) : "TG" ;
     return (
     <div className=" mb-4 bg-slate-100 p-2" >
       <div className="flex items-center gap-x-2">
@@ -48,7 +48,7 @@ function CommentItem({ comment }: { comment: Comment }) {
           initials={initials}
         />
         <p className="text-sm font-semibold">
-          {`${user.firstName} ${user.lastName}`}
+          {`${user.firstName || "Anonymous"} ${user.lastName || ""}`}
         </p>
 
       </div>
