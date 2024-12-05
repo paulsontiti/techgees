@@ -29,7 +29,18 @@ const formSchema = zod.object({
   ,
     password:zod.string().min(1,{
       message:"Password is required"
-  })
+  }),
+  confirmPassword:zod.string().min(1,{
+    message:"Confirm Password is required"
+})
+}).superRefine((val, ctx) => {
+  if (val.password !== val.confirmPassword) {
+    ctx.addIssue({
+      code: zod.ZodIssueCode.custom,
+      message: 'Password is not the same as confirm password',
+      path: ['confirmPassword'],
+    })
+  }
 })
 
 function SignUpForm() {
@@ -46,7 +57,8 @@ const [isLoading,setIsLoading] = useState(false);
     })
 
 
-    const {isSubmitting,isValid} = form.formState
+
+    const {formState:{isSubmitting,isValid,errors}} = form
    
    
   
@@ -116,8 +128,30 @@ render={({field})=>{
       </FormItem>
   }}
 />
+<FormField 
+control={form.control}
+name='confirmPassword'
+
+render={({field})=>{
+    return   <FormItem>
+          <FormLabel>Confirm Password</FormLabel>
+          <FormControl>
+              <Input
+              disabled={isSubmitting}
+              {...field}
+              type='password'
+             
+              />
+          </FormControl>
+          <FormDescription>Please confirm your password</FormDescription>
+      
+         
+          <FormMessage/>
+      </FormItem>
+  }}
+/>
 <div className='flex flex-col items-center gap-x-2'>
-                        
+
                            <Button
                         type='submit'
                        disabled={!isValid || isSubmitting}
@@ -133,6 +167,7 @@ render={({field})=>{
                     </div>
 </form>
         </Form> 
+       
     </div>
   )
 }

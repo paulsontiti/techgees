@@ -12,7 +12,6 @@ import toast from 'react-hot-toast'
 
 import * as zod from "zod"
 import { useCurrentUser } from '../../../../store/current-user-store'
-import Link from 'next/link'
 import { bgNeutralColor, textPrimaryColor } from '@/utils/colors'
 
 
@@ -37,6 +36,7 @@ function SignInForm() {
 const router = useRouter();
 const {updateUser} = useCurrentUser();
 const [isLoading,setIsLoading] = useState(false);
+const [forgotPassword,setForgotPassword] = useState(false);
 
     const form = useForm<zod.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
@@ -117,6 +117,12 @@ render={({field})=>{
       </FormItem>
   }}
 />
+<div className='my-10 flex items-center justify-end'>
+                            <Button type="button" variant="tgg_link" onClick={()=>{
+                                setForgotPassword(true);
+                                router.push("/forgot-password")
+                            }}>Forgot password? <Loader loading={forgotPassword}/></Button>
+                        </div>
 <div className='flex flex-col items-center gap-x-2'>
                         
                            <Button
