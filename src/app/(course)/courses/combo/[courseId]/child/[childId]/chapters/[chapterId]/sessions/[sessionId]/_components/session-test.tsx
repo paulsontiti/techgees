@@ -47,6 +47,9 @@ function SessionTest({ questions, sessionId,isLastSession,chapterUrl,sessionurl 
         if(isLastSession){
           router.push(chapterUrl);
         }
+        setTimeout(function () {
+          location.reload()
+        }, 5000)
       } else {
         toast.error(`Your score is ${res}. This is poor. You have to retake this test`, { duration: 10000, position: "bottom-center" })
       }

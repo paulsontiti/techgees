@@ -43,7 +43,9 @@ function ChapterTest({ questions, chapterId,chapterUrl}: {
         toast.success(`Congratulations!!!!!! Your score is ${res}`, 
           { duration: 5000 })
 
-
+          setTimeout(function () {
+            location.reload()
+          }, 5000)
       } else {
         toast.error(`Your score is ${res}. This is poor. You have to retake this test`, { duration: 10000, position: "bottom-center" })
       }
