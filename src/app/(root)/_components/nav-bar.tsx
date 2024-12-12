@@ -10,7 +10,7 @@ import Account from "@/components/account";
 async function Navbar() {
   return (
     <nav className={`${bgPrimaryColor} py-8 px-4`}>
-
+    
       <ul className="flex items-center justify-around w-full md:px-2">
         <li>
           <Logo />
@@ -21,7 +21,7 @@ async function Navbar() {
         <li className="hidden md:flex items-center gap-x-2">
          <Account/>
         </li>
-        <li>   <MobileMenu /></li>
+        <li>   <MobileMenu/></li>
       </ul>
  
     

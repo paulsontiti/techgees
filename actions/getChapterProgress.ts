@@ -32,8 +32,10 @@ const validCompletedSessions = await db.userProgress.count({
     }
 })
 
+console.log(validCompletedSessions/publishedSessionIds.length)
 
-const progressPercentage = publishedSessionIds.length === 0 ? 0 : (validCompletedSessions/publishedSessionIds.length) * 100
+const progressPercentage = publishedSessionIds.length === 0 ? 0 : 
+(validCompletedSessions/publishedSessionIds.length) * 100
 
 
       return {progressPercentage,error:null}

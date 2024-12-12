@@ -13,6 +13,7 @@ import { DBUser } from "@prisma/client"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { Skeleton } from "./ui/skeleton"
+import LogoutButton from "@/app/(account)/components/logout"
 
 export const NavbarRoutes = ({userId}:{userId:string}) => {
     const pathname = usePathname()
@@ -61,6 +62,7 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
                     router.push("/")
                 }}
             >Home</Button>
+            <LogoutButton/>
             {loadingUser ? <Skeleton className="h-6 w-[200px]" /> :
             <>
             {isTeacherPage || isCoursePage ? (

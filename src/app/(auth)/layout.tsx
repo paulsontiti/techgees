@@ -35,7 +35,7 @@ export default function AuthLayout({
             
             <Navbar />
           </div>
-          <div className="flex mt-[100px]">
+          <div className="flex mt-[150px]">
             <div
               className="hidden md:flex w-[350px] inset-y-0"
             >

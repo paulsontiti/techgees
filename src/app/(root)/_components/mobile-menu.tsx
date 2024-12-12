@@ -12,7 +12,8 @@ async function MobileMenu() {
         </SheetTrigger>
         <SheetContent side="left" 
         className='p-0 bg-white'>
-            <Sidebar/>
+     
+            <Sidebar />
         </SheetContent>
     </Sheet>
   )

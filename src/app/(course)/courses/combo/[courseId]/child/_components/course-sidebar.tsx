@@ -36,7 +36,7 @@ async function CourseSidebar({
 
 
   return (
-    <div className="h-auto mt-4 border-r flex flex-col overflow-y-auto shadow-sm bg-white">
+    <div className="h-[70vh] mt-4 border-r flex flex-col overflow-y-auto shadow-sm bg-white">
       <div className="py-8 px-2 flex flex-col border-b gap-y-2">
         <BackButton label="main course"
           url={`/courses/combo/${parentId}`} />

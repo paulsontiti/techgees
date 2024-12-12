@@ -3,7 +3,6 @@
 import { GraduationCap, Home, Info, Layout, Mail, Rss } from 'lucide-react'
 import React from 'react'
 import SidebarItem from './sidebar-item'
-import { Separator } from '@/components/ui/separator'
 
 const routes = [
   {
@@ -38,7 +37,7 @@ const routes = [
 
 
 
-function SidebarRoutes({userId}:{userId:string}) {
+function SidebarRoutes() {
 
   return (
     <div className='flex flex-col w-full'>
@@ -57,16 +56,7 @@ function SidebarRoutes({userId}:{userId:string}) {
         })
       }
 
-      {userId && <>
-        <Separator className='my-2 bg-[#111587]' />
-        <SidebarItem
-
-
-          icon={Layout}
-          label={"Dashboard"}
-          href={"/dashboard"}
-        />
-      </>}
+     
     </div>
   )
 }
