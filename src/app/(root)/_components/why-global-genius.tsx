@@ -5,7 +5,8 @@ import WhyUsText from './why-us-text'
 
 const WhyUsCards  = [
   {num:'1', title:'Self-paced', description:<WhyUsText>
-    <div>{` Self-paced online learning offers numerous benefits, especially for inWhyUsTextiduals juggling multiple commitments or looking to gain specific skills at their convenience.`}
+    <div>{` Self-paced online learning offers numerous benefits, especially for individuals juggling multiple
+     commitments or looking to gain specific skills at their convenience.`}
     
      <p>
       <strong>Flexibility:</strong> Learn at your own pace, anytime and anywhere, making it ideal for those with busy schedules.
@@ -24,7 +25,7 @@ const WhyUsCards  = [
   },
   {num:'2', title:'Personal Coaching & Mentorship', description:<WhyUsText>
     <div>
-  This program is designed to provide personalized guidance and support to inWhyUsTextiduals looking to build or advance their careers in software development. 
+  This program is designed to provide personalized guidance and support to individuals looking to build or advance their careers in software development. 
     <p>
    {` Whether you're a beginner exploring coding for the first time or an aspiring professional seeking tailored advice, this mentorship program equips you with the skills, confidence, and insights to thrive in the tech industry.`}
     </p>
@@ -41,7 +42,7 @@ const WhyUsCards  = [
  
  {num:'3', title:'3 months internship', description:<WhyUsText>
   <div>
-  This internship program is designed to provide practical, hands-on experience for inWhyUsTextiduals looking to enhance their skills in software development.
+  This internship program is designed to provide practical, hands-on experience for individuals looking to enhance their skills in software development.
   <p>
  {` Whether you're a student, recent graduate, or aspiring developer, this opportunity bridges the gap between academic knowledge and real-world application.`}
   </p>
