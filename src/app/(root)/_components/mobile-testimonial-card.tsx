@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { bgNeutralColor } from '@/utils/colors'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Rating from '../course/[courseId]/_components/rating'
 import useScreenWidth from '../../../../hooks/useScreenWidth'
 import { Testimonial } from './testimonials'
@@ -10,12 +10,23 @@ import { getFullNameInitials } from '@/utils/getNameInitials'
 import FbIcon from '@/components/fb-icon'
 import Link from 'next/link'
 import WhatsAppIcon from '@/components/whatsApp-icon'
+import { Skeleton } from '@/components/ui/skeleton'
 
 function MobileTestimonialCard({testimonial}:{
     testimonial:Testimonial
   }) {
     const {screenWidth} = useScreenWidth();
+const [width,setWidth] = useState<number | undefined>(undefined)
+
+useEffect(()=>{
+    if(screenWidth){
+        setWidth(screenWidth)
+    }
+})
+
+
     const initials = getFullNameInitials(testimonial.fullName)
+    if(!width) return <Skeleton className='w-[300px] h-[300px]'/>
   return (
     <div 
     style={{width:screenWidth}}

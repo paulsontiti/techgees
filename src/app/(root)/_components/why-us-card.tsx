@@ -2,8 +2,9 @@
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { bgPrimaryColor } from '@/utils/colors'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import useScreenWidth from '../../../../hooks/useScreenWidth'
+import { Skeleton } from '@/components/ui/skeleton'
 
 function WhyUsCard({
 num,title,description
@@ -11,6 +12,13 @@ num,title,description
 {num:string,title:string,description:ReactNode}) {
 
 const {screenWidth} = useScreenWidth();
+const [width,setWidth] = useState<number | undefined>(undefined)
+
+useEffect(()=>{
+    if(screenWidth){
+        setWidth(screenWidth)
+    }
+})
 
   return (
     <>
@@ -29,7 +37,9 @@ const {screenWidth} = useScreenWidth();
         </p>
         </CardContent>
     </Card>
-    <Card className={`flex flex-col md:hidden items-center justify-center` } style={{width:screenWidth}}>
+    {
+        width ? 
+        <Card className={`flex flex-col md:hidden items-center justify-center` } style={{width:width}}>
         <CardHeader>
         <div className={`w-8 h-8 rounded-full ${bgPrimaryColor} text-white flex items-center justify-center`}>
             {num}
@@ -43,6 +53,9 @@ const {screenWidth} = useScreenWidth();
         </p>
         </CardContent>
     </Card>
+        :
+        <Skeleton className='w-[300px] h-[300px]'/>
+    }
     </>
   )
 }

@@ -1,20 +1,22 @@
-
+"use client"
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import React from 'react'
 import { Sidebar } from '../course/[courseId]/_components/sidebar'
+import { useSheetStore } from '../../../../store/sheet-store'
 
 
-async function MobileMenu() {
-
+function MobileMenu() {
+const {isOpen,openSheet,closeSheet} = useSheetStore();
   return (
-    <Sheet >
+    <Sheet open={isOpen}>
         <SheetTrigger className='lg:hidden pr-4 hover:opacity-75 transition'>
-        <Menu />
+        <Menu onClick={openSheet}/>
         </SheetTrigger>
-        <SheetContent side="left" 
+        <SheetContent side="left" onInteractOutside={closeSheet}
+        onClick={closeSheet}
         className='p-0 bg-white'>
-     
+   
             <Sidebar />
         </SheetContent>
     </Sheet>
