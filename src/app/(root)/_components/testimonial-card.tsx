@@ -36,7 +36,7 @@ function TestimonialCard({testimonial}:{
                        {testimonial.rating &&  <Rating rating={testimonial.rating}/>}
                     </div>
                 </div>
-            <div className='mt-8'>
+            <div className='mt-2 text-sm'>
                {testimonial.text}
             </div>
             <div className='mt-8 flex gap-x-4'>

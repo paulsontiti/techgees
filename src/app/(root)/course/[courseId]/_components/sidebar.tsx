@@ -2,7 +2,7 @@
 import SidebarRoutes from "./sibebar-routes"
 import Account from "@/components/account";
 
-export const Sidebar = async()=>{
+export const Sidebar = ()=>{
     return <div className="
         h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm
     ">

@@ -169,8 +169,8 @@ function Testimonials() {
   return (
     <section id='testimonials' className={`${bgPrimaryColor} w-full flex flex-col justify-center items-center py-8 mt-8`}>
        <div className='flex flex-col justify-center items-center lg:w-11/12'>
-       <h1 className='text-white text-2xl px-4 md:text-4xl mb-8'>Testimonials From Our Students</h1>
-        <div className='hidden md:grid md:grid-cols-2 xl:grid-cols-3 p-8 gap-4'>
+       <h1 className='text-white text-xl px-4 md:text-2xl mb-8'>Testimonials From Our Students</h1>
+        <div className='hidden md:grid md:grid-cols-2 xl:grid-cols-4 p-8 gap-4'>
         {testimonials.map((testimonial)=>(
          
                <TestimonialCard key={testimonial.imgUrl} testimonial={testimonial}/>

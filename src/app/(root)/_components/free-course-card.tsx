@@ -28,7 +28,7 @@ course
       className="
             group hover:shadow-sm transition overflow-hidden border 
             rounded-lg p-2 md:p-8 relative hover:cursor-pointer
-             bg-white w-full min-h-[600px]
+             bg-white w-full min-h-[450px]
         "
         
     >
@@ -39,13 +39,13 @@ course
       >
         <Image fill src={course.imageUrl ?? ""} className="object-cover" alt={course.title} />
       </div>
-      <div className="flex flex-col pt-2">
+      <div className="flex flex-col pt-2 ">
         <div
           className="text-lg md:text-base font-medium 
                 group-hover:text-sky-700 transition"
         >
          <h1 className="my-2 text-xl font-bold"> {course.title}</h1>
-         <p>{course.subTitle}</p>
+         <p>{course.subTitle?.slice(0,100)}{course.subTitle && course.subTitle?.length > 100 ? "..." : ""}</p>
         </div>
       
 
