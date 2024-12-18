@@ -22,7 +22,7 @@ const sessions = await db.session.findMany({
 
 const publishedSessionIds = sessions.map(session => session.id)
 
-const validCompletedSessions = await db.userProgress.count({
+let validCompletedSessions = await db.userProgress.count({
     where:{
         userId,
         sessionId:{
@@ -32,7 +32,7 @@ const validCompletedSessions = await db.userProgress.count({
     }
 })
 
-//console.log(validCompletedSessions/publishedSessionIds.length)
+validCompletedSessions = validCompletedSessions > publishedSessionIds.length ? publishedSessionIds.length : validCompletedSessions;
 
 const progressPercentage = publishedSessionIds.length === 0 ? 0 : 
 (validCompletedSessions/publishedSessionIds.length) * 100

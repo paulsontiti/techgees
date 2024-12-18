@@ -16,21 +16,10 @@ if(!userId)  return new NextResponse("Unauthorized user",{status:401})
 
     const {isPublished,...values} = await req.json()
 
-    // const course = await db.course.findUnique({
-    //     where:{
-    //             id:courseId,
-    //             userId
-            
-    //     }
-    // })
-    // if(!course)  return new NextResponse("Unauthorized,you are not the creator of this course",{status:401})
-
+   
         await db.chapter.update({
             where:{
-                id_courseId:{
                     id:chapterId,
-                    courseId
-                }
             },
             data:{
                 ...values
