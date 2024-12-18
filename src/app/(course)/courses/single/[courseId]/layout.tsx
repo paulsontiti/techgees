@@ -8,6 +8,10 @@ import { getCourseChaptersUserProgress } from "../../../../../../actions/getCour
 import { getCourseProgress } from "../../../../../../actions/getCourseProgress";
 import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
 import { getUserCookie } from "@/lib/get-user-cookie";
+import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
+import { hasLikedCourse } from "../../../../../../actions/hasLikedCourse";
+import { hasDisLikedCourse } from "../../../../../../actions/hasDisLikedCourse";
+import { hasRatedCourse } from "../../../../../../actions/hasRatedCourse";
 
 async function CourseLayout({
   children,
@@ -37,6 +41,33 @@ async function CourseLayout({
 
   const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
   if (purschaseError) return <ErrorPage name={purschaseError.name} />;
+ 
+
+  const { paidPositions, error:paidError } = await getPaidChapterPositions(
+    course.id!,
+    purchasePercentage
+  );
+  if (paidError) return <ErrorPage name={paidError.name} />;
+
+  const { hasLiked, error: hasLikedError } = await hasLikedCourse(
+    course.id,
+    userId
+  );
+  if (hasLikedError)
+    return <ErrorPage name={hasLikedError.name} />;
+
+  const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedCourse(
+    course.id,
+    userId
+  );
+  if (hasDisLikedError)
+    return <ErrorPage name={hasDisLikedError.name} />;
+
+  const { hasRated, error: ratedError } = await hasRatedCourse(
+    course.id,
+    userId
+  );
+  if (ratedError) return <ErrorPage name={ratedError.name} />;
 
   return (
     <div>
@@ -53,6 +84,10 @@ async function CourseLayout({
           course={course}
           progressPercentage={progressPercentage ?? 0}
           purchasePercentage={purchasePercentage}
+          paidPositions={paidPositions}
+          hasDisLiked={hasDisLiked}
+          hasLiked={hasLiked}
+          hasRated={hasRated}
         />
       </div>
       <div className="px-4 md:w-2/3">

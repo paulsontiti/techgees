@@ -13,7 +13,8 @@ function BackButton(
     const router = useRouter()
 
     return <Button
-        onClick={() => {
+        onClick={(e:any) => {
+            e.stopPropagation();
             setLoading(true)
             router.push(url)
         }}

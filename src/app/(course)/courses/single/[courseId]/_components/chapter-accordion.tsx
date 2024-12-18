@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/accordion";
 import { Chapter, Session, UserProgress } from "@prisma/client";
 import Banner from "@/components/banner";
+import { useSheetStore } from "../../../../../../../store/sheet-store";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -38,24 +39,26 @@ export function ChapterAccordion({
 
   const pathname = usePathname();
   const router = useRouter();
+  const {closeSheet} = useSheetStore();
 
   const Icon = isLocked ? Lock : isCompleted ? CheckCheck : PlayCircle;
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
+    closeSheet();
     router.push(`/courses/single/${courseId}/chapters/${id}`);
   };
   return (
     <Accordion type="single" collapsible className="w-full px-2">
       <AccordionItem value="item-1">
 
-        <AccordionTrigger>
+        <AccordionTrigger onClick={(e)=>{e.stopPropagation()}}>
 
           <button
             onClick={onClick}
             type="button"
             className={cn(
-              "w-11/12 h-[50px] p-4 flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-sky-300/20",
+              "w-10/12 h-[50px] p-4 flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-sky-300/20",
               isActive &&
               "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700",
               isCompleted && isActive && "bg-emerald-200/20"

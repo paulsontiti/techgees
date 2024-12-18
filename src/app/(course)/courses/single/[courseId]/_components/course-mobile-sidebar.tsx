@@ -1,8 +1,13 @@
 import React from 'react'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Menu } from 'lucide-react'
-import CourseSidebar from './course-sidebar'
 import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress'
+import { getUserCookie } from '@/lib/get-user-cookie'
+import { redirect } from 'next/navigation'
+import { getPaidChapterPositions } from '../../../../../../../actions/getPaidChapterPositions'
+import ErrorPage from '@/components/error'
+import { hasLikedCourse } from '../../../../../../../actions/hasLikedCourse'
+import { hasDisLikedCourse } from '../../../../../../../actions/hasDisLikedCourse'
+import { hasRatedCourse } from '../../../../../../../actions/hasRatedCourse'
+import SingleCourseMenuBar from './single-course-menu-bar'
 
 
 type CourseMobileSidebarProps = {
@@ -11,24 +16,48 @@ type CourseMobileSidebarProps = {
     purchasePercentage: number
 }
 
- function CourseMobileSidebar({
+ async function CourseMobileSidebar({
     course, progressPercentage, purchasePercentage
 }: CourseMobileSidebarProps) {
 
+    const userId = await getUserCookie();
+  if (!userId) return redirect("/");
+
+  const { paidPositions, error } = await getPaidChapterPositions(
+    course.id!,
+    purchasePercentage
+  );
+  if (error) return <ErrorPage name={error.name} />;
+
+  const { hasLiked, error: hasLikedError } = await hasLikedCourse(
+    course.id,
+    userId
+  );
+  if (hasLikedError)
+    return <ErrorPage name={hasLikedError.name} />;
+
+  const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedCourse(
+    course.id,
+    userId
+  );
+  if (hasDisLikedError)
+    return <ErrorPage name={hasDisLikedError.name} />;
+
+  const { hasRated, error: ratedError } = await hasRatedCourse(
+    course.id,
+    userId
+  );
+  if (ratedError) return <ErrorPage name={ratedError.name} />;
     return (
-        <Sheet>
-            <SheetTrigger className='
-        md:hidden pr-4 hover:opacity-75 transition'>
-                <Menu/>
-            </SheetTrigger>
-            <SheetContent side="left" className='
-        p-0 bg-white w-72' >
-                <CourseSidebar
-                    progressPercentage={progressPercentage}
-                    purchasePercentage={purchasePercentage}
-                    course={course} />
-            </SheetContent>
-        </Sheet>
+       <SingleCourseMenuBar
+       progressPercentage={progressPercentage}
+       purchasePercentage={purchasePercentage}
+       course={course}
+       paidPositions={paidPositions}
+       hasDisLiked={hasDisLiked}
+       hasLiked={hasLiked}
+       hasRated={hasRated}
+       />
     )
 }
 

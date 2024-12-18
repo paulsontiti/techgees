@@ -5,14 +5,11 @@ import { CourseChaptersUserProgressType } from '../../../../../../../../actions/
 import { bgPrimaryColor } from '@/utils/colors'
 import { Chapter, Session, UserProgress } from '@prisma/client'
 import { getUserCookie } from '@/lib/get-user-cookie'
+import { SidebarChapter } from './course-sidebar'
 
 type CourseNavbarProps = {
   course: CourseChaptersUserProgressType,
-  progressPercentage: number, parentId: string, chapters: (Chapter & {
-    sessions: Session[],
-    userProgresses: UserProgress[]
-
-  })[]
+  progressPercentage: number, parentId: string, chapters: SidebarChapter[]
 
 }
 

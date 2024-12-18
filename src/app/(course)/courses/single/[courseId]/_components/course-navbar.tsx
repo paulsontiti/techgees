@@ -1,9 +1,9 @@
 import React from 'react'
 import { NavbarRoutes } from '@/components/navbar-routes'
-import CourseMobileSidebar from './course-mobile-sidebar'
 import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress'
 import { bgPrimaryColor } from '@/utils/colors'
 import { getUserCookie } from '@/lib/get-user-cookie'
+import CourseMobileSidebar from './course-mobile-sidebar'
 type CourseNavbarProps = {
   course: CourseChaptersUserProgressType,
   progressPercentage: number,

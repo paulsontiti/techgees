@@ -46,12 +46,7 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
     
            <div className="hidden md:flex items-center gap-x-4 w-1/2">
            <Logo />
-           {
-            isSearchPage && (
-                
-                    <SearchInput />
-            )
-        }
+           
            </div>
        
         <div className="px-2 flex items-center justify-end gap-x-2 md:gap-x-4 ml-auto w-1/2">

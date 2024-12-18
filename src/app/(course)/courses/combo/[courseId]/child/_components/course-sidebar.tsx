@@ -1,38 +1,28 @@
-import { redirect } from "next/navigation";
 import React from "react";
-import ErrorPage from "@/components/error";
 import CourseProgress from "@/components/course-progress";
 import { Chapter, Course, Session, UserProgress } from "@prisma/client";
-import { getChapterProgress } from "../../../../../../../../actions/getChapterProgress";
-import { getPreviousChapter } from "../../../../../../../../actions/getPreviousChapter";
-import { getUserChapterProgress } from "../../../../../../../../actions/getUserChapterProgress";
 
 import BackButton from "@/components/back-button";
 import { ChapterAccordion } from "./chapter-accordion";
-import { getUserCookie } from "@/lib/get-user-cookie";
 
 type CourseSidebarProps = {
   course: Course;
   parentId: string,
-  chapters: (Chapter & {
-    sessions: Session[],
-    userProgresses: UserProgress[]
-
-  })[],
+  chapters: SidebarChapter[],
   progressPercentage: number;
 };
 
-async function CourseSidebar({
+export type SidebarChapter = Chapter & {
+  sessions: Session[],
+  userProgresses: UserProgress[],previousChapter:Chapter | null,
+          previousUserChapterProgress:UserProgress | null
+
+}
+
+ function CourseSidebar({
   course, chapters,
   progressPercentage, parentId
 }: CourseSidebarProps) {
-  const userId = await getUserCookie();
-  if (!userId) return redirect("/");
-
-
-
-
-
 
 
   return (
@@ -51,24 +41,24 @@ async function CourseSidebar({
         </div>
       </div>
       <div className="flex flex-col w-full">
-        {chapters.map(async (chapter) => {
-          const { progressPercentage, error } = await getChapterProgress(
-            userId,
-            chapter.id
-          );
+        {chapters.map((chapter) => {
+          // const { progressPercentage, error } = await getChapterProgress(
+          //   userId,
+          //   chapter.id
+          // );
 
-          if (error)
-            return <ErrorPage name={error.name} key={error.name} />;
+          // if (error)
+          //   return <ErrorPage name={error.name} key={error.name} />;
 
-          const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
-          if (previousError)
-            return <ErrorPage name={previousError.name} key={previousError.name} />;
+          // const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
+          // if (previousError)
+          //   return <ErrorPage name={previousError.name} key={previousError.name} />;
 
-          //get previous chapter user progress
-          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-            await getUserChapterProgress(userId, previousChapter?.id ?? "")
-          if (progressError)
-            return <ErrorPage name={progressError.name} key={progressError.name} />;
+          // //get previous chapter user progress
+          // const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+          //   await getUserChapterProgress(userId, previousChapter?.id ?? "")
+          // if (progressError)
+          //   return <ErrorPage name={progressError.name} key={progressError.name} />;
 
 
           return (
@@ -80,13 +70,13 @@ async function CourseSidebar({
               courseId={course.id}
               parentId={parentId}
               isLocked={
-                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
+                (chapter.previousChapter && !chapter.previousUserChapterProgress?.isCompleted) ||
                 !chapter.isPublished
               }
               sessions={chapter.sessions ?? []}
               chapterProgress={progressPercentage ?? 0}
-              previousUserChapterProgress={previousUserChapterProgress}
-              prviousChapter={previousChapter}
+              previousUserChapterProgress={chapter.previousUserChapterProgress}
+              prviousChapter={chapter.previousChapter}
             />
           );
         })}
