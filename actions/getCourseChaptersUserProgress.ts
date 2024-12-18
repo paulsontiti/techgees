@@ -4,6 +4,7 @@ import { getCourseWithCourseChildrenWithChaptersWithUserProgress } from "./getCo
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
 import { getPreviousChapter } from "./getPreviousChapter";
 import { getUserChapterProgress } from "./getUserChapterProgress";
+import { getChapterProgress } from "./getChapterProgress";
 
 
 type ReturnValue = {
@@ -49,37 +50,61 @@ export const getCourseChaptersUserProgress = async (
       },
     });
 
-    const sidebarCourse:any = course;
+    const sidebarCourse: any = course;
+
+    //create a sidebar chapter for all chapters of the course
+    const chapters = [];
+        for (let chapter of sidebarCourse.chapters) {
+        //get previous chapter and user previous chapter progress
+        const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, sidebarCourse.id)
+        if (previousError)
+          return { course: null, error: previousError }
+
+        //get previous chapter user progress
+        const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+          await getUserChapterProgress(userId, previousChapter?.id ?? "")
+        if (progressError)
+          return { course: null, error: progressError }
+      
+        // //get chapter progress
+        const { progressPercentage: chapterProgressPercentage, error: chapterProgressPercentageError } =
+          await getChapterProgress(
+            userId,
+            chapter.id
+          );
+        if (chapterProgressPercentageError) return { course: null, error: chapterProgressPercentageError }
+
+
+        const sideBarChapter: SidebarChapter = {
+          ...chapter, previousChapter,
+          previousUserChapterProgress,chapterProgressPercentage
+        }
+
+        chapters.push(sideBarChapter);
+        
+    }
+    sidebarCourse.chapters = chapters;
+
     //if course is combo get the chapters from its children courses
     if (sidebarCourse?.chapters.length === 0) {
       const { courseChildrenWithChaptersAndSessions, error } = await getCourseWithCourseChildrenWithChaptersWithUserProgress(courseId, userId)
       if (error) throw new Error(error.message)
 
-        //reset the chapters position to suit the combo course chapters position
+      //reset the chapters position to suit the combo course chapters position
       if (courseChildrenWithChaptersAndSessions.length > 0) {
         let position = 0;
         for (let childCourse of courseChildrenWithChaptersAndSessions) {
           for (let chapter of childCourse.chapters) {
             chapter.position = position
-            //get previous chapter and user previous chapter progress
-            const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, sidebarCourse.id)
-          if (previousError)
-            return { course:null, error:previousError }
-
-          //get previous chapter user progress
-          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-            await getUserChapterProgress(userId, previousChapter?.id ?? "")
-          if (progressError)
-            return { course:null, error: progressError}
-          const sideBarChapter:SidebarChapter = {...chapter,previousChapter,previousUserChapterProgress}
-          sidebarCourse.chapters.push(sideBarChapter)
+            sidebarCourse.chapters.push(chapter)
             position++
           }
         }
       }
     }
+ 
 
-    return { course:sidebarCourse, error: null }
+    return { course: sidebarCourse, error: null }
   } catch (error: any) {
     console.log("[getCourseChaptersUserProgress]", error)
     return { course: null, error }

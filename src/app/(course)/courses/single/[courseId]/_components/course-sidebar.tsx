@@ -81,7 +81,7 @@ function CourseSidebar({
                   && chapterPaidFor < 0)
               }
               sessions={chapter.sessions ?? []}
-              chapterProgress={progressPercentage ?? 0}
+              chapterProgress={chapter.chapterProgressPercentage ?? 0}
               previousUserChapterProgress={chapter.previousUserChapterProgress}
               prviousChapter={chapter.previousChapter}
             />

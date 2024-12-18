@@ -27,6 +27,8 @@ async function ChildCourseLayout({
     childId
   );
 
+ 
+
   if (courseError) return <ErrorPage name={courseError.name} />;
   if (!childCourse) return redirect("/");
 

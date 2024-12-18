@@ -3,7 +3,6 @@ import { NavbarRoutes } from '@/components/navbar-routes'
 import CourseMobileSidebar from './course-mobile-sidebar'
 import { CourseChaptersUserProgressType } from '../../../../../../../../actions/getCourseChaptersUserProgress'
 import { bgPrimaryColor } from '@/utils/colors'
-import { Chapter, Session, UserProgress } from '@prisma/client'
 import { getUserCookie } from '@/lib/get-user-cookie'
 import { SidebarChapter } from './course-sidebar'
 

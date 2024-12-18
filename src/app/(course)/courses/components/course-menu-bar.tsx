@@ -9,7 +9,7 @@ import { useSheetStore } from '../../../../../store/sheet-store'
 function CourseMenuBar({
     parentId,course,progressPercentage,chapters,userId
 }:{
-    progressPercentage:number,
+progressPercentage:number,
     chapters:SidebarChapter[],
     course:Course,
     parentId:string,

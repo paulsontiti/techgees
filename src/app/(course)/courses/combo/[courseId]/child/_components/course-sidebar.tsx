@@ -10,10 +10,12 @@ type CourseSidebarProps = {
   parentId: string,
   chapters: SidebarChapter[],
   progressPercentage: number;
+  
 };
 
 export type SidebarChapter = Chapter & {
   sessions: Session[],
+  chapterProgressPercentage:number | null
   userProgresses: UserProgress[],previousChapter:Chapter | null,
           previousUserChapterProgress:UserProgress | null
 
@@ -74,7 +76,7 @@ export type SidebarChapter = Chapter & {
                 !chapter.isPublished
               }
               sessions={chapter.sessions ?? []}
-              chapterProgress={progressPercentage ?? 0}
+              chapterProgress={chapter.chapterProgressPercentage ?? 0}
               previousUserChapterProgress={chapter.previousUserChapterProgress}
               prviousChapter={chapter.previousChapter}
             />
