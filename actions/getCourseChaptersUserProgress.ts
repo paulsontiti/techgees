@@ -50,43 +50,43 @@ export const getCourseChaptersUserProgress = async (
       },
     });
 
-    const sidebarCourse: any = course;
+    // const sidebarCourse: any = course;
 
-    //create a sidebar chapter for all chapters of the course
-    const chapters = [];
-        for (let chapter of sidebarCourse.chapters) {
-        //get previous chapter and user previous chapter progress
-        const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, sidebarCourse.id)
-        if (previousError)
-          return { course: null, error: previousError }
+    // //create a sidebar chapter for all chapters of the course
+    // const chapters = [];
+    //     for (let chapter of sidebarCourse.chapters) {
+    //     //get previous chapter and user previous chapter progress
+    //     const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, sidebarCourse.id)
+    //     if (previousError)
+    //       return { course: null, error: previousError }
 
-        //get previous chapter user progress
-        const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-          await getUserChapterProgress(userId, previousChapter?.id ?? "")
-        if (progressError)
-          return { course: null, error: progressError }
+    //     //get previous chapter user progress
+    //     const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+    //       await getUserChapterProgress(userId, previousChapter?.id ?? "")
+    //     if (progressError)
+    //       return { course: null, error: progressError }
       
-        // //get chapter progress
-        const { progressPercentage: chapterProgressPercentage, error: chapterProgressPercentageError } =
-          await getChapterProgress(
-            userId,
-            chapter.id
-          );
-        if (chapterProgressPercentageError) return { course: null, error: chapterProgressPercentageError }
+    //     // //get chapter progress
+    //     const { progressPercentage: chapterProgressPercentage, error: chapterProgressPercentageError } =
+    //       await getChapterProgress(
+    //         userId,
+    //         chapter.id
+    //       );
+    //     if (chapterProgressPercentageError) return { course: null, error: chapterProgressPercentageError }
 
 
-        const sideBarChapter: SidebarChapter = {
-          ...chapter, previousChapter,
-          previousUserChapterProgress,chapterProgressPercentage
-        }
+    //     const sideBarChapter: SidebarChapter = {
+    //       ...chapter, previousChapter,
+    //       previousUserChapterProgress,chapterProgressPercentage
+    //     }
 
-        chapters.push(sideBarChapter);
+    //     chapters.push(sideBarChapter);
         
-    }
-    sidebarCourse.chapters = chapters;
+    // }
+    // sidebarCourse.chapters = chapters;
 
     //if course is combo get the chapters from its children courses
-    if (sidebarCourse?.chapters.length === 0) {
+    if (course?.chapters.length === 0) {
       const { courseChildrenWithChaptersAndSessions, error } = await getCourseWithCourseChildrenWithChaptersWithUserProgress(courseId, userId)
       if (error) throw new Error(error.message)
 
@@ -96,7 +96,7 @@ export const getCourseChaptersUserProgress = async (
         for (let childCourse of courseChildrenWithChaptersAndSessions) {
           for (let chapter of childCourse.chapters) {
             chapter.position = position
-            sidebarCourse.chapters.push(chapter)
+            course.chapters.push(chapter)
             position++
           }
         }
@@ -104,7 +104,7 @@ export const getCourseChaptersUserProgress = async (
     }
  
 
-    return { course: sidebarCourse, error: null }
+    return { course, error: null }
   } catch (error: any) {
     console.log("[getCourseChaptersUserProgress]", error)
     return { course: null, error }

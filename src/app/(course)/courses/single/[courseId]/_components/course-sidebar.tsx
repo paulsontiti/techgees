@@ -6,10 +6,14 @@ import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
-import { Course } from "@prisma/client";
+import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
+import ErrorPage from "@/components/error";
+import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
+import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 export type CourseSidebarProps = {
-  course: Course //CourseChaptersUserProgressType | null;
+  course: CourseChaptersUserProgressType;
   progressPercentage: number;
   purchasePercentage: number;
   paidPositions:number[],
@@ -18,13 +22,13 @@ export type CourseSidebarProps = {
   hasRated:boolean,
 };
 
-function CourseSidebar({
+async function CourseSidebar({
   course,
   progressPercentage,
   purchasePercentage,hasDisLiked,hasLiked,hasRated,paidPositions
 }: CourseSidebarProps) {
   
-
+const userId = await getUserCookie() ?? "";
 
 
   return (
@@ -46,27 +50,27 @@ function CourseSidebar({
 
         </div>
       </div>
-      {/* <div className="flex flex-col w-full">
-        {course.chapters.map((chapter) => {
-          // const { progressPercentage, error } = await getChapterProgress(
-          //   userId,
-          //   chapter.id
-          // );
+      <div className="flex flex-col w-full">
+        {course.chapters.map(async(chapter) => {
+          const { progressPercentage:chapterProgressPercentage, error } = await getChapterProgress(
+            userId,
+            chapter.id
+          );
 
-          // if (error)
-          //   return <ErrorPage name={error.name} key={error.name} />;
+          if (error)
+            return <ErrorPage name={error.name} key={error.name} />;
 
           const chapterPaidFor = paidPositions.indexOf(chapter.position);
 
-          // const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
-          // if (previousError)
-          //   return <ErrorPage name={previousError.name} key={previousError.name} />;
+          const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
+          if (previousError)
+            return <ErrorPage name={previousError.name} key={previousError.name} />;
 
-          // //get previous chapter user progress
-          // const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-          //   await getUserChapterProgress(userId, previousChapter?.id ?? "")
-          // if (progressError)
-          //   return <ErrorPage name={progressError.name} key={progressError.name} />;
+          //get previous chapter user progress
+          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+            await getUserChapterProgress(userId, previousChapter?.id ?? "")
+          if (progressError)
+            return <ErrorPage name={progressError.name} key={progressError.name} />;
 
 
           return (
@@ -77,18 +81,18 @@ function CourseSidebar({
               isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
               courseId={course.id}
               isLocked={
-                (chapter.previousChapter && !chapter.previousUserChapterProgress?.isCompleted) ||
+                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
                 ((!chapter.isPublished || !chapter.isFree)
                   && chapterPaidFor < 0)
               }
               sessions={chapter.sessions ?? []}
-              chapterProgress={chapter.chapterProgressPercentage ?? 0}
-              previousUserChapterProgress={chapter.previousUserChapterProgress}
-              prviousChapter={chapter.previousChapter}
+              chapterProgress={chapterProgressPercentage ?? 0}
+              previousUserChapterProgress={previousUserChapterProgress}
+              prviousChapter={previousChapter}
             />
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }

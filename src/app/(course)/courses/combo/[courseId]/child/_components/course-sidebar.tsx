@@ -4,6 +4,11 @@ import { Chapter, Course, Session, UserProgress } from "@prisma/client";
 
 import BackButton from "@/components/back-button";
 import { ChapterAccordion } from "./chapter-accordion";
+import { getChapterProgress } from "../../../../../../../../actions/getChapterProgress";
+import { getPreviousChapter } from "../../../../../../../../actions/getPreviousChapter";
+import ErrorPage from "@/components/error";
+import { getUserChapterProgress } from "../../../../../../../../actions/getUserChapterProgress";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 type CourseSidebarProps = {
   course: Course;
@@ -15,17 +20,16 @@ type CourseSidebarProps = {
 
 export type SidebarChapter = Chapter & {
   sessions: Session[],
-  chapterProgressPercentage:number | null
-  userProgresses: UserProgress[],previousChapter:Chapter | null,
-          previousUserChapterProgress:UserProgress | null
+  userProgresses: UserProgress[]
 
 }
 
- function CourseSidebar({
+ async function CourseSidebar({
   course, chapters,
   progressPercentage, parentId
 }: CourseSidebarProps) {
 
+  const userId = await getUserCookie() ?? "";
 
   return (
     <div className="h-[70vh] mt-4 border-r flex flex-col overflow-y-auto shadow-sm bg-white">
@@ -43,24 +47,24 @@ export type SidebarChapter = Chapter & {
         </div>
       </div>
       <div className="flex flex-col w-full">
-        {chapters.map((chapter) => {
-          // const { progressPercentage, error } = await getChapterProgress(
-          //   userId,
-          //   chapter.id
-          // );
+        {chapters.map(async(chapter) => {
+          const { progressPercentage:chapterProgressPercentage, error } = await getChapterProgress(
+            userId,
+            chapter.id
+          );
 
-          // if (error)
-          //   return <ErrorPage name={error.name} key={error.name} />;
+          if (error)
+            return <ErrorPage name={error.name} key={error.name} />;
 
-          // const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
-          // if (previousError)
-          //   return <ErrorPage name={previousError.name} key={previousError.name} />;
+          const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
+          if (previousError)
+            return <ErrorPage name={previousError.name} key={previousError.name} />;
 
-          // //get previous chapter user progress
-          // const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-          //   await getUserChapterProgress(userId, previousChapter?.id ?? "")
-          // if (progressError)
-          //   return <ErrorPage name={progressError.name} key={progressError.name} />;
+          //get previous chapter user progress
+          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+            await getUserChapterProgress(userId, previousChapter?.id ?? "")
+          if (progressError)
+            return <ErrorPage name={progressError.name} key={progressError.name} />;
 
 
           return (
@@ -72,13 +76,13 @@ export type SidebarChapter = Chapter & {
               courseId={course.id}
               parentId={parentId}
               isLocked={
-                (chapter.previousChapter && !chapter.previousUserChapterProgress?.isCompleted) ||
+                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
                 !chapter.isPublished
               }
               sessions={chapter.sessions ?? []}
-              chapterProgress={chapter.chapterProgressPercentage ?? 0}
-              previousUserChapterProgress={chapter.previousUserChapterProgress}
-              prviousChapter={chapter.previousChapter}
+              chapterProgress={chapterProgressPercentage ?? 0}
+              previousUserChapterProgress={previousUserChapterProgress}
+              prviousChapter={previousChapter}
             />
           );
         })}
