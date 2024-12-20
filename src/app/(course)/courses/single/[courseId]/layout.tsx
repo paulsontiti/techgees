@@ -23,13 +23,13 @@ async function CourseLayout({
   const userId = await getUserCookie();
   if (!userId) return redirect("/sign-in");
 
-  const { course, error: courseError } = await getCourseChaptersUserProgress(
-    userId,
-    courseId
-  );
+  // const { course, error: courseError } = await getCourseChaptersUserProgress(
+  //   userId,
+  //   courseId
+  // );
 
-  if (courseError) return <ErrorPage name={courseError.name} />;
-  if (!course) return redirect("/");
+  // if (courseError) return <ErrorPage name={courseError.name} />;
+  // if (!course) return redirect("/");
 
   // const { progressPercentage, error } = await getCourseProgress(
   //   userId,
