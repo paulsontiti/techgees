@@ -4,13 +4,20 @@ import CourseProgress from "@/components/course-progress";
 import PaymentProgress from "@/components/paymentProgress";
 import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
-import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
+import { CourseChaptersUserProgressType, getCourseChaptersUserProgress } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
 import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
 import ErrorPage from "@/components/error";
 import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
 import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
 import { getUserCookie } from "@/lib/get-user-cookie";
+import { redirect } from "next/navigation";
+import { getCourseProgress } from "../../../../../../../actions/getCourseProgress";
+import { getPurchasePercentage } from "../../../../../../../actions/getPurchasePercentage";
+import { getPaidChapterPositions } from "../../../../../../../actions/getPaidChapterPositions";
+import { hasLikedCourse } from "../../../../../../../actions/hasLikedCourse";
+import { hasDisLikedCourse } from "../../../../../../../actions/hasDisLikedCourse";
+import { hasRatedCourse } from "../../../../../../../actions/hasRatedCourse";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -23,12 +30,54 @@ export type CourseSidebarProps = {
 };
 
 async function CourseSidebar({
-  course,
-  progressPercentage,
-  purchasePercentage,hasDisLiked,hasLiked,hasRated,paidPositions
-}: CourseSidebarProps) {
+  courseId,
+}: {courseId:string}) {
   
 const userId = await getUserCookie() ?? "";
+const { course, error: courseError } = await getCourseChaptersUserProgress(
+  userId,
+  courseId
+);
+
+if (courseError) return <ErrorPage name={courseError.name} />;
+if (!course) return redirect("/");
+
+  const { progressPercentage, error } = await getCourseProgress(
+    userId,
+    courseId
+  );
+  if (error) return <ErrorPage name={error.name} />;
+
+
+
+  const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
+  if (purschaseError) return <ErrorPage name={purschaseError.name} />;
+
+const { paidPositions, error:paidPositionError } = await getPaidChapterPositions(
+  courseId,
+  purchasePercentage
+);
+if (paidPositionError) return <ErrorPage name={paidPositionError.name} />;
+
+const { hasLiked, error: hasLikedError } = await hasLikedCourse(
+  courseId,
+  userId
+);
+if (hasLikedError)
+  return <ErrorPage name={hasLikedError.name} />;
+
+const { hasDisLiked, error: hasDisLikedError } = await hasDisLikedCourse(
+  courseId,
+  userId
+);
+if (hasDisLikedError)
+  return <ErrorPage name={hasDisLikedError.name} />;
+
+const { hasRated, error: ratedError } = await hasRatedCourse(
+  courseId,
+  userId
+);
+if (ratedError) return <ErrorPage name={ratedError.name} />;
 
 
   return (
@@ -46,7 +95,7 @@ const userId = await getUserCookie() ?? "";
         </div>
         {!course.isFree && <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!} />}
         <div className="mt-10">
-          <CourseProgress variant="success" value={progressPercentage} />
+          <CourseProgress variant="success" value={progressPercentage ?? 0} />
 
         </div>
       </div>

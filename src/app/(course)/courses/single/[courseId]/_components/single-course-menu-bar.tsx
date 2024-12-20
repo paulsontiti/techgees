@@ -6,9 +6,8 @@ import CourseSidebar, { CourseSidebarProps } from './course-sidebar'
 import { useSheetStore } from '../../../../../../../store/sheet-store'
 
 
-function SingleCourseMenuBar({course,progressPercentage,purchasePercentage,
-    hasDisLiked,hasLiked,hasRated,paidPositions
-}:CourseSidebarProps) {
+function SingleCourseMenuBar({courseId,
+}:{courseId:string}) {
 
   return (
     <Sheet>
@@ -19,13 +18,8 @@ md:hidden pr-4 hover:opacity-75 transition'>
     <SheetContent side="left" className='
 p-0 bg-white w-11/12'>
         <CourseSidebar
-            progressPercentage={progressPercentage}
-            purchasePercentage={purchasePercentage}
-            course={course}
-            paidPositions={paidPositions}
-            hasDisLiked={hasDisLiked}
-            hasLiked={hasLiked}
-            hasRated={hasRated}
+            
+            courseId={courseId}
             />
     </SheetContent>
 </Sheet>

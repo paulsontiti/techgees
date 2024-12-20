@@ -1,19 +1,9 @@
 import React from 'react'
 import { NavbarRoutes } from '@/components/navbar-routes'
-import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress'
-import { bgPrimaryColor } from '@/utils/colors'
 import { getUserCookie } from '@/lib/get-user-cookie'
 import CourseMobileSidebar from './course-mobile-sidebar'
-import { getCourseProgress } from '../../../../../../../actions/getCourseProgress'
-import { getPurchasePercentage } from '../../../../../../../actions/getPurchasePercentage'
-import ErrorPage from '@/components/error'
 import { redirect } from 'next/navigation'
-type CourseNavbarProps = {
-  course: CourseChaptersUserProgressType | null,
-  progressPercentage: number,
-  purchasePercentage: number
-
-}
+import { bgPrimaryColor } from '@/utils/colors'
 
 async function CourseNavbar({
   courseId

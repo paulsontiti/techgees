@@ -67,17 +67,11 @@ async function CourseLayout({
         />
       </div>
       <div className="flex mt-10 justify-center">
-      {/* <div className="hidden max-h-[100vh]  md:flex w-1/3 flex-col inset-y-0 z-50">
+      <div className="hidden max-h-[100vh]  md:flex w-1/3 flex-col inset-y-0 z-50">
         <CourseSidebar
-          course={course}
-          progressPercentage={progressPercentage ?? 0}
-          purchasePercentage={purchasePercentage}
-          paidPositions={paidPositions}
-          hasDisLiked={hasDisLiked}
-          hasLiked={hasLiked}
-          hasRated={hasRated}
+          courseId={courseId}
         />
-      </div> */}
+      </div>
       <div className="px-4 md:w-2/3">
         {children}
         </div>

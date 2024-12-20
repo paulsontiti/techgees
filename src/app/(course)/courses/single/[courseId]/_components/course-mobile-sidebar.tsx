@@ -66,14 +66,7 @@ import { getPurchasePercentage } from '../../../../../../../actions/getPurchaseP
   if (ratedError) return <ErrorPage name={ratedError.name} />;
     return (
        <SingleCourseMenuBar
-       progressPercentage={progressPercentage ?? 0}
-       purchasePercentage={purchasePercentage ?? 0}
-       course={course}
-       paidPositions={paidPositions}
-       hasDisLiked={hasDisLiked}
-       hasLiked={hasLiked}
-       hasRated={hasRated}
-       />
+       courseId={courseId}/>
     )
 }
 
