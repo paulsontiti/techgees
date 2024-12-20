@@ -13,9 +13,8 @@ export default async function Home() {
 
     const {achevements,error} = await getAchievements();
 
-
+  
     return <div className="bg-[#EFF6FF]">
-
 
     <WelcomeMessage />
    

@@ -1,13 +1,13 @@
 import { db } from "@/lib/db"
 import { verifyPassword } from "@/lib/verify-password";
 import { NextResponse } from "next/server"
+import DeviceDetector from "node-device-detector";
 
 export async function POST(req: Request) {
 
     try {
 
-
-
+        
         const { email, password } = await req.json();
 
         //check if user exists

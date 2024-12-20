@@ -16,7 +16,7 @@ function StartFreeClassButton({courseId}:{
     <Button
     onClick={() => {
       setLoading(true)
-      router.push(`${courseId ? "/courses/${courseId}" : "/courses/free"}`) 
+      router.push(`${courseId ? `/courses/${courseId}` : "/courses/free"}`) 
     }}
     variant="secondary"
     className="mb-8 w-full  md:w-[250px] h-12 rounded-full flex 
