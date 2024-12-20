@@ -31,16 +31,16 @@ async function CourseLayout({
   if (courseError) return <ErrorPage name={courseError.name} />;
   if (!course) return redirect("/");
 
-  const { progressPercentage, error } = await getCourseProgress(
-    userId,
-    courseId
-  );
-  if (error) return <ErrorPage name={error.name} />;
+  // const { progressPercentage, error } = await getCourseProgress(
+  //   userId,
+  //   courseId
+  // );
+  // if (error) return <ErrorPage name={error.name} />;
 
 
 
-  const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
-  if (purschaseError) return <ErrorPage name={purschaseError.name} />;
+  // const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
+  // if (purschaseError) return <ErrorPage name={purschaseError.name} />;
  
 
   // const { paidPositions, error:paidError } = await getPaidChapterPositions(
@@ -74,8 +74,8 @@ async function CourseLayout({
       <div>
         <CourseNavbar
           course={course}
-          progressPercentage={progressPercentage ?? 0}
-          purchasePercentage={purchasePercentage}
+          progressPercentage={0}//progressPercentage ?? 0}
+          purchasePercentage={0}//purchasePercentage}
         />
       </div>
       <div className="flex mt-10 justify-center">
