@@ -6,9 +6,10 @@ import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
+import { Course } from "@prisma/client";
 
 export type CourseSidebarProps = {
-  course: CourseChaptersUserProgressType;
+  course: Course //CourseChaptersUserProgressType | null;
   progressPercentage: number;
   purchasePercentage: number;
   paidPositions:number[],
@@ -45,7 +46,7 @@ function CourseSidebar({
 
         </div>
       </div>
-      <div className="flex flex-col w-full">
+      {/* <div className="flex flex-col w-full">
         {course.chapters.map((chapter) => {
           // const { progressPercentage, error } = await getChapterProgress(
           //   userId,
@@ -87,7 +88,7 @@ function CourseSidebar({
             />
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }

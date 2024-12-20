@@ -10,6 +10,7 @@ import { hasRatedCourse } from '../../../../../../../actions/hasRatedCourse'
 import SingleCourseMenuBar from './single-course-menu-bar'
 import { getCourseProgress } from '../../../../../../../actions/getCourseProgress'
 import { getPurchasePercentage } from '../../../../../../../actions/getPurchasePercentage'
+import { getCourse } from '../../../../../../../actions/getCourse'
 
 
 type CourseMobileSidebarProps = {
@@ -24,10 +25,11 @@ type CourseMobileSidebarProps = {
 
 
 
-    const { course, error: courseError } = await getCourseChaptersUserProgress(
-    userId,
-    courseId
-  );
+    const { course, error: courseError } = await getCourse(courseId);
+  //    getCourseChaptersUserProgress(
+  //   userId,
+  //   courseId
+  // );
 
   if (courseError) return <ErrorPage name={courseError.name} />;
   if (!course) return redirect("/");
