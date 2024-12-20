@@ -31,17 +31,7 @@ async function CourseLayout({
   // if (courseError) return <ErrorPage name={courseError.name} />;
   // if (!course) return redirect("/");
 
-  // const { progressPercentage, error } = await getCourseProgress(
-  //   userId,
-  //   courseId
-  // );
-  // if (error) return <ErrorPage name={error.name} />;
 
-
-
-  // const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
-  // if (purschaseError) return <ErrorPage name={purschaseError.name} />;
- 
 
   // const { paidPositions, error:paidError } = await getPaidChapterPositions(
   //   course.id!,
@@ -73,9 +63,7 @@ async function CourseLayout({
     <div>
       <div>
         <CourseNavbar
-          course={null}
-          progressPercentage={0}//progressPercentage ?? 0}
-          purchasePercentage={0}//purchasePercentage}
+          courseId={courseId}
         />
       </div>
       <div className="flex mt-10 justify-center">
