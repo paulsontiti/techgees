@@ -73,7 +73,7 @@ async function CourseLayout({
     <div>
       <div>
         <CourseNavbar
-          course={course}
+          course={null}
           progressPercentage={0}//progressPercentage ?? 0}
           purchasePercentage={0}//purchasePercentage}
         />
