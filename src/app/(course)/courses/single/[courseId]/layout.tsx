@@ -20,27 +20,27 @@ async function CourseLayout({
   children: React.ReactNode;
   params: { courseId: string }
 }) {
-  // const userId = await getUserCookie();
-  // if (!userId) return redirect("/sign-in");
+  const userId = await getUserCookie();
+  if (!userId) return redirect("/sign-in");
 
-  // const { course, error: courseError } = await getCourseChaptersUserProgress(
-  //   userId,
-  //   courseId
-  // );
+  const { course, error: courseError } = await getCourseChaptersUserProgress(
+    userId,
+    courseId
+  );
 
-  // if (courseError) return <ErrorPage name={courseError.name} />;
-  // if (!course) return redirect("/");
+  if (courseError) return <ErrorPage name={courseError.name} />;
+  if (!course) return redirect("/");
 
-  // const { progressPercentage, error } = await getCourseProgress(
-  //   userId,
-  //   courseId
-  // );
-  // if (error) return <ErrorPage name={error.name} />;
+  const { progressPercentage, error } = await getCourseProgress(
+    userId,
+    courseId
+  );
+  if (error) return <ErrorPage name={error.name} />;
 
 
 
-  // const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
-  // if (purschaseError) return <ErrorPage name={purschaseError.name} />;
+  const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
+  if (purschaseError) return <ErrorPage name={purschaseError.name} />;
  
 
   // const { paidPositions, error:paidError } = await getPaidChapterPositions(
@@ -71,13 +71,13 @@ async function CourseLayout({
 
   return (
     <div>
-      {/* <div>
+      <div>
         <CourseNavbar
           course={course}
           progressPercentage={progressPercentage ?? 0}
           purchasePercentage={purchasePercentage}
         />
-      </div> */}
+      </div>
       <div className="flex mt-10 justify-center">
       {/* <div className="hidden max-h-[100vh]  md:flex w-1/3 flex-col inset-y-0 z-50">
         <CourseSidebar
