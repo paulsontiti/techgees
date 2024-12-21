@@ -20,11 +20,11 @@ export default async function Home() {
 //    mac(function (err, addr) {
 //       macAddr = addr || ""; // '78:ca:39:b0:e6:7d'
 //     });
-const res = await fetch("https://api.ipify.org/?format=json")
-const ip = await res.json();
+// 
+
 
     return <div className="bg-[#EFF6FF]">
-        <p>{ip.ip}</p>
+ 
 
     <WelcomeMessage />
    
