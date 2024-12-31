@@ -15,6 +15,7 @@ import {
 import { Chapter, Session, UserProgress } from "@prisma/client";
 import Banner from "@/components/banner";
 import { useSheetStore } from "../../../../../../../store/sheet-store";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -89,7 +90,10 @@ export function ChapterAccordion({
         <AccordionContent className="ml-16">
           <div>
             <div className="w-full flex flex-col gap-y-2">
-              {prviousChapter && !previousUserChapterProgress && <Banner label="Previous chapter is not completed " />}
+              {prviousChapter && !previousUserChapterProgress && <>
+              {previousUserChapterProgress === undefined ? <Skeleton className="w-full"/> :
+              <Banner label="Previous chapter is not completed " />}
+              </>}
               <CourseProgress value={chapterProgress} variant="success" />
             </div>
             {sessions.map((session) => {

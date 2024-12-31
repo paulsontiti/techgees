@@ -1,16 +1,14 @@
-
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import CourseProgress from "@/components/course-progress";
 import PaymentProgress from "@/components/paymentProgress";
 import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
-import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
-import ErrorPage from "@/components/error";
-import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
-import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
-import { getUserCookie } from "@/lib/get-user-cookie";
+import axios from "axios";
+import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-sidebar";
+
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
   progressPercentage: number;
@@ -21,11 +19,11 @@ export type CourseSidebarProps = {
   hasRated:boolean
 };
 
-async function CourseSidebar({
+ function SingleCourseMobileSidebar({
   course,paidPositions,progressPercentage,purchasePercentage,hasDisLiked,hasLiked,hasRated
 }: CourseSidebarProps) {
   
-const userId = await getUserCookie() ?? "";
+
 
 
   return (
@@ -47,28 +45,55 @@ const userId = await getUserCookie() ?? "";
 
         </div>
       </div>
-      <div className="flex flex-col w-full">
-        {course.chapters.map(async(chapter) => {
-          const { progressPercentage:chapterProgressPercentage, error } = await getChapterProgress(
-            userId,
-            chapter.id
-          );
+    {course.chapters.map((chapter)=>(
+        <ChapterAndsessions chapter={chapter} paidPositions={paidPositions} key={chapter.id}/>
+    ))}
+    </div>
+  );
+}
 
-          if (error)
-            return <ErrorPage name={error.name} key={error.name} />;
+export default SingleCourseMobileSidebar;
+
+const ChapterAndsessions = ({chapter,paidPositions}:{chapter:SidebarChapter, paidPositions:number[]})=>{
+
+    
+      
+       const [chapterProgressPercentage,setChapterProgressPercentage] = useState<any>(undefined);
+       const [previousChapter,setPreviousChapter] = useState<any>(undefined);
+       const [previousUserChapterProgress,setPreviousUserChapterProgress] = useState<any>(undefined);
+  
+              //get chapter progress percentage
+            useEffect(()=>{
+              (
+                  async()=>{
+                      const res = await axios.get(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/progress`);
+                      setChapterProgressPercentage(res.data);
+                  }
+              )()
+            },[])
+  
+               //get previous chapter
+               useEffect(()=>{
+                  (
+                      async()=>{
+                          const res = await axios.get(`/api/courses/${chapter.courseId}}/chapters/${chapter.id}/previous-chapter`);
+                          setPreviousChapter(res.data);
+                        
+                      }
+                  )()
+                },[])
+  
+                 //get previous chapter progress
+               useEffect(()=>{
+                  (
+                      async()=>{
+                          const res = await axios.get(`/api/courses/${chapter.courseId}}/chapters/${chapter.id}/previous-chapter-progress`);
+                          setPreviousUserChapterProgress(res.data);
+                      }
+                  )()
+                },[])
 
           const chapterPaidFor = paidPositions.indexOf(chapter.position);
-
-          const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
-          if (previousError)
-            return <ErrorPage name={previousError.name} key={previousError.name} />;
-
-          //get previous chapter user progress
-          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-            await getUserChapterProgress(userId, previousChapter?.id ?? "")
-          if (progressError)
-            return <ErrorPage name={progressError.name} key={progressError.name} />;
-
 
           return (
             <ChapterAccordion
@@ -76,7 +101,7 @@ const userId = await getUserCookie() ?? "";
               id={chapter.id}
               title={chapter.title}
               isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
-              courseId={course.id}
+              courseId={chapter.courseId}
               isLocked={
                 (previousChapter && !previousUserChapterProgress?.isCompleted) ||
                 ((!chapter.isPublished || !chapter.isFree)
@@ -88,10 +113,5 @@ const userId = await getUserCookie() ?? "";
               prviousChapter={previousChapter}
             />
           );
-        })}
-      </div>
-    </div>
-  );
+       
 }
-
-export default CourseSidebar;

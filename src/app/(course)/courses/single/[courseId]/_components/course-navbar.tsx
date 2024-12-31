@@ -18,7 +18,6 @@ async function CourseNavbar({
      text-white ${bgPrimaryColor} shadow-sm`}>
       <CourseMobileSidebar
         courseId={courseId}
-        userId={userId}
       />
       <NavbarRoutes userId={userId ?? ""} />
     </div>

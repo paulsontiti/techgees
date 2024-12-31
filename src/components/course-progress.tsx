@@ -2,6 +2,7 @@
 import React from 'react'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
+import { Skeleton } from './ui/skeleton'
 
 const colorByVariant = {
     default: "text-sky-700",
@@ -20,6 +21,7 @@ function CourseProgress({
     value: number,
     size?: "default" | "sm"
 }) {
+    if(value === undefined) return <Skeleton className='w-full'/>
     return (
             <div>
                 <Progress
