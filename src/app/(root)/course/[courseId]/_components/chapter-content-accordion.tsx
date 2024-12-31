@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/accordion";
 import { Chapter, Session } from "@prisma/client";
 import { BookOpen, Video } from "lucide-react";
-import Link from "next/link";
 import { StatInfoDialog } from "./stat-info-dialog";
 import { getChapterCommentsCount } from "../../../../../../actions/getChapterCommentsCount";
 import Banner from "@/components/banner";
@@ -15,7 +14,7 @@ import { getChapterLikesCount } from "../../../../../../actions/getChapterLikesC
 import { getChapterDisLikesCount } from "../../../../../../actions/getChapterDisLikesCount";
 import { getChapterNumberOfRatings } from "../../../../../../actions/getChapterNumberOfRatings";
 import { getChapterStudentsCount } from "../../../../../../actions/getChapterStudentsCount";
-import { bgNeutralColor2, bgPrimaryColor, textPrimaryColor } from "@/utils/colors";
+import { bgNeutralColor2, textPrimaryColor } from "@/utils/colors";
 
 export async function ChapterContentAccordion({
   chapter,

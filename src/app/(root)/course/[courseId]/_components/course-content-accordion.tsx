@@ -1,26 +1,22 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Chapter, Course, Session } from "@prisma/client";
-import { ChapterContentAccordion } from "./chapter-content-accordion";
+
 import Link from "next/link";
-import { bgNeutralColor, bgNeutralColor2, bgPrimaryColor, bgSecondaryColor, textPrimaryColor } from "@/utils/colors";
+import { bgNeutralColor, textPrimaryColor } from "@/utils/colors";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { getCourseChaptersTitle } from "../../../../../../actions/getCourseChaptersTitle";
+import ErrorPage from "@/components/error";
 
 
 export async function CourseContentAccordion({
-  course,
+  courseId,courseTitle
 }: {
-  course: Course & {
-    chapters: (Chapter & {
-      sessions: Session[];
-    })[]
-  }
+  courseId:string,courseTitle:string
 }) {
 
+  const {chapterTitles,error} = await getCourseChaptersTitle(courseId);
+  if(error) return <ErrorPage name={error.name}/>
+
   return (
+ 
     <Accordion
       type="single"
       collapsible
@@ -28,18 +24,13 @@ export async function CourseContentAccordion({
     >
       <AccordionItem value="item-1">
         <AccordionTrigger className="px-2">
-          <div className="flex items-center justify-start w-full">
-            <span className="w-8/12 text-sm  text-left">{course.title}</span>
-            <Link className={`${bgNeutralColor} p-2 rounded-xl`} href={`/course/${course.id}`}>More info</Link>
-          </div>
+        <Link href={`/course/${courseId}`}>{courseTitle}</Link>
         </AccordionTrigger>
         <AccordionContent>
           <div>
-            {course.chapters.map((chapter) => {
-              return (
-                <ChapterContentAccordion chapter={chapter} key={chapter.id} />
-              );
-            })}
+           {chapterTitles?.map((title)=>(
+            <div key={title} className={`${bgNeutralColor} p-2 m-2`}>{title}</div>
+           ))}
           </div>
         </AccordionContent>
       </AccordionItem>

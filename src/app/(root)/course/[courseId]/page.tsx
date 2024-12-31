@@ -21,7 +21,7 @@ import { getCourseLikesCount } from "../../../../../actions/getCourseLikesCount"
 import { getCourseDisLikesCount } from "../../../../../actions/getCourseDisLikesCount";
 
 import EnrollButton from "./_components/enroll-button";
-import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
+import { getCourseWithCourseChildren } from "../../../../../actions/getCourseWithCourseChildrenWithChapters";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 import CourseWelcomeMessage from "./_components/course-welcome-message";
 
@@ -53,7 +53,7 @@ async function CourseIdPage({
 
   if (!course) return null
 
-  const { courseChildrenWithChaptersAndSessions, error: comboError } = await getCourseWithCourseChildrenWithChaptersAndSessions(
+  const { courseChildren, error: comboError } = await getCourseWithCourseChildren(
     courseId
   );
   if (comboError) return <Banner variant="error" label={comboError.message} />;
@@ -104,35 +104,35 @@ async function CourseIdPage({
   const { startedCourse, error } = await hasStartedACourse(userId,course.id)
   if (error) return <ErrorPage name={error.name} />
 
-  let chaptersLength = 0;
-  let sessionslength = 0;
-  let duration = 0;
+  // let chaptersLength = 0;
+  // let sessionslength = 0;
+  // let duration = 0;
 
-  if (course !== null) {
-    if (courseChildrenWithChaptersAndSessions.length > 0) {
-      courseChildrenWithChaptersAndSessions.map((child) => {
-        chaptersLength += child.chapters.length;
-        child.chapters.map((chapter) => {
-          chapter.sessions.map((session) => {
-            sessionslength++;
-            duration += session.videoDuration ?? 0;
-          });
-        });
-      });
-    } else {
-      const chapters = course.chapters.map((courseChapter) => courseChapter);
-      chaptersLength = course?.chapters.length ?? 0;
+  // if (course !== null) {
+  //   if (courseChildrenWithChaptersAndSessions.length > 0) {
+  //     courseChildrenWithChaptersAndSessions.map((child) => {
+  //       chaptersLength += child.chapters.length;
+  //       child.chapters.map((chapter) => {
+  //         chapter.sessions.map((session) => {
+  //           sessionslength++;
+  //           duration += session.videoDuration ?? 0;
+  //         });
+  //       });
+  //     });
+  //   } else {
+  //     const chapters = course.chapters.map((courseChapter) => courseChapter);
+  //     chaptersLength = course?.chapters.length ?? 0;
 
-      chapters.map((chapter) => {
-        chapter.sessions.map((session) => {
-          sessionslength++;
-          duration += session.videoDuration ?? 0;
-        });
-      });
+  //     chapters.map((chapter) => {
+  //       chapter.sessions.map((session) => {
+  //         sessionslength++;
+  //         duration += session.videoDuration ?? 0;
+  //       });
+  //     });
 
 
-    }
-  }
+  //   }
+  // }
 
 
   return <>
@@ -197,10 +197,10 @@ async function CourseIdPage({
 
         </div>
         {
-          courseChildrenWithChaptersAndSessions.length > 0 ?
-            courseChildrenWithChaptersAndSessions.map((course, index) => {
+          courseChildren.length > 0 ?
+          courseChildren.map((course, index) => {
 
-              return <CourseContentAccordion course={course} key={index} />
+              return <CourseContentAccordion courseId={course.id} courseTitle={course.title} key={index} />
             })
             :
             course?.chapters.map((chapter) => {

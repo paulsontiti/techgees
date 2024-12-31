@@ -37,18 +37,18 @@ function CommentItem({ comment }: { comment: Comment }) {
     );
 
   //get the initiials of the names
-  const firstNameInitials = `${user.firstName ? user.firstName.slice(0) : ""}`
-  const secondNameInitials = `${user.lastName ? user.lastName.slice(0) : ""}`
+  const firstNameInitials = `${user.firstName ? user.firstName.slice(0) : "T"}`
+  const secondNameInitials = `${user.lastName ? user.lastName.slice(0) : "G"}`
 
   return (
-    <div className=" mb-4 bg-slate-100 p-2" >
+    <div className=" mb-4 bg-white p-2" >
       <div className="flex items-center gap-x-2">
         <UserDp
           imgUrl={user.imageUrl ?? ""}
           initials={`${firstNameInitials}${secondNameInitials}`}
         />
         <p className="text-sm font-semibold">
-          {`${user.firstName} ${user.lastName}`}
+          {user.firstName ? `${user.firstName} ${user.lastName}` : "Anonymous"}
         </p>
 
       </div>

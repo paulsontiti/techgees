@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { getCourseWithCourseChildrenWithChaptersAndSessions } from "./getCourseWithCourseChildrenWithChapters";
+import { getCourseWithCourseChildren } from "./getCourseWithCourseChildrenWithChapters";
+import { getCourseChapters } from "./getCourseChapters";
 
 interface ReturnValue {
     progressPercentage: number | null,
@@ -11,12 +12,14 @@ export const getCourseProgress = async (userId: string, courseId: string):
     try {
         let publishedChapters: { id: string }[] = []
 
-        const { courseChildrenWithChaptersAndSessions, error } = await getCourseWithCourseChildrenWithChaptersAndSessions(courseId)
+        const { courseChildren, error } = await getCourseWithCourseChildren(courseId)
         if (error) throw new Error(error.message)
 
-        if (courseChildrenWithChaptersAndSessions.length > 0) {
-            for (let childCourse of courseChildrenWithChaptersAndSessions) {
-                for (let chapter of childCourse.chapters) {
+        if (courseChildren.length > 0) {
+            for (let childCourse of courseChildren) {
+                const {chapters,error} = await getCourseChapters(childCourse.id)
+                if(error)    return { progressPercentage: null, error }
+                for (let chapter of chapters) {
                     publishedChapters.push(
                         { id: chapter.id })
                 }

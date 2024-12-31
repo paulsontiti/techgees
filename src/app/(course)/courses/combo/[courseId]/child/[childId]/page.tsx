@@ -21,7 +21,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
 import { getCourseCategoriesByCourseId } from "../../../../../../../../actions/getCourseCategoriesByCourseId";
 import { getCourse } from "../../../../../../../../actions/getCourse";
-import { getCourseWithCourseChildrenWithChaptersAndSessions } from "../../../../../../../../actions/getCourseWithCourseChildrenWithChapters";
+import { getCourseWithCourseChildren } from "../../../../../../../../actions/getCourseWithCourseChildrenWithChapters";
 import { getCoursePrerequisiteWithIdAndTitle } from "../../../../../../../../actions/getCoursePrerequisite";
 import { getCourseRecommendedCourses } from "../../../../../../../../actions/getCourseRecommendedCourses";
 import { getCountOfPaymentByCourseId } from "../../../../../../../../actions/getCountOfPaymentByCourseId";
@@ -32,6 +32,8 @@ import { getCourseLikesCount } from "../../../../../../../../actions/getCourseLi
 import { getCourseDisLikesCount } from "../../../../../../../../actions/getCourseDisLikesCount";
 import StatInfo from "@/app/(root)/course/[courseId]/_components/stat-info";
 import { Preview } from "@/components/preview";
+import { getCourseChapters } from "../../../../../../../../actions/getCourseChapters";
+import { getChaptersSessions } from "../../../../../../../../actions/getChapterSessions";
 
 
 export type CategoryCourseType = {
@@ -55,8 +57,8 @@ async function CourseIdPage({
 
   if (!course) return null
 
-  const { courseChildrenWithChaptersAndSessions, error: comboError } =
-    await getCourseWithCourseChildrenWithChaptersAndSessions(
+  const { courseChildren, error: comboError } =
+    await getCourseWithCourseChildren(
       childId
     );
   if (comboError) return <Banner variant="error" label={comboError.message} />;
@@ -109,11 +111,13 @@ async function CourseIdPage({
   let duration = 0;
 
   if (course !== null) {
-    if (courseChildrenWithChaptersAndSessions.length > 0) {
-      courseChildrenWithChaptersAndSessions.map((child) => {
-        chaptersLength += child.chapters.length;
-        child.chapters.map((chapter) => {
-          chapter.sessions.map((session) => {
+    if (courseChildren.length > 0) {
+      courseChildren.map(async (child) => {
+        const {chapters} = await getCourseChapters(child.id);
+        chaptersLength = chapters.length;
+        chapters.map(async(chapter) => {
+          const {sessions} = await getChaptersSessions(chapter.id);
+          sessions.map((session) => {
             sessionslength++;
             duration += session.videoDuration ?? 0;
           });
@@ -226,9 +230,9 @@ async function CourseIdPage({
         <div className="mt-8">
           <h1 className="text-xl font-bold">Course content</h1>
           <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
-            {courseChildrenWithChaptersAndSessions.length > 0 && (
+            {courseChildren.length > 0 && (
               <div className="flex items-center gap-x-1">
-                {courseChildrenWithChaptersAndSessions.length} courses
+                {courseChildren.length} courses
               </div>
             )}
             <div className="flex items-center gap-x-1">

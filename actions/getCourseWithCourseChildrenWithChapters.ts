@@ -1,18 +1,15 @@
 import { db } from "@/lib/db";
-import { Chapter, Course, Session } from "@prisma/client";
+import { Course } from "@prisma/client";
 
 export interface ReturnValue {
-  courseChildrenWithChaptersAndSessions: CourseType[];
+  courseChildren: Course[];
   error: Error | null;
 }
 
-type CourseType = Course &
-{chapters:(Chapter & {
-  sessions:Session[]
-})[]}
 
 
-export const getCourseWithCourseChildrenWithChaptersAndSessions = async (
+
+export const getCourseWithCourseChildren = async (
   courseId: string
 ): Promise<ReturnValue> => {
   try {
@@ -22,24 +19,15 @@ export const getCourseWithCourseChildrenWithChaptersAndSessions = async (
       },
 
       include: {
-        childCourse: {
-          
-          include:{
-            
-            chapters:{
-              include:{
-                sessions:true
-              }
-            }
-          }
-        }
-      },orderBy: {
+        childCourse: true
+      },
+      orderBy: {
         position: "asc",
       },
     });
-   const courseChildrenWithChaptersAndSessions = courseWithChildren.map((c)=> c.childCourse)
-    return { courseChildrenWithChaptersAndSessions, error: null };
+   const courseChildren = courseWithChildren.map((c)=> c.childCourse)
+    return { courseChildren, error: null };
   } catch (error: any) {
-    return { courseChildrenWithChaptersAndSessions: [], error };
+    return { courseChildren: [], error };
   }
 };

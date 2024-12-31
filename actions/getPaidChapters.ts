@@ -1,5 +1,6 @@
 
-import { getCourseWithCourseChildrenWithChaptersAndSessions } from "./getCourseWithCourseChildrenWithChapters";
+import { getCourseChapters } from "./getCourseChapters";
+import { getCourseWithCourseChildren } from "./getCourseWithCourseChildrenWithChapters";
 
 interface ReturnValue {
   paidChapters: PaidChapterType[];
@@ -16,16 +17,18 @@ export const getPaidChapters = async (
 
 
 
-    const { courseChildrenWithChaptersAndSessions, error } =
-      await getCourseWithCourseChildrenWithChaptersAndSessions(courseId)
+    const { courseChildren, error } =
+      await getCourseWithCourseChildren(courseId)
     if (error) throw new Error(error.message)
 
     let numberOfChapters = 0;
     const paidChapters: { courseId: string, numberOfChapter: number }[] = []
 
-    if (courseChildrenWithChaptersAndSessions.length > 0) {
-      for (let childCourse of courseChildrenWithChaptersAndSessions) {
-        for (let _ of childCourse.chapters) {
+    if (courseChildren.length > 0) {
+      for (let childCourse of courseChildren) {
+        const {chapters,error} = await getCourseChapters(childCourse.id);
+        if(error)    return { paidChapters: [], error };
+        for (let _ of chapters) {
 
           numberOfChapters++
         }
@@ -37,12 +40,14 @@ export const getPaidChapters = async (
     let numberOfPaidChapters = Math.floor((purchasePercentage / 100) * numberOfChapters);
 
 
-    for (let course of courseChildrenWithChaptersAndSessions) {
+    for (let course of courseChildren) {
+      const {chapters,error} = await getCourseChapters(course.id);
+      if(error)    return { paidChapters: [], error };
       if (numberOfPaidChapters > 0) {
-        if (numberOfPaidChapters >= course.chapters.length) {
-          paidChapters.push({ courseId: course.id, numberOfChapter: course.chapters.length })
-          numberOfPaidChapters = numberOfPaidChapters - course.chapters.length
-        } else if (numberOfPaidChapters < course.chapters.length) {
+        if (numberOfPaidChapters >= chapters.length) {
+          paidChapters.push({ courseId: course.id, numberOfChapter: chapters.length })
+          numberOfPaidChapters = numberOfPaidChapters - chapters.length
+        } else if (numberOfPaidChapters < chapters.length) {
           paidChapters.push({ courseId: course.id, numberOfChapter: numberOfPaidChapters })
           numberOfPaidChapters = 0
         }
