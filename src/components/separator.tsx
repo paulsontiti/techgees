@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Separator() {
+function Separator({heigth}:{heigth?:string}) {
   return (
-    <div className="h-20 border border-black"></div>
+    <div className={`${heigth || "h-20"} border border-black`}></div>
   )
 }
 

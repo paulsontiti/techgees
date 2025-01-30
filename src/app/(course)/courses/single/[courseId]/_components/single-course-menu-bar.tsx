@@ -3,11 +3,13 @@ import React from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import { useSheetStore } from '../../../../../../../store/sheet-store'
-import SingleCourseMobileSidebar, { CourseSidebarProps } from './single-course-mobile-sidebar'
+import SingleCourseMobileSidebar from './single-course-mobile-sidebar'
 
 
-function SingleCourseMenuBar({  course,paidPositions,progressPercentage,purchasePercentage,hasDisLiked,hasLiked,hasRated}
-  :CourseSidebarProps) {
+function SingleCourseMenuBar({  courseId}
+  :{courseId: string}) {
+
+ 
 
     const {openSheet,closeSheet,isOpen} = useSheetStore();
   return (
@@ -20,13 +22,7 @@ md:hidden pr-4 hover:opacity-75 transition'>
 p-0 bg-white w-11/12' onClick={closeSheet} onInteractOutside={closeSheet}>
         <SingleCourseMobileSidebar
             
-            course={course}
-            paidPositions={paidPositions}
-            progressPercentage={progressPercentage}
-            purchasePercentage={purchasePercentage}
-            hasDisLiked={hasDisLiked}
-            hasLiked={hasLiked}
-            hasRated={hasRated}
+            courseId={courseId}
             />
     </SheetContent>
 </Sheet>

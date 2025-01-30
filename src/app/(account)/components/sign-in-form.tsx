@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 import * as zod from "zod"
 import { useCurrentUser } from '../../../../store/current-user-store'
 import { bgNeutralColor, textPrimaryColor } from '@/utils/colors'
+import { Eye, EyeOff } from 'lucide-react'
 
 
 
@@ -37,6 +38,7 @@ const router = useRouter();
 const {updateUser} = useCurrentUser();
 const [isLoading,setIsLoading] = useState(false);
 const [forgotPassword,setForgotPassword] = useState(false);
+const [passwordType,setPasswordType] = useState("password");
 
     const form = useForm<zod.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
@@ -106,11 +108,27 @@ render={({field})=>{
     return   <FormItem>
           <FormLabel>Password</FormLabel>
           <FormControl>
-              <Input
+          <div className='flex items-center justify-between bg-white px-2'>
+          <Input
               disabled={isSubmitting}
               {...field}
-              type='password'
+              type={passwordType}
+              className='w-9/12 focus-visible:ring-white border-none'
               />
+             {passwordType === "password" ? 
+               <Eye className={`${textPrimaryColor} w-6 h-6`}
+               onClick={()=>{
+                 setPasswordType("text");
+               }}
+               /> :
+               <EyeOff className={`${textPrimaryColor} w-6 h-6`}
+               onClick={()=>{
+                 setPasswordType("password");
+               }}
+               /> 
+            }
+          </div>
+              
           </FormControl>
           <FormDescription>What is your password</FormDescription>
           <FormMessage/>

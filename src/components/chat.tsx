@@ -1,14 +1,31 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { MessageSquareText } from "lucide-react";
 import { bgSecondaryColor, textPrimaryColor } from "@/utils/colors";
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
-function Chat({isAStudent}:{isAStudent:boolean}) {
+function Chat() {
+const [isAStudent,setIsAStudent] = useState(false);
+
     const router = useRouter()
+
+    useEffect(()=>{
+        (
+          async()=>{
+            try{
+              const res = await axios.get(`/api/user/is-a-student`);
+              setIsAStudent(res.data);
+            }catch(err:any){
+              
+            }
+          }
+        )()
+    
+    },[]);
   return (
-    <div className={` fixed bottom-10 right-5 z-50`}
+    <div role='button' className={` fixed bottom-10 right-5 z-50 cursor-pointer`}
     onClick={()=>{
         router.push(`${isAStudent ? 
           "https://chat.whatsapp.com/Gz21TOy5nH02wxkiF2wnQN" : 

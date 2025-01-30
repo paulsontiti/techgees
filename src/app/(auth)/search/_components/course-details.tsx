@@ -1,47 +1,44 @@
-import React from 'react'
-import CourseCard from './course-card'
-import { getCourseCategoriesByCourseId } from '../../../../../actions/getCourseCategoriesByCourseId'
-import { getPrerequisiteCourses } from '../../../../../actions/getPreRequisiteCourses'
-import { getCourseRecommendedCourses } from '../../../../../actions/getCourseRecommendedCourses'
+"use client"
+import React, { useEffect, useState } from 'react'
 import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
+import { Skeleton } from '@/components/ui/skeleton'
+import { bgNeutralColor2 } from '@/utils/colors'
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import CourseCard from '../../search/_components/course-card'
 
-import ErrorPage from '@/components/error'
-import { getCourseChildren } from '../../../../../actions/getCourseChildren'
 
+function CourseDetails({title,categoryId}:{title?:string,categoryId?:string}) {
+  const [courses,setCourses] = useState<SearchPageCourseType[] | undefined>(undefined);
 
-function CourseDetails(
-  { courses }:
-    {
-      courses: SearchPageCourseType[]
-    }
-) {
+  useEffect(()=>{
+    (
+      async()=>{
+        try{
+          const res = await axios.post("/api/courses/course-progress-chapters",{title,categoryId});
+          setCourses(res.data);
+        }catch(err:any){
+          toast.error(err.message);
+        }
+      }
+    )()
+  },[]);
+
+  if(courses === undefined) return <Skeleton className={`${bgNeutralColor2} w-full h-44`}/>
+  if(Array.isArray(courses) && courses.length === 0) return <div
+      className='text-center text-sm text-muted-foreground mt-10'>
+         No course found
+      </div>
   return (
-    <div className='grid gap-4 lg:grid-cols-2 xl:grid-cols-3 max-w-full'>
-      {courses.map(async (course, index) => {
-        if (!course) return null
-
-        const courseId = course.id
-        const { categories, error } = await getCourseCategoriesByCourseId(courseId)
-        if (error) return <ErrorPage name={error.name} key={index} />
-
-        const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
-        if (preError) return <ErrorPage name={preError.name} key={index} />
-
-        const { courseChildren, error: comboError } = await getCourseChildren(courseId)
-        if (comboError) return <ErrorPage name={comboError.name} key={index} />
-
-        const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)
-        if (recomError) return <ErrorPage name={recomError.name} key={index} />
+    <div className='grid gap-4 lg:grid-cols-2 max-w-full'>
+      {courses.map((course) => {
+       if(!course) return null;
 
         return <CourseCard
           key={course.id}
           course={course}
           progressPercentage={course.progressPercentage}
-          categories={categories ?? []}
-          preRequisiteCourses={preRequisiteCourses}
-          childrenCourses={courseChildren}
-          recommendedCourses={recommendedCourses}
-          isCombo={!!courseChildren.length}
+        
         />
       })}
     </div>

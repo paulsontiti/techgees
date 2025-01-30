@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 interface ReturnValue {
     isStudent: boolean,
@@ -13,11 +13,11 @@ interface ReturnValue {
 export const isAStudent = async ():
     Promise<ReturnValue> => {
     try {
-        const user = await currentUser();
-        if(!user) return { isStudent : false, error: null }
+        const userId = await getUserCookie();
+        if(!userId) return { isStudent : false, error: null }
       const course = await db.purchase.findFirst({
         where:{
-            userId:user?.id
+            userId
         }
       })
        

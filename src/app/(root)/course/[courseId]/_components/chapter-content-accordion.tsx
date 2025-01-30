@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/accordion";
 import { Chapter, Session } from "@prisma/client";
 import { BookOpen, Video } from "lucide-react";
-import { StatInfoDialog } from "./stat-info-dialog";
 import { getChapterCommentsCount } from "../../../../../../actions/getChapterCommentsCount";
 import Banner from "@/components/banner";
 import { getChapterRating } from "../../../../../../actions/getChapterRating";
@@ -15,8 +14,9 @@ import { getChapterDisLikesCount } from "../../../../../../actions/getChapterDis
 import { getChapterNumberOfRatings } from "../../../../../../actions/getChapterNumberOfRatings";
 import { getChapterStudentsCount } from "../../../../../../actions/getChapterStudentsCount";
 import { bgNeutralColor2, textPrimaryColor } from "@/utils/colors";
+import { ChapterStatInfoDialog } from "./stat-info-dialog";
 
-export async function ChapterContentAccordion({
+export function ChapterContentAccordion({
   chapter,
 }: {
   chapter: Chapter & {
@@ -27,40 +27,40 @@ export async function ChapterContentAccordion({
   if (!chapter) return null
 
 
-  const { numberOfStudents, error: error } = await getChapterStudentsCount(
-    chapter.id
-  );
-  if (error) return <Banner variant="error" label={error.message} />;
+  // const { numberOfStudents, error: error } = await getChapterStudentsCount(
+  //   chapter.id
+  // );
+  // if (error) return <Banner variant="error" label={error.message} />;
 
 
-  const { numberOfRatings, error: ratingError } = await getChapterNumberOfRatings(
-    chapter.id
-  );
-  if (ratingError) return <Banner variant="error" label={ratingError.message} />;
+  // const { numberOfRatings, error: ratingError } = await getChapterNumberOfRatings(
+  //   chapter.id
+  // );
+  // if (ratingError) return <Banner variant="error" label={ratingError.message} />;
 
 
 
-  const { averageRating, error: numRatingError } = await getChapterRating(
-    chapter.id
-  );
-  if (numRatingError) return <Banner variant="error" label={numRatingError.message} />;
+  // const { averageRating, error: numRatingError } = await getChapterRating(
+  //   chapter.id
+  // );
+  // if (numRatingError) return <Banner variant="error" label={numRatingError.message} />;
 
-  const { numberOfLikes, error: likesError } = await getChapterLikesCount(
-    chapter.id
-  );
-  if (likesError) return <Banner variant="error" label={likesError.message} />;
+  // const { numberOfLikes, error: likesError } = await getChapterLikesCount(
+  //   chapter.id
+  // );
+  // if (likesError) return <Banner variant="error" label={likesError.message} />;
 
-  const { numberOfDisLikes, error: disLikesError } = await getChapterDisLikesCount(
-    chapter.id
-  );
-  if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
+  // const { numberOfDisLikes, error: disLikesError } = await getChapterDisLikesCount(
+  //   chapter.id
+  // );
+  // if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
 
 
-  const { numberOfComments, error: commentsError } = await getChapterCommentsCount(
-    chapter.id
-  );
+  // const { numberOfComments, error: commentsError } = await getChapterCommentsCount(
+  //   chapter.id
+  // );
 
-  if (commentsError) return <Banner variant="error" label={commentsError.message} />
+  // if (commentsError) return <Banner variant="error" label={commentsError.message} />
   return (
     <Accordion
       type="single"
@@ -76,19 +76,14 @@ export async function ChapterContentAccordion({
                 <BookOpen className="w-4 h-4" />
                 <span className="text-sm text-left">{chapter.title}</span>
               </div>
-              <div className="flex justify-end">
-                <StatInfoDialog
-                  numberOfComments={numberOfComments}
-                  numberOfRatings={numberOfRatings}
-                  numberOfStudents={numberOfStudents}
-                  likes={numberOfLikes}
-                  disLikes={numberOfDisLikes}
-                  title={chapter.title}
-                  description={chapter.description ?? ""}
-                  rating={averageRating}
+           {chapter.isPublished &&    <div className="flex justify-end">
+                <ChapterStatInfoDialog
+                 chapterId={chapter.id}
+                 title={chapter.title}
+                 description={chapter.description || ""}
                 />
 
-              </div>
+              </div>}
             </div>
 
           </div>

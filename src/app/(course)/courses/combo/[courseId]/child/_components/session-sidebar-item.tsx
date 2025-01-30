@@ -14,7 +14,7 @@ type SessionSidebarItemProps = {
   isLocked: boolean;
   chapterId: string,
   sessionId: string,
-  parentId: string
+  parentId?: string
 };
 
 function SessionSidebarItem({
@@ -56,7 +56,9 @@ function SessionSidebarItem({
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
-    router.push(`/courses/combo/${parentId}/child/${courseId}/chapters/${chapterId}/sessions/${sessionId}`);
+    router.push(parentId ? `/courses/combo/${parentId}/child/${courseId}/chapters/${chapterId}/sessions/${sessionId}` :
+      `/courses/single/${courseId}/chapters/${chapterId}/sessions/${sessionId}`
+    );
 
   };
   return (

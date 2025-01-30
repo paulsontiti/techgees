@@ -18,31 +18,11 @@ function RecommendedCoursesList({ courses }: { courses: RecommendedCourseType[] 
   </div>
   return (
     <div className='grid gap-2  lg:grid-cols-2 xl:grid-cols-3'>
-      {courses.map(async (course, index) => {
-        if (course === null) return <div key={index}>No course</div>
-        const courseId = course.id
-        const { categories, error } = await getCourseCategoriesByCourseId(courseId)
-        if (error) return <ErrorPage name={error.name} key={index} />
-
-
-        const { preRequisiteCourses, error: preError } = await getPrerequisiteCourses(courseId)
-        if (preError) return <ErrorPage name={preError.name} key={index} />
-
-        const { courseChildren, error: comboError } = await getCourseChildren(courseId)
-        if (comboError) return <ErrorPage name={comboError.name} key={index} />
-
-        const { recommendedCourses, error: recomError } = await getCourseRecommendedCourses(courseId)
-        if (recomError) return <ErrorPage name={recomError.name} key={index} />
+      {courses.map( (course) => {
 
         return <CourseCard
-          key={course.id}
+          key={course?.id}
           course={course}
-          categories={categories ?? []}
-
-          preRequisiteCourses={preRequisiteCourses}
-          childrenCourses={courseChildren}
-          recommendedCourses={recommendedCourses}
-          isCombo={!!courseChildren.length}
         />
       })}
     </div>

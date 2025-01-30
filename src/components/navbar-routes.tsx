@@ -2,8 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "./ui/button"
-import {Layout } from "lucide-react"
-import SearchInput from "./search-input"
+import { Layout } from "lucide-react"
 import Link from "next/link"
 import Logo from "./logo"
 import NotificationComponent from "./notification"
@@ -13,9 +12,9 @@ import { DBUser } from "@prisma/client"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { Skeleton } from "./ui/skeleton"
-import LogoutButton from "@/app/(account)/components/logout"
+import WelcomeMessage from "./welcome-message"
 
-export const NavbarRoutes = ({userId}:{userId:string}) => {
+export const NavbarRoutes = () => {
     const pathname = usePathname()
     const router = useRouter()
     const isTeacherPage = pathname?.startsWith("/teacher")
@@ -25,31 +24,33 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
     const [loading, setLoading] = useState(false)
     const [loadingUser, setLoadingUser] = useState(false)
 
-    const [user, setUser] = useState<DBUser | null>(null);
+    const [user, setUser] = useState<DBUser | undefined>(undefined);
 
     useEffect(() => {
-      (async () => {
-        try {
-            setLoadingUser(true)
-          const res = await axios.get(`/api/user/${userId}`);
-          setUser(res.data);
-        } catch (errror: any) {
-          toast.error("Error occurred while trying to fetch user details")
-        }finally{
-            setLoadingUser(false)
-        }
-      })();
-    },[userId]);
+        (async () => {
+            try {
+                setLoadingUser(true)
+                const res = await axios.get(`/api/user`);
+                setUser(res.data);
+            } catch (errror: any) {
+                toast.error("Error occurred while trying to fetch user details")
+            } finally {
+                setLoadingUser(false)
+            }
+        })();
+    }, []);
 
     return <div className="flex items-center justify-between w-full
      text-white">
-    
-           <div className="hidden md:flex items-center gap-x-4 w-1/2">
-           <Logo />
-           
-           </div>
-       
-        <div className="px-2 flex items-center justify-end gap-x-2 md:gap-x-4 ml-auto w-1/2">
+
+        <div className="hidden md:flex items-center gap-x-4 w-1/4">
+            <Logo />
+
+        </div>
+
+        <div className="px-2 flex items-center justify-end gap-x-2 md:gap-x-4 ml-auto w-3/4">
+
+            <WelcomeMessage />
             <Button
                 variant="link"
                 size="sm"
@@ -57,31 +58,30 @@ export const NavbarRoutes = ({userId}:{userId:string}) => {
                     router.push("/")
                 }}
             >Home</Button>
-            <LogoutButton/>
-            {loadingUser ? <Skeleton className="h-6 w-[200px]" /> :
-            <>
-            {isTeacherPage || isCoursePage ? (
-                <Button
-size="sm" variant="outline"
-                    onClick={
-                        () => {
-                            setLoading(true)
-                            router.push("/dashboard")
-                        }
-                    } className="flex items-center gapx-2">
-                    <Layout className="h-4 w-4 mr-2" />
-                    Dashboard
-                    <Loader loading={loading} />
-                </Button>
-            ) : (
-               <>
-               {user?.role === "Admin" &&  <Link href="/teacher/courses" className="hidden md:flex items-center gapx-2">
-                    Teacher mode
-                </Link>}
-               </>
-            )}</>
+            {loadingUser ? <Skeleton className="h-6 w-20" /> :
+                <>
+                    {isTeacherPage || isCoursePage ? (
+                        <Button
+                            size="sm" variant="outline"
+                            onClick={
+                                () => {
+                                    setLoading(true)
+                                    router.push("/dashboard")
+                                }
+                            } className="flex items-center gapx-2">
+                            <Layout className="h-4 w-4 mr-2" />
+                            Dashboard
+                            <Loader loading={loading} />
+                        </Button>
+                    ) : (
+                        <>
+                            {user?.role === "Admin" && <Link href="/teacher/courses" className="hidden md:flex items-center gapx-2">
+                                Teacher mode
+                            </Link>}
+                        </>
+                    )}</>
             }
-         
+
             <NotificationComponent />
         </div>
     </div>

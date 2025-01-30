@@ -42,3 +42,22 @@ export async function POST(req:Request,
         })
     }
 }
+
+export async function GET(
+    req: Request,
+    { params: { courseId } }: { params: { courseId: string } }
+) {
+
+    try {
+        const benefits = await db.courseBenefit.findMany({
+            where:{
+                courseId
+            }
+        })
+        
+        return NextResponse.json(benefits);
+    } catch (err) {
+        console.log("[COURSE_COMMENTS]", err)
+        return new NextResponse("Internal error", { status: 500 });
+    }
+}

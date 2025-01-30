@@ -20,6 +20,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
 import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 const formSchema = zod.object({
   amount: zod.coerce.number().min(1, {
@@ -28,7 +29,7 @@ const formSchema = zod.object({
 });
 
 function PriceForm({ email, courseId, chapterId }: {
-  email: string, courseId: string, chapterId: string
+  email: string | null, courseId: string, chapterId: string
 }) {
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -37,6 +38,12 @@ function PriceForm({ email, courseId, chapterId }: {
       amount: 0,
     },
   });
+
+  if(!email) {
+    toast.error("No email found. You will be redirected to profile page. Please update your profile",
+      {duration:5000});
+    return redirect("/profile");
+  }
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -62,7 +69,8 @@ function PriceForm({ email, courseId, chapterId }: {
       if (paymentWindow) {
         const interval = setInterval(() => {
           if (paymentWindow.closed) {
-            window.location.href = `/courses/${courseId}/chapters/${chapterId}?reference=${reference}`;
+            const redirectUrl = `/courses/single/${courseId}/chapters/${chapterId}`
+            window.location.href = `/courses/single/${courseId}/chapters/${chapterId}?reference=${reference}&redirectUrl=${redirectUrl}`;
             clearInterval(interval);
           }
         }, 1000);

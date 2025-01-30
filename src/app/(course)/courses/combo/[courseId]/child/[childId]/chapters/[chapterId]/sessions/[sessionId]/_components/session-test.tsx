@@ -51,7 +51,11 @@ function SessionTest({ questions, sessionId,isLastSession,chapterUrl,sessionurl 
           location.reload()
         }, 5000)
       } else {
-        toast.error(`Your score is ${res}. This is poor. You have to retake this test`, { duration: 10000, position: "bottom-center" })
+        toast.error(`Your score is ${res}. This is poor. You have to retake this test`, 
+          { duration: 5000, position: "bottom-center" })
+          setTimeout(function () {
+            location.reload()
+          }, 1000)
       }
 
     } catch (err: any) {

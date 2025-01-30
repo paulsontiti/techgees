@@ -27,6 +27,19 @@ export const getInProgressCourses = async (
       },
     });
 
+    //get wallet purchases
+    const walletPurchasedCourses  = await db.walletPayment.findMany({
+      where:{
+        userId
+      }, select: {
+        course: {
+          include: {
+            chapters: true
+          },
+        },
+      },
+    })
+
   //filter courses from paystack payment because there could be multiple payments for a course
   
   const filteredCourses : any[] = [];
@@ -43,6 +56,22 @@ export const getInProgressCourses = async (
     }
   })
   
+  //filter courses from wallet payment because there could be multiple payments for a course
+  walletPurchasedCourses.map((paidCourse)=>{
+    /*
+      paid course is of type  Course &{
+      chapters:{id:string}[],
+      progressPercentage:number | null,
+      } | null
+    */
+    const course = paidCourse.course; 
+    if(!filteredCourses.find((filterredCourse) => filterredCourse.id === course.id)){
+      filteredCourses.push(course)
+    }
+  })
+
+
+
     let courses: SearchPageCourseType[] = filteredCourses.map(
       (purchasedcourse) => {
         return {

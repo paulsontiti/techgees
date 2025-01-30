@@ -1,5 +1,6 @@
-
+"use client"
 import React from 'react'
+import toast from 'react-hot-toast';
 
 type VideoPlayerProps = {
     url: string,
@@ -7,34 +8,27 @@ type VideoPlayerProps = {
 }
 
 function VideoPlayer({
-    title,url
+    title, url
 }: VideoPlayerProps) {
-
+    const handleContextmenu = (e: any) => {
+        e.preventDefault();
+        toast.error("Right clicking is disabled on our videos", { duration: 2000 });
+    }
 
     return (
-        <div className='relative aspect-video'>
-            {/* {
-           !isReady && (
-                <div className='
-                absolute inset-0 items-center flex
-                justify-center bg-slate-800'>
-                    <Loader2 className='
-                    h-8 w-8 animate-spin text-secondary'/>
-                </div>
-            )
-        } */}
-
+        <div className='relative aspect-video my-4' onContextMenu={handleContextmenu}>
             {
                 url.includes("youtube") ?
-                <iframe className='w-full h-full' src={url} title={title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
-                
-                :
+                    <iframe className='w-full h-full' src={url} title={title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+
+                    :
                     <video src={url}
                         controls
                         className='w-full'
                         title={title}
+                        contextMenu="return false;"
                         controlsList="nodownload"
-                        //onEnded={() => { }}
+                    //onEnded={() => { }}
                     />
             }
 

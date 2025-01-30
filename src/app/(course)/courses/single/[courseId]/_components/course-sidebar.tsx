@@ -1,95 +1,101 @@
-
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import CourseProgress from "@/components/course-progress";
 import PaymentProgress from "@/components/paymentProgress";
-import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
-import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
-import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
-import ErrorPage from "@/components/error";
-import { getPreviousChapter } from "../../../../../../../actions/getPreviousChapter";
-import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
-import { getUserCookie } from "@/lib/get-user-cookie";
+import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChapterAndSessions } from "../../../components/chapter-sessions";
+
+
 export type CourseSidebarProps = {
-  course: CourseChaptersUserProgressType;
   progressPercentage: number;
   purchasePercentage: number;
   paidPositions:number[],
-  hasLiked:boolean,
-  hasDisLiked:boolean,
-  hasRated:boolean
+  courseId:string
 };
 
-async function CourseSidebar({
-  course,paidPositions,progressPercentage,purchasePercentage,hasDisLiked,hasLiked,hasRated
-}: CourseSidebarProps) {
+ function CourseSidebar({
+  courseId
+}: {courseId:string}) {
   
-const userId = await getUserCookie() ?? "";
+  const [course,setCourse] = useState<CourseChaptersUserProgressType | undefined>(undefined);
+  const [coursePurchasePrice,setCoursePurchasePrice] = useState<number | undefined>(undefined);
+  const [paidPositions,setPaidPosition] = useState<number[] | undefined>(undefined);
+  const [progressPercentage,setProgressPercentage] = useState<number | undefined>(undefined);
+  const [purchasePercentage,setPurchasePercentage] = useState<number | undefined>(undefined);
+
+
+
+  useEffect(()=>{
+    (
+     async()=>{
+      try{
+          //fetch course
+        const courseRes = await axios.get(`/api/courses/${courseId}/course-chapter-userprogress`);
+        setCourse(courseRes.data)
+
+           //fetch course price
+           const coursePurchaseRes = await axios.get(`/api/courses/${courseId}/purchase/price`);
+           setCoursePurchasePrice(coursePurchaseRes.data)
+
+         //fetch course purchase percentage
+         const purchaseRes = await axios.get(`/api/courses/${courseId}/purchase-percentage`);
+         setPurchasePercentage(purchaseRes.data)
+
+          //fetch course progress percentage
+          const progressRes = await axios.get(`/api/courses/${courseId}/user-progress`);
+          setProgressPercentage(progressRes.data)
+
+          
+          //fetch paid chapter positions
+          const paidPositionsRes = await axios.get(`/api/courses/${courseId}/paid-chapters-positions`);
+          setPaidPosition(paidPositionsRes.data)
+      }catch(err:any){
+        toast.error(err.message);
+      }
+     }
+    )()
+  },[]);
 
 
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
-        <div className="flex items-center justify-between">
-          <Heading type={1} text={course.title} className="font-semibold"/>
+        <div className="flex items-center justify-between mb-4">
+         {course !== undefined ?  <Heading type={1} text={course.title} className="font-semibold"/> :
+         <Skeleton className="w-full h-5"/>
+         }
           
           <CourseActioDropdownMenu
-            courseId={course.id}
-            hasDisLiked={hasDisLiked}
-            hasLiked={hasLiked}
-            hasRated={hasRated}
+            courseId={courseId}
           />
         </div>
-        {!course.isFree && <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!} />}
+        {
+          course && purchasePercentage !== undefined && coursePurchasePrice !== undefined && paidPositions !== undefined
+           ? 
+          <PaymentProgress value={purchasePercentage} size="sm" paidChapters={paidPositions?.length ?? 0}
+          amountPaid={(purchasePercentage / 100) * coursePurchasePrice}/>
+          : <Skeleton className="w-full h-10"/>
+          }
+        
         <div className="mt-10">
-          <CourseProgress variant="success" value={progressPercentage ?? 0} />
+         {progressPercentage !== undefined ?  <CourseProgress variant="success" value={progressPercentage} /> :
+         <Skeleton className="w-full h-10"/>
+         }
 
         </div>
       </div>
-      <div className="flex flex-col w-full">
-        {course.chapters.map(async(chapter) => {
-          const { progressPercentage:chapterProgressPercentage, error } = await getChapterProgress(
-            userId,
-            chapter.id
-          );
-
-          if (error)
-            return <ErrorPage name={error.name} key={error.name} />;
-
-          const chapterPaidFor = paidPositions.indexOf(chapter.position);
-
-          const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, course.id)
-          if (previousError)
-            return <ErrorPage name={previousError.name} key={previousError.name} />;
-
-          //get previous chapter user progress
-          const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-            await getUserChapterProgress(userId, previousChapter?.id ?? "")
-          if (progressError)
-            return <ErrorPage name={progressError.name} key={progressError.name} />;
-
-
-          return (
-            <ChapterAccordion
-              key={chapter.id}
-              id={chapter.id}
-              title={chapter.title}
-              isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
-              courseId={course.id}
-              isLocked={
-                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
-                ((!chapter.isPublished || !chapter.isFree)
-                  && chapterPaidFor < 0)
-              }
-              sessions={chapter.sessions ?? []}
-              chapterProgress={chapterProgressPercentage ?? 0}
-              previousUserChapterProgress={previousUserChapterProgress}
-              prviousChapter={previousChapter}
-            />
-          );
-        })}
-      </div>
+     {
+        course ? <>
+         {course.chapters.map((chapter)=>(
+            <ChapterAndSessions chapter={chapter} paidPositions={paidPositions || []} key={chapter.id}/>
+        ))}</> : <Skeleton className="w-full h-[500px]"/>
+       }
+      
     </div>
   );
 }

@@ -17,9 +17,7 @@ export async function GET(
     const { previousChapter, error: previousError } = await getPreviousChapter(chapterId, courseId)
     if (previousError)
         return new NextResponse("Internal error", { status: 500 });
-
-    
-
+      
     return NextResponse.json(previousChapter);
   } catch (err) {
     console.log("[GET_PREVIOUS_CHAPTER]", err);

@@ -24,7 +24,7 @@ type CourseSidebarItemProps = {
   courseId: string;
   isLocked: boolean;
   sessions: Session[];
-  chapterProgress: number,
+  chapterProgress?: number,
   previousUserChapterProgress: UserProgress | null,
   prviousChapter: Chapter | null,
   parentId: string
@@ -41,20 +41,23 @@ export function ChapterAccordion({
 
   const pathname = usePathname();
   const router = useRouter();
-  const {closeSheet} = useSheetStore();
+  const { closeSheet } = useSheetStore();
 
   const Icon = isLocked ? Lock : isCompleted ? CheckCheck : PlayCircle;
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
     closeSheet();
-    router.push(`/courses/combo/${parentId}/child/${courseId}/chapters/${id}`);
+    router.push(parentId ?
+      `/courses/combo/${parentId}/child/${courseId}/chapters/${id}` :
+      `/courses/single/${courseId}/chapters/${id}`
+    );
   };
   return (
     <Accordion type="single" collapsible className="w-full px-2">
       <AccordionItem value="item-1">
 
-        <AccordionTrigger onClick={(e:any)=>{
+        <AccordionTrigger onClick={(e: any) => {
           e.stopPropagation();
         }}>
 
@@ -93,12 +96,17 @@ export function ChapterAccordion({
         <AccordionContent className="ml-16">
           <div>
             <div className="w-full flex flex-col gap-y-2">
-              {prviousChapter && !previousUserChapterProgress && <>
-              {previousUserChapterProgress === undefined ? <Skeleton className="w-full"/> :
-              <Banner label="Previous chapter is not completed " />
-              }
-              </>}
-              <CourseProgress value={chapterProgress} variant="success" />
+              <>
+                {previousUserChapterProgress === undefined ? <Skeleton className="w-full h-20" /> :
+                  <>
+                    {prviousChapter && !previousUserChapterProgress &&
+                      <Banner label="Previous chapter is not completed " />
+                    }</>
+                }
+              </>
+             {chapterProgress !== undefined ?  <CourseProgress value={chapterProgress} variant="success" /> :
+             <Skeleton className="w-full h-10"/>
+             }
             </div>
             {sessions.map((session) => {
               return (

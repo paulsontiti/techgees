@@ -84,3 +84,36 @@ export async function POST(req: Request,
         });
     }
 }
+
+
+export async function GET(req: Request,
+    {
+        params: { assignmentAnswerId }
+    }: {
+        params: { assignmentAnswerId: string }
+    }
+) {
+    try {
+        const userId = await getUserCookie();
+        if (!userId) {
+            return new NextResponse("Unautorized", { status: 401 });
+        }
+
+        const remark = await db.assignmentAnswerRemarks.findUnique({
+            where: {
+                assignmentAnswerId
+            }
+        })
+
+       
+
+        return NextResponse.json(remark);
+    } catch (err) {
+        console.log("[GET_ASSIGNMENT_ANSWER_REMARK]", err);
+        return new NextResponse("Internal Error", {
+            status: 500,
+        });
+    }
+}
+
+

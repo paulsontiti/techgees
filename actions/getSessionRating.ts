@@ -9,18 +9,19 @@ export const getSessionRating = async(
     sessionId:string):
 Promise<ReturnValue>=>{
     try{
-const ratings = await db.rating.findMany({
+const ratings = await db.rating.aggregate({
+    _avg:{
+        value:true
+    },
     where:{
         sessionId
-        },select:{value:true}
+        }
     
 })
 
-const rating = ratings.map((rating)=> rating.value)
-const averageRating =!!rating.length ?
- rating.reduce((total,curr)=> total + curr)/ratings.length : 0
 
-      return {averageRating,error:null}
+
+      return {averageRating:ratings._avg.value ?? 0,error:null}
     }catch(error:any){
     console.log("[SESSION_RATING]",error)
         return {averageRating:0,error}

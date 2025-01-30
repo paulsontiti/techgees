@@ -32,6 +32,7 @@ export const getPreviousChapter = async (chapterId: string, courseId: string):
                 assignments: true
             }
         });
+     
         //get the previous session position
         const prvPosition = chapter ? chapter.position - 1 : 0;
 
@@ -45,10 +46,7 @@ export const getPreviousChapter = async (chapterId: string, courseId: string):
                 position: "asc"
             }
         })
-
-
-
-        return { previousChapter, error: null }
+               return { previousChapter, error: null }
     } catch (error: any) {
         console.log("[GET_PREVIOUS_CHAPTER]", error)
         return { previousChapter: null, error }

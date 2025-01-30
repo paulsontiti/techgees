@@ -16,24 +16,45 @@ import {
 import { Heart, HeartOff,MoreVertical } from "lucide-react";
 import { RatingSlider } from "@/components/rating-slider";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "@/components/loader";
 
 export function CourseActioDropdownMenu({
-  hasLiked,
-  courseId,
-  hasDisLiked,
-  hasRated,
+  courseId
 }: {
   courseId: string;
-  hasLiked: boolean;
-  hasDisLiked: boolean;
-  hasRated: boolean;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [hasLiked,setHasLiked] = useState(false);
+  const [hasDisLiked,setHasDisLiked] = useState(false);
+  const [hasRated,setRated] = useState(false);
+
+  //get if a user has liked this course
+  useEffect(()=>{
+    (
+      async()=>{
+      try{
+        const res = await axios.get(`/api/courses/${courseId}/has-liked`);
+        setHasLiked(res.data);
+
+        //get if a user has disliked this course
+        const hasLikedRes = await axios.get(`/api/courses/${courseId}/has-disliked`);
+        setHasDisLiked(hasLikedRes.data);
+
+        //get if a user has rated this course
+        const hasRatedRes = await axios.get(`/api/courses/${courseId}/has-rated`);
+        setRated(hasRatedRes.data);
+      }catch(err){
+        toast.error("An error occurred fetching data, please refresh your browser",{duration:2000});
+      }
+      }
+    )()
+  },[]);
+  
+
 
   const like = async () => {
     try {
@@ -68,7 +89,7 @@ export function CourseActioDropdownMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <MoreVertical className="h-4 w-4 cursor-pointer" />
+        <MoreVertical className="h-4 w-4 cursor-pointer" onClick={(e)=>{e.stopPropagation()}}/>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px]">
         <DropdownMenuLabel className="flex items-center justify-between">

@@ -7,7 +7,7 @@ import { NavLinks } from "./nav-links";
 import { bgPrimaryColor } from "@/utils/colors";
 import Account from "@/components/account";
 
-async function Navbar() {
+ function Navbar() {
   return (
     <nav className={`${bgPrimaryColor} py-8 px-2`}>
     

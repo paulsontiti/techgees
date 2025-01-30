@@ -19,7 +19,7 @@ const users = await db.dBUser.findMany({
     }
 })
 
-const referers = users.map((user)=>{
+const referers = users.filter(user=>user.userName !== null).map((user)=>{
     return {
         id:user.id,
         userName:user.userName ?? ""

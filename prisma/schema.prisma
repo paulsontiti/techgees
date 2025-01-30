@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  provider = "prisma-client-js"
+  //previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -22,7 +22,6 @@ model Course {
   promoDiscount    Float?
   isPublished      Boolean @default(false)
   isFree           Boolean @default(false)
-  
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -49,7 +48,7 @@ model Course {
   childrenCourses CourseChild[]   @relation("childCourse")
   parentCourses   CourseChild[]
   assignments     Assignment[]
-
+  walletPayments  WalletPayment[]
 
   @@fulltext([title])
 }
@@ -68,13 +67,58 @@ model CourseChild {
   updatedAt DateTime @updatedAt
 }
 
+model Wallet {
+  id               String             @id @default(uuid()) @map("_id")
+  balance          Int
+  userId           String
+  user             DBUser             @relation(fields: [userId], references: [id])
+  walletWithdrawal WalletWithdrawal[]
+  walletDeposit    WalletDeposit[]
+
+  @@unique([userId])
+}
+
+model WalletWithdrawal {
+  id                String  @id @default(uuid()) @map("_id")
+  amount            Int
+  walletId          String
+  year              Int
+  month             Int
+  description       String?
+  paystackReference String?
+  status            String  @default("pending")
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WalletDeposit {
+  id                String  @id @default(uuid()) @map("_id")
+  amount            Int
+  walletId          String
+  year              Int
+  month             Int
+  description       String?
+  paystackReference String?
+  status            String  @default("pending")
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model SessionQuestion {
   id       String  @id @default(uuid()) @map("_id")
   question String
+  userId   String
   answer   String?
 
   sessionId String
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user      DBUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model SessionError {
@@ -314,7 +358,7 @@ model Notification {
   senderId   String
   title      String
   message    String
-  receiverId String 
+  receiverId String
   status     Status @default(Pending)
 
   createdAt DateTime @default(now())
@@ -389,24 +433,38 @@ model PaystackPayment {
   courseId       String
   course         Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  earnings Earning[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([reference])
 }
 
+model WalletPayment {
+  id       String @id @default(uuid()) @map("_id")
+  amount   Float
+  userId   String
+  user     DBUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model DBUser {
   id        String  @id @default(uuid()) @map("_id")
-  userId    String @default(uuid())
+  userId    String  @default(uuid())
   firstName String?
   lastName  String?
   email     String?
   imageUrl  String?
   phone     String?
   whatsapp  String?
-  userName  String? 
-  password  String? 
-   salt  String? 
+  userName  String?
+  password  String?
+  salt      String?
 
   refererId String?
   referer   DBUser?  @relation("referal", fields: [refererId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -414,11 +472,48 @@ model DBUser {
 
   role             Role              @default(Student)
   paystackPayments PaystackPayment[]
+  earnings         Earning[]
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  sessionQuestion SessionQuestion[]
+  wallet          Wallet?
+  walletPayments  WalletPayment[]
+  networkGrowth   NetworkGrowth[]   @relation("user")
+  refereeNetworkGrowths   NetworkGrowth[]   @relation("referee")
+
+  @@unique([userId])
+}
+
+model Earning {
+  id                String @id @default(uuid()) @map("_id")
+  userId            String
+  amount            Int
+  year              Int
+  month             Int
+  paystackPaymentId String
+  commission        Int?
+
+  user            DBUser          @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  paystackPayment PaystackPayment @relation(fields: [paystackPaymentId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
 
-  @@unique([userId])
+model NetworkGrowth {
+  id                String @id @default(uuid()) @map("_id")
+  userId            String
+  refereeGeneration Int
+  refereeId         String
+  year              Int
+  month             Int
+
+  user    DBUser @relation("user", fields: [userId], references: [userId], onDelete: Cascade)
+  referee DBUser @relation("referee", fields: [refereeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {

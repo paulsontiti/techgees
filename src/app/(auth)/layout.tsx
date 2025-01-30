@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sidebar } from "./_components/sidebar";
 import Navbar from "./_components/navbar";
-import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
 import SignInCheck from "@/components/sign-in-check";
 
 
@@ -20,15 +19,7 @@ export default function AuthLayout({
   return (
     <div className="h-full">
     <SignInCheck/>
-      {/* <SignedOut>
-        <SignIn />
-      </SignedOut>
-
-      <SignedIn>
-        <UserButton />
-      
-      
-      </SignedIn> */}
+   
 
       <div>
           <div className="h-[100px] fixed inset-y-0 w-full z-50">
@@ -37,11 +28,11 @@ export default function AuthLayout({
           </div>
           <div className="flex mt-[150px]">
             <div
-              className="hidden md:flex w-[350px] inset-y-0"
+              className="hidden md:flex w-3/12 inset-y-0"
             >
               <Sidebar />
             </div>
-            <div className="relative w-full">{children}</div>
+            <div className="relative w-full md:w-9/12">{children}</div>
           </div>
         </div>
 

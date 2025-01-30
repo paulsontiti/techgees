@@ -1,6 +1,6 @@
 import SessionComponent from "@/app/(course)/courses/components/session-component";
 
-async function SessionIdPage({
+ function SessionIdPage({
   params: { courseId, chapterId, sessionId, childId },
 }: {
   params: { courseId: string; childId: string, chapterId: string; sessionId: string };

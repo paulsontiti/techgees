@@ -7,9 +7,6 @@ import Logo from './logo'
 import FbIcon from './fb-icon'
 import IgIcon from './ig-icon'
 import WhatsAppIcon from './whatsApp-icon'
-import YoutubeIcon from './youtube-icon'
-import TwitterIcon from './twitter-icon'
-import TikTokicon from './tiktok-icon'
 
 
 function Footer() {
@@ -25,10 +22,10 @@ function Footer() {
           <div className='flex items-center gap-x-2 px-2 py-8 mt-4 md:p-8'>
          <FbIcon/>
            <IgIcon/>
-         <YoutubeIcon/>
+         {/* <YoutubeIcon/> */}
           <WhatsAppIcon/>
-          <TwitterIcon/>
-           <TikTokicon/>
+          {/* <TwitterIcon/>
+           <TikTokicon/> */}
           </div>
         </div>
         <div className=' px-4 py-8'>

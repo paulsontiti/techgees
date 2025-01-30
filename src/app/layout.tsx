@@ -21,13 +21,13 @@ export const metadata: Metadata = {
 };
 
 
-export default async function Layout({
+export default  function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
-  //const {isStudent} = await isAStudent()
+
 
 
   return (
@@ -48,7 +48,7 @@ export default async function Layout({
       
     
         <LayoutChildren>
-        {/* <Chat isAStudent={isStudent}/> */}
+        <Chat/>
       
        <div className="min-h-[80vh]">
     {children}

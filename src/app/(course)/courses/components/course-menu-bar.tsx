@@ -2,19 +2,17 @@
 import React from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
-import  { SidebarChapter } from '../combo/[courseId]/child/_components/course-sidebar'
-import { Course } from '@prisma/client'
 import CoursemenuMobileSidebar from '../combo/[courseId]/child/_components/course-menu-mobile-sidebar'
 import { useSheetStore } from '../../../../../store/sheet-store'
 
 function CourseMenuBar({
-    parentId,course,progressPercentage,chapters,userId
+    parentId,childId
 }:{
-progressPercentage:number,
-    chapters:SidebarChapter[],
-    course:Course,
+//progressPercentage:number,
+    //chapters:SidebarChapter[],
+    childId:string,
     parentId:string,
-    userId:string
+    //userId:string
 }) {
 
     const {isOpen,closeSheet,openSheet} = useSheetStore();
@@ -28,9 +26,9 @@ md:hidden pr-4 hover:opacity-75 transition'>
     <SheetContent side="left" className='
 p-0 bg-white w-11/12' onClick={closeSheet} onInteractOutside={closeSheet}>
         <CoursemenuMobileSidebar
-            progressPercentage={progressPercentage}
-            chapters={chapters}
-            course={course}
+            //progressPercentage={progressPercentage}
+            //chapters={chapters}
+            childId={childId}
             parentId={parentId}
             
         />

@@ -56,17 +56,12 @@ function CategoryTabItem({ categoryId }: {
 
                                 return <CourseDetailsCard
                                     key={course.course.id}
-                                    id={course.course.id}
+                                    courseId={course.course.id}
                                     imageUrl={course.course.imageUrl ?? ""}
                                     title={course.course.title}
                                     subTitle={course.course.subTitle ?? ""}
                                     price={course.course.price!}
-                                    likes={course.likes}
-                                    disLikes={course.disLikes}
-                                    rating={course.rating}
-                                    numberOfComments={course.numberOfComments}
-                                    numberOfRatings={course.numberOfRatings}
-                                    numberOfStudents={course.numberOfStudents}
+                                   
                                 />
                             })}
                         </div>

@@ -2,20 +2,44 @@
 
 import { Button } from '@/components/ui/button'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 import { Pencil } from 'lucide-react'
 import { RefererForm } from './referer-form'
+import { Skeleton } from '@/components/ui/skeleton'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
 
 
-function RefererComponent({users,error,referer}:{
-    users:{id:string,userName:string}[],
-    error:Error | null,
-    referer:string
-  }) {
-const [editing,setEditing] = useState(false)
+function RefererComponent() {
+const [editing,setEditing] = useState(false);
+const [referer,setReferer] = useState<string | undefined>(undefined);
+const [users,setUsers] = React.useState<{id:string,userName:string}[]>([
+  {id:"Facebook",userName:"Facebook"},
+  {id:"Instagram",userName:"Instagram"},
+  {id:"Youtube",userName:"Youtube"},
+  {id:"Tiktok",userName:"Tiktok"},
+  {id:"Google ads",userName:"Google ads"},
+  ]
+);
+
+
+useEffect(()=>{
+  (
+    async()=>{
+      try {
+        const res = await axios.get(`/api/user/referer`);
+        setReferer(res.data);
+        const usersRes = await axios.get(`/api/user/usernames`);
+        setUsers((prv)=> [...prv,usersRes.data]);
+      } catch (err:any) {
+        toast.error(err.message);
+      }
+    }
+  )()
+},[]);
 
     const toggleEdit = ()=>{
         setEditing((prv)=>!prv)
@@ -23,12 +47,13 @@ const [editing,setEditing] = useState(false)
 
 
 
+if(referer === undefined) return <Skeleton className='w-full h-10'/>
   return (
     <div className='mt-6 
-    border bg-slate-100 rounded-md p-4'>
+    border bg-white rounded-md p-4'>
         <div className='font-medium flex items-center justify-between'>
             Referer
-            <Button variant="ghost" onClick={toggleEdit}>
+            {!referer && <Button variant="ghost" onClick={toggleEdit}>
              {editing ? (
                 <>Cancel</>
              ):(
@@ -37,11 +62,10 @@ const [editing,setEditing] = useState(false)
                 Edit referer
                 </>
              )}
-            </Button>
+            </Button>}
         </div>
         {editing ? 
-        <RefererForm users={users}
-         error={error}
+        <RefererForm 
          setEditing={setEditing}
          />
         :

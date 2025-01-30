@@ -49,6 +49,7 @@ export function ChapterAccordion({
     closeSheet();
     router.push(`/courses/single/${courseId}/chapters/${id}`);
   };
+
   return (
     <Accordion type="single" collapsible className="w-full px-2">
       <AccordionItem value="item-1">
@@ -90,10 +91,9 @@ export function ChapterAccordion({
         <AccordionContent className="ml-16">
           <div>
             <div className="w-full flex flex-col gap-y-2">
-              {prviousChapter && !previousUserChapterProgress && <>
-              {previousUserChapterProgress === undefined ? <Skeleton className="w-full"/> :
+              <>{prviousChapter?.title}</>
+              {prviousChapter && !previousUserChapterProgress && 
               <Banner label="Previous chapter is not completed " />}
-              </>}
               <CourseProgress value={chapterProgress} variant="success" />
             </div>
             {sessions.map((session) => {

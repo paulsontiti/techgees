@@ -18,6 +18,7 @@ chapterId,courseId,sessionId,disabled,isPublished
     const [isPublishing,setIsPublishing] = useState(false)
     const [isDeleting,setIsDeleting] = useState(false)
     const [isViewing,setIsViewing] = useState(false)
+    const [isViewingQuestions,setIsViewingQuestions] = useState(false)
 
     const router = useRouter()
 
@@ -63,6 +64,12 @@ const onViewing = ()=>{
     router.push(`/teacher/assignments/${sessionId}`)
 }
 
+const onViewingQuestion = ()=>{
+    setIsViewingQuestions(true)
+
+    router.push(`/teacher/questions/${sessionId}`)
+}
+
   return (
     <div className='flex items-center gap-x-2'>
         <Button
@@ -92,6 +99,17 @@ const onViewing = ()=>{
             <Eye/>
             View assignments
             <Loader loading={isViewing}/>
+        </Button>
+        <Button
+            onClick={onViewingQuestion}
+            disabled={isViewingQuestions}
+            variant="outline"
+            size="sm"
+            className='flex items-center gap-x-2'
+        >
+            <Eye/>
+            View Questions
+            <Loader loading={isViewingQuestions}/>
         </Button>
     </div>
   )

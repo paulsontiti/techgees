@@ -1,16 +1,12 @@
 import React from 'react'
 import { NavbarRoutes } from '@/components/navbar-routes'
-import { getUserCookie } from '@/lib/get-user-cookie'
 import CourseMobileSidebar from './course-mobile-sidebar'
-import { redirect } from 'next/navigation'
 import { bgPrimaryColor } from '@/utils/colors'
 
-async function CourseNavbar({
+ function CourseNavbar({
   courseId
 }: {courseId:string}) {
 
-  const userId = await getUserCookie();
-  if (!userId) return redirect("/");
  
 
   return (
@@ -19,7 +15,7 @@ async function CourseNavbar({
       <CourseMobileSidebar
         courseId={courseId}
       />
-      <NavbarRoutes userId={userId ?? ""} />
+        <NavbarRoutes/>
     </div>
   )
 }

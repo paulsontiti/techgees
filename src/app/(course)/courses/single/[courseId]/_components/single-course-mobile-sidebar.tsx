@@ -2,116 +2,95 @@
 import React, { useEffect, useState } from "react";
 import CourseProgress from "@/components/course-progress";
 import PaymentProgress from "@/components/paymentProgress";
-import { ChapterAccordion } from "./chapter-accordion";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
 import axios from "axios";
-import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+import toast from "react-hot-toast";
+import { ChapterAndSessions } from "../../../components/chapter-sessions";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
   progressPercentage: number;
   purchasePercentage: number;
   paidPositions:number[],
-  hasLiked:boolean,
-  hasDisLiked:boolean,
-  hasRated:boolean
 };
 
- function SingleCourseMobileSidebar({
-  course,paidPositions,progressPercentage,purchasePercentage,hasDisLiked,hasLiked,hasRated
-}: CourseSidebarProps) {
+ function SingleCourseMobileSidebar({  courseId}
+  :{courseId: string}) {
   
+   const [course,setCourse] = useState<CourseChaptersUserProgressType | undefined>(undefined);
+    const [coursePurchasePrice,setCoursePurchasePrice] = useState<number | undefined>(undefined);
+    const [paidPositions,setPaidPosition] = useState<number[] | undefined>(undefined);
+    const [progressPercentage,setProgressPercentage] = useState<number | undefined>(undefined);
+    const [purchasePercentage,setPurchasePercentage] = useState<number | undefined>(undefined);
 
 
+  useEffect(()=>{
+    (
+     async()=>{
+      try{
+          //fetch course
+        const courseRes = await axios.get(`/api/courses/${courseId}/course-chapter-userprogress`);
+        setCourse(courseRes.data)
 
+           //fetch course price
+           const coursePurchaseRes = await axios.get(`/api/courses/${courseId}/purchase/price`);
+           setCoursePurchasePrice(coursePurchaseRes.data)
+
+         //fetch course purchase percentage
+         const purchaseRes = await axios.get(`/api/courses/${courseId}/purchase-percentage`);
+         setPurchasePercentage(purchaseRes.data)
+
+          //fetch course progress percentage
+          const progressRes = await axios.get(`/api/courses/${courseId}/user-progress`);
+          setProgressPercentage(progressRes.data)
+
+          
+          //fetch paid chapter positions
+          const paidPositionsRes = await axios.get(`/api/courses/${courseId}/paid-chapters-positions`);
+          setPaidPosition(paidPositionsRes.data)
+      }catch(err:any){
+        toast.error(err.message);
+      }
+     }
+    )()
+  },[]);
+
+
+  
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
         <div className="flex items-center justify-between">
-          <Heading type={1} text={course.title} className="font-semibold"/>
+         {course ? <Heading type={1} text={course?.title} className="font-semibold"/> : <Skeleton className="w-full h-10"/>}
           
-          <CourseActioDropdownMenu
+          {course ? <CourseActioDropdownMenu
             courseId={course.id}
-            hasDisLiked={hasDisLiked}
-            hasLiked={hasLiked}
-            hasRated={hasRated}
-          />
+          /> : <Skeleton className="w-1 h-1"/>}
         </div>
-        {!course.isFree && <PaymentProgress value={purchasePercentage} size="sm" amountPaid={(purchasePercentage / 100) * course.price!} />}
+        {
+          course && purchasePercentage !== undefined && coursePurchasePrice !== undefined && paidPositions !== undefined
+           ? 
+          <PaymentProgress value={purchasePercentage} size="sm" paidChapters={paidPositions?.length ?? 0}
+          amountPaid={(purchasePercentage / 100) * coursePurchasePrice}/>
+          : <Skeleton className="w-full h-10"/>
+          }
         <div className="mt-10">
-          <CourseProgress variant="success" value={progressPercentage ?? 0} />
-
+         {progressPercentage !== undefined ?  <CourseProgress variant="success" value={progressPercentage} />
+ : <Skeleton className="w-full h-10"/>}
         </div>
       </div>
-    {course.chapters.map((chapter)=>(
-        <ChapterAndsessions chapter={chapter} paidPositions={paidPositions} key={chapter.id}/>
-    ))}
+   {
+    course ? <>
+     {course.chapters.map((chapter)=>(
+        <ChapterAndSessions chapter={chapter} paidPositions={paidPositions || []} key={chapter.id}/>
+    ))}</> : <Skeleton className="w-full h-[500px]"/>
+   }
     </div>
   );
 }
 
 export default SingleCourseMobileSidebar;
 
-const ChapterAndsessions = ({chapter,paidPositions}:{chapter:SidebarChapter, paidPositions:number[]})=>{
-
-    
-      
-       const [chapterProgressPercentage,setChapterProgressPercentage] = useState<any>(undefined);
-       const [previousChapter,setPreviousChapter] = useState<any>(undefined);
-       const [previousUserChapterProgress,setPreviousUserChapterProgress] = useState<any>(undefined);
-  
-              //get chapter progress percentage
-            useEffect(()=>{
-              (
-                  async()=>{
-                      const res = await axios.get(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/progress`);
-                      setChapterProgressPercentage(res.data);
-                  }
-              )()
-            },[])
-  
-               //get previous chapter
-               useEffect(()=>{
-                  (
-                      async()=>{
-                          const res = await axios.get(`/api/courses/${chapter.courseId}}/chapters/${chapter.id}/previous-chapter`);
-                          setPreviousChapter(res.data);
-                        
-                      }
-                  )()
-                },[])
-  
-                 //get previous chapter progress
-               useEffect(()=>{
-                  (
-                      async()=>{
-                          const res = await axios.get(`/api/courses/${chapter.courseId}}/chapters/${chapter.id}/previous-chapter-progress`);
-                          setPreviousUserChapterProgress(res.data);
-                      }
-                  )()
-                },[])
-
-          const chapterPaidFor = paidPositions.indexOf(chapter.position);
-
-          return (
-            <ChapterAccordion
-              key={chapter.id}
-              id={chapter.id}
-              title={chapter.title}
-              isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
-              courseId={chapter.courseId}
-              isLocked={
-                (previousChapter && !previousUserChapterProgress?.isCompleted) ||
-                ((!chapter.isPublished || !chapter.isFree)
-                  && chapterPaidFor < 0)
-              }
-              sessions={chapter.sessions ?? []}
-              chapterProgress={chapterProgressPercentage ?? 0}
-              previousUserChapterProgress={previousUserChapterProgress}
-              prviousChapter={previousChapter}
-            />
-          );
-       
-}

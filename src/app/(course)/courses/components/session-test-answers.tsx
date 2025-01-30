@@ -1,3 +1,4 @@
+import { Preview } from '@/components/preview'
 import { bgNeutralColor2, textPrimaryColor } from '@/utils/colors'
 import { Question } from '@prisma/client'
 import React from 'react'
@@ -12,12 +13,13 @@ import React from 'react'
               const { optionA, optionB, optionC, optionD } = options
             return<div key={question.id} className={`${bgNeutralColor2} ${textPrimaryColor}
             flex flex-col gap-1 p-2`}>
-                <h5><strong>Q:</strong> {question.question}</h5>
+                <strong>Question:</strong>
+                <div className='bg-white'><Preview value={question.question}/></div>
                 <p><strong>OptionA:</strong> {optionA}</p>
                 <p><strong>OptionB:</strong> {optionB}</p>
                 {optionC && <p><strong>OptionC:</strong> {optionC}</p>}
                 {optionD && <p><strong>OptionD:</strong> {optionD}</p>}
-                <p><strong>Ans:</strong> {question.answer}</p>
+                <p className='bg-white p-2'><strong>Ans:</strong> {question.answer}</p>
             </div>
         })}
     </div>

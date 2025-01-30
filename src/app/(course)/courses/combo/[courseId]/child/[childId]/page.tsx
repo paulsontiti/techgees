@@ -1,3 +1,5 @@
+
+"use client"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,25 +17,21 @@ import {
   Check,
   ChevronDown,
 } from "lucide-react";
-import Banner from "@/components/banner";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CommentItem from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/sessions/[sessionId]/_components/comment-item";
-import { getCourseCategoriesByCourseId } from "../../../../../../../../actions/getCourseCategoriesByCourseId";
-import { getCourse } from "../../../../../../../../actions/getCourse";
-import { getCourseWithCourseChildren } from "../../../../../../../../actions/getCourseWithCourseChildrenWithChapters";
-import { getCoursePrerequisiteWithIdAndTitle } from "../../../../../../../../actions/getCoursePrerequisite";
-import { getCourseRecommendedCourses } from "../../../../../../../../actions/getCourseRecommendedCourses";
-import { getCountOfPaymentByCourseId } from "../../../../../../../../actions/getCountOfPaymentByCourseId";
-import { getCourseComments } from "../../../../../../../../actions/getCourseComments";
-import { getCourseRating } from "../../../../../../../../actions/getCourseRating";
-import { getCourseNumberOfRatings } from "../../../../../../../../actions/getCourseNumberOfRatings";
-import { getCourseLikesCount } from "../../../../../../../../actions/getCourseLikesCount";
-import { getCourseDisLikesCount } from "../../../../../../../../actions/getCourseDisLikesCount";
-import StatInfo from "@/app/(root)/course/[courseId]/_components/stat-info";
+
+import StatInfo from "@/app/(root)/course/[courseId]/_components/course-stat-info";
 import { Preview } from "@/components/preview";
-import { getCourseChapters } from "../../../../../../../../actions/getCourseChapters";
-import { getChaptersSessions } from "../../../../../../../../actions/getChapterSessions";
+import CourseChaptersAndSessionsDetails from "@/components/course/course-chapters-sessions-details";
+import VideoPlayer from "@/components/video-player";
+import { useEffect, useState } from "react";
+import { Course } from "@prisma/client";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
+import CourseComments from "@/app/(course)/courses/components/course-comments";
+import CourseBenefits from "@/app/(course)/courses/components/course-benefits";
 
 
 export type CategoryCourseType = {
@@ -41,109 +39,55 @@ export type CategoryCourseType = {
   courses: { id: string; title: string }[];
 };
 
-async function CourseIdPage({
+ function CourseIdPage({
   params: { childId },
 }: {
   params: { childId: string };
 }) {
-  const { categories, error } =
-    await getCourseCategoriesByCourseId(childId);
+  // const { categories, error } =
+  //   await getCourseCategoriesByCourseId(childId);
 
-  if (error) return <Banner variant="error" label={error.message} />;
+  // if (error) return <Banner variant="error" label={error.message} />;
 
-  const { course, error: courseError } = await getCourse(childId);
-  if (courseError)
-    return <Banner variant="error" label={courseError.message} />;
+  // const { course, error: courseError } = await getCourse(childId);
+  // if (courseError)
+  //   return <Banner variant="error" label={courseError.message} />;
 
-  if (!course) return null
+  // if (!course) return null
 
-  const { courseChildren, error: comboError } =
-    await getCourseWithCourseChildren(
-      childId
-    );
-  if (comboError) return <Banner variant="error" label={comboError.message} />;
-
-
-  const { preRequisiteCourses, error: preError } = await getCoursePrerequisiteWithIdAndTitle(
-    childId
-  );
-  if (preError) return <Banner variant="error" label={preError.message} />;
-
-  const { recommendedCourses, error: recommError } = await getCourseRecommendedCourses(
-    childId
-  );
-  if (recommError) return <Banner variant="error" label={recommError.message} />;
-
-  const { numberOfPayments, error: paymentError } = await getCountOfPaymentByCourseId(
-    childId
-  );
-  if (paymentError) return <Banner variant="error" label={paymentError.message} />;
-
-  const { comments, error: commError } = await getCourseComments(
-    childId
-  );
-  if (commError) return <Banner variant="error" label={commError.message} />;
-
-  const { averageRating, error: ratingError } = await getCourseRating(
-    childId
-  );
-  if (ratingError) return <Banner variant="error" label={ratingError.message} />;
+  // const { courseChildren, error: comboError } =
+  //   await getCourseWithCourseChildren(
+  //     childId
+  //   );
+  // if (comboError) return <Banner variant="error" label={comboError.message} />;
 
 
-  const { numberOfRatings, error: numRatingError } = await getCourseNumberOfRatings(
-    childId
-  );
-  if (numRatingError) return <Banner variant="error" label={numRatingError.message} />;
 
-  const { numberOfLikes, error: likesError } = await getCourseLikesCount(
-    childId
-  );
-  if (likesError) return <Banner variant="error" label={likesError.message} />;
+  // const { comments, error: commError } = await getCourseComments(
+  //   childId
+  // );
+  // if (commError) return <Banner variant="error" label={commError.message} />;
 
-  const { numberOfDisLikes, error: disLikesError } = await getCourseDisLikesCount(
-    childId
-  );
-  if (disLikesError) return <Banner variant="error" label={disLikesError.message} />;
+const [course,setCourse] = useState<Course | undefined>(undefined);
 
-
-  let chaptersLength = 0;
-  let sessionslength = 0;
-  let duration = 0;
-
-  if (course !== null) {
-    if (courseChildren.length > 0) {
-      courseChildren.map(async (child) => {
-        const {chapters} = await getCourseChapters(child.id);
-        chaptersLength = chapters.length;
-        chapters.map(async(chapter) => {
-          const {sessions} = await getChaptersSessions(chapter.id);
-          sessions.map((session) => {
-            sessionslength++;
-            duration += session.videoDuration ?? 0;
-          });
-        });
-      });
-    } else {
-      const chapters = course.chapters.map((courseChapter) => courseChapter);
-      chaptersLength = course?.chapters.length ?? 0;
-
-      chapters.map((chapter) => {
-        chapter.sessions.map((session) => {
-          sessionslength++;
-          duration += session.videoDuration ?? 0;
-        });
-      });
-
-
+useEffect(()=>{
+  (
+    async()=>{
+      try{
+        const res = await axios.get(`/api/courses/${childId}`);
+        setCourse(res.data);
+      }catch(err:any){
+        toast.error(err.message);
+      }
     }
-  }
-
+  )()
+},[]);
 
   return (
     <div className=" flex items-center justify-center ">
       <div className="w-full md:w-[700px] xl:w-[900px]">
         <div className="mt-8">
-          <Breadcrumb>
+          {/* <Breadcrumb>
             <BreadcrumbList>
               {Array.isArray(categories) &&
                 categories.length > 0 &&
@@ -193,55 +137,29 @@ async function CourseIdPage({
                   );
                 })}
             </BreadcrumbList>
-          </Breadcrumb>
+          </Breadcrumb> */}
         </div>
-        <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>
-        <h2 className="mt-2 text-md md:w-2/3 mb-10">{course?.subTitle}</h2>
+     <div className="bg-white p-2">
+     {course === undefined ? <Skeleton className="w-full h-10 my-2"/> :  <h1 className="mt-4 text-xl font-bold">{course?.title}</h1>}
+       {course === undefined ? <Skeleton className="w-full h-10 my-2"/> : 
+       <h2 className="mt-2 text-md md:w-2/3 mb-10">{course?.subTitle}</h2>
+}
+     </div>
 
 
-        <StatInfo
-          numberOfRatings={numberOfRatings}
-          numberOfStudents={numberOfPayments}
-          numberOfComments={comments.length}
-          likes={numberOfLikes}
-          disLikes={numberOfDisLikes} rating={averageRating} />
+
+        <StatInfo courseId={childId} />
 
         <div className="my-4 w-full">
-          <video src={course?.overviewVideoUrl ?? ""} controls title="Course overview" className="w-full" />
+          <VideoPlayer url={course?.overviewVideoUrl ?? ""} title="Course Overview"/>
         </div>
 
-
-        {Array.isArray(course?.courseBenefits) && course.courseBenefits.length > 0 &&
-          <Card className="mt-4 w-full">
-            <CardHeader className="text-xl font-bold">
-              Benefits of taking this course
-            </CardHeader>
-            <CardContent className="flex flex-col">
-              {course?.courseBenefits.map((benefit) => {
-                return (
-                  <div key={benefit.id} className="flex items-start my-2 gap-2">
-                    <Check className="max-w-4 max-h-4 min-w-4 min-h-4" />
-                    <div className="text-xs md:text-sm">{benefit.text}</div>
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>}
+        {course === undefined ? <Skeleton className="w-full h-20 my-2"/>: <CourseBenefits courseId={course?.id}/>}
         <div className="mt-8">
           <h1 className="text-xl font-bold">Course content</h1>
           <div className="mt-4 flex items-center gap-x-2 text-xs md:text-sm">
-            {courseChildren.length > 0 && (
-              <div className="flex items-center gap-x-1">
-                {courseChildren.length} courses
-              </div>
-            )}
-            <div className="flex items-center gap-x-1">
-              {chaptersLength} chapters
-            </div>
-            <div className="flex items-center gap-x-1">
-              {sessionslength} sessions
-            </div>
-            <div className="flex items-center gap-x-1">{duration} mins(total length)</div>
+           
+        <CourseChaptersAndSessionsDetails courseId={childId}/>
           </div>
         </div>
 
@@ -249,17 +167,14 @@ async function CourseIdPage({
 
 
 
+       {course === undefined ? <Skeleton className="w-full h-72 my-2"/> : <div className="bg-white p-2 my-4">
         <h1 className="text-lg font-semibold mt-8">Description</h1>
         <Preview value={course?.description ?? ""}></Preview>
+       </div>}
 
 
-        {Array.isArray(comments) && comments.length > 0 && <div className="mt-4 border p-2 max-w-full">
-          <h1 className="text-lg font-semibold mb-2">Reviews</h1>
-          {comments.map((comment, index) => {
-
-            return <CommentItem comment={comment} key={index} />
-          })}
-        </div>}
+      {course === undefined ? <Skeleton className="w-full h-72 my-2"/>
+      :  <CourseComments courseId={course?.id}/>}
       </div>
     </div>
   );

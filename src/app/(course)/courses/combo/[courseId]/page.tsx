@@ -1,66 +1,62 @@
-import React from 'react'
-import ErrorPage from '@/components/error'
-import { getCourse } from '../../../../../../actions/getCourse'
-import CoursesList from './_components/combo-courses-list'
-import { getPurchasePercentage } from '../../../../../../actions/getPurchasePercentage'
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
+"use client"
+import React, { useEffect, useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { ComboCourseEnrollButton } from './_components/combo-enroll-button'
-import { formatPrice } from '@/lib/format'
-import { getCoursePurchase } from '../../../../../../actions/getCoursePurchase'
-import Banner from '@/components/banner'
-import { verifyPayStackPayment } from '../../../../../../actions/verifyPayment'
-import { updatePayment } from '../../../../../../actions/updatePayment'
-import { getPaidChapters } from '../../../../../../actions/getPaidChapters'
-import BackButton from '@/components/back-button'
 import ComboCourseNavbar from './_components/combo-navbar'
-import { getUserCookie } from '@/lib/get-user-cookie'
+import VerifyPayment from '../../components/verify-payment'
+import { Course } from '@prisma/client'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Preview } from '@/components/preview'
+import VideoPlayer from '@/components/video-player'
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import CoursesList from './_components/combo-courses-list'
 
-async function ComboCoursePage(
-    { params: { courseId }, searchParams: { reference }, }: {
-        params: { courseId: string }, searchParams: { reference: string };
+function ComboCoursePage(
+    { params: { courseId }, searchParams: { reference, redirectUrl }, }: {
+        params: { courseId: string }, searchParams: { reference: string, redirectUrl: string };
     }) {
-    const { course, error } = await getCourse(courseId)
+    const [course, setCourse] = useState<Course | undefined>(undefined);
 
-    if (error) return <ErrorPage name={error.name} />
-    if (!course) return redirect("/dashboard")
+    useEffect(() => {
+        (
+            async () => {
+                try {
+                    const res = await axios.get(`/api/courses/${courseId}`);
+                    setCourse(res.data);
+                } catch (err: any) {
+                    toast.error(err.message);
+                }
+            }
+        )()
+    }, []);
+    // const { course, error } = await getCourse(courseId)
 
-    //get clerk user id
-    const userId = await getUserCookie();
-    if (!userId) return redirect("/")
+    // if (error) return <ErrorPage name={error.name} />
+    // if (!course) return redirect("/dashboard")
 
-    const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
-    if (purschaseError) return <ErrorPage name={purschaseError.name} />;
+    // //get clerk user id
+    // const userId = await getUserCookie();
+    // if (!userId) return redirect("/")
 
-
-
-    const { coursePurchase, error: purchaseError } = await getCoursePurchase(
-        courseId, userId
-    );
-    if (purchaseError)
-        return <ErrorPage name={purchaseError.name} />;
-
-    let payment = null;
-
-    if (reference) {
-        const { verifiedPayment, error } = await verifyPayStackPayment(reference);
-
-        if (error) return <ErrorPage name={error.name} />;
-        if (verifiedPayment) {
-            payment = {
-                amount: verifiedPayment.data.amount / 100,
-                status: verifiedPayment.data.status,
-            };
-        }
-        await updatePayment(reference)
-    }
+    // const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
+    // if (purschaseError) return <ErrorPage name={purschaseError.name} />;
 
 
-    //get parent course chapter paid for
 
-    const { paidChapters, error: chapterError } = await getPaidChapters(courseId, purchasePercentage)
-    if (chapterError) return <ErrorPage name={chapterError.name} />;
+    // const { coursePurchase, error: purchaseError } = await getCoursePurchase(
+    //     courseId, userId
+    // );
+    // if (purchaseError)
+    //     return <ErrorPage name={purchaseError.name} />;
+
+
+
+
+    // //get parent course chapter paid for
+
+    // const { paidChapters, error: chapterError } = await getPaidChapters(courseId, purchasePercentage)
+    // if (chapterError) return <ErrorPage name={chapterError.name} />;
 
 
 
@@ -69,66 +65,41 @@ async function ComboCoursePage(
         <div>
 
             <ComboCourseNavbar />
-            <div className='flex flex-col items-center justify-center '>
-                <div className='w-full md:w-[600px] lg:w-[900px]'>
-                    {payment && (
-                        <Banner
-                            variant={payment.status === "success" ? "success" : "warning"}
-                            label={`You payment of ${formatPrice(payment.amount)} is 
-          ${payment.status}`}
-                        />
-                    )}
+            <div className='p-4'>
+               <div className='flex flex-col items-center justify-center '>
+                    <div className='w-full md:w-[600px] lg:w-[900px]'>
+                        <VerifyPayment reference={reference} redirectUrl={redirectUrl} />
 
-                    <div
-                        className="
+                        <div
+                            className="
         flex flex-col  mx-auto pb-20"
-                    >
+                        >
 
-                        <div className="p-4  flex flex-col md:flex-row items-center justify-between">
-                            <h2 className="text-2xl font-semibold mb-2">{course.title}</h2>
-                            {!course.isFree && <>
-                                {purchasePercentage !== 100 && (
-                                    <ComboCourseEnrollButton
-                                        courseId={courseId}
-                                        label={
-                                            purchasePercentage === 0
-                                                ? `Enroll for ${formatPrice(course.price!)}`
-                                                : `Pay ${formatPrice(
-                                                    ((100 - purchasePercentage) / 100) * (!!coursePurchase ? coursePurchase?.price! : course.price!)
-                                                )}`
-                                        }
-                                    />
-                                )}</>}
+                            <div className="p-4  flex flex-col md:flex-row items-center justify-between">
+                                {course?.title === undefined ? <Skeleton className='w-full h-10 m-2'/> : 
+                                <h2 className="text-2xl font-semibold mb-2">{course.title}</h2>}
+
+                                <ComboCourseEnrollButton
+                                    courseId={courseId}
+                                />
+                            </div>
+                            <Separator />
+                            <div className='bg-white p-2 my-2'>
+                               {course?.description === undefined ?
+                               <Skeleton className='w-full h-96'/>
+                            :
+                            <Preview value={course.description ?? ""} />}
+                            </div>
+
+                            {course?.overviewVideoUrl === undefined || course?.title === undefined ?
+                            <Skeleton className='w-full h-40'/>
+                        : <VideoPlayer url={course.overviewVideoUrl ?? ""}
+                        title={course.title} />
+} 
                         </div>
-                        <Separator />
-                        {/* <div>
-                        <Preview value={course.description ?? ""} />
                     </div>
-
-
-                    <video
-                        src={course.overviewVideoUrl ?? ""}
-                        controls
-                        title={course.title}
-                    /> */}
-                        {/* <CourseComm
-          chapterId={chapterId}
-          numberOfDisLikes={numberOfDisLikes}
-          numberOfRatings={numberOfRatings}
-          numberOfLikes={numberOfLikes}
-          comments={comments}
-          hasDisLiked={hasDisLiked}
-          hasLiked={hasLiked}
-          rating={averageRating}
-          hasRated={hasRated}
-          numberOfStudents={numberOfStudents}
-        /> */}
-
-
-
-                    </div>
+                    <CoursesList courseId={courseId} />
                 </div>
-                <CoursesList courseId={courseId} paidChapters={paidChapters} />
             </div>
         </div>
     )

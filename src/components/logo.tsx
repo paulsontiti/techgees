@@ -10,7 +10,7 @@ const router = useRouter();
           onClick={()=> {
                 router.push("/");
           }}
-        >Global Genius</h1>
+        >TGG</h1>
 }
 
 export default Logo

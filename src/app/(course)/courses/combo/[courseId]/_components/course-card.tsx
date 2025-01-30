@@ -8,27 +8,54 @@ import { Course } from "@prisma/client";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommentForm from "@/app/(course)/courses/single/[courseId]/_components/comment-form";
 import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+import axios from "axios";
 
 type CourseCardProps = {
   course: Course,
-  progressPercentage: number;
   parentId: string,
   numberOfPaidChapters: number,
-  numberOfChapters: number, numberOfFreeChapters: number
 };
 function CourseCard({
   course, numberOfPaidChapters,
-  progressPercentage, parentId, numberOfChapters, numberOfFreeChapters
+  parentId
 
 }: CourseCardProps) {
+
+  const [progressPercentage,setProgressPercentage] = useState<number | undefined>(undefined);
+  const [numberOfChapters,setNumberOfChapters] = useState<number | undefined>(undefined);
+  const [numberOfFreeChapters,setNumberOfFreeChapters] = useState<number | undefined>(undefined);
+
   const [loading, setLoading] = useState(false);
   const [commenting, setCommenting] = useState(false)
   const router = useRouter();
 
-  if (!course) return null
+  useEffect(()=>{
+    (
+      async()=>{
+        try{
+          const chapRes = await axios.get(`/api/courses/${course.id}/number-of-chapters`);
+          setNumberOfChapters(chapRes.data);
+
+          const freeChapRes = await axios.get(`/api/courses/${course.id}/number-of-free-chapters`);
+          setNumberOfFreeChapters(freeChapRes.data);
+
+          const progressRes = await axios.get(`/api/courses/${course.id}/progress-percentage`);
+          setProgressPercentage(progressRes.data);
+        }catch(err:any){
+          toast.error(err.message);
+        }
+      }
+    )()
+  },[]);
+ if (!course) return null
+  if(numberOfChapters === undefined || numberOfFreeChapters === undefined) 
+    return <Skeleton className="w-full h-72 m-2"/>
+  
+  
   const onClick = () => {
     if (numberOfFreeChapters > 0 || numberOfPaidChapters > 0) {
       setLoading(true);
@@ -78,20 +105,14 @@ function CourseCard({
           </div>
         </div>
 
-        {progressPercentage === null ? (
-          <p
-            className="text-md md:text-sm  mt-8 font-bold
-           text-slate-700"
-          >
-            {formatPrice(course.price!)}
-          </p>
-        ) : (
+       {
+        progressPercentage === undefined ? <Skeleton className="w-full h-10"/> : 
           <CourseProgress
-            value={progressPercentage ?? 0}
+            value={progressPercentage}
             variant={progressPercentage === 100 ? "success" : "default"}
             size="sm"
           />
-        )}
+       }
 
 
 

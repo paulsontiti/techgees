@@ -10,33 +10,58 @@ import { Category, Course } from "@prisma/client";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RecommendedCourseType } from "../../../../../actions/getRecommendedCourses";
 import CommentForm from "@/app/(course)/courses/single/[courseId]/_components/comment-form";
+import { Skeleton } from "@/components/ui/skeleton";
+import { bgNeutralColor2 } from "@/utils/colors";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 type CourseCardProps = {
   course: RecommendedCourseType,
   progressPercentage?: number | null;
-  categories: Category[];
-  recommendedCourses: Course[];
-  preRequisiteCourses: Course[];
-  childrenCourses: Course[];
-  isCombo: boolean;
 };
 function CourseCard({
   course,
   progressPercentage,
-  isCombo,
-  categories,
-  preRequisiteCourses,
-  childrenCourses,
-  recommendedCourses,
 }: CourseCardProps) {
+
+  const [categories, setCategories] = useState<Category[] | undefined>(undefined);
+  const [preRequisiteCourses, setPreRequisiteCourses] = useState<Course[] | undefined>(undefined);
+  const [recommendedCourses, setRecommendedCourses] = useState<Course[] | undefined>(undefined);
+  const [childrenCourses, setChildrenCourses] = useState<Course[] | undefined>(undefined);
+
+
   const [loading, setLoading] = useState(false);
   const [commenting, setCommenting] = useState(false)
   const router = useRouter();
 
-  if (!course) return null
+  useEffect(() => {
+    (
+      async () => {
+        try {
+          const courseId = course?.id;
+          const catRes = await axios.get(`/api/courses/${courseId}/categories`);
+          setCategories(catRes.data);
+
+          const childrenRes = await axios.get(`/api/courses/${courseId}/course-children`);
+          setChildrenCourses(childrenRes.data);
+
+          const preRequisiteRes = await axios.get(`/api/courses/${courseId}/pre-requisite`);
+          setPreRequisiteCourses(preRequisiteRes.data);
+
+          const RecommendedRes = await axios.get(`/api/courses/${courseId}/recommended`);
+          setRecommendedCourses(RecommendedRes.data);
+        } catch (err: any) {
+          toast.error(err.message);
+        }
+      }
+    )()
+  }, []);
+
+  if (!course) return null;
+
   const onClick = () => {
     setLoading(true);
     router.push(`/courses/${course.id}`);
@@ -65,44 +90,53 @@ function CourseCard({
         >
           {course.title}
         </div>
-        <div>
-          <h2
-            className="text-md md:text-sm italic mt-2 
-                group-hover:text-sky-700 transition line-clamp-2 font-medium"
-          >
-            Categories:
-          </h2>
-          <div className="flex flex-wrap">
-            {Array.isArray(categories) &&
-              categories.map((category) => {
-                return (
-                  <span
-                    key={category.id}
-                    className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
-                  >
-                    {category.name}
-                  </span>
-                );
-              })}
-          </div>
-        </div>
-
-        {isCombo ? (
-            
-              <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
-              <div className="flex items-center gap-x-1">
-                <IconBadge size={"sm"} icon={BookOpen} />
-                {childrenCourses.length} courses
-              </div>    
-         </div>
-        ) : (
-          <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
-            <div className="flex items-center gap-x-1">
-              <IconBadge size={"sm"} icon={BookOpen} />
-              {course.chapters.length} {course.chapters.length > 1 ? "chapters" : "chapter"}
+        {categories === undefined ? <Skeleton className={`${bgNeutralColor2} w-full h-10 my-2`} /> :
+          <div>
+            <h2
+              className="text-md md:text-sm italic mt-2 
+              group-hover:text-sky-700 transition line-clamp-2 font-medium"
+            >
+              Categories:
+            </h2>
+            <div className="flex flex-wrap">
+              {Array.isArray(categories) &&
+                categories.map((category) => {
+                  return (
+                    <span
+                      key={category.id}
+                      className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
+                    >
+                      {category.name}
+                    </span>
+                  );
+                })}
             </div>
           </div>
-        )}
+        }
+
+        {
+          childrenCourses === undefined ? <Skeleton className={`${bgNeutralColor2} w-full h-5 my-2`} />
+            :
+            <>
+              {childrenCourses.length > 0 ? (
+
+                <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
+                  <div className="flex items-center gap-x-1">
+                    <IconBadge size={"sm"} icon={BookOpen} />
+                    {childrenCourses.length} courses
+                  </div>
+                </div>
+              ) : (
+                <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
+                  <div className="flex items-center gap-x-1">
+                    <IconBadge size={"sm"} icon={BookOpen} />
+                    {course.chapters.length} {course.chapters.length > 1 ? "chapters" : "chapter"}
+                  </div>
+                </div>
+              )}
+            </>
+        }
+
 
         {progressPercentage === null ? (
           <p
@@ -119,52 +153,62 @@ function CourseCard({
           />
         )}
 
-        {Array.isArray(preRequisiteCourses) &&
-          preRequisiteCourses.length > 0 && (
-            <div>
-              <h2
-                className="text-md md:text-sm italic mt-2 
+        {
+          preRequisiteCourses === undefined ? <Skeleton className={`${bgNeutralColor2} w-full h-10 my-2`} /> :
+            <>
+              {Array.isArray(preRequisiteCourses) &&
+                preRequisiteCourses.length > 0 && (
+                  <div>
+                    <h2
+                      className="text-md md:text-sm italic mt-2 
                 group-hover:text-sky-700 transition line-clamp-2"
-              >
-                Pre-requisites:
-              </h2>
-              <div className="flex flex-wrap">
-                {preRequisiteCourses.map((course) => {
-                  return (
-                    <span
-                      key={course.id}
-                      className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
                     >
-                      {course.title}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+                      Pre-requisites:
+                    </h2>
+                    <div className="flex flex-wrap">
+                      {preRequisiteCourses.map((course) => {
+                        return (
+                          <span
+                            key={course.id}
+                            className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
+                          >
+                            {course.title}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+            </>
+        }
 
-        {Array.isArray(recommendedCourses) && recommendedCourses.length > 0 && (
-          <div>
-            <h2
-              className="text-md md:text-sm italic mt-2 
+        {
+          recommendedCourses === undefined ? <Skeleton className={`${bgNeutralColor2} w-full h-10 my-2`} /> :
+            <>
+              {Array.isArray(recommendedCourses) && recommendedCourses.length > 0 && (
+                <div>
+                  <h2
+                    className="text-md md:text-sm italic mt-2 
                 group-hover:text-sky-700 transition line-clamp-2"
-            >
-              Recommended courses:
-            </h2>
-            <div className="flex flex-wrap">
-              {recommendedCourses.map((course) => {
-                return (
-                  <span
-                    key={course.id}
-                    className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
                   >
-                    {course.title}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                    Recommended courses:
+                  </h2>
+                  <div className="flex flex-wrap">
+                    {recommendedCourses.map((course) => {
+                      return (
+                        <span
+                          key={course.id}
+                          className="text-xs mr-2 italic bg-sky-100 rounded-full mt-4 py-1 px-2"
+                        >
+                          {course.title}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </>
+        }
         <span
           className="mt-4"
           onClick={() => {

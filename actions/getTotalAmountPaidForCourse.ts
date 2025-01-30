@@ -45,8 +45,23 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
 
         }
 
-        const totalAmountPaid = paymentAmounts.length === 0 ? 0 : paymentAmounts.reduce((total, curr) => total + curr)
+        //get wallet purchases for this course
+        const walletpayments = await db.walletPayment.findMany({
+            where: {
+                userId,
+                courseId
+            }, select: {
+                amount: true
+            }
+        });
+      
+        //add wallet payments to paymentsAmount
+        for(let payment of walletpayments){
+            paymentAmounts.push(payment.amount);
+        }
 
+        const totalAmountPaid = paymentAmounts.length === 0 ? 0 : 
+        paymentAmounts.reduce((total, curr) => total + curr)
 
         return { totalAmountPaid, error: null }
     } catch (error: any) {

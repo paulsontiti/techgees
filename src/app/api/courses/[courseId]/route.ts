@@ -1,6 +1,7 @@
 import { db } from "@/lib/db"
 import { getUserCookie } from "@/lib/get-user-cookie"
 import { NextResponse } from "next/server"
+import { getCourse } from "../../../../../actions/getCourse"
 
 
 export async function PATCH(
@@ -81,5 +82,23 @@ if(!userId)  return new NextResponse("Unauthoried",{status:401})
     }catch(err){
         console.log("[COURSE_CHAPTER_ID_DELETE]",err)
         return new NextResponse("Internal error",{status:500})
+    }
+}
+
+export async function GET(
+    req: Request,
+    { params: { courseId } }: { params: { courseId: string } }
+) {
+
+    try {
+        const { course, error } = await getCourse(
+            courseId
+        );
+        if (error) return new NextResponse("Internal error", { status: 500 });
+
+        return NextResponse.json(course);
+    } catch (err) {
+        console.log("[GET_COURSE]", err)
+        return new NextResponse("Internal error", { status: 500 });
     }
 }

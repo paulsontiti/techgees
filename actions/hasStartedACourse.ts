@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 interface ReturnValue {
-    startedCourse: boolean | null,
+    startedCourse: boolean,
     error: Error | null
 }
 /**
@@ -27,6 +27,6 @@ export const hasStartedACourse = async (
         return { startedCourse : course ? true : false, error: null }
     } catch (error: any) {
         console.log("[HAS_STARTED_A_COURSE]", error)
-        return { startedCourse: null, error }
+        return { startedCourse: false, error }
     }
 }

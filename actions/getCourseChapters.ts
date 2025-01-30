@@ -26,7 +26,7 @@ export const getCourseChapters = async (courseId:string):
 
         return { chapters, error: null }
     } catch (error: any) {
-        console.log("[CHAPTER_TITLES]", error)
+        console.log("[COURSE_CHAPTERS]", error)
         return { chapters: [], error }
     }
 }

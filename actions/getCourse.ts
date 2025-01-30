@@ -6,7 +6,7 @@ interface ReturnValue {
   error: Error | null;
 }
 
-type CourseType = Course & {
+export type CourseType = Course & {
   courseBenefits:CourseBenefit[],
   chapters: (Chapter & {
     sessions: Session[];

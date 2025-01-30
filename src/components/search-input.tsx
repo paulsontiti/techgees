@@ -6,7 +6,6 @@ import { Input } from './ui/input'
 import { useDebounce } from '../../hooks/use-debounce'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import qs from "query-string"
-import ErrorBoundary from './error-boundary'
 import { textPrimaryColor } from '@/utils/colors'
 
 function SearchInput() {

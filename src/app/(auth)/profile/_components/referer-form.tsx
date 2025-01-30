@@ -18,7 +18,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import ErrorPage from "@/components/error"
 import Loader from "@/components/loader"
 import axios from "axios"
 import toast from "react-hot-toast"
@@ -26,18 +25,36 @@ import { useRouter } from "next/navigation"
 
 
 
-export function RefererForm({users,error,setEditing}:{
-  users:{id:string,userName:string}[],
-  error:Error | null,
+export function RefererForm({setEditing}:{
+  
   setEditing:React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
   const [loading, setLoading] = React.useState(false)
+const [users,setUsers] = React.useState<{id:string,userName:string}[]>([
+    {id:"Facebook",userName:"Facebook"},
+    {id:"Instagram",userName:"Instagram"},
+    {id:"Youtube",userName:"Youtube"},
+    {id:"Tiktok",userName:"Tiktok"},
+    {id:"Google ads",userName:"Google ads"},
+    ]
+);
 
-  const router = useRouter()
-
-  if(error) return <ErrorPage name={error.name}/>
+React.useEffect(()=>{
+  (
+    async()=>{
+      try{
+          const res = await axios.get(`/api/user/usernames`);
+          setUsers((prv)=> [...prv,...res.data]);
+       
+      }catch(err:any){
+        toast.error(err.message);
+      }
+    }
+  )()
+},[]);
+  const router = useRouter();
 
   const onSubmit = async()=>{
     const values = {refererId:value}
@@ -89,7 +106,7 @@ export function RefererForm({users,error,setEditing}:{
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === user.userName ? "opacity-100" : "opacity-0"
+                      value === user.id ? "opacity-100" : "opacity-0"
                     )}
                   />
                   {user.userName}

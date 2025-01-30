@@ -33,7 +33,11 @@ export async function GET(req:Request){
 
     try{
     
-        const courses = await db.course.findMany()
+        const courses = await db.course.findMany({
+            where:{
+                isPublished:true
+            }
+        })
 
         return NextResponse.json(courses)
     }catch(err){

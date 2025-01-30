@@ -52,6 +52,8 @@ export async function POST(req: Request) {
               userId
             }
           })
+
+          
         }
 
         await db.paystackPayment.create({
@@ -63,29 +65,7 @@ export async function POST(req: Request) {
           },
         });
         
-        // const {
-        //   verifiedPayment: { data },
-        //   error,
-        // } = await verifyPayStackPayment(reference);
-        // if (error) throw new Error(error.message);
-  
-        // const { status } = data;
-        // if (status === "success") {
-
-        //     await db.paystackPayment.create({
-        //     data:{
-        //       userId,
-        //       courseId,
-        //       reference,
-        //       payment_status:status,
-        //       amount
-        //     }
-        //    })
-  
-           
-        // } else {
-         
-      //   }
+       
     }
 
    

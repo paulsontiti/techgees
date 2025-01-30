@@ -4,7 +4,8 @@ import { BarChart, Bug, Compass, HeartHandshake, Layout, List, MessageCircleQues
 import React from 'react'
 import SidebarItem from './sidebar-item'
 import { usePathname } from 'next/navigation'
-
+import { Separator } from '@/components/ui/separator'
+import LogoutButton from '@/app/(account)/components/logout'
 const studentRoutes = [
   {
     icon: Layout,
@@ -21,11 +22,11 @@ const studentRoutes = [
     label: "Profile",
     href: "/profile"
   },
-  {
-    icon: BarChart,
-    label: "Report card",
-    href: "/report"
-  },
+  // {
+  //   icon: BarChart,
+  //   label: "Report card",
+  //   href: "/report"
+  // },
   {
     icon: Wallet,
     label: "Wallet",
@@ -36,21 +37,21 @@ const studentRoutes = [
     label: "Network",
     href: "/network"
   },
-  {
-    icon: HeartHandshake,
-    label: "Communities",
-    href: "/communities"
-  },
-  {
-    icon: Bug,
-    label: "Report an issue",
-    href: "/report-issue"
-  },
-  {
-    icon: MessageCircleQuestion,
-    label: "Feedback",
-    href: "/feedback"
-  },
+  // {
+  //   icon: HeartHandshake,
+  //   label: "Communities",
+  //   href: "/communities"
+  // },
+  // {
+  //   icon: Bug,
+  //   label: "Report an issue",
+  //   href: "/report-issue"
+  // },
+  // {
+  //   icon: MessageCircleQuestion,
+  //   label: "Feedback",
+  //   href: "/feedback"
+  // },
 ]
 
 const teacherRoutes = [
@@ -84,7 +85,7 @@ function SidebarRoutes() {
 
   const routes = pathname.includes("/teacher") ? teacherRoutes : studentRoutes
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex flex-col gap-4 w-full'>
       {
         routes.map((route) => {
 
@@ -99,6 +100,8 @@ function SidebarRoutes() {
           )
         })
       }
+      <Separator />
+      <div className='pl-6'>    <LogoutButton /></div>
     </div>
   )
 }

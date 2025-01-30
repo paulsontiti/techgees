@@ -6,7 +6,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -14,6 +14,7 @@ import * as zod from "zod"
 import { Editor } from '@/components/editor'
 import { Comment } from '@prisma/client'
 import { CommentsDialog } from '@/components/comments-dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 
 
 const formSchema = zod.object({
@@ -22,7 +23,8 @@ const formSchema = zod.object({
     })
 })
 
-function CommentForm({ sessionId, comments }: { sessionId: string, comments: Comment[] }) {
+function CommentForm({ sessionId }: { sessionId: string}) {
+     const [comments,setComments] = useState<Comment[] | undefined>(undefined);
     const router = useRouter()
 
 
@@ -36,7 +38,20 @@ function CommentForm({ sessionId, comments }: { sessionId: string, comments: Com
 
     const { isSubmitting, isValid } = form.formState
 
+    useEffect(()=>{
+        (
+            async()=>{
+                try{
+                    const res = await axios.get(`/api/sessions/${sessionId}/comments`);
+                    setComments(res.data);
+                }catch(err:any){
+                    toast.error(err.message);
+                }
+            }
+        )()
+    },[]);
 
+    if(comments === undefined) return <Skeleton className='w-full h-20 my-4'/>
 
     const onSubmit = async (values: zod.infer<typeof formSchema>) => {
         if (values.comment === "<p><br></p>") return
