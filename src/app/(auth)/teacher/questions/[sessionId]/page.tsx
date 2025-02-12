@@ -1,8 +1,10 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SessionQuestionAccordion from './_components/questionAccordion'
 import {SessionQuestion } from "@prisma/client";
 import { Skeleton } from '@/components/ui/skeleton';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
  function SessionQuestionPage({
   params:{sessionId}
@@ -18,6 +20,19 @@ import { Skeleton } from '@/components/ui/skeleton';
     // })
     // const questionFilter = questions.filter(x=> x.answer === null)
     const [questions,setQuestions] = useState<SessionQuestion[] | undefined>(undefined);
+
+    useEffect(()=>{
+      (
+        async()=>{
+          try {
+            const res = await axios.get(`/api/sessions/${sessionId}/questions`);
+            setQuestions(res.data);
+          } catch (err:any) {
+            toast.error(err.message);
+          }
+        }
+      )()
+    },[]);
 
     if(questions === undefined) return <Skeleton className='w-full h-20 my-4'/>
   return (

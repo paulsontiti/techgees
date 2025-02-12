@@ -12,7 +12,6 @@ import { DBUser } from "@prisma/client"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { Skeleton } from "./ui/skeleton"
-import WelcomeMessage from "./welcome-message"
 
 export const NavbarRoutes = () => {
     const pathname = usePathname()
@@ -50,7 +49,7 @@ export const NavbarRoutes = () => {
 
         <div className="px-2 flex items-center justify-end gap-x-2 md:gap-x-4 ml-auto w-3/4">
 
-            <WelcomeMessage />
+            {/* <WelcomeMessage /> */}
             <Button
                 variant="link"
                 size="sm"
