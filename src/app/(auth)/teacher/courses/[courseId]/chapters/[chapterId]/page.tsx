@@ -1,6 +1,5 @@
 import IconBadge from "@/components/icon-badge";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { ArrowLeft, Eye, LayoutDashboard, ListChecks, Video } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";

@@ -5,7 +5,6 @@ import ErrorPage from "@/components/error";
 import IconBadge from "@/components/icon-badge";
 import { User } from "lucide-react";
 import FirstNameForm from "./_components/first-name-form";
-import { createUser } from "../../../../actions/createUser";
 import LastNameForm from "./_components/last-name-form";
 import PhoneForm from "./_components/phone-form";
 import WhatsAppForm from "./_components/whatsapp-form";
