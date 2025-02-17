@@ -18,21 +18,21 @@ function AssignmentAccordion({ assignment, assignmentNumber }: {
   const [answer, setAnswer] = useState<AssignmentAnswer | undefined>(undefined);
   const [remark, setRemark] = useState<AssignmentAnswerRemarks | undefined>(undefined);
 
-  useEffect(()=>{
+  useEffect(() => {
     (
-      async()=>{
-        try{
+      async () => {
+        try {
           const ansRes = await axios.get(`/api/assignment/${assignment.id}/answer`);
           setAnswer(ansRes.data);
 
           const remarkRes = await axios.get(`/api/assignment/remark/${answer?.id}`);
           setRemark(remarkRes.data);
-        }catch(err:any){
+        } catch (err: any) {
           toast.error(err.message);
         }
       }
     )()
-  },[]);
+  }, []);
   return (
     <div className='mt-2'>
 
@@ -43,27 +43,29 @@ function AssignmentAccordion({ assignment, assignmentNumber }: {
           </AccordionTrigger>
           <AccordionContent>
             <Preview value={assignment.text} />
-           {answer === undefined ? <Skeleton className='w-full h-10'/> : 
-           <>
-            {
-              answer ? <div>
-                <div className='flex items-start'>
-                  <h2 className='text-xl font-semibold '>Your answer </h2>
-                  {answer.passed ? <BadgeCheck className='text-emerald-900 w-4 h-4' /> :
-                   <CircleEllipsis className='text-yellow-900 w-4 h-4' />}
-                </div>
-                <Preview value={answer.answer} />
-                {!answer.passed && <AssignmentForm assignmentId={assignment.id} />}
-                {remark === undefined ? <Skeleton className='w-full h-10'/> : <>
-                  <h2 className='mt-4 mb-2 text-xl font-semibold'>{`Instructor's remark`}</h2>
-                  <Preview value={remark.remark} />
+            {answer === undefined ? <Skeleton className='w-full h-10' /> :
+              <>
+                {
+                  answer ? <div>
+                    <div className='flex items-start'>
+                      <h2 className='text-xl font-semibold '>Your answer </h2>
+                      {answer.passed ? <BadgeCheck className='text-emerald-900 w-4 h-4' /> :
+                        <CircleEllipsis className='text-yellow-900 w-4 h-4' />}
+                    </div>
+                    <Preview value={answer.answer} />
+                    {!answer.passed && <AssignmentForm assignmentId={assignment.id} />}
+                    {remark === undefined ? <Skeleton className='w-full h-10' /> : <>
+                      {remark && <>
+                        <h2 className='mt-4 mb-2 text-xl font-semibold'>{`Instructor's remark`}</h2>
+                        <Preview value={remark.remark} />
+                      </>}
 
-                </>}
-              </div> :
-              <AssignmentForm assignmentId={assignment.id} />
+                    </>}
+                  </div> :
+                    <AssignmentForm assignmentId={assignment.id} />
+                }
+              </>
             }
-           </>
-           } 
           </AccordionContent>
         </AccordionItem>
       </Accordion>

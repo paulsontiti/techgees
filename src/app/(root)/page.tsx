@@ -13,8 +13,6 @@ export default  function Home() {
 
 
     return <div className="bg-[#EFF6FF]">
- 
-
     <WelcomeMessage />
    
     <WhyGlobalGenius />
