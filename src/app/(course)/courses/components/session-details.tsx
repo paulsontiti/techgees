@@ -88,7 +88,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
                                     prevSessionUrl={`${sessionUrl}${previousSession?.id}`} />
                             }
 
-                            <AskSessionQuestion sessionId={sessionId} />
+                            {/* <AskSessionQuestion sessionId={sessionId} /> */}
                             <SessionComments
 
                                 sessionId={sessionId}
