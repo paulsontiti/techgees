@@ -14,7 +14,7 @@ function VideoPlayer({
         e.preventDefault();
         toast.error("Right clicking is disabled on our videos", { duration: 2000 });
     }
-
+if(!url) return null;
     return (
         <div className='relative aspect-video my-4' onContextMenu={handleContextmenu}>
             {

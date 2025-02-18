@@ -10,11 +10,10 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-   
     "@hello-pangea/dnd": "^16.6.0",
     "@hookform/resolvers": "^3.9.0",
     "@material-tailwind/react": "^2.1.9",
- 
+    "@paulsontiti/ggcode": "^0.1.0",
     "@paystack/inline-js": "^2.20.3",
     "@prisma/client": "^6.1.0",
     "@radix-ui/react-accordion": "^1.2.0",
