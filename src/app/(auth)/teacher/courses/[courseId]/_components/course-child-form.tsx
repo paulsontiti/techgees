@@ -46,7 +46,7 @@ function CourseChildForm({ courseChildren,courses,courseId }:
     try{
       setIsUpdating(true)
 
-      await axios.put(`/api/courses/${courseId}/chapters/reorder`,{
+      await axios.put(`/api/courses/${courseId}/children/reorder`,{
         reorderedCourseChildren
       })
 
@@ -94,7 +94,7 @@ function CourseChildForm({ courseChildren,courses,courseId }:
              )}>{!courseChildren.length && "No children"}
             
             <CourseChildrenList
-              onEdit={onEdit}
+            parentCourseId={courseId}
               onReorder={onReorder}
               items={courseChildren ?? []}
             />
