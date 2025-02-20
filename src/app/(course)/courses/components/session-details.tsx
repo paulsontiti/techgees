@@ -14,7 +14,7 @@ import PrvSessionButton from '@/components/prv-session-button';
 import NextPrevSessionButton from '@/components/next-prev-session-button';
 import SessionQuestions from './session-questions';
 import SessionAssignments from './session-assignments';
-import AskSessionQuestion from './ask-question';
+import MonacoEditor from '@/components/editor/monaco-editor';
 
 function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
     { sessionId: string, chapterId: string, sessionUrl: string, chapterUrl: string }) {
@@ -87,6 +87,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
                                     nextSessionUrl={`${sessionUrl}${nextSession?.id}`}
                                     prevSessionUrl={`${sessionUrl}${previousSession?.id}`} />
                             }
+                            <MonacoEditor/>
 
                             {/* <AskSessionQuestion sessionId={sessionId} /> */}
                             <SessionComments

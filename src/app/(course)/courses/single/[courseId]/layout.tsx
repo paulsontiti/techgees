@@ -18,7 +18,7 @@ import CourseNavbar from "./_components/course-navbar";
         />
       </div>
       <div className="flex mt-10 justify-center">
-      <div className="hidden max-h-[100vh]  md:flex w-1/3 flex-col inset-y-0 z-50">
+      <div className="hidden h-full  md:flex w-1/3 flex-col inset-y-0 z-50">
         <CourseSidebar
          courseId={courseId}
         

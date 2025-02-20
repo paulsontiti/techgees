@@ -21,6 +21,7 @@ type ChapterDetailsType = {
 function ChapterDetails({courseId,chapterId,isChildCourse}:
   {courseId:string,chapterId:string,isChildCourse?:boolean}) {
     const [chapterDetails,setChapterDetails] = useState<ChapterDetailsType | undefined>(undefined);
+    const [completedLastSession,setCompletedLastSession] = useState<boolean | undefined>(undefined);
 
     useEffect(()=>{
         (
@@ -28,6 +29,9 @@ function ChapterDetails({courseId,chapterId,isChildCourse}:
                 try{
                   const res = await axios.get(`/api/chapters/${chapterId}/chapter-page-details`);
                   setChapterDetails(res.data);
+
+                  const sessionRes = await axios.get(`/api/chapters/${chapterId}/completed-last-session`);
+                  setCompletedLastSession(sessionRes.data);
                 }catch(err:any){
                     toast.error(err.message);
                 }
@@ -78,11 +82,13 @@ function ChapterDetails({courseId,chapterId,isChildCourse}:
         />
 
         <Separator />
-        {(chapterDetails.userProgress === null &&
+       {completedLastSession === undefined ? <Skeleton className='w-full h-10'/> : <>
+        {completedLastSession && (chapterDetails.userProgress === null &&
           randonQuestions.length > 0) &&
           <ChapterTest questions={randonQuestions} chapterId={chapterDetails.chapter?.id || ""} 
           chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}`}
           />}
+       </>}
         <Separator />
 
         {!!chapterDetails.chapter?.assignments.length && <>
