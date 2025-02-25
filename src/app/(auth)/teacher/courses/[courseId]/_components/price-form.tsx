@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/format";
 
 const formSchema = zod.object({
-  price: zod.coerce.number().min(0, {
+  price: zod.coerce.number().min(100, {
     message: "price is required",
   }),
 });
