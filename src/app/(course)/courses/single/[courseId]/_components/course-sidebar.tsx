@@ -9,6 +9,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "../../../components/chapter-sessions";
+import { SingleCourseEnrollButton } from "./single-course-enroll-button";
 
 
 export type CourseSidebarProps = {
@@ -81,7 +82,12 @@ export type CourseSidebarProps = {
           amountPaid={(purchasePercentage / 100) * coursePurchasePrice}/>
           : <Skeleton className="w-full h-10"/>
           }
-        
+
+        {/* Payment button */}
+       <div className="my-2">
+       <SingleCourseEnrollButton courseId={courseId}/>
+       </div>
+
         <div className="mt-10">
          {progressPercentage !== undefined ?  <CourseProgress variant="success" value={progressPercentage} /> :
          <Skeleton className="w-full h-10"/>

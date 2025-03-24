@@ -35,6 +35,7 @@ function PaymentProgress({
                     {`(${formatPrice(amountPaid)})`}
                 </p>
                 <p className={`${textPrimaryColor} mt-1 text-sm`}>{`${paidChapters} chapters paid for`}</p>
+        
             </div>
     )
 }

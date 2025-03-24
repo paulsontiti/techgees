@@ -12,6 +12,8 @@ export const getPurchasePercentage = async (courseId: string, userId: string,):
     const { totalAmountPaid, error } = await getTotalAmountPaidForCourse(userId, courseId)
     if (error) throw new Error(error.message)
 
+
+
     const coursePurchase = await db.purchase.findUnique({
       where: {
         courseId_userId: {
@@ -23,9 +25,11 @@ export const getPurchasePercentage = async (courseId: string, userId: string,):
       }
     })
 
-     const purchasePercentage = !!coursePurchase ? 
-     (coursePurchase.price === 0 ? 100 : 
-      (totalAmountPaid / coursePurchase.price!) * 100) : 0
+    const purchasePercentage = coursePurchase ?
+      ( (totalAmountPaid / coursePurchase.price!) * 100) : 0
+
+     
+
     return { purchasePercentage, error: null }
   } catch (error: any) {
 

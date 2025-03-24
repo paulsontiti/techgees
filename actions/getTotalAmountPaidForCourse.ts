@@ -25,6 +25,7 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
 
         for (let payment of payments) {
             const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
+        
             if (!error) {
                 if (verifiedPayment.data.status === "success") {
 
@@ -44,7 +45,7 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
             }
 
         }
-
+      
         //get wallet purchases for this course
         const walletpayments = await db.walletPayment.findMany({
             where: {
