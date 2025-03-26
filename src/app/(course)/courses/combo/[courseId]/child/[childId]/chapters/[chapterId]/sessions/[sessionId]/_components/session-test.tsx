@@ -49,13 +49,13 @@ function SessionTest({ questions, sessionId,isLastSession,chapterUrl,sessionurl 
         }
         setTimeout(function () {
           location.reload()
-        }, 5000)
+        }, 6000)
       } else {
         toast.error(`Your score is ${res}. This is poor. You have to retake this test`, 
-          { duration: 5000, position: "bottom-center" })
+          { duration: 6000, position: "bottom-center" })
           setTimeout(function () {
             location.reload()
-          }, 1000)
+          }, 6000)
       }
 
     } catch (err: any) {

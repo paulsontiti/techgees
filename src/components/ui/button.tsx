@@ -3,25 +3,24 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { bgPrimaryColor, bgSecondaryColor, textPrimaryColor, textSecondaryColor } from "@/utils/colors"
+import { bgPrimaryColor, textPrimaryColor } from "@/utils/colors"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: `bg-[#111587] text-[#f0fe03] hover:bg-[#f0fe03] hover:text-[#111587]`,
+        default: `${bgPrimaryColor} text-primary-foreground hover:bg-primary/90`,
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          `border border-input bg-[#EFF6FF] text-[#111587]
-           hover:bg-[#f0fe03] hover:text-[#111587]`,
+          `border border-input bg-background ${textPrimaryColor} hover:bg-accent hover:text-accent-foreground`,
         secondary:
-          `${bgSecondaryColor} ${textPrimaryColor} hover:bg-white hover:${textPrimaryColor}`,
-        ghost: `hover:bg-accent hover:text-accent-foreground ${textPrimaryColor}`,
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-white underline-offset-4 hover:underline",
-        success: `bg-emerald-700 ${textSecondaryColor} hover:bg-white/90`,
-        tgg_link: `${textPrimaryColor} underline-offset-4 hover:underline`,
+        tgg_link: "text-white underline-offset-4 hover:underline",
+        success: `bg-emerald-500 text-white hover:bg-primary/90`,
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -49,7 +49,7 @@ export const SingleChapterEnrollButton = (
         purchasePercentage === undefined || coursePurchase === undefined)
          return <Skeleton className="w-44 h-10"/>
     return <div>
-         {(isChapterLocked) && <>
+         {/* {(isChapterLocked) && <> */}
                     {purchasePercentage !== 100 && (
                      
                       <Button
@@ -70,7 +70,8 @@ export const SingleChapterEnrollButton = (
                           </Link>
                           <Loader loading={loading}/>
                       </Button>
-                    )}</>}
+                    )}
+                    {/* </>} */}
     </div>
   
 }

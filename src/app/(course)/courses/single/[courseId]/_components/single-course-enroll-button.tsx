@@ -48,7 +48,8 @@ export const SingleCourseEnrollButton = (
     
          if(purchasePercentage === 100) return null
     return<Button
-                      onClick={()=>{
+                      onClick={(e:any)=>{
+                        e.stopPropagation()
                           setLoading(true)
                       }}
                       size="sm"

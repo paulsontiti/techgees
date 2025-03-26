@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import toast from "react-hot-toast";
 import { ChapterAndSessions } from "../../../components/chapter-sessions";
 import { SingleCourseEnrollButton } from "./single-course-enroll-button";
+import RegisterChallengeButton from "@/app/(root)/challenges/[challengeId]/_components/register-challenge-button";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -26,6 +27,7 @@ function SingleCourseMobileSidebar({ courseId }
   const [paidPositions, setPaidPosition] = useState<number[] | undefined>(undefined);
   const [progressPercentage, setProgressPercentage] = useState<number | undefined>(undefined);
   const [purchasePercentage, setPurchasePercentage] = useState<number | undefined>(undefined);
+  const [challengeId, setChallengeId] = useState("")
 
 
   useEffect(() => {
@@ -43,6 +45,10 @@ function SingleCourseMobileSidebar({ courseId }
           //fetch course purchase percentage
           const purchaseRes = await axios.get(`/api/courses/${courseId}/purchase-percentage`);
           setPurchasePercentage(purchaseRes.data)
+
+          //fetch course current challengeId
+          const challengeRes = await axios.get(`/api/courses/${courseId}/challenge`);
+          setChallengeId(challengeRes.data ? challengeRes.data.id : "")
 
           //fetch course progress percentage
           const progressRes = await axios.get(`/api/courses/${courseId}/user-progress`);
@@ -78,11 +84,12 @@ function SingleCourseMobileSidebar({ courseId }
               amountPaid={(purchasePercentage / 100) * coursePurchasePrice} />
             : <Skeleton className="w-full h-10 my-2" />
         }
-
+        {purchasePercentage === 100 && challengeId && <RegisterChallengeButton courseId={courseId} 
+        challengeId={challengeId} />}
         {/* Payment button */}
-         <div className="my-2">
-               <SingleCourseEnrollButton courseId={courseId}/>
-               </div>
+        <div className="my-2">
+          <SingleCourseEnrollButton courseId={courseId} />
+        </div>
 
         <div className="mt-10">
           {progressPercentage !== undefined ? <CourseProgress variant="success" value={progressPercentage} />

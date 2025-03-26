@@ -1,6 +1,6 @@
 "use client"
 
-import { BarChart, Bug, Compass, HeartHandshake, Layout, List, MessageCircleQuestion, Network, User, Wallet } from 'lucide-react'
+import { BarChart, Bug, Compass, HeartHandshake, Layout, List, MessageCircleQuestion, Network, Swords, User, Wallet } from 'lucide-react'
 import React from 'react'
 import SidebarItem from './sidebar-item'
 import { usePathname } from 'next/navigation'
@@ -64,6 +64,11 @@ const teacherRoutes = [
     icon: List,
     label: "Categories",
     href: "/teacher/categories"
+  },
+  {
+    icon: Swords,
+    label: "Challenges",
+    href: "/teacher/challenges"
   }
 ]
 

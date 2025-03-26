@@ -1,6 +1,6 @@
 "use client"
 
-import { GraduationCap, Home, Info, Layout, Mail, Rss } from 'lucide-react'
+import { GraduationCap, Home, Info, Layout, Mail, Rss, Swords } from 'lucide-react'
 import React from 'react'
 import SidebarItem from './sidebar-item'
 
@@ -26,11 +26,11 @@ const routes = [
     label: "Courses",
     href: "/courses"
   },
-  // {
-  //   icon: Rss,
-  //   label: "Blog",
-  //   href: ""
-  // },
+  {
+    icon: Swords,
+    label: "Challenges",
+    href: "/challenges"
+  },
 
 ]
 

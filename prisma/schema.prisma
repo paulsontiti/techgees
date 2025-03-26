@@ -9,6 +9,45 @@ datasource db {
   relationMode = "prisma"
 }
 
+model Challenge {
+  id               String    @id @default(uuid()) @map("_id")
+  userId           String
+  title            String
+  subTitle         String?
+  description      String?
+  imageUrl         String?
+  overviewVideoUrl String?
+  isPublished      Boolean   @default(false)
+  startDate        DateTime?
+  endDate          DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courseId              String?
+  course                Course?                 @relation(fields: [courseId], references: [id], onDelete: NoAction)
+  comments              Comment[]
+  challengeParticipants ChallengeParticipants[]
+
+  @@fulltext([title])
+}
+
+model ChallengeParticipants {
+  id          String @id @default(uuid()) @map("_id")
+  userId      String
+  challengeId String
+
+  user      DBUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, challengeId])
+  @@index([userId])
+  @@index([challengeId])
+}
+
 model Course {
   id               String  @id @default(uuid()) @map("_id")
   userId           String
@@ -49,6 +88,7 @@ model Course {
   parentCourses   CourseChild[]
   assignments     Assignment[]
   walletPayments  WalletPayment[]
+  challenges      Challenge[]
 
   @@fulltext([title])
 }
@@ -66,7 +106,7 @@ model CourseChild {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([childCourseId,parentCourseId])
+  @@unique([childCourseId, parentCourseId])
 }
 
 model Wallet {
@@ -291,6 +331,9 @@ model Comment {
   courseId String?
   course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  challengeId String?
+  challenge   Challenge? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
   chapterId String?
   chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
@@ -476,13 +519,14 @@ model DBUser {
   paystackPayments PaystackPayment[]
   earnings         Earning[]
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  sessionQuestion SessionQuestion[]
-  wallet          Wallet?
-  walletPayments  WalletPayment[]
-  networkGrowth   NetworkGrowth[]   @relation("user")
-  refereeNetworkGrowths   NetworkGrowth[]   @relation("referee")
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  sessionQuestion       SessionQuestion[]
+  wallet                Wallet?
+  walletPayments        WalletPayment[]
+  networkGrowth         NetworkGrowth[]         @relation("user")
+  refereeNetworkGrowths NetworkGrowth[]         @relation("referee")
+  ChallengeParticipants ChallengeParticipants[]
 
   @@unique([userId])
 }
