@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-white underline-offset-4 hover:underline",
-        tgg_link: "text-white underline-offset-4 hover:underline",
+        tgg_link: ` underline-offset-4 hover:underline ${textPrimaryColor}`,
         success: `bg-emerald-500 text-white hover:bg-primary/90`,
       },
       size: {
