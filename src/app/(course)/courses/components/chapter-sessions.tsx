@@ -5,7 +5,7 @@ import axios from "axios";
 import { ChapterAccordion } from "../combo/[courseId]/child/_components/chapter-accordion";
 import toast from "react-hot-toast";
 
-export const ChapterAndSessions = ({ chapter, parentId, paidPositions }: { chapter: SidebarChapter, parentId?: string, paidPositions?: number[] }) => {
+export const ChapterAndSessions = ({ chapter, parentId}: { chapter: SidebarChapter, parentId?: string,  }) => {
   const [chapterProgressPercentage, setChapterProgressPercentage] = useState<any>(undefined);
   const [previousChapter, setPreviousChapter] = useState<any>(undefined);
   const [previousUserChapterProgress, setPreviousUserChapterProgress] = useState<any>(undefined);
@@ -31,7 +31,7 @@ export const ChapterAndSessions = ({ chapter, parentId, paidPositions }: { chapt
     )()
   }, [])
 
-  const chapterPaidFor = paidPositions?.indexOf(chapter.position);
+  
 
 
   return (
@@ -44,16 +44,9 @@ export const ChapterAndSessions = ({ chapter, parentId, paidPositions }: { chapt
       parentId={parentId || ""}
 
       isLocked={
-        //if there is parent id we don't need to lock the chapter because 
-        // combo course deosn't need chapterpaidfor to render chapters
-        parentId ?
+       
           ((previousChapter && !previousUserChapterProgress?.isCompleted) ||
-            !chapter.isPublished) :
-          (
-            (previousChapter && !previousUserChapterProgress?.isCompleted) ||
-            ((!chapter.isPublished || !chapter.isFree)
-              && chapterPaidFor && chapterPaidFor < 0)
-          )
+            !chapter.isPublished) 
       }
       sessions={chapter.sessions ?? []}
       chapterProgress={chapterProgressPercentage ?? 0}
