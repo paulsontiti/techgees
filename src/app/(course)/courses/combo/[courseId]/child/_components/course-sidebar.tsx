@@ -78,8 +78,7 @@ export type SidebarChapter = Chapter & {
       </div>
       {paidChapters === undefined || chapters === undefined || numberOfFreeChapters === undefined
        ? <Skeleton className="w-11/12 h-[600px] m-2"/>: <Chapters
-        chapters={chapters} paidChapters={paidChapters} childId={childId} parentId={parentId}
-        numberOfFreeChapters={numberOfFreeChapters}
+        chapters={chapters}  parentId={parentId}
       />}
     </div>
   );

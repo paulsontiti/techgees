@@ -8,7 +8,7 @@ import axios from "axios";
 import { ChapterAndSessions } from "@/app/(course)/courses/components/chapter-sessions";
 import { Skeleton } from "@/components/ui/skeleton";
 import toast from "react-hot-toast";
-import { PaidChapterType } from "../../../../../../../../actions/getPaidChapters";
+//import { PaidChapterType } from "../../../../../../../../actions/getPaidChapters";
 
 type CourseSidebarProps = {
   childId: string;
@@ -31,7 +31,7 @@ export type SidebarChapter = Chapter & {
   const [courseTitle,setCourseTitle] = useState<string | undefined>(undefined);
   const [chapters,setChapters] = useState<SidebarChapter[] | undefined>(undefined);
    const [numberOfFreeChapters,setNumberOfFreeChapters] = useState<number | undefined>(undefined);
-     const [paidChapters,setPaidChapters] = useState<PaidChapterType[] | undefined>(undefined);
+    //  const [paidChapters,setPaidChapters] = useState<PaidChapterType[] | undefined>(undefined);
 
   useEffect(()=>{
     (
@@ -46,8 +46,8 @@ export type SidebarChapter = Chapter & {
           const chapRes = await axios.get(`/api/courses/${childId}/sidebar-chapters`);
           setChapters(chapRes.data);
 
-          const paidChapRes = await axios.get(`/api/courses/${parentId}/paid-chapters`);
-          setPaidChapters(paidChapRes.data);
+          // const paidChapRes = await axios.get(`/api/courses/${parentId}/paid-chapters`);
+          // setPaidChapters(paidChapRes.data);
 
           const freeChapRes = await axios.get(`/api/courses/${childId}/number-of-free-chapters`);
           setNumberOfFreeChapters(freeChapRes.data);
@@ -79,26 +79,24 @@ export type SidebarChapter = Chapter & {
         </div>
       </div>
  
-      {paidChapters === undefined || chapters === undefined || numberOfFreeChapters === undefined
+      {chapters === undefined || numberOfFreeChapters === undefined
        ? <Skeleton className="w-11/12 h-[600px] m-2"/>: <Chapters
-        chapters={chapters} paidChapters={paidChapters} childId={childId} parentId={parentId}
-        numberOfFreeChapters={numberOfFreeChapters}
+        chapters={chapters}  parentId={parentId}
       />}
     </div>
   );
 }
 
-export const Chapters = ({chapters,paidChapters,childId,parentId,numberOfFreeChapters}:{
-  chapters:SidebarChapter[],childId:string,paidChapters:PaidChapterType[],
-  numberOfFreeChapters:number,parentId:string
+export const Chapters = ({chapters,parentId}:{
+  chapters:SidebarChapter[],parentId:string
 })=>{
 
    //get number of paid chapters
-   const chapter = paidChapters.find((chapter) => chapter.courseId === childId);
-   const numberOfPaidChapters = chapter?.numberOfChapter ?? 0;
+  //  const chapter = paidChapters.find((chapter) => chapter.courseId === childId);
+  //  const numberOfPaidChapters = chapter?.numberOfChapter ?? 0;
   return <>
 
-        {chapters?.slice(0, (numberOfPaidChapters === 0 ? numberOfFreeChapters : numberOfPaidChapters))
+        {chapters//?.slice(0, (numberOfPaidChapters === 0 ? numberOfFreeChapters : numberOfPaidChapters))
         .map((chapter)=>(
         <ChapterAndSessions parentId={parentId} chapter={chapter} key={chapter.id}/>
       ))}
