@@ -99,7 +99,7 @@ function SingleCourseMobileSidebar({ courseId }
       {
         course ? <>
           {course.chapters.map((chapter) => (
-            <ChapterAndSessions chapter={chapter} paidPositions={paidPositions || []} key={chapter.id} />
+            <ChapterAndSessions chapter={chapter}  key={chapter.id} />
           ))}</> : <Skeleton className="w-full h-[500px]" />
       }
     </div>
