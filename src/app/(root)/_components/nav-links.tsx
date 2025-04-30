@@ -7,7 +7,7 @@ export const NavLinks = ()=>{
         <Link href="/">Home</Link>
         <Link href="/courses">Courses</Link>
         <Link href="/challenges">Challenges</Link>
-        {/* <Link href="/contact-us">Contact Us</Link>
-        <Link href="">Blog</Link> */}
+        <Link href="/survey">Survey</Link>
+        {/* <Link href="">Blog</Link> */}
     </nav>
 }

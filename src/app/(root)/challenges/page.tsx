@@ -13,7 +13,7 @@ if(challenges.length === 0) return <div className='flex items-center justify-cen
     No challenge available
 </div>
   return (
-    <div className='grid xl:grid-cols-4 p-4'>
+    <div className='grid md:grid-cols-2 p-4'>
       {challenges.map((challenge)=>(
         <ChallengeCard key={challenge.id} challenge={challenge}/>
       ))}

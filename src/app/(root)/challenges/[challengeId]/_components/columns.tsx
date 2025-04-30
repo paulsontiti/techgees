@@ -1,14 +1,14 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Check, X } from "lucide-react"
 
 export type ChallengeParticipant={
   username:string,
-  points_accumulated:number,
   sessions_completed: number,
-  chapters_completed: number,
-  completed_course:boolean
+  assignments_completed: number,
+  points_accumulated:number,
+  referees: number,
+  points_accumulated_from_referer: number
 }
 
 export const columns: ColumnDef<ChallengeParticipant>[] = [
@@ -20,15 +20,37 @@ export const columns: ColumnDef<ChallengeParticipant>[] = [
           Username/Email         
         </strong>
       )
+    },cell:({row})=>{
+      const username = String(row.getValue("username"))
+
+      return (
+       <div className="flex items-center justify-center">
+       {
+       username
+       }
+       </div>
+      )
     }
   },
   {
     accessorKey: "points_accumulated",
     header: ({ column }) => {
       return (
-        <strong >
-        Points        
+       <div className="w-40 flex items-center justify-center">
+         <strong >
+        Total Points        
       </strong>
+       </div>
+      )
+    },cell:({row})=>{
+      const points_accumulated = Number(row.getValue("points_accumulated"))
+
+      return (
+       <div className="flex items-center justify-center">
+       {
+       points_accumulated
+       }
+       </div>
       )
     }
   },
@@ -36,41 +58,91 @@ export const columns: ColumnDef<ChallengeParticipant>[] = [
     accessorKey: "sessions_completed",
     header: ({ column }) => {
       return (
-        <strong className="w-40">
+        <div className="w-40 flex items-center justify-center">
+        <strong>
         Sessions 
       </strong>
+      </div>
       )
-    }
-  },
-  {
-    accessorKey: "chapters_completed",
-    header: ({ column }) => {
-      return (
-        <strong className="w-40">
-      Chapters     
-      </strong>
-      )
-    }
-  },
-  {
-    accessorKey: "completed_course",
-    header: ({ column }) => {
-      return (
-        <strong className="w-96">
-      Completed  
-      </strong>
-      )
-    },
-    cell:({row})=>{
-      const completed_course = Boolean(row.getValue("completed_course"))
+    },cell:({row})=>{
+      const sessions_completed = Number(row.getValue("sessions_completed"))
 
       return (
        <div className="flex items-center justify-center">
        {
-        completed_course ? <Check/> : <X/>
+       sessions_completed
        }
        </div>
       )
     }
   },
+  {
+    accessorKey: "assignments_completed",
+    header: ({ column }) => {
+      return (
+        <div className="w-40 flex items-center justify-center">
+        <strong>
+      Assignments
+      </strong>
+      </div>
+      )
+    },cell:({row})=>{
+      const assignments_completed = Number(row.getValue("assignments_completed"))
+
+      return (
+       <div className="flex items-center justify-center">
+       {
+       assignments_completed
+       }
+       </div>
+      )
+    }
+  },
+  {
+    accessorKey: "referees",
+    header: ({ column }) => {
+      return (
+        <div className="w-40 flex items-center justify-center">
+        <strong>
+      Referees
+      </strong>
+      </div>
+      )
+    },
+
+    cell:({row})=>{
+      const referees = Number(row.getValue("referees"))
+
+      return (
+       <div className="flex items-center justify-center">
+       {
+       referees
+       }
+       </div>
+      )
+    }
+  },
+  {
+    accessorKey: "points_accumulated_from_referer",
+    header: ({ column }) => {
+      return (
+        <div className="w-40 flex items-center justify-center">
+        <strong>
+      Points From Referals
+      </strong>
+      </div>
+      )
+    },
+    cell:({row})=>{
+      const points_accumulated_from_referer = Number(row.getValue("points_accumulated_from_referer"))
+
+      return (
+       <div className="flex items-center justify-center">
+       {
+       points_accumulated_from_referer
+       }
+       </div>
+      )
+    }
+  }
 ]

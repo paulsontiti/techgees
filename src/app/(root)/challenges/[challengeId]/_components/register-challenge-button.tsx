@@ -14,7 +14,7 @@ function RegisterChallengeButton({ challengeId, courseId }: { challengeId: strin
   const [loading, setLoading] = useState(false);
   const [participant, setParticipant] = useState<Boolean | undefined>(undefined);
 
-  const enrolled = useIsEnrolled(courseId ?? "")
+  //const enrolled = useIsEnrolled(courseId ?? "")
 
   useEffect(() => {
     (
@@ -35,7 +35,7 @@ function RegisterChallengeButton({ challengeId, courseId }: { challengeId: strin
 
   const onClick = async () => {
     setLoading(true)
-    if (enrolled && challengeId) {
+    if (challengeId) {
       try {
         await axios.post(`/api/challenges/${challengeId}/join`)
         toast.success("You are now a participant of this challenge,you will be redirected to the challenge page", { duration: 6000 })

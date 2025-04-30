@@ -2,7 +2,6 @@ import React from 'react'
 import { getChallengeId } from '../../../../../actions/getChallengeById'
 import ErrorPage from '@/components/error'
 import { redirect } from 'next/navigation'
-import { getPurchasePercentage } from '../../../../../actions/getPurchasePercentage'
 import { getUserCookie } from '@/lib/get-user-cookie'
 import { ChallengeParticipantsDataTable } from './_components/data-table'
 import { columns } from './_components/columns'
@@ -22,18 +21,18 @@ async function ChallengePage({ params: { challengeId } }: {
     if (!userId) return redirect("/sign-in")
 
 
-    const {purchasePercentage,error:pError } = await getPurchasePercentage(challenge.courseId ?? "", userId)
+    // const {purchasePercentage,error:pError } = await getPurchasePercentage(challenge.courseId ?? "", userId)
 
-    if(pError) return <ErrorPage name={pError.name}/>
+    // if(pError) return <ErrorPage name={pError.name}/>
 
-    if (purchasePercentage !== 100) return redirect(`/courses/${challenge.courseId}`)
+    // if (purchasePercentage !== 100) return redirect(`/courses/${challenge.courseId}`)
 
         const {participants,error:parError} = await getChallengeParticipantById(challengeId);
         if(parError) return <ErrorPage name={parError.name}/>
 
     return (
         <div className='flex items-center justify-center flex-col gap-2 p-4'>
-            <h1>{challenge.title}</h1>
+            <h1 className='text-2xl font-bold'>{challenge.title}</h1>
            
             <ChallengeParticipantsDataTable columns={columns} data={participants.sort((a,b)=> b.points_accumulated - a.points_accumulated)}/>
         </div>

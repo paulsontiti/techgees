@@ -23,7 +23,7 @@ const FormSchema = z.object({
   }),
 })
 
-export function QuestionItemForm({
+export function  QuestionItemForm({
   question
 }: {
   question: Question
