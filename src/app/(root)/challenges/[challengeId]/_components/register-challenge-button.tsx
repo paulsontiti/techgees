@@ -38,9 +38,7 @@ function RegisterChallengeButton({ challengeId, courseId }: { challengeId: strin
       try {
         await axios.post(`/api/challenges/${challengeId}/join`)
         toast.success("You are now a participant of this challenge,you will be redirected to the challenge page", { duration: 6000 })
-        setTimeout(function () {
           router.push(`/challenges/${challengeId}`)
-        }, 6000)
       } catch (err: any) {
         toast.error(err.message, { duration: 6000 })
       } finally {
