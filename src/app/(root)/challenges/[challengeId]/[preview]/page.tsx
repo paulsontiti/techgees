@@ -8,12 +8,16 @@ import { Preview } from "@/components/preview";
 import { getChallengeId } from "../../../../../../actions/getChallengeById";
 import RegisterChallengeButton from "../_components/register-challenge-button";
 import DateCountdown from "../../components/date-countdown";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 async function ChallengePreviewPage({
   params: { challengeId },
 }: {
   params: { challengeId: string };
 }) {
+
+  const userId = await getUserCookie();
+  if(!userId) return redirect("/sign-in")
   const { challenge, error } = await getChallengeId(challengeId);
 
   if (error) return <ErrorPage name={error.name} />;

@@ -8,7 +8,6 @@ import { Sword, Verified } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import useIsEnrolled from '../../../../../../hooks/use-is-enrolled'
 
 function RegisterChallengeButton({ challengeId, courseId }: { challengeId: string, courseId: string }) {
   const [loading, setLoading] = useState(false);
