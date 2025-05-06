@@ -1,6 +1,9 @@
-import React from "react";
+import SurveyComponent from "./_components/survey-component";
+
 
 function SurveyPage() {
+
+
   return (
     <section className="p-4">
       <h2 className="text-3xl font-bold">
@@ -15,21 +18,7 @@ function SurveyPage() {
           independence. It takes just 3–5 minutes.
         </p>
       </section>
-      <section>
-        <h3 className="text-2xl font-bold">
-          Section 1: Life After Graduation – Reality Check
-        </h3>
-       
-        <ol type="1">
-          <li>
-            <strong>1.</strong> How confident are you that your degree alone will secure you a job
-            after graduation? <br />
-            (Linear Scale – 1 to 10) <br />1 = Not confident at all <br />
-            10 = Extremely confident
-          </li>
-        </ol>
-        <p className="text-xl"></p>
-      </section>
+      <SurveyComponent/>
     </section>
   );
 }

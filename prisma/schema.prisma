@@ -435,6 +435,21 @@ model Question {
   updatedAt DateTime @updatedAt
 }
 
+model StudentRealityCheckSurvey {
+  id                  String  @id @default(uuid()) @map("_id")
+  questionsAndAnswers Json
+  firstName           String?
+  lastName            String?
+  phoneNumber         String?
+  whatsAppNumber      String?
+
+  referrerId String?
+  referrer   DBUser? @relation(fields: [referrerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model SessionTestScore {
   id     String @id @default(uuid()) @map("_id")
   score  Int
@@ -519,14 +534,15 @@ model DBUser {
   paystackPayments PaystackPayment[]
   earnings         Earning[]
 
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
-  sessionQuestion       SessionQuestion[]
-  wallet                Wallet?
-  walletPayments        WalletPayment[]
-  networkGrowth         NetworkGrowth[]         @relation("user")
-  refereeNetworkGrowths NetworkGrowth[]         @relation("referee")
-  ChallengeParticipants ChallengeParticipants[]
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  sessionQuestion            SessionQuestion[]
+  wallet                     Wallet?
+  walletPayments             WalletPayment[]
+  networkGrowth              NetworkGrowth[]             @relation("user")
+  refereeNetworkGrowths      NetworkGrowth[]             @relation("referee")
+  ChallengeParticipants      ChallengeParticipants[]
+  studentRealityCheckSurveys StudentRealityCheckSurvey[]
 
   @@unique([userId])
 }
