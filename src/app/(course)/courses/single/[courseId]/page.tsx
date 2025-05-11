@@ -15,8 +15,14 @@ async function CourseIdPage(
   if (!course) return redirect("/dashboard")
 
 
-
-  return redirect(`/courses/single/${courseId}/chapters/${course.chapters[0].id}`)
+if(course.chapters[0]){
+return redirect(`/courses/single/${courseId}/chapters/${course.chapters[0].id}`)
+}else{
+ 
+  
+  return redirect(`/dashboard`)
+}
+  
 }
 
 export default CourseIdPage

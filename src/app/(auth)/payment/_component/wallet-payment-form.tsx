@@ -39,7 +39,7 @@ const formSchema = zod.object({
   }),
 });
 
-function WalletPaymentForm({courseId,redirecturl}:{courseId:string,redirecturl:string}) {
+function WalletPaymentForm({courseId,redirecturl,scholarshipId}:{courseId?:string,redirecturl:string,scholarshipId?:string}) {
 
   const [walletBalance,setWalletBalance] = useState(0);
   const router = useRouter();

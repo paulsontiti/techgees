@@ -1,25 +1,43 @@
-
 import { NextResponse } from "next/server";
 import { verifyPayStackPayment } from "../../../../../../../actions/verifyPayment";
-import { updatePayment } from "../../../../../../../actions/updatePayment";
+import { creditReferrers} from "../../../../../../../actions/creditReferrers";
+import { db } from "@/lib/db";
 
-export async function GET(req: Request,
+export async function GET(
+  req: Request,
   {
-    params: { reference }
+    params: { reference },
   }: {
-    params: { reference: string }
+    params: { reference: string };
   }
 ) {
   try {
-    const { verifiedPayment} = await verifyPayStackPayment(reference);
+    const { verifiedPayment } = await verifyPayStackPayment(reference);
 
-  let payment = null;
+   
+    let payment = null;
+
     if (verifiedPayment) {
-        payment = {
-            amount: verifiedPayment.data.amount / 100,
-            status: verifiedPayment.data.status,
-        };
-        await updatePayment(reference);
+      const verifiedAmount = verifiedPayment.data.amount / 100;
+      const status = verifiedPayment.data.status;
+
+      payment = {
+        amount: verifiedAmount,
+        status,
+      };
+
+      if (status === "success") {
+        await db.paystackPayment.update({
+          where: {
+            reference,
+          },
+          data: {
+            payment_status: status,
+          },
+        });
+
+        await creditReferrers(reference, verifiedAmount);
+      }
     }
 
     return NextResponse.json(payment);

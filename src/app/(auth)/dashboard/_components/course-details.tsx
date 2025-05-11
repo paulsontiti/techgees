@@ -30,7 +30,7 @@ function CourseDetails() {
          You have not started or completed any course
       </div>
   return (
-    <div className='grid gap-4 lg:grid-cols-2 max-w-full'>
+    <div className='w-full grid gap-4 lg:grid-cols-2 max-w-full'>
       {courses.map((course) => {
        if(!course) return null;
 

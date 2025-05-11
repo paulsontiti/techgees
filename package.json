@@ -61,6 +61,7 @@
     "react-paystack": "^6.0.0",
     "react-quill": "^2.0.0",
     "react-router": "^6.26.2",
+    "react-share": "^5.2.2",
     "recharts": "^2.15.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",

@@ -80,7 +80,7 @@ const router = useRouter()
                         variant="ghost"
                         onClick={()=>{
                             setCancelling(true)
-                            router.push("/teacher/courses")
+                            router.push("/teacher/challenges")
                         }}
                         >Cancel <Loader loading={cancelling}/></Button>
                            <Button

@@ -18,7 +18,21 @@ courseImage: f({
 })
 .middleware(()=>handleAuth())
 .onUploadComplete(()=>{}),
-
+nationalIDImage: f({
+    image:{maxFileCount:1, maxFileSize:"4MB"}
+})
+.middleware(()=>handleAuth())
+.onUploadComplete(()=>{}),
+schoolIDImage: f({
+    image:{maxFileCount:1, maxFileSize:"4MB"}
+})
+.middleware(()=>handleAuth())
+.onUploadComplete(()=>{}),
+scholarshipImage: f({
+    image:{maxFileCount:1, maxFileSize:"4MB"}
+})
+.middleware(()=>handleAuth())
+.onUploadComplete(()=>{}),
 sessionVideo: f({
     video:{maxFileCount:1, maxFileSize:"1GB"}
 })

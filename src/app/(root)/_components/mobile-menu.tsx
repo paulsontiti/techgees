@@ -10,7 +10,7 @@ function MobileMenu() {
 const {isOpen,openSheet,closeSheet} = useSheetStore();
   return (
     <Sheet open={isOpen}>
-        <SheetTrigger className='lg:hidden pr-4 hover:opacity-75 transition'>
+        <SheetTrigger className='xl:hidden pr-4 hover:opacity-75 transition'>
         <Menu onClick={openSheet}/>
         </SheetTrigger>
         <SheetContent side="left" onInteractOutside={closeSheet}

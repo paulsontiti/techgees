@@ -1,8 +1,9 @@
 "use client"
 
-import { FileQuestion, GraduationCap, Home, Info, Layout, Mail, Rss, Swords } from 'lucide-react'
+import { FileQuestion, GraduationCap, Home,Swords } from 'lucide-react'
 import React from 'react'
 import SidebarItem from './sidebar-item'
+import { FaGoogleScholar } from "react-icons/fa6";
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     icon: GraduationCap,
     label: "Courses",
     href: "/courses"
+  },
+  {
+    icon: FaGoogleScholar,
+    label: "Scholarships",
+    href: "/scholarships"
   },
   {
     icon: Swords,

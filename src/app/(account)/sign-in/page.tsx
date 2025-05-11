@@ -4,7 +4,11 @@ import Account from '../../(account)/components/account'
 import { textPrimaryColor } from '@/utils/colors'
 import SignInForm from '../components/sign-in-form'
 
-function Page() {
+function Page({
+  searchParams:{redirectUrl}
+}:{searchParams:{redirectUrl:string}}) {
+
+  
   return (
     <div className='flex justify-center mt-10'>
     <Account>
@@ -12,7 +16,7 @@ function Page() {
       <h1 className={`${textPrimaryColor} text-2xl font-bold text-center`}>
         Login to your account</h1>
         <p className='text-xs md:text-sm mt-2'>Welcome, please fill in the details to get started</p>
-        <SignInForm/>
+        <SignInForm redirectUrl={redirectUrl}/>
       </div>
     </Account>
     </div>

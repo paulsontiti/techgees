@@ -1,9 +1,14 @@
+import ErrorPage from "@/components/error";
+import { getIdByUserName } from "../../../../actions/getIdByUserName";
 import SurveyComponent from "./_components/survey-component";
 
-
-function SurveyPage() {
-
-
+async function SurveyPage({
+  searchParams: { userName },
+}: {
+  searchParams: { userName: string };
+}) {
+  const { id, error } = await getIdByUserName(userName);
+  if(error) return <ErrorPage name={error.name}/>
   return (
     <section className="p-4">
       <h2 className="text-3xl font-bold">
@@ -18,7 +23,7 @@ function SurveyPage() {
           independence. It takes just 3–5 minutes.
         </p>
       </section>
-      <SurveyComponent/>
+      <SurveyComponent referrerId={id} />
     </section>
   );
 }

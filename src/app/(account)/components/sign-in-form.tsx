@@ -33,7 +33,7 @@ const formSchema = zod.object({
   })
 })
 
-function SignInForm() {
+function SignInForm({redirectUrl}:{redirectUrl?:string}) {
 const router = useRouter();
 const {updateUser} = useCurrentUser();
 const [isLoading,setIsLoading] = useState(false);
@@ -60,8 +60,15 @@ const [passwordType,setPasswordType] = useState("password");
           const response = await axios.post(`/api/user/sign-in`,values)
           if(response.data.successful){
             toast.success(response.data.message)
-            updateUser(response.data.user.userId)
-            router.push("/")
+            updateUser(response.data.user.userId);
+           
+            if(redirectUrl) {
+              router.push(redirectUrl)
+            }else{
+              router.push("/")
+            }
+
+            
           }else{
             toast.error(response.data.message)
             

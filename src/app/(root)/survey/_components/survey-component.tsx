@@ -8,6 +8,7 @@ import * as zod from "zod"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -132,7 +133,7 @@ export type QuestionsAndOptionsType = {
   options: string[];
 };
 
-function SurveyComponent() {
+function SurveyComponent({referrerId}:{referrerId:string}) {
   const [questionsAndAnswers, setQuestionsAndAnswers] = useState<
     QuestionAndAnswerType[]
   >([]);
@@ -149,18 +150,22 @@ function SurveyComponent() {
   };
 
   const FormSchema = zod.object({
-    firstname: zod.string().min(1,{
+    firstName: zod.string().min(1,{
         message:"First name is required"
     }),
-    lastname: zod.string().min(1,{
+    lastName: zod.string().min(1,{
         message:"Last name is required"
     }),
-    phone: zod.string().length(11,"Phone number is required and must be 11 characters"),
-    whatsapp: zod.string().length(11,"WhatsApp number is required and must be 11 characters"),
+    phone: zod.string().length(11,"Phone number is required and must be 11 characters").refine((value) => /^\d{11}$/.test(value)),
+    whatsApp: zod.string().length(11,"WhatsApp number is required and must be 11 characters").refine((value) => /^\d{11}$/.test(value)),
+    referrerId: zod.string(),
   });
 
   const form = useForm<zod.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      referrerId,
+    },
   });
 
   const {isSubmitting,isValid} = form.formState
@@ -168,10 +173,17 @@ function SurveyComponent() {
   const router = useRouter();
 
       const onSubmit = async(values:zod.infer<typeof FormSchema>)=>{
+       
+        const payload = {values,questionsAndAnswers};
           try{
-              await axios.post(`/api/survey`,values)
-              toast.success("Thanks for your feedback")
-              router.push("/")
+              const res = await axios.post(`/api/survey`,payload);
+              if(!res.data){
+                toast.success("Thanks for your feedback")
+                router.push("/scholarships")
+              }else{
+                toast.error(res.data)
+              }
+             
           }catch(err:any){
               toast.error(err.message)
           }
@@ -236,7 +248,7 @@ function SurveyComponent() {
         >
           <FormField
             control={form.control}
-            name="firstname"
+            name="firstName"
             render={({ field }) => (
               <FormItem className="space-y-3">
                 <FormLabel>First name</FormLabel>
@@ -253,7 +265,15 @@ function SurveyComponent() {
           />
           <FormField
             control={form.control}
-            name="lastname"
+            name="referrerId"
+            
+            render={({ field }) => (
+              <p></p>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
             render={({ field }) => (
               <FormItem className="space-y-3">
                 <FormLabel>Last name</FormLabel>
@@ -281,13 +301,14 @@ function SurveyComponent() {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>Mobile phone number must be 11 digits</FormDescription>
                  <FormMessage/>
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="whatsapp"
+            name="whatsApp"
             render={({ field }) => (
               <FormItem className="space-y-3">
                 <FormLabel>WhatsApp number</FormLabel>
@@ -298,6 +319,7 @@ function SurveyComponent() {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>WhatsApp number must be 11 digits</FormDescription>
                  <FormMessage/>
               </FormItem>
             )}

@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button';
 import dateCountdown from '@/lib/date-countdown'
 import React, { useEffect, useState } from 'react'
 
-function DateCountdown({ date }: { date: string }) {
+function DateCountdown({ startDate,endDate }: { startDate:Date, endDate:Date }) {
 
-    const [message, setMessage] = useState(dateCountdown(date));
+    const [message, setMessage] = useState(dateCountdown(startDate,endDate));
 
     useEffect(() => {
-        setInterval(() => { setMessage(dateCountdown(date)) }, 60 * 1000)
+        setInterval(() => { setMessage(dateCountdown(startDate,endDate)) }, 60 * 1000)
 
     }, [message])
     return (

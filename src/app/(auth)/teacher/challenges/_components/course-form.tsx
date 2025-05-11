@@ -40,7 +40,7 @@ function CourseForm(
     const [loading, setLoading] = React.useState(false)
     const [value, setValue] = React.useState("")
 
-console.log(value)
+
     const toggleEdit = () => {
         setEditing((prv) => !prv)
     }

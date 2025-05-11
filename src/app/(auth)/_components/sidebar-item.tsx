@@ -7,9 +7,10 @@ import { bgPrimaryColor, textSecondaryColor } from '@/utils/colors'
 import { LucideIcon } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { IconType } from 'react-icons/lib'
 
 type SidebarItemProps = {
-    icon: LucideIcon,
+    icon: LucideIcon | IconType,
     label: string
     href: string
 }

@@ -6,6 +6,7 @@ import SidebarItem from './sidebar-item'
 import { usePathname } from 'next/navigation'
 import { Separator } from '@/components/ui/separator'
 import LogoutButton from '@/app/(account)/components/logout'
+import { FaGoogleScholar } from 'react-icons/fa6'
 const studentRoutes = [
   {
     icon: Layout,
@@ -37,11 +38,11 @@ const studentRoutes = [
     label: "Network",
     href: "/network"
   },
-  // {
-  //   icon: HeartHandshake,
-  //   label: "Communities",
-  //   href: "/communities"
-  // },
+   {
+      icon: FaGoogleScholar,
+      label: "Scholarship courses",
+      href: "/scholarship-courses"
+    },
   // {
   //   icon: Bug,
   //   label: "Report an issue",
@@ -69,7 +70,12 @@ const teacherRoutes = [
     icon: Swords,
     label: "Challenges",
     href: "/teacher/challenges"
-  }
+  },
+   {
+      icon: FaGoogleScholar,
+      label: "Scholarships",
+      href: "/teacher/scholarships"
+    },
 ]
 
 const adminRoutes = [

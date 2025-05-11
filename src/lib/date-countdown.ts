@@ -1,12 +1,11 @@
-export default function dateCountdown(targetDate: string): string {
-    const now = new Date();
-    const target = new Date(targetDate);
+export default function dateCountdown(startDate: Date,endDate: Date): string {
+
   
-    if (isNaN(target.getTime())) {
+    if (isNaN(endDate.getTime()) || isNaN(startDate.getTime())) {
       return "Invalid date format";
     }
   
-    const diff = target.getTime() - now.getTime();
+    const diff = endDate.getTime() - startDate.getTime();
   
     if (diff <= 0) {
       return "Countdown finished!";
@@ -21,7 +20,7 @@ export default function dateCountdown(targetDate: string): string {
     const hoursMsg = hours > 0 ? (`${hours > 1 ? `${hours} hours`: `${hours} hour`}`) : "";
     const minutesMsg = minutes > 0 ? (`${minutes > 1 ? `${minutes} minutes`: `${minutes} minute`}`) : "";
   
-    return `${daysMsg}, ${hoursMsg}, ${minutesMsg} remaining`;
+    return `${daysMsg} ${hoursMsg ? "," : ""} ${minutesMsg ? "," : ""} remaining`;
   }
   
  

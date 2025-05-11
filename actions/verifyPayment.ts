@@ -22,7 +22,7 @@ export const verifyPayStackPayment = async (reference: string):
 
     return { verifiedPayment: response.data, error: null }
   } catch (error: any) {
-    //console.error("[VERIFY_PAYSTACK_PAYMENT]",error)
+    console.error("[VERIFY_PAYSTACK_PAYMENT]",error)
     return { verifiedPayment: null, error }
   }
 }

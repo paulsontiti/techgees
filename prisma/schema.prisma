@@ -90,6 +90,8 @@ model Course {
   walletPayments  WalletPayment[]
   challenges      Challenge[]
 
+  scholarships Scholarship[]
+
   @@fulltext([title])
 }
 
@@ -436,18 +438,21 @@ model Question {
 }
 
 model StudentRealityCheckSurvey {
-  id                  String  @id @default(uuid()) @map("_id")
-  questionsAndAnswers Json
-  firstName           String?
-  lastName            String?
-  phoneNumber         String?
-  whatsAppNumber      String?
+  id                  String @id @default(uuid()) @map("_id")
+  questionsAndAnswers Json[]
+  firstName           String
+  lastName            String
+  phoneNumber         String
+  whatsAppNumber      String
 
   referrerId String?
   referrer   DBUser? @relation(fields: [referrerId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([phoneNumber])
+  @@unique([whatsAppNumber])
 }
 
 model SessionTestScore {
@@ -484,14 +489,17 @@ model CourseTestScore {
 }
 
 model PaystackPayment {
-  id             String @id @default(uuid()) @map("_id")
+  id             String  @id @default(uuid()) @map("_id")
   reference      String
   amount         Float
-  payment_status String @default("pending")
+  payment_status String  @default("pending")
   userId         String
-  user           DBUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  courseId       String
-  course         Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user           DBUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId       String?
+  course         Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  scholarshipId String?
+  scholarship   Scholarship? @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
 
   earnings Earning[]
 
@@ -499,6 +507,55 @@ model PaystackPayment {
   updatedAt DateTime @updatedAt
 
   @@unique([reference])
+}
+
+
+
+model Scholarship {
+  id               String  @id @default(uuid()) @map("_id")
+  title            String
+  terms            String?
+  subTitle         String?
+  description      String?
+  imageUrl         String?
+  overviewVideoUrl String?
+  isPublished      Boolean @default(false)
+  price            Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: NoAction)
+
+  authorId String
+  author   DBUser @relation(fields: [authorId], references: [id], onDelete: NoAction)
+
+  scholarshipStudents ScholarshipStudents[]
+  paystackPayments    PaystackPayment[]
+
+  @@fulltext([title])
+  @@unique([courseId])
+}
+
+model ScholarshipStudents {
+  id            String @id @default(uuid()) @map("_id")
+  userId        String
+  scholarshipId String
+  purpose       String?
+  schoolIdUrl   String?
+  nationalIdUrl String?
+
+  refererId        String?
+  referer        DBUser?      @relation("scholarshipReferer",fields: [userId], references: [id], onDelete: Cascade)
+
+  user        DBUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scholarship Scholarship @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, scholarshipId])
 }
 
 model WalletPayment {
@@ -543,8 +600,11 @@ model DBUser {
   refereeNetworkGrowths      NetworkGrowth[]             @relation("referee")
   ChallengeParticipants      ChallengeParticipants[]
   studentRealityCheckSurveys StudentRealityCheckSurvey[]
+  scholarshipStudents        ScholarshipStudents[]
+  scholarship                Scholarship[]
 
   @@unique([userId])
+  scholarshipStudentsReferers ScholarshipStudents[] @relation("scholarshipReferer")
 }
 
 model Earning {

@@ -23,7 +23,7 @@ import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(100, {
+  amount: zod.coerce.number().min(10, {
     message: "amount is required",
   }),
 });

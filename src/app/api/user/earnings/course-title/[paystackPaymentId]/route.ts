@@ -22,7 +22,7 @@ export async function GET(req: Request, {
         })
 
        
-        return NextResponse.json(payment?.course.title);
+        return NextResponse.json(payment?.course?.title|| "");
     } catch (err) {
 
         console.log("[GET_PAYMENT_COURSE_TITLE]", err)

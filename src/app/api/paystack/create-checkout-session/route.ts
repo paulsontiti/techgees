@@ -3,7 +3,6 @@ import { getUserCookie } from "@/lib/get-user-cookie";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-
 export async function POST(req: Request) {
   try {
     const userId = await getUserCookie();
@@ -28,33 +27,31 @@ export async function POST(req: Request) {
     const { authorization_url, reference } = response.data.data;
 
     if (reference) {
+      const purchase = await db.purchase.findUnique({
+        where: {
+          courseId_userId: {
+            userId,
+            courseId,
+          },
+        },
+      });
 
-        const purchase = await db.purchase.findUnique({
-          where:{
-            courseId_userId:{
-              userId,courseId
-            }
-          }
-        })
-    
-        if(!purchase){
-          const course =  await db.course.findUnique({
-            where:{
-              id:courseId
-            },select:{
-              price:true
-            }
-          })
-          await db.purchase.create({
-            data:{
-              price:course?.price ?? 0,
-              courseId,
-              userId
-            }
-          })
-
-          
-        }
+      if (!purchase) {
+        const course = await db.course.findUnique({
+          where: {
+            id: courseId,
+          },
+          select: {
+            price: true,
+          },
+        });
+        await db.purchase.create({
+          data: {
+            price: course?.price ?? 0,
+            courseId,
+            userId,
+          },
+        });
 
         await db.paystackPayment.create({
           data: {
@@ -64,18 +61,15 @@ export async function POST(req: Request) {
             amount,
           },
         });
-        
-       
+      }
     }
-
-   
 
     return NextResponse.json({
       authorizationUrl: authorization_url,
       reference,
     });
   } catch (err) {
-    console.log("[PAYSTACK_CHECKOUT_SESSION]", err);
+    console.log("[PAYSTACK__COURSE_CHECKOUT_SESSION]", err);
     return new NextResponse("Internal Error", {
       status: 500,
     });

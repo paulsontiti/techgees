@@ -56,7 +56,7 @@ async function ChallengePreviewPage({
 
             {/* display countdown only when challenge is on */}
             {challenge.endDate && challenge.endDate >= new Date() && (
-              <DateCountdown date={challenge.endDate?.toString()} />
+              <DateCountdown startDate={challenge.startDate!} endDate={challenge.endDate} />
             )}
           </div>
         </div>
