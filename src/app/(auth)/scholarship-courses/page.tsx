@@ -41,7 +41,7 @@ async function ScholarshipCoursePage() {
           const { scholarship, error } = await getScholarshipByCourseId(
             course.id
           );
-          if (error) return <ErrorPage name={error.name} key={Math.random()}/>;
+          if (error) return <ErrorPage name={error.name} key={Math.floor(Math.random())}/>;
 
           const { registeredDate, error: regError } =
             await getScholarshipRegisteredDate(userId, scholarship?.id || "");
