@@ -21,6 +21,7 @@ import Loader from "@/components/loader";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { ShareButtonDialog } from "@/components/share-button-dialog";
 
 const sectionOne: QuestionsAndOptionsType[] = [
   {
@@ -97,7 +98,7 @@ const sectionTwo: QuestionsAndOptionsType[] = [
 
 const sectionThree: QuestionsAndOptionsType[] = [
   {
-    question: `If you could learn software development with guidance and mentorship, would you be interested?
+    question: `If you could learn software development or any tech course with guidance and mentorship, would you be interested?
             `,
     options: ["Yes", "No"],
   },
@@ -112,12 +113,37 @@ const sectionThree: QuestionsAndOptionsType[] = [
     ],
   },
   {
-    question: `Can you spare an hour daily for the next two year to learn software development?
+    question: `Can you spare an hour daily for the next two year to learn software development or any tech course?
+              `,
+    options: ["Yes", "No"],
+  },
+];
+
+const sectionFour: QuestionsAndOptionsType[] = [
+  {
+    question: `If you are given a fully funded scholarship to build a career in tech, would you be interested?
+            `,
+    options: ["Yes", "No"],
+  },
+  {
+    question: `Do you have great understanding of Computer science and Computing systems?
               `,
     options: ["Yes", "No"],
   },
   {
-    question: `Are you willing to pay #500 naira daily for your studies?
+    question: `What are you best at?
+              `,
+    options: ["Mathematics / Logical Reasoning", "Physics / Engineering",
+      "English / Communication / Languages","Visual Arts / Design","Business / Economics / Accounting",
+    "Biology / Chemistry / Health Sciences","General Curiosity / Tech-Savviness (No specific subject)"],
+  },
+  {
+    question: `Are you willing to pay 10,000 naira for the registration fee?
+              `,
+    options: ["Yes", "No"],
+  },
+  {
+    question: `Are you willing to get 10 of your course mates and friends to participate in this scholarship program?
               `,
     options: ["Yes", "No"],
   },
@@ -133,10 +159,13 @@ export type QuestionsAndOptionsType = {
   options: string[];
 };
 
-function SurveyComponent({referrerId}:{referrerId:string}) {
+function SurveyComponent({url}:{url:string}) {
+
   const [questionsAndAnswers, setQuestionsAndAnswers] = useState<
     QuestionAndAnswerType[]
   >([]);
+
+const [openShareDialog,setOpenShareDialog] = useState(false);
 
   const updateQuestionsAndAnswers = (questionAnswer: QuestionAndAnswerType) => {
     setQuestionsAndAnswers((current) => {
@@ -158,14 +187,12 @@ function SurveyComponent({referrerId}:{referrerId:string}) {
     }),
     phone: zod.string().length(11,"Phone number is required and must be 11 characters").refine((value) => /^\d{11}$/.test(value)),
     whatsApp: zod.string().length(11,"WhatsApp number is required and must be 11 characters").refine((value) => /^\d{11}$/.test(value)),
-    referrerId: zod.string(),
+    
   });
 
   const form = useForm<zod.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      referrerId,
-    },
+    
   });
 
   const {isSubmitting,isValid} = form.formState
@@ -179,7 +206,8 @@ function SurveyComponent({referrerId}:{referrerId:string}) {
               const res = await axios.post(`/api/survey`,payload);
               if(!res.data){
                 toast.success("Thanks for your feedback")
-                router.push("/scholarships")
+                
+                setOpenShareDialog(true);
               }else{
                 toast.error(res.data)
               }
@@ -239,6 +267,22 @@ function SurveyComponent({referrerId}:{referrerId:string}) {
           />
         ))}
       </section>
+       <section className="my-4">
+        <h3 className="text-2xl font-bold">
+          Section 4: Scholarship Opportunity
+        </h3>
+        {sectionFour.map((qO) => (
+          <StudentRealitySurveyForm
+            key={Math.random()}
+            qO={qO}
+            qA={
+              questionsAndAnswers.find((qa) => qa.question === qO.question) ||
+              null
+            }
+            updateQuestionsAndAnswers={updateQuestionsAndAnswers}
+          />
+        ))}
+      </section>
 
       <section className="p-4 bg-white">
       <div className={`${bgNeutralColor} p-4`}>
@@ -263,14 +307,7 @@ function SurveyComponent({referrerId}:{referrerId:string}) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="referrerId"
-            
-            render={({ field }) => (
-              <p></p>
-            )}
-          />
+      
           <FormField
             control={form.control}
             name="lastName"
@@ -336,7 +373,14 @@ function SurveyComponent({referrerId}:{referrerId:string}) {
       </Form>
       </div>
       </section>
+    {
+      openShareDialog &&  <ShareButtonDialog open={openShareDialog} url={`${url}survey`}
+      closeDialog={()=>{
+        setOpenShareDialog(false);
+      }}/>
+    }
     </section>
+
   );
 }
 

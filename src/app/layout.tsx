@@ -10,7 +10,6 @@ import LayoutChildren from "@/components/layout-children";
 import Footer from "@/components/footer";
 import Chat from "../components/chat";
 import { bgNeutralColor } from "@/utils/colors";
-import { isAStudent } from "../../actions/isAStudent";
 
 
 const inter = Inter({ subsets: ["latin"] });
