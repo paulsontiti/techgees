@@ -334,7 +334,7 @@ const [openShareDialog,setOpenShareDialog] = useState(false);
                 <FormControl>
                   <Input
                     
-                    placeholder="e.g. +2348071234567"
+                    placeholder="e.g. 08071234567"
                     {...field}
                   />
                 </FormControl>
@@ -352,7 +352,7 @@ const [openShareDialog,setOpenShareDialog] = useState(false);
                 <FormControl>
                   <Input
                     
-                    placeholder="e.g. +2348071234567"
+                    placeholder="e.g. 08071234567"
                     {...field}
                   />
                 </FormControl>
