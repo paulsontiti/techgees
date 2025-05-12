@@ -28,7 +28,7 @@ type ScholarshipCourseCardProps = {
   numberOfReferees:number,
   scholarshipStudent:ScholarshipStudents,
   scholarshipId:string,
-  url:string
+  url:string,scholarshipCount:number
 };
 
 
@@ -36,7 +36,7 @@ function ScholarshipCourseCard({
   course,scholarshipId,
   progressPercentage,registeredDate,
   numberOfReferees,scholarshipStudent,
-  url
+  url,scholarshipCount
 }: ScholarshipCourseCardProps) {
 
   const [categories, setCategories] = useState<Category[] | undefined>(undefined);
@@ -95,7 +95,9 @@ function ScholarshipCourseCard({
          <ScholarshipDetailsDialog 
          scholarshipId={scholarshipId}
          registeredDate={registeredDate} numberOfReferees={numberOfReferees}
-          scholarshipStudent={scholarshipStudent}/>
+          scholarshipStudent={scholarshipStudent}
+          scholarshipCount={scholarshipCount}
+          />
       <PageLoader
         className="text-black"
         label="redirecting..." isloading={loading} />

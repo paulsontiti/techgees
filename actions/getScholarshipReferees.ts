@@ -9,12 +9,10 @@ interface ReturnValue {
 /**
  * Fetches the referer of the current user.
  * 
-
- * @param {string} scholarshipId - The clerk id of the user.
  * @return {ReturnValue} The refrerees or error.
  */
 export const getScholarshipReferees = async (
-  scholarshipId: string
+
 ): Promise<ReturnValue> => {
   try {
     const userId = await getUserCookie();
@@ -23,7 +21,6 @@ export const getScholarshipReferees = async (
     const referees = await db.scholarshipStudents.findMany({
       where: {
         refererId: userId,
-        scholarshipId,
       },
     });
 

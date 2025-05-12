@@ -16,12 +16,17 @@ import { futureDateInMonths } from "@/lib/future-date-in-months";
 import { ScholarshipStudents } from "@prisma/client";
 
 export function ScholarshipDetailsDialog({
-  registeredDate,numberOfReferees,scholarshipStudent,scholarshipId
+  registeredDate,numberOfReferees,
+  scholarshipStudent,scholarshipId,
+  scholarshipCount
 }: {
   registeredDate: Date; numberOfReferees:number,
   scholarshipStudent:ScholarshipStudents,
-  scholarshipId:string
+  scholarshipId:string,scholarshipCount:number
 }) {
+
+const expiringDate = futureDateInMonths(registeredDate,6);
+
 
 
   return (
@@ -37,11 +42,15 @@ export function ScholarshipDetailsDialog({
             <DialogTitle>Scholarship Details</DialogTitle>
             <DialogDescription>
               Make sure you meet up with the terms and conditions before
-             <strong> {formatDate(futureDateInMonths(registeredDate,6))}</strong>
+             <strong> {formatDate(expiringDate)}</strong>
             </DialogDescription>
           </DialogHeader>
-          <ScholarshipDetails registeredDate={registeredDate} numberOfReferees={numberOfReferees} 
-          scholarshipStudent={scholarshipStudent} scholarshipId={scholarshipId}/>
+          <ScholarshipDetails registeredDate={registeredDate}
+           numberOfReferees={numberOfReferees} 
+          scholarshipStudent={scholarshipStudent} 
+          scholarshipId={scholarshipId}
+          scholarshipCount={scholarshipCount}
+          />
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>

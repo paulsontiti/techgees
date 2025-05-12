@@ -9,6 +9,7 @@ import { getScholarshipRegisteredDate } from "../../../../actions/getScholarship
 import ScholarshipCourseCard from "./_components/scholarship-card";
 import { getScholarshipStudent } from "../../../../actions/getScholarshipStudent";
 import { getScholarshipReferees } from "../../../../actions/getScholarshipReferees";
+import { getScholarshipCoursesCount } from "../../../../actions/getScholarshipCoursesCount";
 
 async function ScholarshipCoursePage() {
   const userId = await getUserCookie();
@@ -52,8 +53,11 @@ async function ScholarshipCoursePage() {
           if (schError) return <ErrorPage name={schError.name} key={Math.random()}/>;
 
           const { referees, error: refError } =
-            await getScholarshipReferees(scholarship?.id!);
+            await getScholarshipReferees();
           if (refError) return <ErrorPage name={refError.name} key={Math.random()}/>;
+
+          const {scholarshipCount,error:countError} = await getScholarshipCoursesCount(userId);
+          if (countError) return <ErrorPage name={countError.name} key={Math.random()}/>;
 
           return (
             <ScholarshipCourseCard
@@ -65,6 +69,7 @@ async function ScholarshipCoursePage() {
               scholarshipStudent={scholarshipStudent!}
               numberOfReferees={referees.length}
               scholarshipId={scholarship?.id || ""}
+              scholarshipCount={scholarshipCount}
             />
           );
         })}

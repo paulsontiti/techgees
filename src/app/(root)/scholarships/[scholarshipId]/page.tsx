@@ -18,19 +18,21 @@ async function ScholarshipPage({
 }) {
 
   const userId = await getUserCookie();
-  if(!userId) return redirect(`/sign-in/?redirectUrl=/scholarships/${scholarshipId}`);
-
+  
   const { scholarship, error } = await getScholarshipById(scholarshipId);
 
   if (error) return <ErrorPage name={error.name} />;
   if (!scholarship) return redirect("/scholarships");
 
 
+  const url = process.env.WEB_URL!;
+
   return (
-    <section className="p-4 flex flex-col items-center justify-center w-full">
-      <VerifyPayment reference={reference} redirectUrl={`/scholarships/${scholarshipId}`}/>
+    <section className="p-4 flex flex-col items-center justify-center">
+    <div className="md:w-10/12 lg:w-8/12 xl:w-6/12">
+        <VerifyPayment reference={reference} redirectUrl={`/scholarships/${scholarshipId}`}/>
       
-      <h2 className="font-bold text-2xl mb-4">{scholarship.title}</h2>
+      <h2 className="font-bold text-2xl mb-4 text-center">{scholarship.title}</h2>
       <div className="w-full grid md:grid-cols-2">
         <div>
           <div className="relative w-full aspect-video rounded-md overflow-hidden">
@@ -46,14 +48,18 @@ async function ScholarshipPage({
             Registration fee :{" "}
             <strong>{formatPrice(scholarship.price || 0)}</strong>
           </p>
-          <ApplyButton 
+         
+           <ApplyButton 
+           url={url}
           terms={scholarship.terms || ""}
           scholarshipId={scholarshipId} userId={userId || ""} price={scholarship.price!}/>
+         
         </div>
         <div>
           <Preview value={scholarship.description || ""} />
         </div>
       </div>
+    </div>
     </section>
   );
 }

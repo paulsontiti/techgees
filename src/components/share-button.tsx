@@ -26,7 +26,7 @@ import { Button } from './ui/button';
 
 function ShareButton({url,fBHashtag}:{fBHashtag:string,url:string}) {
   return (
-  <div className=' flex items-center gap-4 justify-center'>
+  <div className=' flex items-center gap-2 justify-center'>
     <FacebookShareButton 
    hashtag={fBHashtag}
    url={url}>
