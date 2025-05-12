@@ -18,16 +18,13 @@ export function ShareButtonDialog({url,open,closeDialog}:{url:string,open:boolea
   return (
     <div className="w-10/12 my-4">
       <Dialog open={open} onOpenChange={closeDialog}>
-        <DialogTrigger asChild>
-          <Button size="sm" variant="tgg_link">
-            Show Scholarship details
-          </Button>
-        </DialogTrigger>
+       
         <DialogContent className="min-w-[300px] md:min-w-[600px] overflow-y-scroll max-h-[600px]">
           <DialogHeader>
-            <DialogTitle>Scholarship Details</DialogTitle>
+            <DialogTitle>Students Reality Check Survey</DialogTitle>
             <DialogDescription>
-              Make sure you meet up with the terms and conditions before
+              Help us share this survey as it increases your chance of getting your fully funded scholarship.
+              Share on Facebook and Whatsapp.
             
             </DialogDescription>
           </DialogHeader>
