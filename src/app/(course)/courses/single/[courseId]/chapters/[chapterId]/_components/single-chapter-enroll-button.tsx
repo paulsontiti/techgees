@@ -10,9 +10,9 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 export const SingleChapterEnrollButton = (
-    {courseId,chapterId}:{
+    {courseId,chapterId, showButton}:{
         courseId:string,
-        chapterId:string
+        chapterId:string,showButton:boolean
     }
 )=>{
   
@@ -45,9 +45,13 @@ export const SingleChapterEnrollButton = (
         )()
     },[]);
 
+    if(!showButton) return null;
+
     if(coursePrice === undefined || isChapterLocked === undefined || 
         purchasePercentage === undefined || coursePurchase === undefined)
          return <Skeleton className="w-44 h-10"/>
+
+         
     return <div>
          {/* {(isChapterLocked) && <> */}
                     {purchasePercentage !== 100 && (

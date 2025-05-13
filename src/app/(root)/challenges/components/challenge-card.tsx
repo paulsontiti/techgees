@@ -48,7 +48,7 @@ function ChallengeCard({
 
            {/* display countdown only when challenge is on */}
            {challenge.endDate && challenge.endDate >= new Date() &&
-                       <DateCountdown startDate={challenge.startDate!} endDate={challenge.endDate}/>}
+                       <DateCountdown startDate={new Date()} endDate={challenge.endDate}/>}
           <footer className="mt-4">
             <Button variant="outline" size="sm">Learn more</Button>
           </footer>

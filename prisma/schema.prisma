@@ -509,8 +509,6 @@ model PaystackPayment {
   @@unique([reference])
 }
 
-
-
 model Scholarship {
   id               String  @id @default(uuid()) @map("_id")
   title            String
@@ -525,8 +523,8 @@ model Scholarship {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: NoAction)
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: NoAction)
 
   authorId String
   author   DBUser @relation(fields: [authorId], references: [id], onDelete: NoAction)
@@ -534,20 +532,23 @@ model Scholarship {
   scholarshipStudents ScholarshipStudents[]
   paystackPayments    PaystackPayment[]
 
-  @@fulltext([title])
   @@unique([courseId])
+  @@fulltext([title])
 }
 
 model ScholarshipStudents {
-  id            String @id @default(uuid()) @map("_id")
-  userId        String
-  scholarshipId String
-  purpose       String?
-  schoolIdUrl   String?
-  nationalIdUrl String?
+  id              String  @id @default(uuid()) @map("_id")
+  userId          String
+  scholarshipId   String
+  purpose         String?
+  schoolIdUrl     String?
+  nationalIdUrl   String?
+  duration        Int?
+  numberReferrals Int?
+  sponsor         String?
 
-  refererId        String?
-  referer        DBUser?      @relation("scholarshipReferer",fields: [userId], references: [id], onDelete: Cascade)
+  refererId String?
+  referer   DBUser? @relation("scholarshipReferer", fields: [userId], references: [id], onDelete: Cascade)
 
   user        DBUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
   scholarship Scholarship @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
@@ -591,20 +592,20 @@ model DBUser {
   paystackPayments PaystackPayment[]
   earnings         Earning[]
 
-  createdAt                  DateTime                    @default(now())
-  updatedAt                  DateTime                    @updatedAt
-  sessionQuestion            SessionQuestion[]
-  wallet                     Wallet?
-  walletPayments             WalletPayment[]
-  networkGrowth              NetworkGrowth[]             @relation("user")
-  refereeNetworkGrowths      NetworkGrowth[]             @relation("referee")
-  ChallengeParticipants      ChallengeParticipants[]
-  studentRealityCheckSurveys StudentRealityCheckSurvey[]
-  scholarshipStudents        ScholarshipStudents[]
-  scholarship                Scholarship[]
+  createdAt                   DateTime                    @default(now())
+  updatedAt                   DateTime                    @updatedAt
+  sessionQuestion             SessionQuestion[]
+  wallet                      Wallet?
+  walletPayments              WalletPayment[]
+  networkGrowth               NetworkGrowth[]             @relation("user")
+  refereeNetworkGrowths       NetworkGrowth[]             @relation("referee")
+  ChallengeParticipants       ChallengeParticipants[]
+  studentRealityCheckSurveys  StudentRealityCheckSurvey[]
+  scholarshipStudents         ScholarshipStudents[]
+  scholarship                 Scholarship[]
+  scholarshipStudentsReferers ScholarshipStudents[]       @relation("scholarshipReferer")
 
   @@unique([userId])
-  scholarshipStudentsReferers ScholarshipStudents[] @relation("scholarshipReferer")
 }
 
 model Earning {

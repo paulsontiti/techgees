@@ -143,7 +143,7 @@ function ScholarshipPriceForm({
                       />
                     </FormControl>
                      <div>
-                      <span className="text-blue-800 underline"
+                      <span className="text-blue-800 underline cursor-pointer"
                       onClick={()=>{
                         setShowTerms(curr => !curr)}
                       }>

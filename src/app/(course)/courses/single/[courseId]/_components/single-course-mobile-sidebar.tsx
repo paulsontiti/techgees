@@ -19,8 +19,8 @@ export type CourseSidebarProps = {
   paidPositions: number[],
 };
 
-function SingleCourseMobileSidebar({ courseId }
-  : { courseId: string }) {
+function SingleCourseMobileSidebar({ courseId,onScholarship }
+  : { courseId: string,onScholarship:boolean }) {
 
   const [course, setCourse] = useState<CourseChaptersUserProgressType | undefined>(undefined);
   const [coursePurchasePrice, setCoursePurchasePrice] = useState<number | undefined>(undefined);
@@ -88,7 +88,7 @@ function SingleCourseMobileSidebar({ courseId }
         challengeId={challengeId} />}
         {/* Payment button */}
         <div className="my-2">
-          <SingleCourseEnrollButton courseId={courseId} />
+          <SingleCourseEnrollButton courseId={courseId} onScholarship={onScholarship}/>
         </div>
 
         <div className="mt-10">

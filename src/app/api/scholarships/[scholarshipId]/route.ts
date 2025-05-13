@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { NextResponse } from "next/server";
-import { getCourse } from "../../../../../actions/getCourse";
 
 export async function PATCH(
   req: Request,

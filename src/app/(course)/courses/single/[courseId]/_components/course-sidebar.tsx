@@ -20,8 +20,8 @@ export type CourseSidebarProps = {
 };
 
  function CourseSidebar({
-  courseId
-}: {courseId:string}) {
+  courseId,onScholarship
+}: {courseId:string,onScholarship:boolean}) {
   
   const [course,setCourse] = useState<CourseChaptersUserProgressType | undefined>(undefined);
   const [coursePurchasePrice,setCoursePurchasePrice] = useState<number | undefined>(undefined);
@@ -75,17 +75,18 @@ export type CourseSidebarProps = {
             courseId={courseId}
           />
         </div>
+       {!onScholarship && <>
         {
           course && purchasePercentage !== undefined && coursePurchasePrice !== undefined && paidPositions !== undefined
            ? 
           <PaymentProgress value={purchasePercentage} size="sm" paidChapters={paidPositions?.length ?? 0}
           amountPaid={(purchasePercentage / 100) * coursePurchasePrice}/>
           : <Skeleton className="w-full h-10"/>
-          }
+          }</>}
 
         {/* Payment button */}
        <div className="my-2">
-       <SingleCourseEnrollButton courseId={courseId}/>
+       <SingleCourseEnrollButton courseId={courseId} onScholarship={onScholarship}/>
        </div>
 
         <div className="mt-10">

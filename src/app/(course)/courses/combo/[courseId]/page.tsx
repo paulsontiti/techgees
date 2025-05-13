@@ -30,35 +30,7 @@ function ComboCoursePage(
             }
         )()
     }, []);
-    // const { course, error } = await getCourse(courseId)
-
-    // if (error) return <ErrorPage name={error.name} />
-    // if (!course) return redirect("/dashboard")
-
-    // //get clerk user id
-    // const userId = await getUserCookie();
-    // if (!userId) return redirect("/")
-
-    // const { purchasePercentage, error: purschaseError } = await getPurchasePercentage(courseId, userId)
-    // if (purschaseError) return <ErrorPage name={purschaseError.name} />;
-
-
-
-    // const { coursePurchase, error: purchaseError } = await getCoursePurchase(
-    //     courseId, userId
-    // );
-    // if (purchaseError)
-    //     return <ErrorPage name={purchaseError.name} />;
-
-
-
-
-    // //get parent course chapter paid for
-
-    // const { paidChapters, error: chapterError } = await getPaidChapters(courseId, purchasePercentage)
-    // if (chapterError) return <ErrorPage name={chapterError.name} />;
-
-
+   
 
     return (
 

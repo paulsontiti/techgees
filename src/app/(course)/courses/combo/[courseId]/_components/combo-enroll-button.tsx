@@ -1,72 +1,82 @@
-"use client"
-import Loader from "@/components/loader"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import { formatPrice } from "@/lib/format"
-import { Purchase } from "@prisma/client"
-import axios from "axios"
-import Link from "next/link"
-import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
+"use client";
+import Loader from "@/components/loader";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatPrice } from "@/lib/format";
+import { Purchase } from "@prisma/client";
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-export const ComboCourseEnrollButton = (
-    {courseId}:{
-        courseId:string,
-    }
-)=>{
-  
-    const [loading,setLoading] = useState(false)
-    const [purchasePercentage,setPurchasePercentage] = useState<number | undefined>(undefined);
-    const [coursePrice,setCoursePrice] = useState<number | undefined>(undefined);
-    const [coursePurchase,setCoursePurchase] = useState<Purchase | undefined>(undefined);
+export const ComboCourseEnrollButton = ({ courseId }: { courseId: string }) => {
+  const [loading, setLoading] = useState(false);
+  const [purchasePercentage, setPurchasePercentage] = useState<
+    number | undefined
+  >(undefined);
+  const [coursePrice, setCoursePrice] = useState<number | undefined>(undefined);
+  const [coursePurchase, setCoursePurchase] = useState<Purchase | undefined>(
+    undefined
+  );
 
+  const [onScholarship, setOnScholarship] = useState(false);
 
-    useEffect(()=>{
-        (
-            async()=>{
-                try{
-                    const courseRes = await axios.get(`/api/courses/${courseId}/price`);
-                    setCoursePrice(courseRes.data);
+  useEffect(() => {
+    (async () => {
+      try {
+        const schRes = await axios.get(`/api/scholarship-course/${courseId}`);
+        setOnScholarship(schRes.data);
 
-                 
-                    const res = await axios.get(`/api/courses/${courseId}/purchase-percentage`);
-                    setPurchasePercentage(res.data);
+        if (schRes.data) {
+          const courseRes = await axios.get(`/api/courses/${courseId}/price`);
+          setCoursePrice(courseRes.data);
 
-                    const coursePurchaseRes = await axios.get(`/api/courses/${courseId}/purchase`);
-                    setCoursePurchase(coursePurchaseRes.data);
-                }catch(err:any){
-                    toast.error(err.message);
-                }
-            }
-        )()
-    },[]);
+          const res = await axios.get(
+            `/api/courses/${courseId}/purchase-percentage`
+          );
+          setPurchasePercentage(res.data);
 
-    if(coursePrice === undefined ||
-        purchasePercentage === undefined || coursePurchase === undefined)
-         return <Skeleton className="w-44 h-10"/>
-    return <div>
-    
-                    {purchasePercentage !== 100 && (
-                     
-                      <Button
-                      onClick={()=>{
-                          setLoading(true)
-                      }}
-                      size="sm"
-                      className="w-full md:w-auto">
-                          <Link href={`/payment/combo/${courseId}`}>
-                          {
-                          purchasePercentage === 0
-                            ? `Enroll for ${formatPrice(coursePrice)}`
-                            : `Pay ${formatPrice(
-                              ((100 - purchasePercentage) / 100) * 
-                              (!!coursePurchase ? coursePurchase?.price! : coursePrice)
-                            )}`
-                        }
-                          </Link>
-                          <Loader loading={loading}/>
-                      </Button>
-                    )}
+          const coursePurchaseRes = await axios.get(
+            `/api/courses/${courseId}/purchase`
+          );
+          setCoursePurchase(coursePurchaseRes.data);
+        }
+      } catch (err: any) {
+        toast.error(err.message);
+      }
+    })();
+  }, []);
+
+  if (
+    !onScholarship ||
+    coursePrice === undefined ||
+    purchasePercentage === undefined ||
+    coursePurchase === undefined
+  )
+    return <Skeleton className="w-44 h-10" />;
+
+  if (onScholarship) return null;
+  return (
+    <div>
+      {purchasePercentage !== 100 && (
+        <Button
+          onClick={() => {
+            setLoading(true);
+          }}
+          size="sm"
+          className="w-full md:w-auto"
+        >
+          <Link href={`/payment/combo/${courseId}`}>
+            {purchasePercentage === 0
+              ? `Enroll for ${formatPrice(coursePrice)}`
+              : `Pay ${formatPrice(
+                  ((100 - purchasePercentage) / 100) *
+                    (!!coursePurchase ? coursePurchase?.price! : coursePrice)
+                )}`}
+          </Link>
+          <Loader loading={loading} />
+        </Button>
+      )}
     </div>
-  
-}
+  );
+};

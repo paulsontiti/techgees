@@ -32,7 +32,7 @@ export async function PATCH(
     
 
       if(!chapter || !chapter.title || !chapter.description || !chapter.sessions.some((session)=>session.isPublished)){
-            return  new NextResponse("Missing required fields", { status: 404 });
+            return  new NextResponse("Missing required fields", { status: 401 });
       }
 
     await db.chapter.update({
