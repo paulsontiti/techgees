@@ -27,6 +27,17 @@ export async function POST(req: Request) {
     const { authorization_url, reference } = response.data.data;
 
     if (reference) {
+
+       await db.paystackPayment.create({
+          data: {
+            reference,
+            userId,
+            courseId,
+            amount,
+          },
+        });
+
+        
       const purchase = await db.purchase.findUnique({
         where: {
           courseId_userId: {
@@ -53,14 +64,7 @@ export async function POST(req: Request) {
           },
         });
 
-        await db.paystackPayment.create({
-          data: {
-            reference,
-            userId,
-            courseId,
-            amount,
-          },
-        });
+       
       }
     }
 
