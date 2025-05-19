@@ -19,15 +19,10 @@ export const ComboCourseEnrollButton = ({ courseId }: { courseId: string }) => {
     undefined
   );
 
-  const [onScholarship, setOnScholarship] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const schRes = await axios.get(`/api/scholarship-course/${courseId}`);
-        setOnScholarship(schRes.data);
-
-        if (schRes.data) {
           const courseRes = await axios.get(`/api/courses/${courseId}/price`);
           setCoursePrice(courseRes.data);
 
@@ -40,7 +35,7 @@ export const ComboCourseEnrollButton = ({ courseId }: { courseId: string }) => {
             `/api/courses/${courseId}/purchase`
           );
           setCoursePurchase(coursePurchaseRes.data);
-        }
+        
       } catch (err: any) {
         toast.error(err.message);
       }
@@ -48,14 +43,12 @@ export const ComboCourseEnrollButton = ({ courseId }: { courseId: string }) => {
   }, []);
 
   if (
-    !onScholarship ||
     coursePrice === undefined ||
     purchasePercentage === undefined ||
     coursePurchase === undefined
   )
     return <Skeleton className="w-44 h-10" />;
 
-  if (onScholarship) return null;
   return (
     <div>
       {purchasePercentage !== 100 && (
