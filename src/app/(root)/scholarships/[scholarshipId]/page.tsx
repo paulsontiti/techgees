@@ -8,6 +8,9 @@ import { Preview } from "@/components/preview";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import VerifyPayment from "@/app/(course)/courses/components/verify-payment";
 import ApplyButton from "../_components/apply-button";
+import { Button } from "@/components/ui/button";
+import { getCourseByScholarshipById } from "../../../../../actions/getCourseByScholarshipId";
+import Link from "next/link";
 
 async function ScholarshipPage({
   params: { scholarshipId },
@@ -22,7 +25,13 @@ async function ScholarshipPage({
   const { scholarship, error } = await getScholarshipById(scholarshipId);
 
   if (error) return <ErrorPage name={error.name} />;
-  if (!scholarship) return redirect("/scholarships");
+
+    const { course, error:couError } = await getCourseByScholarshipById(scholarshipId);
+
+  if (couError) return <ErrorPage name={couError.name} />;
+
+
+  if (!scholarship || !course) return redirect("/scholarships");
 
 
   const url = process.env.WEB_URL!;
@@ -58,6 +67,11 @@ async function ScholarshipPage({
         <div>
           <Preview value={scholarship.description || ""} />
         </div>
+
+        <Button 
+        >
+          <Link href={`/courses/${course.id}`}>Visit Course</Link>
+        </Button>
       </div>
     </div>
     </section>

@@ -20,6 +20,7 @@ import ErrorPage from "@/components/error";
 
   return (
     <div>
+      
       <VerifyPayment redirectUrl={redirectUrl} reference={reference}/>
      <ChapterProgress chapterId={chapterId}/>
       {

@@ -10,6 +10,7 @@ function SessionIdPage({
 
 
   return (
+
     <SessionComponent
       sessionId={sessionId}
       chapterId={chapterId}

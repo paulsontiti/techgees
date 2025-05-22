@@ -18,6 +18,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { SingleChapterEnrollButton } from "./single-chapter-enroll-button";
 
+import BackButton from "@/components/back-button";
+import { OpenSheetButton } from "@/components/open-sheet";
+
 type ChapterDetailsType = {
   chapter:
     | (Chapter & {
@@ -44,9 +47,14 @@ function ChapterDetails({
   const [chapterDetails, setChapterDetails] = useState<
     ChapterDetailsType | undefined
   >(undefined);
+
+
   const [completedLastSession, setCompletedLastSession] = useState<
     boolean | undefined
   >(undefined);
+
+
+
 
   useEffect(() => {
     (async () => {
@@ -70,42 +78,40 @@ function ChapterDetails({
     return <Skeleton className="w-full h-96 my-2" />;
 
   let duration = 0;
+  const chapter = chapterDetails.chapter;
+  const sessions = chapter?.sessions || [];
 
-  chapterDetails.chapter?.sessions.map((session) => {
+  sessions.map((session) => {
     duration += session.videoDuration ?? 0;
   });
 
   //create 10 random questions from all the questions
   const randonQuestions: Question[] = [];
 
-  if (!!chapterDetails.chapter?.questions.length) {
+  if (!!chapter?.questions.length) {
     for (let i = 0; i < 10; i++) {
-      const index = Math.floor(
-        Math.random() * chapterDetails.chapter.questions.length
-      );
+      const index = Math.floor(Math.random() * chapter.questions.length);
 
       if (
-        !randonQuestions.find(
-          (que) => que.id === chapterDetails.chapter?.questions[index].id
-        )
+        !randonQuestions.find((que) => que.id === chapter?.questions[index].id)
       ) {
-        randonQuestions.push(chapterDetails.chapter.questions[index]);
+        randonQuestions.push(chapter.questions[index]);
       }
     }
   }
 
   //logic for showing enroll button
   const showEnrollButton = !isChildCourse && !onScholarship;
-  
+
   return (
     <div
       className="
         flex flex-col max-w-4xl mx-auto pb-20"
     >
+      
+      <BackButton label="course page" url={`/courses/single/${courseId}`}/>
       <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-        <h2 className="text-2xl font-semibold mb-2">
-          {chapterDetails.chapter?.title}
-        </h2>
+        <h2 className="text-2xl font-semibold mb-2">{chapter?.title}</h2>
         <SingleChapterEnrollButton
           showButton={showEnrollButton}
           courseId={courseId}
@@ -120,6 +126,8 @@ function ChapterDetails({
         sessionLength={chapterDetails.chapter?.sessions.length || 0}
         duration={duration}
       />
+
+    <OpenSheetButton label="Go to class"/>
 
       <ChapterComments chapterId={chapterId} />
 

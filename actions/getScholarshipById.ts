@@ -17,6 +17,12 @@ export const getScholarshipById = async (id: string): Promise<ReturnValue> => {
     const scholarship = await db.scholarship.findUnique({
       where: {
         id,
+      },include:{
+        course:{
+          select:{
+            id:true
+          }
+        }
       }
     });
 

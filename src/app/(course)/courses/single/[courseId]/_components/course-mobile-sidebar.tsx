@@ -1,22 +1,33 @@
 import React from 'react'
 import SingleCourseMenuBar from './single-course-menu-bar'
-import { isOnScholarship } from '../../../../../../../actions/isOnScholarship';
-import ErrorPage from '@/components/error';
+import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress';
+import { Scholarship } from '@prisma/client';
+
 
 
 
 
  async function CourseMobileSidebar({
-    courseId
-}: {courseId:string}) {
+   course,purchasePercentage,paidPositions,progressPercentage,coursePurchasePrice,
+   scholarship
+ }: {
+   course: CourseChaptersUserProgressType;
+scholarship: Scholarship | null;coursePurchasePrice:number,
+   paidPositions:number[],progressPercentage:number,
+ purchasePercentage:number
+ }) {
 
- const {onScholarship,error} = await isOnScholarship(courseId);
-    if(error) return <ErrorPage name={error.name}/>
+
 
     return (
        <SingleCourseMenuBar
-       onScholarship={onScholarship}
-       courseId={courseId}
+     course={course}
+            scholarship={scholarship}
+            coursePurchasePrice={coursePurchasePrice}
+            purchasePercentage={purchasePercentage}
+            paidPositions={paidPositions}
+            progressPercentage={progressPercentage}
+           
        />
     )
 }

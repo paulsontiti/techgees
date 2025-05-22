@@ -1,20 +1,20 @@
 "use client";
+import ApplyButton from "@/app/(root)/scholarships/_components/apply-button";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice } from "@/lib/format";
-import { Purchase } from "@prisma/client";
+import { Purchase, Scholarship } from "@prisma/client";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export const SingleCourseEnrollButton = ({
-  courseId,
-  onScholarship,
+  courseId,scholarship,url,userId
 }: {
-  courseId: string;
-  onScholarship: boolean;
+  courseId: string;scholarship:Scholarship | null,
+  userId:string,url:string
 }) => {
   const [loading, setLoading] = useState(false);
   const [purchasePercentage, setPurchasePercentage] = useState<
@@ -28,7 +28,7 @@ export const SingleCourseEnrollButton = ({
   useEffect(() => {
     (async () => {
       try {
-        if (!onScholarship) {
+        if (!scholarship) {
           const courseRes = await axios.get(`/api/courses/${courseId}/price`);
           setCoursePrice(courseRes.data);
 
@@ -49,7 +49,13 @@ export const SingleCourseEnrollButton = ({
     })();
   }, []);
 
-  if (onScholarship) return null;
+  if (scholarship) return <ApplyButton
+  price={scholarship.price!}
+  terms={scholarship.terms!}
+  url={url}
+  userId={userId}
+  scholarshipId={scholarship.id}
+  />;
 
   if (
     coursePrice === undefined ||

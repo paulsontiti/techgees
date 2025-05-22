@@ -1,28 +1,57 @@
-import React from 'react'
-import ErrorPage from '@/components/error'
-import { redirect } from 'next/navigation'
-import { getCourseWithChapters } from '../../../../../../actions/getCourseWithChapters'
-async function CourseIdPage(
-  { params: { courseId } }: {
-    params: { courseId: string }
-  }
-) {
+import React from "react";
+import ErrorPage from "@/components/error";
+import { redirect } from "next/navigation";
+import { getCourseWithChapters } from "../../../../../../actions/getCourseWithChapters";
+import { isOnScholarship } from "../../../../../../actions/isOnScholarship";
+import VerifyPayment from "../../components/verify-payment";
+import CourseDetails from "./_components/course-details";
+import CourseCompletedProgress from "./_components/course-completed-progress";
+import { SingleCourseEnrollButton } from "./_components/single-course-enroll-button";
+import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
+import { getUserCookie } from "@/lib/get-user-cookie";
+import { isAScholarshipCourse } from "../../../../../../actions/isAScholarshipCourse";
+import { getScholarshipByCourseId } from "../../../../../../actions/getScholarshipByCourseId";
 
-  const { course, error } = await getCourseWithChapters(courseId)
+async function CourseIdPage({
+  params: { courseId },
+  searchParams: { reference, redirectUrl },
+}: {
+  params: { courseId: string };
+  searchParams: { reference: string; redirectUrl: string };
+}) {
+  const userId = await getUserCookie();
 
-  if (error) return <ErrorPage name={error.name} />
+  const { course, error } = await getCourseChaptersUserProgress(
+    userId!,
+    courseId
+  );
 
-  if (!course) return redirect("/dashboard")
+  if (error) return <ErrorPage name={error.name} />;
 
+  const { scholarship, error: schCourseError } =
+    await getScholarshipByCourseId(courseId);
 
-if(course.chapters[0]){
-return redirect(`/courses/single/${courseId}/chapters/${course.chapters[0].id}`)
-}else{
- 
-  
-  return redirect(`/dashboard`)
+  if (schCourseError) return <ErrorPage name={schCourseError.name} />;
+
+  if (!course) return redirect("/dashboard");
+
+  const url = process.env.WEB_URL!;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <VerifyPayment redirectUrl={redirectUrl} reference={reference} />
+      <CourseCompletedProgress courseId={courseId} />
+
+      <SingleCourseEnrollButton
+                courseId={courseId}
+                scholarship={scholarship}
+                userId={userId!}
+                url={url}
+              />
+      
+      <CourseDetails scholarshipCourse={!!scholarship} course={course} />
+    </div>
+  );
 }
-  
-}
 
-export default CourseIdPage
+export default CourseIdPage;

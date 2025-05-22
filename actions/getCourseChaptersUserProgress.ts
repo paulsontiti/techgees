@@ -1,10 +1,8 @@
 import { db } from "@/lib/db";
-import { Chapter, Course, Session, UserProgress } from "@prisma/client";
+import { Course } from "@prisma/client";
 import { getCourseWithCourseChildrenWithChaptersWithUserProgress } from "./getCourseWithCourseChildrenWithChaptersWithUserProgress";
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
-import { getPreviousChapter } from "./getPreviousChapter";
-import { getUserChapterProgress } from "./getUserChapterProgress";
-import { getChapterProgress } from "./getChapterProgress";
+
 
 
 type ReturnValue = {
@@ -50,40 +48,6 @@ export const getCourseChaptersUserProgress = async (
       },
     });
 
-    // const sidebarCourse: any = course;
-
-    // //create a sidebar chapter for all chapters of the course
-    // const chapters = [];
-    //     for (let chapter of sidebarCourse.chapters) {
-    //     //get previous chapter and user previous chapter progress
-    //     const { previousChapter, error: previousError } = await getPreviousChapter(chapter.id, sidebarCourse.id)
-    //     if (previousError)
-    //       return { course: null, error: previousError }
-
-    //     //get previous chapter user progress
-    //     const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-    //       await getUserChapterProgress(userId, previousChapter?.id ?? "")
-    //     if (progressError)
-    //       return { course: null, error: progressError }
-      
-    //     // //get chapter progress
-    //     const { progressPercentage: chapterProgressPercentage, error: chapterProgressPercentageError } =
-    //       await getChapterProgress(
-    //         userId,
-    //         chapter.id
-    //       );
-    //     if (chapterProgressPercentageError) return { course: null, error: chapterProgressPercentageError }
-
-
-    //     const sideBarChapter: SidebarChapter = {
-    //       ...chapter, previousChapter,
-    //       previousUserChapterProgress,chapterProgressPercentage
-    //     }
-
-    //     chapters.push(sideBarChapter);
-        
-    // }
-    // sidebarCourse.chapters = chapters;
 
     //if course is combo get the chapters from its children courses
     if (course?.chapters.length === 0) {
