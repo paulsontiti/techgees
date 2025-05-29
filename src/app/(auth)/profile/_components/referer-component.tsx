@@ -10,36 +10,13 @@ import { RefererForm } from './referer-form'
 import { Skeleton } from '@/components/ui/skeleton'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { ExternalReferers } from '@/utils/external-referers'
 
 
 
 function RefererComponent() {
 const [editing,setEditing] = useState(false);
 const [referer,setReferer] = useState<string | undefined>(undefined);
-const [users,setUsers] = React.useState<{id:string,userName:string}[]>([
-  {id:"Facebook",userName:"Facebook"},
-  {id:"Instagram",userName:"Instagram"},
-  {id:"Youtube",userName:"Youtube"},
-  {id:"Tiktok",userName:"Tiktok"},
-  {id:"Google ads",userName:"Google ads"},
-  ]
-);
-
-
-useEffect(()=>{
-  (
-    async()=>{
-      try {
-        const res = await axios.get(`/api/user/referer`);
-        setReferer(res.data);
-        const usersRes = await axios.get(`/api/user/usernames`);
-        setUsers((prv)=> [...prv,usersRes.data]);
-      } catch (err:any) {
-        toast.error(err.message);
-      }
-    }
-  )()
-},[]);
 
     const toggleEdit = ()=>{
         setEditing((prv)=>!prv)

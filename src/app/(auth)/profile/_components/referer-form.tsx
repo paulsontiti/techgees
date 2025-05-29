@@ -22,6 +22,7 @@ import Loader from "@/components/loader"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
+import { ExternalReferers } from "@/utils/external-referers"
 
 
 
@@ -32,13 +33,7 @@ export function RefererForm({setEditing}:{
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
   const [loading, setLoading] = React.useState(false)
-const [users,setUsers] = React.useState<{id:string,userName:string}[]>([
-    {id:"Facebook",userName:"Facebook"},
-    {id:"Instagram",userName:"Instagram"},
-    {id:"Youtube",userName:"Youtube"},
-    {id:"Tiktok",userName:"Tiktok"},
-    {id:"Google ads",userName:"Google ads"},
-    ]
+const [users,setUsers] = React.useState<{id:string,userName:string}[]>(ExternalReferers
 );
 
 React.useEffect(()=>{

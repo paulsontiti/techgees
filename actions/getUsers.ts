@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 interface ReturnValue{
     referers:{id:string,userName:string}[],
@@ -12,7 +13,13 @@ interface ReturnValue{
 export const getUsersForReferal = async():
 Promise<ReturnValue>=>{
     try{
+        const userId = await getUserCookie();
 const users = await db.dBUser.findMany({
+    where:{
+        userId: {
+            not: userId
+        }
+    },
     select:{
         id:true,
         userName:true
