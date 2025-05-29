@@ -10,13 +10,27 @@ import { RefererForm } from './referer-form'
 import { Skeleton } from '@/components/ui/skeleton'
 import toast from 'react-hot-toast'
 import axios from 'axios'
-import { ExternalReferers } from '@/utils/external-referers'
 
 
 
 function RefererComponent() {
 const [editing,setEditing] = useState(false);
 const [referer,setReferer] = useState<string | undefined>(undefined);
+
+
+useEffect(()=>{
+  (
+    async()=>{
+      try {
+        const res = await axios.get(`/api/user/referer`);
+        setReferer(res.data);
+       
+      } catch (err:any) {
+        toast.error(err.message);
+      }
+    }
+  )()
+},[]);
 
     const toggleEdit = ()=>{
         setEditing((prv)=>!prv)
