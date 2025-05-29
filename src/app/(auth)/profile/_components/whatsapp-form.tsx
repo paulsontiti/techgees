@@ -17,7 +17,7 @@ import { Pencil } from 'lucide-react'
 
 
 const formSchema = zod.object({
-    whatsapp:zod.string().length(14).startsWith("+234").trim(),
+    whatsapp:zod.string().length(11),
 })
 
 function WhatsAppForm({user}:{user:DBUser}) {
@@ -81,7 +81,7 @@ render={({field})=>{
           <FormControl>
               <Input
               disabled={isSubmitting}
-              placeholder='e.g. +2349167704504'
+              placeholder='e.g. 09167704504'
               {...field}
               />
           </FormControl>
