@@ -21,18 +21,32 @@ import toast from "react-hot-toast";
 import * as zod from "zod";
 import { useCurrentUser } from "../../../../store/current-user-store";
 import { bgNeutralColor, textPrimaryColor } from "@/utils/colors";
-import { Eye, EyeOff } from "lucide-react";
+import { Check, ChevronsUpDown, Eye, EyeOff } from "lucide-react";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { ExternalReferers } from "@/utils/external-referers";
 
 const formSchema = zod
   .object({
+    refererId: zod.string().optional(),
     email: zod
       .string()
       .min(1, { message: "This field has to be filled." })
       .email("This is not a valid email."),
-    // .refine(async (e) => {
-    //   const emails = await fetchEmails();
-    //   return emails.includes(e);
-    // }, "This email is not in our database")
+
     password: zod.string().min(1, {
       message: "Password is required",
     }),
@@ -50,19 +64,25 @@ const formSchema = zod
     }
   });
 
-function SignUpForm() {
+function SignUpForm({ referer }: { referer: string }) {
   const router = useRouter();
   const { updateUser } = useCurrentUser();
   const [isLoading, setIsLoading] = useState(false);
 
   const [passwordType, setPasswordType] = useState("password");
-    const [confirmasswordType, setConfirmPasswordType] = useState("password");
+  const [confirmasswordType, setConfirmPasswordType] = useState("password");
+
+  const [open, setOpen] = React.useState(false);
+  const [users, setUsers] =
+    React.useState<{ id: string; userName: string }[]>(ExternalReferers);
+  const [refererId, setRefererId] = React.useState(referer);
 
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      refererId: "",
     },
   });
 
@@ -72,6 +92,8 @@ function SignUpForm() {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
+      values.refererId = refererId;
+
       const response = await axios.post(`/api/user/sign-up`, values);
       if (response.data.successful) {
         toast.success(response.data.message);
@@ -84,6 +106,22 @@ function SignUpForm() {
       toast.error(err.message);
     }
   };
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get(`/api/user/usernames`);
+        setUsers((prv) => [...prv, ...res.data]);
+      } catch (err: any) {
+        toast.error(err.message);
+      }
+    })();
+  }, []);
+
+  //check if the user exists. The referer coming from search params in the sinup page could be broken
+  //ensure we actually have the user
+  const user = users.find((user) => user.id === refererId);
+
   return (
     <div
       className={`mt-6 
@@ -157,7 +195,7 @@ function SignUpForm() {
               return (
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
-                   <FormControl>
+                  <FormControl>
                     <div className="flex items-center justify-between bg-white px-2">
                       <Input
                         disabled={isSubmitting}
@@ -191,6 +229,100 @@ function SignUpForm() {
               );
             }}
           />
+
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => {
+              return (
+                <>
+                  {/* if there is user then no need to show referer form */}
+                  {referer && user ? (
+                    <FormItem>
+                      <FormLabel>Your Referer</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center justify-between bg-white px-2">
+                          <Input
+                            disabled
+                            {...field}
+                            value={user.userName}
+                            className="w-9/12 focus-visible:ring-white border-none"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        The Username of the person that introduced you to us
+                      </FormDescription>
+
+                      <FormMessage />
+                    </FormItem>
+                  ) : (
+                    <FormItem>
+                      <FormLabel>Your Referer</FormLabel>
+                      <FormControl>
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={open}
+                              className="w-full justify-between"
+                            >
+                              {refererId
+                                ? users.find((user) => user.id === refererId)
+                                    ?.userName
+                                : "Select referer..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput placeholder="Search referer..." />
+                              <CommandList>
+                                <CommandEmpty>No user found.</CommandEmpty>
+                                <CommandGroup>
+                                  {users.map((user) => (
+                                    <CommandItem
+                                      key={user.id}
+                                      value={user.id}
+                                      onSelect={(currentValue) => {
+                                        setRefererId(
+                                          currentValue === refererId
+                                            ? ""
+                                            : currentValue
+                                        );
+                                        setOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          referer === user.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {user.userName}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      <FormDescription>
+                        The Username of the person that introduced you to us
+                      </FormDescription>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                </>
+              );
+            }}
+          />
+
           <div className="flex flex-col items-center gap-x-2">
             <Button
               type="submit"

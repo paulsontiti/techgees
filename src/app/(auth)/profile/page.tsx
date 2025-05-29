@@ -1,7 +1,4 @@
-"use client"
-import { redirect } from "next/navigation";
-import { getUser } from "../../../../actions/getUser";
-import ErrorPage from "@/components/error";
+
 import IconBadge from "@/components/icon-badge";
 import { User } from "lucide-react";
 import FirstNameForm from "./_components/first-name-form";
@@ -9,39 +6,27 @@ import LastNameForm from "./_components/last-name-form";
 import PhoneForm from "./_components/phone-form";
 import WhatsAppForm from "./_components/whatsapp-form";
 import ImageForm from "./_components/image-form";
-import UserId from "./_components/user-id";
-import { getUsersForReferal } from "../../../../actions/getUsers";
 import UsernameForm from "./_components/user-name-form";
 import RefererComponent from "./_components/referer-component";
-import { getReferer } from "../../../../actions/getReferer";
-import { getUserCookie } from "@/lib/get-user-cookie";
-import { useEffect, useState } from "react";
-import { DBUser } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
-import toast from "react-hot-toast";
-import axios from "axios";
+import ReferralLink from "./_components/referral-link";
+import { getUser } from "../../../../actions/getUser";
+import { getUserCookie } from "@/lib/get-user-cookie";
+import { redirect } from "next/navigation";
 
 
 
-function ProfilePage() {
+async function ProfilePage() {
 
-  const [user, setUser] = useState<DBUser | undefined>(undefined);
+const url = process.env.WEB_URL!;
 
-  useEffect(() => {
-    (
-      async () => {
-        try {
-          const res = await axios.get(`/api/user`);
+const userId = await getUserCookie();
 
-          setUser(res.data);
-        } catch (err: any) {
-          toast.error(err.message);
-        }
-      }
-    )()
-  }, []);
-  //const {referers,error:usersError} = await getUsersForReferal()
-  // const {referer,error:refererError} = await getReferer(userId)
+if(!userId) return redirect(`/sign-in?redirectUrl=/profile`);
+
+const {user} = await getUser(userId);
+
+if(!user) return redirect(`/sign-in?redirectUrl=/profile`);
 
   const requiredFields = [
     user?.firstName,
@@ -83,7 +68,12 @@ function ProfilePage() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
       <div>
         {user === undefined ? <Skeleton className="w-full h-10 m-2" /> :
-          <UserId userId={user?.userId} />}
+          <>
+          {
+            isComplete && <ReferralLink id={user.id} url={url}/>
+          }
+          </>
+          }
         {user === undefined ? <Skeleton className="w-full h-10 m-2" /> :
           <FirstNameForm user={user} />}
 

@@ -8,7 +8,7 @@ export async function POST(req: Request) {
    
     
 
-        const {email,password} = await req.json();
+        const {email,password,refererId} = await req.json();
         
         //check if email already exists
         const user = await db.dBUser.findFirst({
@@ -47,9 +47,12 @@ export async function POST(req: Request) {
                     data: {
                        email,
                        password:result.hashedPassword,
-                       salt:result.salt
+                       salt:result.salt,
+                       refererId
                     }
                 })
+
+                
                 return NextResponse.json({successful:true,user:newUser,message:"Sign up was successful"})
             }
            
