@@ -28,7 +28,7 @@ export const getPurchasePercentage = async (courseId: string, userId: string,):
     const purchasePercentage = coursePurchase ?
       ( (totalAmountPaid / coursePurchase.price!) * 100) : 0
 
-     
+
 
     return { purchasePercentage, error: null }
   } catch (error: any) {

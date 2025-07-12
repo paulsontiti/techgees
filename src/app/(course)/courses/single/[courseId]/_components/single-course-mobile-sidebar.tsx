@@ -52,10 +52,8 @@ function SingleCourseMobileSidebar({
         </div>
         {!scholarship && (
           <PaymentProgress
-            value={purchasePercentage}
             size="sm"
-            paidChapters={paidPositions?.length ?? 0}
-            amountPaid={(purchasePercentage / 100) * coursePurchasePrice}
+            courseId={course.id}
           />
         )}
        

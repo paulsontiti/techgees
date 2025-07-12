@@ -9,7 +9,6 @@ import { getCoursePurchase } from "../../../../../../actions/getCoursePurchase";
 import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
 import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
 import { getCourseProgress } from "../../../../../../actions/getCourseProgress";
-import { isAScholarshipCourse } from "../../../../../../actions/isAScholarshipCourse";
 import { getScholarshipByCourseId } from "../../../../../../actions/getScholarshipByCourseId";
 
 async function CourseLayout({
@@ -55,6 +54,8 @@ async function CourseLayout({
 
     const url = process.env.WEB_URL!;
 
+
+
   return (
     <div>
       <div>
@@ -72,9 +73,6 @@ async function CourseLayout({
              scholarship={scholarship}
             url={url}
             userId={userId}
-            coursePurchasePrice={coursePurchase?.price || 0}
-            purchasePercentage={purchasePercentage}
-            paidPositions={paidPositions}
             progressPercentage={progressPercentage || 0}
           />
         </div>

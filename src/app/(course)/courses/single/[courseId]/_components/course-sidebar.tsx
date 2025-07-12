@@ -7,9 +7,7 @@ import { CourseChaptersUserProgressType } from "../../../../../../../actions/get
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "../../../components/chapter-sessions";
 import { SingleCourseEnrollButton } from "./single-course-enroll-button";
-import ApplyButton from "@/app/(root)/scholarships/_components/apply-button";
 import { Scholarship } from "@prisma/client";
-import { getUserCookie } from "@/lib/get-user-cookie";
 
 export type CourseSidebarProps = {
   progressPercentage: number;
@@ -20,20 +18,14 @@ export type CourseSidebarProps = {
 
 async function CourseSidebar({
   course,
-  purchasePercentage,
-  paidPositions,
   progressPercentage,
-  coursePurchasePrice,
   scholarship,url,userId
 }: {
   course: CourseChaptersUserProgressType;
   scholarship: Scholarship | null;
   url:string,
   userId:string;
-  coursePurchasePrice: number;
-  paidPositions: number[];
   progressPercentage: number;
-  purchasePercentage: number;
 }) {
 
   return (
@@ -51,10 +43,8 @@ async function CourseSidebar({
   
             {!scholarship &&
                 <PaymentProgress
-                  value={purchasePercentage}
+                courseId={course.id}
                   size="sm"
-                  paidChapters={paidPositions?.length ?? 0}
-                  amountPaid={(purchasePercentage / 100) * coursePurchasePrice}
                 />}
 
         {/* Payment button */}
