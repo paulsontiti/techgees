@@ -13,9 +13,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Chapter, Session, UserProgress } from "@prisma/client";
-import Banner from "@/components/banner";
 import { useSheetStore } from "../../../../../../../../store/sheet-store";
 import { Skeleton } from "@/components/ui/skeleton";
+import CompletedPreviousChapterTest from "@/app/(course)/courses/components/completed-previous-chapter";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -46,12 +46,17 @@ export function ChapterAccordion({
   const Icon = isLocked ? Lock : isCompleted ? CheckCheck : PlayCircle;
   const isActive = pathname?.includes(id);
 
+  const chapterUrl = parentId ?
+      `/courses/combo/${parentId}/child/${courseId}/chapters/${id}` :
+      `/courses/single/${courseId}/chapters/${id}`;
+
+  const previousChapterTestUrl = parentId ?
+      `/courses/combo/${parentId}/child/${courseId}/chapters/${prviousChapter?.id}/#chapter-test` :
+      `/courses/single/${courseId}/chapters/${prviousChapter?.id}/#chapter-test`;
+
   const onClick = () => {
     closeSheet();
-    router.push(parentId ?
-      `/courses/combo/${parentId}/child/${courseId}/chapters/${id}` :
-      `/courses/single/${courseId}/chapters/${id}`
-    );
+    router.push(chapterUrl);
   };
   return (
     <Accordion type="single" collapsible className="w-full px-2">
@@ -100,7 +105,7 @@ export function ChapterAccordion({
                 {previousUserChapterProgress === undefined ? <Skeleton className="w-full h-20" /> :
                   <>
                     {prviousChapter && !previousUserChapterProgress &&
-                      <Banner label="Previous chapter is not completed " />
+                    <CompletedPreviousChapterTest previousChapterTestUrl={previousChapterTestUrl}/>
                     }</>
                 }
               </>

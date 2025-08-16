@@ -12,6 +12,10 @@ function LinkButton({ label, url }: { label: string; url: string }) {
   const onClick = () => {
     setRedirecting(true);
     router.push(url);
+    setTimeout(()=>{
+       setRedirecting(false)
+    },2000)
+   
   };
 
   return (

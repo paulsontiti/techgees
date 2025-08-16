@@ -14,7 +14,7 @@ function SessionIdPage({
     <SessionComponent
       sessionId={sessionId}
       chapterId={chapterId}
-      chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}`}
+      chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}/#chapter-test`}
       sessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/`}
     />
   );

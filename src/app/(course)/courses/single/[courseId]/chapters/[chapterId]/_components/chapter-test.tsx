@@ -62,7 +62,7 @@ function ChapterTest({ questions, chapterId,chapterUrl}: {
 
 
   return (
-    <div className='mt-4'>
+    <div className='mt-4' >
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>

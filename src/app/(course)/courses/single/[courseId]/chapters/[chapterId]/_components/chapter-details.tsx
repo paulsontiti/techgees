@@ -48,13 +48,9 @@ function ChapterDetails({
     ChapterDetailsType | undefined
   >(undefined);
 
-
   const [completedLastSession, setCompletedLastSession] = useState<
     boolean | undefined
   >(undefined);
-
-
-
 
   useEffect(() => {
     (async () => {
@@ -108,8 +104,7 @@ function ChapterDetails({
       className="
         flex flex-col max-w-4xl mx-auto pb-20"
     >
-      
-      <BackButton label="course page" url={`/courses/single/${courseId}`}/>
+      <BackButton label="course page" url={`/courses/single/${courseId}`} />
       <div className="p-4 flex flex-col md:flex-row items-center justify-between">
         <h2 className="text-2xl font-semibold mb-2">{chapter?.title}</h2>
         <SingleChapterEnrollButton
@@ -127,26 +122,29 @@ function ChapterDetails({
         duration={duration}
       />
 
-    <OpenSheetButton label="Go to class"/>
+      <OpenSheetButton label="Go to class" />
 
       <ChapterComments chapterId={chapterId} />
 
       <Separator />
-      {completedLastSession === undefined ? (
-        <Skeleton className="w-full h-10" />
-      ) : (
-        <>
-          {completedLastSession &&
-            chapterDetails.userProgress === null &&
-            randonQuestions.length > 0 && (
-              <ChapterTest
-                questions={randonQuestions}
-                chapterId={chapterDetails.chapter?.id || ""}
-                chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}`}
-              />
-            )}
-        </>
-      )}
+      <div id="chapter-test">
+        {completedLastSession === undefined ? (
+          <Skeleton className="w-full h-10" />
+        ) : (
+          <>
+            {completedLastSession &&
+              chapterDetails.userProgress === null &&
+              randonQuestions.length > 0 && (
+                <ChapterTest
+                  questions={randonQuestions}
+                  chapterId={chapterDetails.chapter?.id || ""}
+                  chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}`}
+                />
+              )}
+          </>
+        )}
+      </div>
+
       <Separator />
 
       {!!chapterDetails.chapter?.assignments.length && (

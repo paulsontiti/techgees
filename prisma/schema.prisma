@@ -250,6 +250,7 @@ model Session {
   videoUrl      String?
   videoDuration Int?
   isPublished   Boolean @default(false)
+  bonusVideoUrls String[]
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
