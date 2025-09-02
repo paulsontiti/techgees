@@ -1,15 +1,12 @@
 import React from "react";
 import ErrorPage from "@/components/error";
 import { redirect } from "next/navigation";
-import { getCourseWithChapters } from "../../../../../../actions/getCourseWithChapters";
-import { isOnScholarship } from "../../../../../../actions/isOnScholarship";
 import VerifyPayment from "../../components/verify-payment";
 import CourseDetails from "./_components/course-details";
 import CourseCompletedProgress from "./_components/course-completed-progress";
 import { SingleCourseEnrollButton } from "./_components/single-course-enroll-button";
 import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
 import { getUserCookie } from "@/lib/get-user-cookie";
-import { isAScholarshipCourse } from "../../../../../../actions/isAScholarshipCourse";
 import { getScholarshipByCourseId } from "../../../../../../actions/getScholarshipByCourseId";
 
 async function CourseIdPage({

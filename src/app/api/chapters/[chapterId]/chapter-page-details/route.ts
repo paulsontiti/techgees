@@ -20,7 +20,12 @@ export async function GET(
             }, include: {
               sessions: true,
               questions: true,
-              assignments: true
+              assignments: true,
+              chapterProjects:{
+                include:{
+                  chapterProjectSessions:true
+                }
+              }
             }
           });
       

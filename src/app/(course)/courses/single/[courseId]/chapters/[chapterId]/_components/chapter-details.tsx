@@ -1,80 +1,58 @@
-"use client";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import { Separator } from "@/components/ui/separator";
-import {
-  Assignment,
-  Chapter,
-  Question,
-  Session,
-  UserProgress,
-} from "@prisma/client";
+
 import ChapterComments from "./comments";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Preview } from "@/components/preview";
 import ChapterSessionDetails from "@/components/chapter-session-details";
-import ChapterTest from "./chapter-test";
-import AssignmentAccordion from "../sessions/[sessionId]/_components/assignment-accordion";
-import toast from "react-hot-toast";
-import axios from "axios";
 import { SingleChapterEnrollButton } from "./single-chapter-enroll-button";
 
 import BackButton from "@/components/back-button";
 import { OpenSheetButton } from "@/components/open-sheet";
-
-type ChapterDetailsType = {
-  chapter:
-    | (Chapter & {
-        sessions: Session[];
-        questions: Question[];
-        assignments: Assignment[];
-      })
-    | null;
-
-  userProgress: UserProgress | null;
-};
+import { ChapterDetailsType } from "../../../../../../../../../actions/getChapterdetails";
+import ProjectList from "./project-list";
+import AssignmentAccordion from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/assignment-accordion";
 
 function ChapterDetails({
   courseId,
   chapterId,
   isChildCourse,
   onScholarship,
+  chapterDetails,
 }: {
   courseId: string;
   chapterId: string;
   isChildCourse?: boolean;
   onScholarship: boolean;
+  chapterDetails: ChapterDetailsType | null;
 }) {
-  const [chapterDetails, setChapterDetails] = useState<
-    ChapterDetailsType | undefined
-  >(undefined);
+  // const [completedLastSession, setCompletedLastSession] = useState<
+  //   boolean | undefined
+  // >(undefined);
 
-  const [completedLastSession, setCompletedLastSession] = useState<
-    boolean | undefined
-  >(undefined);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       // const res = await axios.get(
+  //       //   `/api/chapters/${chapterId}/chapter-page-details`
+  //       // );
+  //       // setChapterDetails(res.data);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(
-          `/api/chapters/${chapterId}/chapter-page-details`
-        );
-        setChapterDetails(res.data);
+  //       const sessionRes = await axios.get(
+  //         `/api/chapters/${chapterId}/completed-last-session`
+  //       );
+  //       setCompletedLastSession(sessionRes.data);
+  //     } catch (err: any) {
+  //       toast.error(err.message);
+  //     }
+  //   })();
+  // }, []);
 
-        const sessionRes = await axios.get(
-          `/api/chapters/${chapterId}/completed-last-session`
-        );
-        setCompletedLastSession(sessionRes.data);
-      } catch (err: any) {
-        toast.error(err.message);
-      }
-    })();
-  }, []);
-
-  if (chapterDetails === undefined)
-    return <Skeleton className="w-full h-96 my-2" />;
+  // if (chapterDetails === undefined)
+  //   return <Skeleton className="w-full h-96 my-2" />;
 
   let duration = 0;
-  const chapter = chapterDetails.chapter;
+  const chapter = chapterDetails?.chapter;
   const sessions = chapter?.sessions || [];
 
   sessions.map((session) => {
@@ -82,22 +60,23 @@ function ChapterDetails({
   });
 
   //create 10 random questions from all the questions
-  const randonQuestions: Question[] = [];
+  // const randonQuestions: Question[] = [];
 
-  if (!!chapter?.questions.length) {
-    for (let i = 0; i < 10; i++) {
-      const index = Math.floor(Math.random() * chapter.questions.length);
+  // if (!!chapter?.questions.length) {
+  //   for (let i = 0; i < 10; i++) {
+  //     const index = Math.floor(Math.random() * chapter.questions.length);
 
-      if (
-        !randonQuestions.find((que) => que.id === chapter?.questions[index].id)
-      ) {
-        randonQuestions.push(chapter.questions[index]);
-      }
-    }
-  }
+  //     if (
+  //       !randonQuestions.find((que) => que.id === chapter?.questions[index].id)
+  //     ) {
+  //       randonQuestions.push(chapter.questions[index]);
+  //     }
+  //   }
+  // }
 
   //logic for showing enroll button
   const showEnrollButton = !isChildCourse && !onScholarship;
+
 
   return (
     <div
@@ -115,25 +94,26 @@ function ChapterDetails({
       </div>
       <Separator />
       <div>
-        <Preview value={chapterDetails.chapter?.description ?? ""} />
+        <Preview value={chapterDetails?.chapter?.description ?? ""} />
       </div>
       <ChapterSessionDetails
-        sessionLength={chapterDetails.chapter?.sessions.length || 0}
+        sessionLength={chapterDetails?.chapter?.sessions.length || 0}
         duration={duration}
+        noOfProjects={chapterDetails?.chapter?.chapterProjects.length || 0}
       />
 
       <OpenSheetButton label="Go to class" />
 
       <ChapterComments chapterId={chapterId} />
 
-      <Separator />
+      {/* <Separator />
       <div id="chapter-test">
         {completedLastSession === undefined ? (
           <Skeleton className="w-full h-10" />
         ) : (
           <>
             {completedLastSession &&
-              chapterDetails.userProgress === null &&
+              chapterDetails?.userProgress === null &&
               randonQuestions.length > 0 && (
                 <ChapterTest
                   questions={randonQuestions}
@@ -143,22 +123,32 @@ function ChapterDetails({
               )}
           </>
         )}
-      </div>
+      </div> */}
+
+      <Separator />
+      {!!chapterDetails?.chapter?.chapterProjects.length && (
+        <ProjectList
+          chapterProjects={chapterDetails?.chapter?.chapterProjects}
+          courseId={courseId}
+          chapterId={chapterId}
+        />
+      )}
 
       <Separator />
 
-      {!!chapterDetails.chapter?.assignments.length && (
-        <>
+      {!!chapterDetails?.chapter?.assignments.length && (
+        <div id="chapter-assignment">
           <h2 className="text-xl my-2 font-bold">Assignments</h2>
-          {chapterDetails.chapter.assignments.map((assignment) => {
+          {chapterDetails.chapter.assignments.map((assignment,index) => {
             return (
               <AssignmentAccordion
+              assignmentNumber={index + 1}
                 assignment={assignment}
                 key={assignment.id}
               />
             );
           })}
-        </>
+        </div>
       )}
     </div>
   );

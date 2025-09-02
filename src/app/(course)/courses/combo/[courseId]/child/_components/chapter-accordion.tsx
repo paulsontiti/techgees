@@ -50,9 +50,9 @@ export function ChapterAccordion({
       `/courses/combo/${parentId}/child/${courseId}/chapters/${id}` :
       `/courses/single/${courseId}/chapters/${id}`;
 
-  const previousChapterTestUrl = parentId ?
-      `/courses/combo/${parentId}/child/${courseId}/chapters/${prviousChapter?.id}/#chapter-test` :
-      `/courses/single/${courseId}/chapters/${prviousChapter?.id}/#chapter-test`;
+  const previousChapterAssignmentUrl = parentId ?
+      `/courses/combo/${parentId}/child/${courseId}/chapters/${prviousChapter?.id}/#chapter-assignment` :
+      `/courses/single/${courseId}/chapters/${prviousChapter?.id}/#chapter-assignment`;
 
   const onClick = () => {
     closeSheet();
@@ -105,7 +105,7 @@ export function ChapterAccordion({
                 {previousUserChapterProgress === undefined ? <Skeleton className="w-full h-20" /> :
                   <>
                     {prviousChapter && !previousUserChapterProgress &&
-                    <CompletedPreviousChapterTest previousChapterTestUrl={previousChapterTestUrl}/>
+                    <CompletedPreviousChapterTest previousChapterAssignmentUrl={previousChapterAssignmentUrl}/>
                     }</>
                 }
               </>

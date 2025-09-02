@@ -1,6 +1,6 @@
 import IconBadge from "@/components/icon-badge";
 import { db } from "@/lib/db";
-import { ArrowLeft, Eye, LayoutDashboard, ListChecks, Video } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 import TitleForm from "./_components/title-form";
@@ -11,6 +11,8 @@ import AccessForm from "./_components/access-form";
 import Banner from "@/components/banner";
 import ChapterActions from "./_components/chapter-actions";
 import { getUserCookie } from "@/lib/get-user-cookie";
+import ProjectForm from "./_components/project-form";
+import ChapterAssignmentForm from "./_components/chapter-assignment-form";
 
 async function ChapterIdPage({
   params: { chapterId,courseId },
@@ -29,11 +31,17 @@ async function ChapterIdPage({
     },
     include: {
      
+      chapterProjects:{
+        orderBy:{
+          position:"asc"
+        }
+      },
       sessions:{
         orderBy:{
           position:"asc"
         }
-      }
+      },
+      assignments:true
     },
   });
 
@@ -106,9 +114,25 @@ async function ChapterIdPage({
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Chapter sessions</h2>
             </div>
-            <SessionForm chapter={chapter}/>
+            <SessionForm chapterId={chapterId} courseId={courseId} sessions={chapter.sessions}/>
           </div>
         
+        </div>
+          <div className="space-y-6">
+          <div >
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListChecks} />
+              <h2 className="text-xl">Chapter projects</h2>
+            </div>
+            <ProjectForm chapterId={chapterId} courseId={courseId} projects={chapter.chapterProjects}/>
+          </div>
+         <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListChecks} />
+              <h2 className="text-xl">Chapter assignments</h2>
+            </div>
+            <ChapterAssignmentForm courseId={courseId} chapterId={chapterId} assignments={chapter.assignments}/>
+          </div>
         </div>
       </div>
     </div>

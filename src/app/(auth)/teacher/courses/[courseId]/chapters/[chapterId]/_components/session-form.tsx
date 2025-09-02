@@ -20,7 +20,7 @@ import toast from "react-hot-toast";
 
 import * as zod from "zod";
 
-import { Chapter,Session } from "@prisma/client";
+import { Session } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -33,7 +33,13 @@ const formSchema = zod.object({
   }),
 });
 
-function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
+
+type SessionType = {
+  chapterId:string,
+  courseId:string,
+  sessions:Session[]
+}
+function SessionForm({ chapterId,sessions,courseId }: SessionType) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -54,7 +60,7 @@ function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/sessions`, values);
+      await axios.post(`/api/courses/${courseId}/chapters/${chapterId}/sessions`, values);
       toast.success("Session created");
       toggleCreating();
       router.refresh();
@@ -70,8 +76,8 @@ function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
     try{
       setIsUpdating(true)
 
-      await axios.put(`/api/courses/${chapter.courseId}
-        /chapters/${chapter.id}/sessions/reorder`,{
+      await axios.put(`/api/courses/${courseId}
+        /chapters/${chapterId}/sessions/reorder`,{
         reorderSessions
       })
 
@@ -86,7 +92,7 @@ function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
   }
 
   const onEdit = (sessionId:string)=>{
-    router.push(`/teacher/courses/${chapter.courseId}/chapters/${chapter.id}/sessions/${sessionId}`)
+    router.push(`/teacher/courses/${courseId}/chapters/${chapterId}/sessions/${sessionId}`)
   }
 
   return ( 
@@ -149,16 +155,16 @@ function SessionForm({ chapter }: { chapter: Chapter & {sessions:Session[]} }) {
        <div>
              <div className={cn(
                 "text-sm mt-2",
-                !chapter.sessions.length && "text-slate-500 italic"
-             )}>{!chapter.sessions.length && "No sessions"}
+                !sessions.length && "text-slate-500 italic"
+             )}>{!sessions.length && "No sessions"}
             
             <SessionsList
               onEdit={onEdit}
               onReorder={onReorder}
-              items={chapter.sessions ?? []}
+              items={sessions ?? []}
             />
              </div>
-          { !!chapter.sessions.length &&    <p className="text-xs text-muted-foreground mt-4">
+          { !!sessions.length &&    <p className="text-xs text-muted-foreground mt-4">
                 Drag and drop to reorder the sessions
              </p>}
 

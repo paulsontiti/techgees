@@ -1,6 +1,6 @@
 import { db } from '@/lib/db'
 import React from 'react'
-import AssignmentAccordion from './_components/assignment-accordion'
+import AssignmentAccordion from '../_components/assignment-accordion'
 
 async function AssignmentPage({
   params:{sessionId}

@@ -81,8 +81,8 @@ const teacherRoutes = [
 const adminRoutes = [
   {
     icon: List,
-    label: "Courses",
-    href: "/admin/courses"
+    label: "Students",
+    href: "/admin/students"
   },
   {
     icon: BarChart,
@@ -94,7 +94,7 @@ const adminRoutes = [
 function SidebarRoutes() {
   const pathname = usePathname()
 
-  const routes = pathname.includes("/teacher") ? teacherRoutes : studentRoutes
+  const routes = pathname.includes("/admin") ? adminRoutes : (pathname.includes("/teacher") ? teacherRoutes : studentRoutes)
   return (
     <div className='flex flex-col gap-4 w-full'>
       {

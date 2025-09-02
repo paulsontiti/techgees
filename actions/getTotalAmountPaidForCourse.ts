@@ -14,37 +14,40 @@ export const getTotalAmountPaidForCourse = async (userId: string, courseId: stri
         const payments = await db.paystackPayment.findMany({
             where: {
                 userId,
-                courseId
+                courseId,
+                payment_status:"success"
             }, select: {
-                reference: true,
+                //reference: true,
                 amount: true
             }
         });
 
-        let paymentAmounts: number[] = []
+       
 
-        for (let payment of payments) {
-            const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
+        let paymentAmounts: number[] = payments.map(p => p.amount)
+
+        // for (let payment of payments) {
+        //     const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
         
-            if (!error) {
-                if (verifiedPayment.data.status === "success") {
+        //     if (!error) {
+        //         if (verifiedPayment.data.status === "success") {
 
 
-                    paymentAmounts.push(payment.amount)
+        //             paymentAmounts.push(payment.amount)
 
 
-                    await db.paystackPayment.update({
-                        where: {
-                            reference: payment.reference
-                        },
-                        data: {
-                            payment_status: verifiedPayment.data.status
-                        }
-                    })
-                }
-            }
+        //             await db.paystackPayment.update({
+        //                 where: {
+        //                     reference: payment.reference
+        //                 },
+        //                 data: {
+        //                     payment_status: verifiedPayment.data.status
+        //                 }
+        //             })
+        //         }
+        //     }
 
-        }
+        // }
       
         //get wallet purchases for this course
         const walletpayments = await db.walletPayment.findMany({

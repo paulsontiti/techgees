@@ -3,6 +3,7 @@ import ChapterProgress from "@/app/(course)/courses/single/[courseId]/chapters/[
 import ChapterDetails from "@/app/(course)/courses/single/[courseId]/chapters/[chapterId]/_components/chapter-details";
 import { isOnScholarship } from "../../../../../../../../../../actions/isOnScholarship";
 import ErrorPage from "@/components/error";
+import { getChapterDetails } from "../../../../../../../../../../actions/getChapterdetails";
 
 async function ChapterIdPage({
     params: { childId, chapterId }
@@ -14,11 +15,15 @@ async function ChapterIdPage({
         const {onScholarship,error} = await isOnScholarship(childId);
     if(error) return <ErrorPage name={error.name}/>
 
+    const {chapterDetails,error:chapterErr} = await getChapterDetails(chapterId);
+      if(chapterErr) return <ErrorPage name={chapterErr.name}/>
+
     return (
         <div className="bg-white p-4" id="top">
 
             <ChapterProgress chapterId={chapterId} />
             <ChapterDetails 
+            chapterDetails={chapterDetails}
             onScholarship={onScholarship}
             chapterId={chapterId} courseId={childId} isChildCourse={true} />
         </div>

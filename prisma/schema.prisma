@@ -240,6 +240,8 @@ model Chapter {
 
   @@unique([id, courseId])
   @@index([courseId])
+  chapterProjects ChapterProject[]
+  chapterAssignment ChapterAssignment[]
 }
 
 model Session {
@@ -271,6 +273,73 @@ model Session {
   assignments       Assignment[]
 
   @@index([chapterId])
+}
+
+model ChapterProject {
+  id            String  @id @default(uuid()) @map("_id")
+  title         String
+  description   String?
+  position      Int
+  isPublished   Boolean @default(false)
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([chapterId])
+  chapterProjectSessions ChapterProjectSession[]
+}
+
+model ChapterProjectSession {
+  id            String  @id @default(uuid()) @map("_id")
+  title         String
+  description   String?
+  position      Int
+  videoUrl      String?
+  videoDuration Int?
+  isPublished   Boolean @default(false)
+  bonusVideoUrls String[]
+
+  chapterProjectId String
+  chapterProject  ChapterProject @relation(fields: [chapterProjectId], references: [id], onDelete: Cascade)
+
+
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([chapterProjectId])
+}
+
+model ChapterAssignmentProgress {
+  id          String  @id @default(uuid()) @map("_id")
+  userId      String
+
+  chapterAssignmentId String
+  chapterAssignment   ChapterAssignment @relation(fields: [chapterAssignmentId], references: [id], onDelete: Cascade)
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([chapterAssignmentId])
+}
+
+model ChapterAssignment {
+  id   String @id @default(uuid()) @map("_id")
+  text String
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([chapterId])
+  chapterAssignmentProgress ChapterAssignmentProgress[]
 }
 
 model DisLike {
