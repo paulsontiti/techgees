@@ -1,37 +1,20 @@
-"use client"
-import { useEffect, useState } from "react";
+
 import { SidebarChapter } from "../combo/[courseId]/child/_components/course-sidebar";
-import axios from "axios";
 import { ChapterAccordion } from "../combo/[courseId]/child/_components/chapter-accordion";
-import toast from "react-hot-toast";
+import { Chapter } from "@prisma/client";
 
-export const ChapterAndSessions = ({ chapter, parentId}: { chapter: SidebarChapter, parentId?: string,  }) => {
-  const [chapterProgressPercentage, setChapterProgressPercentage] = useState<any>(undefined);
-  const [previousChapter, setPreviousChapter] = useState<any>(undefined);
-  const [previousUserChapterProgress, setPreviousUserChapterProgress] = useState<any>(undefined);
+type ChapterAndSessionsParamType ={
+chapter: SidebarChapter, parentId?: string,
+chapterProgressPercentage:number,
+previousChapter:Chapter,
+previousUserChapterComplete:boolean,
+paidFor?:boolean
+}
 
-  //get chapter progress percentage
-  useEffect(() => {
-    (
-      async () => {
-        try {
-          const res = await axios.get(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/progress`);
-          setChapterProgressPercentage(res.data);
-          //get previous chapter
-          const prvChapterRes = await axios.get(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/previous-chapter`);
-          setPreviousChapter(prvChapterRes.data);
+export const ChapterAndSessions = ({ chapter, parentId,paidFor,
+  chapterProgressPercentage,previousChapter,previousUserChapterComplete
+}: ChapterAndSessionsParamType) => {
 
-          //get previous chapter progress
-          const prvChapUserProgressRes = await axios.get(`/api/courses/${chapter.courseId}/chapters/${chapter.id}/previous-chapter-progress`);
-          setPreviousUserChapterProgress(prvChapUserProgressRes.data);
-        } catch (err: any) {
-          toast.error(err.message);
-        }
-      }
-    )()
-  }, [])
-
-  
 
 
   return (
@@ -44,13 +27,13 @@ export const ChapterAndSessions = ({ chapter, parentId}: { chapter: SidebarChapt
       parentId={parentId || ""}
 
       isLocked={
-       
-          ((previousChapter && !previousUserChapterProgress?.isCompleted) ||
+       (!chapter.isFree && !paidFor) ||
+          ((previousChapter && !previousUserChapterComplete) ||
             !chapter.isPublished) 
       }
       sessions={chapter.sessions ?? []}
       chapterProgress={chapterProgressPercentage ?? 0}
-      previousUserChapterProgress={previousUserChapterProgress}
+      previousUserChapterProgress={previousUserChapterComplete}
       prviousChapter={previousChapter}
     />
   );

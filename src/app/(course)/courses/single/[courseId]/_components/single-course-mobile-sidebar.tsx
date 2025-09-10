@@ -69,7 +69,8 @@ function SingleCourseMobileSidebar({
       {course ? (
         <>
           {course.chapters.map((chapter) => (
-            <ChapterAndSessions chapter={chapter} key={chapter.id} />
+            <div key={chapter.id}></div>
+            // <ChapterAndSessions chapter={chapter} key={chapter.id} />
           ))}
         </>
       ) : (

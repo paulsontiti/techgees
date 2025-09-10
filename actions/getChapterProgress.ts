@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 
 interface ReturnValue{
-    progressPercentage:number | null,
+    progressPercentage:number,
     error:Error | null
 }
 
@@ -41,6 +41,6 @@ const progressPercentage = publishedSessionIds.length === 0 ? 0 :
       return {progressPercentage,error:null}
     }catch(error:any){
     console.log("[GET_CHAPTER_PROGRESS]",error)
-        return {progressPercentage:null,error}
+        return {progressPercentage:0,error}
     }
     }

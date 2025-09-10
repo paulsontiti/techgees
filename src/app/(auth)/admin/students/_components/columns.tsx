@@ -1,13 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { formatPrice } from "@/lib/format"
 import { DBUser } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 
 import { ArrowUpDown} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import StudentTableAction from "./student-table-action"
 import { UserDp } from "@/components/user-dp"
 

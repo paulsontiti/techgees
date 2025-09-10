@@ -8,6 +8,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "../../../components/chapter-sessions";
 import { SingleCourseEnrollButton } from "./single-course-enroll-button";
 import { Scholarship } from "@prisma/client";
+import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
+import ErrorPage from "@/components/error";
+import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
 
 export type CourseSidebarProps = {
   progressPercentage: number;
@@ -19,15 +22,17 @@ export type CourseSidebarProps = {
 async function CourseSidebar({
   course,
   progressPercentage,
-  scholarship,url,userId
+  scholarship,
+  url,
+  userId,paidPositions
 }: {
   course: CourseChaptersUserProgressType;
   scholarship: Scholarship | null;
-  url:string,
-  userId:string;
+  url: string;
+  userId: string;
   progressPercentage: number;
+  paidPositions:number[]
 }) {
-
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
@@ -40,12 +45,8 @@ async function CourseSidebar({
 
           <CourseActioDropdownMenu courseId={course.id} />
         </div>
-  
-            {!scholarship &&
-                <PaymentProgress
-                courseId={course.id}
-                  size="sm"
-                />}
+
+        {!scholarship && <PaymentProgress courseId={course.id} size="sm" />}
 
         {/* Payment button */}
         <div className="my-2">
@@ -67,9 +68,27 @@ async function CourseSidebar({
       </div>
       {course ? (
         <>
-          {course.chapters.map((chapter) => (
-            <ChapterAndSessions chapter={chapter} key={chapter.id} />
-          ))}
+          {course.chapters.map(async (chapter) => {
+            const prevChapter = course.chapters[chapter.position - 1];
+            //get previous chapter user progress
+                 const { userChapterProgress: previousUserChapterProgress, error: progressError } =
+                 await getUserChapterProgress(userId, prevChapter?.id ?? "")
+                 if (progressError) return <ErrorPage name={progressError.name} key={progressError.name}/>;
+
+            const { progressPercentage: chapterProgressPercentage, error } =
+              await getChapterProgress(userId, chapter.id);
+            if (error) return <ErrorPage name={error.name} key={error.name}/>;
+            return (
+              <ChapterAndSessions
+                chapter={chapter}
+                key={chapter.id}
+                previousChapter={prevChapter}
+                previousUserChapterComplete={previousUserChapterProgress?.isCompleted || false}
+                chapterProgressPercentage={chapterProgressPercentage}
+                paidFor={paidPositions.includes(chapter.position)}
+              />
+            );
+          })}
         </>
       ) : (
         <Skeleton className="w-full h-[500px]" />

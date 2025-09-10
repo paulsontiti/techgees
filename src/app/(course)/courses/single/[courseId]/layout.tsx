@@ -74,6 +74,7 @@ async function CourseLayout({
             url={url}
             userId={userId}
             progressPercentage={progressPercentage || 0}
+             paidPositions={paidPositions}
           />
         </div>
         <div className="px-4 md:w-2/3">{children}</div>

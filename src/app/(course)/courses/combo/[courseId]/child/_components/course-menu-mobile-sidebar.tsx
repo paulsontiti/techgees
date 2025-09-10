@@ -98,7 +98,8 @@ export const Chapters = ({chapters,parentId}:{
 
         {chapters//?.slice(0, (numberOfPaidChapters === 0 ? numberOfFreeChapters : numberOfPaidChapters))
         .map((chapter)=>(
-        <ChapterAndSessions parentId={parentId} chapter={chapter} key={chapter.id}/>
+          <div key={chapter.id}></div>
+        // <ChapterAndSessions parentId={parentId} chapter={chapter} key={chapter.id}/>
       ))}
       </>
 }

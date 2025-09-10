@@ -15,7 +15,6 @@ import {
 import { Chapter, Session, UserProgress } from "@prisma/client";
 import Banner from "@/components/banner";
 import { useSheetStore } from "../../../../../../../store/sheet-store";
-import { Skeleton } from "@/components/ui/skeleton";
 
 type CourseSidebarItemProps = {
   title: string;
