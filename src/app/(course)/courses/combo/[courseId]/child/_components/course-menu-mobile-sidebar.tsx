@@ -166,6 +166,7 @@ function MobileChapter({
       previousUserChapterComplete={IsPreviousChapterComplete}
       chapterProgressPercentage={chapterprogressPercentage}
       parentId={parentId}
+      paidFor={true}
     />
   );
 }
