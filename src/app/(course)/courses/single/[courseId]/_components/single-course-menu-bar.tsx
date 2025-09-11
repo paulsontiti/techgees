@@ -9,18 +9,12 @@ import { Scholarship } from "@prisma/client";
 
 function SingleCourseMenuBar({
   course,
-  purchasePercentage,
-  paidPositions,
   progressPercentage,
-  coursePurchasePrice,
   scholarship
 }: {
   course: CourseChaptersUserProgressType;
   scholarship: Scholarship | null;
-  coursePurchasePrice: number;
-  paidPositions: number[];
   progressPercentage: number;
-  purchasePercentage: number;
 }) {
   const { openSheet, closeSheet, isOpen } = useSheetStore();
   return (
@@ -41,9 +35,6 @@ p-0 bg-white w-11/12"
         <SingleCourseMobileSidebar
           course={course}
           scholarship={scholarship}
-          coursePurchasePrice={coursePurchasePrice}
-          purchasePercentage={purchasePercentage}
-          paidPositions={paidPositions}
           progressPercentage={progressPercentage}
         />
       </SheetContent>

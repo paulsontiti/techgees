@@ -1,4 +1,5 @@
-"use client";
+
+"use client"
 import CourseProgress from "@/components/course-progress";
 import PaymentProgress from "@/components/paymentProgress";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
@@ -6,8 +7,12 @@ import { CourseChaptersUserProgressType } from "../../../../../../../actions/get
 import Heading from "@/components/heading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "../../../components/chapter-sessions";
-import { Scholarship } from "@prisma/client";
+import { Chapter, Scholarship } from "@prisma/client";
+import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-menu-mobile-sidebar";
 
+import usePaidChapterPositions from "../../../../../../../hooks/usePaidChapterPositions";
+import useIsPreviousChapterComplete from "../../../../../../../hooks/useIsPreviousChapterComplete";
+import useChapterprogressPercentage from "../../../../../../../hooks/useChapterprogressPercentage";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -18,22 +23,15 @@ export type CourseSidebarProps = {
 
 function SingleCourseMobileSidebar({
   course,
-  purchasePercentage,
-  paidPositions,
   progressPercentage,
-  coursePurchasePrice,
- scholarship
+  scholarship,
 }: {
   course: CourseChaptersUserProgressType;
- scholarship: Scholarship | null;
-  coursePurchasePrice: number;
-  paidPositions: number[];
+  scholarship: Scholarship | null;
   progressPercentage: number;
-  purchasePercentage: number;
 }) {
 
- 
-
+ const {paidPositions} = usePaidChapterPositions(course.id)
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b gap-y-2">
@@ -50,13 +48,7 @@ function SingleCourseMobileSidebar({
             <Skeleton className="w-1 h-1" />
           )}
         </div>
-        {!scholarship && (
-          <PaymentProgress
-            size="sm"
-            courseId={course.id}
-          />
-        )}
-       
+        {!scholarship && <PaymentProgress size="sm" courseId={course.id} />}
 
         <div className="mt-10">
           {progressPercentage !== undefined ? (
@@ -68,10 +60,19 @@ function SingleCourseMobileSidebar({
       </div>
       {course ? (
         <>
-          {course.chapters.map((chapter) => (
-            <div key={chapter.id}></div>
-            // <ChapterAndSessions chapter={chapter} key={chapter.id} />
-          ))}
+          {course.chapters.map((chapter) => {
+            const prevChapter = course.chapters[chapter.position - 1];
+            const isPaidFor = paidPositions.includes(chapter.position);
+           
+            return (
+              <MobileChapter
+                key={chapter.id}
+                chapter={chapter}
+                prevChapter={prevChapter}
+                isPaidFor={isPaidFor}
+              />
+            );
+          })}
         </>
       ) : (
         <Skeleton className="w-full h-[500px]" />
@@ -81,3 +82,30 @@ function SingleCourseMobileSidebar({
 }
 
 export default SingleCourseMobileSidebar;
+
+function MobileChapter({
+  chapter,
+  prevChapter,
+  isPaidFor,
+}: {
+  chapter: SidebarChapter;
+  prevChapter: Chapter;
+  isPaidFor: boolean;
+}) {
+  const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
+
+  const {chapterprogressPercentage} = useChapterprogressPercentage(chapter.courseId,chapter.id)
+
+ 
+
+  return (
+    <ChapterAndSessions
+      chapter={chapter}
+      key={chapter.id}
+      previousChapter={prevChapter}
+      previousUserChapterComplete={IsPreviousChapterComplete}
+      chapterProgressPercentage={chapterprogressPercentage}
+      paidFor={isPaidFor}
+    />
+  );
+}

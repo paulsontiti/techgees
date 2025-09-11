@@ -6,7 +6,7 @@ import { CourseChaptersUserProgressType } from '../../../../../../../actions/get
 import { Scholarship } from '@prisma/client';
 
 
- function CourseNavbar({
+async function CourseNavbar({
     course,purchasePercentage,paidPositions,progressPercentage,coursePurchasePrice,
     scholarship
   }: {
@@ -16,7 +16,6 @@ import { Scholarship } from '@prisma/client';
   purchasePercentage:number
   }) {
 
- 
 
   return (
     <div className={`p-4 border-b h-full flex items-center

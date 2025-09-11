@@ -41,6 +41,7 @@ async function CourseLayout({
   const { paidPositions, error: paidError } =
     await getPaidChapterPositions(courseId,purchasePercentage);
   if (paidError) return <ErrorPage name={paidError.name} />;
+ 
 
        const { progressPercentage, error:proError } = await getCourseProgress(userId!,
   courseId)
@@ -53,8 +54,6 @@ async function CourseLayout({
 
 
     const url = process.env.WEB_URL!;
-
-
 
   return (
     <div>

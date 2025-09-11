@@ -23,9 +23,6 @@ scholarship: Scholarship | null;coursePurchasePrice:number,
        <SingleCourseMenuBar
      course={course}
             scholarship={scholarship}
-            coursePurchasePrice={coursePurchasePrice}
-            purchasePercentage={purchasePercentage}
-            paidPositions={paidPositions}
             progressPercentage={progressPercentage}
            
        />
