@@ -85,7 +85,6 @@ async function CourseSidebar({
                 previousChapter={prevChapter}
                 previousUserChapterComplete={previousUserChapterProgress?.isCompleted || false}
                 chapterProgressPercentage={chapterProgressPercentage}
-                paidFor={paidPositions.includes(chapter.position)}
               />
             );
           })}

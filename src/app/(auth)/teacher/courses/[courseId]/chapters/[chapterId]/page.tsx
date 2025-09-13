@@ -126,7 +126,7 @@ async function ChapterIdPage({
             </div>
             <ProjectForm chapterId={chapterId} courseId={courseId} projects={chapter.chapterProjects}/>
           </div>
-         <div>
+         <div >
             <div className="flex items-center gap-x-2">
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Chapter assignments</h2>

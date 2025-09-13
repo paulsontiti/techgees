@@ -32,11 +32,15 @@ async function CourseLayout({
     userId!,
     courseId
   );
+
+ 
   if (purError) return <ErrorPage name={purError.name} />;
 
   const { purchasePercentage, error: purPerError } =
     await getPurchasePercentage(userId!, courseId);
   if (purPerError) return <ErrorPage name={purPerError.name} />;
+
+
 
   const { paidPositions, error: paidError } =
     await getPaidChapterPositions(courseId,purchasePercentage);
@@ -51,7 +55,6 @@ async function CourseLayout({
       await getScholarshipByCourseId (courseId);
   
     if (schCourseError) return <ErrorPage name={schCourseError.name} />;
-
 
     const url = process.env.WEB_URL!;
 

@@ -9,15 +9,13 @@ type ReturnValue = {
 export const getPurchasePercentage = async (courseId: string, userId: string,):
   Promise<ReturnValue> => {
   try {
-    const { totalAmountPaid, error } = await getTotalAmountPaidForCourse(userId, courseId)
+    const { totalAmountPaid, error } = await getTotalAmountPaidForCourse(courseId)
     if (error) throw new Error(error.message)
 
-
-
     const coursePurchase = await db.purchase.findUnique({
-      where: {
-        courseId_userId: {
-          userId, courseId
+      where:{
+        courseId_userId:{
+          userId,courseId
         }
       },
       select: {
