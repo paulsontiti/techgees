@@ -7,13 +7,11 @@ import { Scholarship } from '@prisma/client';
 
 
 async function CourseNavbar({
-    course,purchasePercentage,paidPositions,progressPercentage,coursePurchasePrice,
+    course,progressPercentage,
     scholarship
   }: {
     course: CourseChaptersUserProgressType;
- scholarship: Scholarship | null;coursePurchasePrice:number,
-    paidPositions:number[],progressPercentage:number,
-  purchasePercentage:number
+ scholarship: Scholarship | null,progressPercentage:number,
   }) {
 
 
@@ -23,9 +21,6 @@ async function CourseNavbar({
       <CourseMobileSidebar
         course={course}
               scholarship={scholarship}
-            coursePurchasePrice={coursePurchasePrice}
-            purchasePercentage={purchasePercentage}
-            paidPositions={paidPositions}
             progressPercentage={progressPercentage}
            
 

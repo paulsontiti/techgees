@@ -6,11 +6,9 @@ import { CourseActioDropdownMenu } from "./action-dropdown-menu";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import Heading from "@/components/heading";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChapterAndSessions } from "../../../components/chapter-sessions";
+import { ChapterAndSessions } from "./chapter-sessions";
 import { Chapter, Scholarship } from "@prisma/client";
 import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-menu-mobile-sidebar";
-
-import usePaidChapterPositions from "../../../../../../../hooks/usePaidChapterPositions";
 import useIsPreviousChapterComplete from "../../../../../../../hooks/useIsPreviousChapterComplete";
 import useChapterprogressPercentage from "../../../../../../../hooks/useChapterprogressPercentage";
 
@@ -18,7 +16,6 @@ export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
   progressPercentage: number;
   purchasePercentage: number;
-  paidPositions: number[];
 };
 
 function SingleCourseMobileSidebar({
@@ -31,7 +28,7 @@ function SingleCourseMobileSidebar({
   progressPercentage: number;
 }) {
 
- const {paidPositions} = usePaidChapterPositions(course.id)
+
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b gap-y-2">
@@ -62,14 +59,12 @@ function SingleCourseMobileSidebar({
         <>
           {course.chapters.map((chapter) => {
             const prevChapter = course.chapters[chapter.position - 1];
-            const isPaidFor = paidPositions.includes(chapter.position);
            
             return (
               <MobileChapter
                 key={chapter.id}
                 chapter={chapter}
                 prevChapter={prevChapter}
-                isPaidFor={isPaidFor}
               />
             );
           })}
@@ -86,11 +81,9 @@ export default SingleCourseMobileSidebar;
 function MobileChapter({
   chapter,
   prevChapter,
-  isPaidFor,
 }: {
   chapter: SidebarChapter;
   prevChapter: Chapter;
-  isPaidFor: boolean;
 }) {
   const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
 
@@ -105,7 +98,6 @@ function MobileChapter({
       previousChapter={prevChapter}
       previousUserChapterComplete={IsPreviousChapterComplete}
       chapterProgressPercentage={chapterprogressPercentage}
-      paidFor={isPaidFor}
     />
   );
 }

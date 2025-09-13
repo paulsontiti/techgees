@@ -5,9 +5,6 @@ import ErrorPage from "@/components/error";
 import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { redirect } from "next/navigation";
-import { getCoursePurchase } from "../../../../../../actions/getCoursePurchase";
-import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
-import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
 import { getCourseProgress } from "../../../../../../actions/getCourseProgress";
 import { getScholarshipByCourseId } from "../../../../../../actions/getScholarshipByCourseId";
 
@@ -28,25 +25,6 @@ async function CourseLayout({
   if (couError) return <ErrorPage name={couError.name} />;
   if (!course) return redirect("/dashboard");
 
-  const { coursePurchase, error: purError } = await getCoursePurchase(
-    userId!,
-    courseId
-  );
-
- 
-  if (purError) return <ErrorPage name={purError.name} />;
-
-  const { purchasePercentage, error: purPerError } =
-    await getPurchasePercentage(userId!, courseId);
-  if (purPerError) return <ErrorPage name={purPerError.name} />;
-
-
-
-  const { paidPositions, error: paidError } =
-    await getPaidChapterPositions(courseId,purchasePercentage);
-  if (paidError) return <ErrorPage name={paidError.name} />;
- 
-
        const { progressPercentage, error:proError } = await getCourseProgress(userId!,
   courseId)
   if (proError) return <ErrorPage name={proError.name} />;
@@ -63,9 +41,6 @@ async function CourseLayout({
       <div>
         <CourseNavbar   course={course}
               scholarship={scholarship}
-            coursePurchasePrice={coursePurchase?.price || 0}
-            purchasePercentage={purchasePercentage}
-            paidPositions={paidPositions}
             progressPercentage={progressPercentage || 0}/>
       </div>
       <div className="flex mt-10 justify-center">
@@ -76,7 +51,6 @@ async function CourseLayout({
             url={url}
             userId={userId}
             progressPercentage={progressPercentage || 0}
-             paidPositions={paidPositions}
           />
         </div>
         <div className="px-4 md:w-2/3">{children}</div>

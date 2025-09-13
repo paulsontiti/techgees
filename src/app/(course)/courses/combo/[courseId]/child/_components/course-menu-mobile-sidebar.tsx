@@ -5,13 +5,12 @@ import { Chapter, Session, UserProgress } from "@prisma/client";
 
 import BackButton from "@/components/back-button";
 import axios from "axios";
-import { ChapterAndSessions } from "@/app/(course)/courses/components/chapter-sessions";
 import { Skeleton } from "@/components/ui/skeleton";
 import toast from "react-hot-toast";
 import { PaidChapterType } from "../../../../../../../../actions/getPaidChapters";
 import useIsPreviousChapterComplete from "../../../../../../../../hooks/useIsPreviousChapterComplete";
 import useChapterprogressPercentage from "../../../../../../../../hooks/useChapterprogressPercentage";
-//import { PaidChapterType } from "../../../../../../../../actions/getPaidChapters";
+import { ChapterAndSessions } from "./chapter-sessions";
 
 type CourseSidebarProps = {
   childId: string;
@@ -166,7 +165,6 @@ function MobileChapter({
       previousUserChapterComplete={IsPreviousChapterComplete}
       chapterProgressPercentage={chapterprogressPercentage}
       parentId={parentId}
-      paidFor={true}
     />
   );
 }

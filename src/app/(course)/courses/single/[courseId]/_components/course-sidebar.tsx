@@ -5,7 +5,7 @@ import Heading from "@/components/heading";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChapterAndSessions } from "../../../components/chapter-sessions";
+import { ChapterAndSessions } from "./chapter-sessions";
 import { SingleCourseEnrollButton } from "./single-course-enroll-button";
 import { Scholarship } from "@prisma/client";
 import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
@@ -24,14 +24,13 @@ async function CourseSidebar({
   progressPercentage,
   scholarship,
   url,
-  userId,paidPositions
+  userId
 }: {
   course: CourseChaptersUserProgressType;
   scholarship: Scholarship | null;
   url: string;
   userId: string;
   progressPercentage: number;
-  paidPositions:number[]
 }) {
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">

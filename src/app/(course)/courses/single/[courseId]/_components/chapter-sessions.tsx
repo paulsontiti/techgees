@@ -1,8 +1,8 @@
 "use client"
-import { SidebarChapter } from "../combo/[courseId]/child/_components/course-sidebar";
-import { ChapterAccordion } from "../combo/[courseId]/child/_components/chapter-accordion";
+import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-sidebar";
+import { ChapterAccordion } from "../../../combo/[courseId]/child/_components/chapter-accordion";
 import { Chapter } from "@prisma/client";
-import usePaidChapterPositions from "../../../../../hooks/usePaidChapterPositions";
+import usePaidChapterPositions from "../../../../../../../hooks/usePaidChapterPositions";
 
 type ChapterAndSessionsParamType ={
 chapter: SidebarChapter, parentId?: string,

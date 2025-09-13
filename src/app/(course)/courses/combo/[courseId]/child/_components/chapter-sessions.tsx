@@ -1,20 +1,19 @@
-
-import { SidebarChapter } from "./course-sidebar";
+"use client"
+import { Chapter } from "@prisma/client";
+import { SidebarChapter } from "./course-menu-mobile-sidebar";
 import { ChapterAccordion } from "./chapter-accordion";
-import { Chapter, UserProgress } from "@prisma/client";
 
 type ChapterAndSessionsParamType ={
 chapter: SidebarChapter, parentId?: string,
-  previousUserChapterComplete: UserProgress | null,
-  previousChapter: Chapter | null,
-  
- chapterProgress: number,
+chapterProgressPercentage:number,
+previousChapter:Chapter,
+previousUserChapterComplete:boolean,
+
 }
 
-export const ChapterAndSessions = ({ chapter, parentId,previousUserChapterComplete,previousChapter,
-  chapterProgress
+export const ChapterAndSessions = ({ chapter, parentId,
+  chapterProgressPercentage,previousChapter,previousUserChapterComplete
 }: ChapterAndSessionsParamType) => {
-
 
 
   return (
@@ -32,8 +31,8 @@ export const ChapterAndSessions = ({ chapter, parentId,previousUserChapterComple
             !chapter.isPublished) 
       }
       sessions={chapter.sessions ?? []}
-      chapterProgress={chapterProgress ?? 0}
-      previousUserChapterProgress={previousUserChapterComplete?.isCompleted || false}
+      chapterProgress={chapterProgressPercentage ?? 0}
+      previousUserChapterProgress={previousUserChapterComplete}
       prviousChapter={previousChapter}
     />
   );
