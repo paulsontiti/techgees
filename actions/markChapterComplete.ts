@@ -11,14 +11,10 @@ interface ReturnValue {
  * @return {ReturnValue} The users or error.
  */
 export const markChapterComplete = async (
-  chapterId: string
+  chapterId: string,userId:string
 ): Promise<ReturnValue> => {
   try {
-    const userId = await getUserCookie();
-
-    if (!userId) {
-      return { successful: false, error: new Error("Invalid user") };
-    }
+   
     await db.userProgress.create({
       data: {
         chapterId,

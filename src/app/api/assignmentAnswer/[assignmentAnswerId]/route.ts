@@ -98,10 +98,13 @@ export async function PATCH(
 
       //check if all assignments answers have been passed
       const assignmentAnswers = chapter?.assignments.map(ass => ass.assignmentAnswers);
+   
 
       assignmentAnswers?.map(ans => {
         if(ans.every(a => a.passed)){
-            markChapterComplete(chapterId);
+          //get the student userId
+          const userId = ans[0].userId // get the userId from the first assignment anwer
+            markChapterComplete(chapterId,userId);
            
         }
       })
