@@ -25,8 +25,7 @@ export const ChapterAndSessions = ({ chapter, parentId,
       courseId={chapter.courseId}
       parentId={parentId || ""}
 
-      isLocked={
-       !chapter.isFree ||
+      isLocked={    
           ((previousChapter && !previousUserChapterComplete) ||
             !chapter.isPublished) 
       }
