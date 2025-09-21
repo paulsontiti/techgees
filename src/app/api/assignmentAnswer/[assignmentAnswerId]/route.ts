@@ -12,13 +12,13 @@ export async function PATCH(
   }
 ) {
   try {
-    const userId = await getUserCookie();
+    const userIdOfTeacher = await getUserCookie();
 
-    if (!userId) {
+    if (!userIdOfTeacher) {
       return new NextResponse("Unautorized", { status: 401 });
     }
 
-    await db.assignmentAnswer.update({
+    const assignmentAns = await db.assignmentAnswer.update({
       where: {
         id: assignmentAnswerId,
       },
@@ -28,11 +28,14 @@ export async function PATCH(
     });
 
     //get the ansignment answer
-    const assignmentAns = await db.assignmentAnswer.findUnique({
-      where: {
-        id: assignmentAnswerId,
-      },
-    });
+    // const assignmentAns = await db.assignmentAnswer.findUnique({
+    //   where: {
+    //     id: assignmentAnswerId,
+    //   },
+    // });
+
+    //get the student userId that submitted this answer
+    const userIdOfStudent = assignmentAns?.userId || "";
 
     //construct a message including the assignment session title
 
@@ -75,7 +78,7 @@ export async function PATCH(
       data: {
         receiverId: assignmentAns?.userId ?? "",
         message,
-        senderId: userId,
+        senderId: userIdOfTeacher,
         title: "A message from your instructor",
       },
     });
@@ -87,27 +90,25 @@ export async function PATCH(
         where: {
           id: chapterId,
         },
-        include:{
-            assignments:{
-                include:{
-                    assignmentAnswers:true
-                }
-            }
-        }
+        include: {
+          assignments: {
+            include: {
+              assignmentAnswers: true,
+            },
+          },
+        },
       });
 
-      //check if all assignments answers have been passed
-      const assignmentAnswers = chapter?.assignments.map(ass => ass.assignmentAnswers);
-   
+      //check if all assignments answers have been passed by the student
+      const assignmentAnswers = chapter?.assignments.map((ass) =>
+        ass.assignmentAnswers.filter((ans) => ans.userId === userIdOfStudent)
+      );
 
-      assignmentAnswers?.map(ans => {
-        if(ans.every(a => a.passed)){
-          //get the student userId
-          const userId = ans[0].userId // get the userId from the first assignment anwer
-            markChapterComplete(chapterId,userId);
-           
+      assignmentAnswers?.map((ans) => {
+        if (ans.every((a) => a.passed)) {
+          markChapterComplete(chapterId, userIdOfStudent);
         }
-      })
+      });
     }
 
     return NextResponse.json("");
