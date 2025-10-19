@@ -17,36 +17,42 @@ export const getTotalAmountPaidForCourse = async (
       where: {
         userId,
         courseId,
-        payment_status: "success",
+        //payment_status: "success",
       },
       select: {
-        //reference: true,
+        reference: true,
         amount: true,
+        payment_status:true
       },
     });
 
-    let paymentAmounts: number[] = payments.map((p) => p.amount);
+    let paymentAmounts: number[] = []; //payments.map((p) => p.amount);
 
-    // for (let payment of payments) {
-    //     const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
+    for (let payment of payments) {
+      if(payment.payment_status != "success"){
+        const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
 
-    //     if (!error) {
-    //         if (verifiedPayment.data.status === "success") {
+        if (!error) {
+            if (verifiedPayment.data.status === "success") {
 
-    //             paymentAmounts.push(payment.amount)
+                paymentAmounts.push(payment.amount)
 
-    //             await db.paystackPayment.update({
-    //                 where: {
-    //                     reference: payment.reference
-    //                 },
-    //                 data: {
-    //                     payment_status: verifiedPayment.data.status
-    //                 }
-    //             })
-    //         }
-    //     }
+                await db.paystackPayment.update({
+                    where: {
+                        reference: payment.reference
+                    },
+                    data: {
+                        payment_status: verifiedPayment.data.status
+                    }
+                })
+            }
+        }
+      }else{
+        paymentAmounts.push(payment.amount)
+      }
+        
 
-    // }
+    }
 
     //get wallet purchases for this course
     const walletpayments = await db.walletPayment.findMany({
