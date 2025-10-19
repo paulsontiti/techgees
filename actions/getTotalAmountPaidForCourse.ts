@@ -47,7 +47,7 @@ export const getTotalAmountPaidForCourse = async (
                 })
             }
         }
-      }else{
+      }else if(payment.payment_status === "success"){
         paymentAmounts.push(payment.amount)
       }
         
