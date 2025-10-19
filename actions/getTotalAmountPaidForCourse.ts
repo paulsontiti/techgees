@@ -29,7 +29,7 @@ export const getTotalAmountPaidForCourse = async (
     let paymentAmounts: number[] = []; //payments.map((p) => p.amount);
 
     for (let payment of payments) {
-      if(payment.payment_status != "success"){
+      if(payment.payment_status !== "success"){
         const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
 
         if (!error) {
