@@ -229,33 +229,37 @@ model Chapter {
   sessions       Session[]
   comments       Comment[]
 
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  otherSessions Json[]
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
   questions         Question[]
   chapterTestScores ChapterTestScore[]
   likes             Like[]
   dislikes          DisLike[]
   ratings           Rating[]
   assignments       Assignment[]
+  chapterProjects   ChapterProject[]
+  chapterAssignment ChapterAssignment[]
 
   @@unique([id, courseId])
   @@index([courseId])
-  chapterProjects ChapterProject[]
-  chapterAssignment ChapterAssignment[]
 }
 
 model Session {
-  id            String  @id @default(uuid()) @map("_id")
-  title         String
-  description   String?
-  position      Int
-  videoUrl      String?
-  videoDuration Int?
-  isPublished   Boolean @default(false)
+  id             String   @id @default(uuid()) @map("_id")
+  title          String
+  description    String?
+  position       Int
+  videoUrl       String?
+  videoDuration  Int?
+  isPublished    Boolean  @default(false)
   bonusVideoUrls String[]
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  otherChapters Json[]
 
   userProgresses UserProgress[]
 
@@ -276,51 +280,47 @@ model Session {
 }
 
 model ChapterProject {
-  id            String  @id @default(uuid()) @map("_id")
-  title         String
-  description   String?
-  position      Int
-  isPublished   Boolean @default(false)
+  id          String  @id @default(uuid()) @map("_id")
+  title       String
+  description String?
+  position    Int
+  isPublished Boolean @default(false)
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
-
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  chapterProjectSessions ChapterProjectSession[]
 
   @@index([chapterId])
-  chapterProjectSessions ChapterProjectSession[]
 }
 
 model ChapterProjectSession {
-  id            String  @id @default(uuid()) @map("_id")
-  title         String
-  description   String?
-  position      Int
-  videoUrl      String?
-  videoDuration Int?
-  isPublished   Boolean @default(false)
+  id             String   @id @default(uuid()) @map("_id")
+  title          String
+  description    String?
+  position       Int
+  videoUrl       String?
+  videoDuration  Int?
+  isPublished    Boolean  @default(false)
   bonusVideoUrls String[]
 
   chapterProjectId String
-  chapterProject  ChapterProject @relation(fields: [chapterProjectId], references: [id], onDelete: Cascade)
+  chapterProject   ChapterProject @relation(fields: [chapterProjectId], references: [id], onDelete: Cascade)
 
-
-
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([chapterProjectId])
 }
 
 model ChapterAssignmentProgress {
-  id          String  @id @default(uuid()) @map("_id")
-  userId      String
+  id     String @id @default(uuid()) @map("_id")
+  userId String
 
   chapterAssignmentId String
   chapterAssignment   ChapterAssignment @relation(fields: [chapterAssignmentId], references: [id], onDelete: Cascade)
-
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -335,11 +335,11 @@ model ChapterAssignment {
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  chapterAssignmentProgress ChapterAssignmentProgress[]
 
   @@index([chapterId])
-  chapterAssignmentProgress ChapterAssignmentProgress[]
 }
 
 model DisLike {
@@ -692,8 +692,6 @@ model Earning {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-
 }
 
 model NetworkGrowth {
@@ -715,6 +713,12 @@ enum Role {
   Admin
   Student
   Teacher
+}
+
+enum AttatchmentType {
+  Pdf
+  Video
+  Image
 }
 
 model UserProgress {
@@ -740,11 +744,12 @@ model UserProgress {
 }
 
 model Attachment {
-  id        String  @id @default(uuid()) @map("_id")
+  id        String          @id @default(uuid()) @map("_id")
   name      String
   url       String
   sessionId String
-  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session   Session         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type      AttatchmentType @default(Video)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

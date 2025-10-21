@@ -16,9 +16,9 @@ export const ChapterAndSessions = ({ chapter, parentId,
   chapterProgressPercentage,previousChapter,previousUserChapterComplete
 }: ChapterAndSessionsParamType) => {
 
-
   const {paidPositions} = usePaidChapterPositions(chapter.courseId)
   const paidFor = paidPositions.includes(chapter.position)
+
 
   return (
     <ChapterAccordion
@@ -34,7 +34,7 @@ export const ChapterAndSessions = ({ chapter, parentId,
           ((previousChapter && !previousUserChapterComplete) ||
             !chapter.isPublished) 
       }
-      sessions={chapter.sessions ?? []}
+      sessions={chapter.sessions}
       chapterProgress={chapterProgressPercentage ?? 0}
       previousUserChapterProgress={previousUserChapterComplete}
       prviousChapter={previousChapter}

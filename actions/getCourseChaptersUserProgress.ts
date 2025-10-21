@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { Course } from "@prisma/client";
 import { getCourseWithCourseChildrenWithChaptersWithUserProgress } from "./getCourseWithCourseChildrenWithChaptersWithUserProgress";
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
+import { getOtherSessionsByChapterId } from "./getOtherSessionsByChapterId";
 
 
 
@@ -48,6 +49,17 @@ export const getCourseChaptersUserProgress = async (
       },
     });
 
+    //add other sessions
+    const sessionPromises = course ? course.chapters.map(async(chapter) =>{
+      const {sessions,error} = await getOtherSessionsByChapterId(chapter.id)
+      
+      chapter.sessions = [...chapter.sessions,...sessions]
+
+      return chapter
+    }) : []
+
+    if(course) course.chapters = await Promise.all(sessionPromises)
+      
 
     //if course is combo get the chapters from its children courses
     if (course?.chapters.length === 0) {

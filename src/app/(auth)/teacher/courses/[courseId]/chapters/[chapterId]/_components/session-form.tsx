@@ -19,13 +19,11 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import * as zod from "zod";
-
-import { Session } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import PageLoader from "@/components/page-loader";
-import SessionsList from "./sessions-list";
+import SessionsList, { OtherSession } from "./sessions-list";
 
 const formSchema = zod.object({
   title: zod.string().min(1, {
@@ -37,7 +35,7 @@ const formSchema = zod.object({
 type SessionType = {
   chapterId:string,
   courseId:string,
-  sessions:Session[]
+  sessions:OtherSession[]
 }
 function SessionForm({ chapterId,sessions,courseId }: SessionType) {
   const [isUpdating, setIsUpdating] = useState(false);

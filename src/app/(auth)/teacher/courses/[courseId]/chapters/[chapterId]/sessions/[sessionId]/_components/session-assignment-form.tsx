@@ -86,7 +86,7 @@ function SessionAssignmentForm({ session,courseId }:
     >
       <PageLoader isloading={isEditing} label="re-directing..." />
       <div className="font-medium flex items-center justify-between">
-Course Assignments
+Session Assignments
         <Button variant="ghost" onClick={toggleCreating}>
           {isCreating ? (
             <>Cancel</>
@@ -111,7 +111,7 @@ Course Assignments
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Course assignment </FormLabel>
+                    <FormLabel>Session assignment </FormLabel>
                     <FormControl>
               <Editor
           
@@ -119,7 +119,7 @@ Course Assignments
               />
           </FormControl>
                     <FormDescription>
-                      {`What should students do after the course`}
+                      {`What should students do after the session`}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

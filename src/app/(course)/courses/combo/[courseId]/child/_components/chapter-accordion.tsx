@@ -12,10 +12,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Chapter, Session } from "@prisma/client";
+import { Chapter } from "@prisma/client";
 import { useSheetStore } from "../../../../../../../../store/sheet-store";
 import { Skeleton } from "@/components/ui/skeleton";
 import CompletedPreviousChapterTest from "@/app/(course)/courses/components/completed-previous-chapter";
+import { OtherSession } from "@/app/(auth)/teacher/courses/[courseId]/chapters/[chapterId]/_components/sessions-list";
 
 type CourseSidebarItemProps = {
   title: string;
@@ -23,7 +24,7 @@ type CourseSidebarItemProps = {
   isCompleted: boolean;
   courseId: string;
   isLocked: boolean;
-  sessions: Session[];
+  sessions: OtherSession[];
   chapterProgress?: number,
   previousUserChapterProgress: boolean,
   prviousChapter: Chapter | null,

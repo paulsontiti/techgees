@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import CourseProgress from "@/components/course-progress";
-import { Chapter, Session, UserProgress } from "@prisma/client";
+import { Chapter} from "@prisma/client";
 
 import BackButton from "@/components/back-button";
 import axios from "axios";
@@ -11,16 +11,14 @@ import { PaidChapterType } from "../../../../../../../../actions/getPaidChapters
 import useIsPreviousChapterComplete from "../../../../../../../../hooks/useIsPreviousChapterComplete";
 import useChapterprogressPercentage from "../../../../../../../../hooks/useChapterprogressPercentage";
 import { ChapterAndSessions } from "./chapter-sessions";
+import { SidebarChapter } from "./course-sidebar";
 
 type CourseSidebarProps = {
   childId: string;
   parentId: string;
 };
 
-export type SidebarChapter = Chapter & {
-  sessions: Session[];
-  userProgresses: UserProgress[];
-};
+
 
 function CoursemenuMobileSidebar({ childId, parentId }: CourseSidebarProps) {
   const [progressPercentage, setProgressPercentage] = useState<
@@ -154,8 +152,6 @@ function MobileChapter({
   const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
 
   const {chapterprogressPercentage} = useChapterprogressPercentage(chapter.courseId,chapter.id)
-
- 
 
   return (
     <ChapterAndSessions

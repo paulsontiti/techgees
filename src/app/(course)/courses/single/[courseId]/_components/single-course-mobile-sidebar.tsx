@@ -8,9 +8,9 @@ import Heading from "@/components/heading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "./chapter-sessions";
 import { Chapter, Scholarship } from "@prisma/client";
-import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-menu-mobile-sidebar";
 import useIsPreviousChapterComplete from "../../../../../../../hooks/useIsPreviousChapterComplete";
 import useChapterprogressPercentage from "../../../../../../../hooks/useChapterprogressPercentage";
+import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-sidebar";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -88,8 +88,6 @@ function MobileChapter({
   const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
 
   const {chapterprogressPercentage} = useChapterprogressPercentage(chapter.courseId,chapter.id)
-
- 
 
   return (
     <ChapterAndSessions

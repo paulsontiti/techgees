@@ -1,7 +1,7 @@
 "use client"
 import { Chapter } from "@prisma/client";
-import { SidebarChapter } from "./course-menu-mobile-sidebar";
 import { ChapterAccordion } from "./chapter-accordion";
+import { SidebarChapter } from "./course-sidebar";
 
 type ChapterAndSessionsParamType ={
 chapter: SidebarChapter, parentId?: string,

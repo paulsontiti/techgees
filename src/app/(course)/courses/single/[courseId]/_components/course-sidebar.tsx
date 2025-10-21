@@ -12,6 +12,7 @@ import { getChapterProgress } from "../../../../../../../actions/getChapterProgr
 import ErrorPage from "@/components/error";
 import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
 
+
 export type CourseSidebarProps = {
   progressPercentage: number;
   purchasePercentage: number;
@@ -77,6 +78,7 @@ async function CourseSidebar({
             const { progressPercentage: chapterProgressPercentage, error } =
               await getChapterProgress(userId, chapter.id);
             if (error) return <ErrorPage name={error.name} key={error.name}/>;
+         
             return (
               <ChapterAndSessions
                 chapter={chapter}

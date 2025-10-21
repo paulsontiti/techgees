@@ -10,6 +10,7 @@ import { Chapters } from "./course-menu-mobile-sidebar";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { PaidChapterType } from "../../../../../../../../actions/getPaidChapters";
+import { OtherSession } from "@/app/(auth)/teacher/courses/[courseId]/chapters/[chapterId]/_components/sessions-list";
 
 type CourseSidebarProps = {
   childId: string;
@@ -19,7 +20,7 @@ type CourseSidebarProps = {
 };
 
 export type SidebarChapter = Chapter & {
-  sessions: Session[],
+  sessions: OtherSession[],
   userProgresses: UserProgress[]
 
 }

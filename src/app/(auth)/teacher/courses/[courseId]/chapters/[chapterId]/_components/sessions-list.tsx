@@ -14,8 +14,10 @@ import { Grip, Pencil } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import PageLoader from '@/components/page-loader'
 
+export type OtherSession = Session & {otherSession?:boolean}
+
 interface SessionsListProps{
-    items:Session[],
+    items:OtherSession[],
     onReorder:(reorderedSessions:{sessionId:string,position:number}[])=>void
     onEdit:(sessionId:string)=>void
 }
@@ -101,7 +103,8 @@ if(!isMounted) return null
 )}>
 {session.isPublished ? "Published" : "Draft"}
 </Badge>
-<Pencil
+{
+  !session.otherSession && <Pencil
   onClick={()=> {
     setIsRedirecting(true)
     onEdit(session.id)
@@ -109,6 +112,7 @@ if(!isMounted) return null
   }
   className='w-4 h-4 cursor-pointer hover:opacity-75 transition'
 />
+}
 </div>
   </div>
 }}
