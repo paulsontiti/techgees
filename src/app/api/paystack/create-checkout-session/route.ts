@@ -6,8 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const userId = await getUserCookie();
-    const { email, amount, courseId,purchaseType } = await req.json();
-   
+    const { email, amount, courseId, purchaseType } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -28,17 +27,15 @@ export async function POST(req: Request) {
     const { authorization_url, reference } = response.data.data;
 
     if (reference) {
+      await db.paystackPayment.create({
+        data: {
+          reference,
+          userId,
+          courseId,
+          amount,
+        },
+      });
 
-       await db.paystackPayment.create({
-          data: {
-            reference,
-            userId,
-            courseId,
-            amount,
-          },
-        });
-
-        
       const purchase = await db.purchase.findUnique({
         where: {
           courseId_userId: {
@@ -48,7 +45,27 @@ export async function POST(req: Request) {
         },
       });
 
-      if (!purchase) {
+      if (purchase) {
+        const course = await db.course.findUnique({
+          where: {
+            id: courseId,
+          },
+          select: {
+            price: true,
+          },
+        });
+        await db.purchase.update({
+          where:{
+            id: purchase.id
+          },
+          data: {
+            price: course?.price ?? 0,
+            courseId,
+            userId,
+            type: purchaseType,
+          },
+        });
+      } else {
         const course = await db.course.findUnique({
           where: {
             id: courseId,
@@ -61,11 +78,10 @@ export async function POST(req: Request) {
           data: {
             price: course?.price ?? 0,
             courseId,
-            userId,type:purchaseType
+            userId,
+            type: purchaseType,
           },
         });
-
-       
       }
     }
 
