@@ -6,7 +6,8 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const userId = await getUserCookie();
-    const { email, amount, courseId } = await req.json();
+    const { email, amount, courseId,purchaseType } = await req.json();
+   
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -60,7 +61,7 @@ export async function POST(req: Request) {
           data: {
             price: course?.price ?? 0,
             courseId,
-            userId,
+            userId,type:purchaseType
           },
         });
 

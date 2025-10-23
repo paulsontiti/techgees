@@ -721,6 +721,13 @@ enum AttatchmentType {
   Image
 }
 
+enum PurchaseType {
+  Community
+  Subscription
+  Installment
+  OneTime
+}
+
 model UserProgress {
   id          String  @id @default(uuid()) @map("_id")
   userId      String
@@ -786,6 +793,7 @@ model Purchase {
   price    Float
   userId   String
   courseId String
+  type PurchaseType @default(OneTime)
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
