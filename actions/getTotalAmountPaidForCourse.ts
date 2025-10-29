@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { verifyPayStackPayment } from "./verifyPayment";
 import { getUserCookie } from "@/lib/get-user-cookie";
+import { creditReferrers } from "./creditReferrers";
 
 interface ReturnValue {
   totalAmountPaid: number;
@@ -34,6 +35,7 @@ export const getTotalAmountPaidForCourse = async (
 
         if (!error) {
             if (verifiedPayment.data.status === "success") {
+              await creditReferrers(payment.reference, payment.amount);
 
                 paymentAmounts.push(payment.amount)
 
