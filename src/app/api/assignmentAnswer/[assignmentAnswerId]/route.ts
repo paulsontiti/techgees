@@ -111,13 +111,12 @@ export async function PATCH(
         if (ans.length === 0) return false;
 
         //this answer for this assignment by this user has not been paased
-         
+          
         if (ans[0].passed !== true) return false;
 
         //user's answer for this assignment has been passed
         return true;
       });
-
       if (allAssignmnentPassed) markChapterComplete(chapterId, userIdOfStudent);
     }
 
