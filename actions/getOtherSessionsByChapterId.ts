@@ -1,6 +1,5 @@
 import { OtherSession } from "@/app/(auth)/teacher/courses/[courseId]/chapters/[chapterId]/_components/sessions-list";
 import { db } from "@/lib/db";
-import { Session } from "@prisma/client";
 
 interface ReturnValue {
   sessions: OtherSession[];

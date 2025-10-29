@@ -13,9 +13,12 @@ import {cn} from "@/lib/utils"
 import { Grip, Pencil } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import PageLoader from '@/components/page-loader'
+import OtherChapter from '../chapters/[chapterId]/sessions/[sessionId]/_components/other-chapter'
+
+export type OtherChapter = Chapter & {otherChapter?:boolean}
 
 interface ChaptersListProps{
-    items:Chapter[],
+    items:OtherChapter[],
     onReorder:(reorderedChapters:{chapterId:string,position:number}[])=>void
     onEdit:(chapterId:string)=>void
 }
@@ -104,7 +107,8 @@ if(!isMounted) return null
 )}>
 {chapter.isPublished ? "Published" : "Draft"}
 </Badge>
-<Pencil
+{
+  !chapter.otherChapter && <Pencil
   onClick={()=> {
     setIsRedirecting(true)
     onEdit(chapter.id)
@@ -112,6 +116,7 @@ if(!isMounted) return null
   }
   className='w-4 h-4 cursor-pointer hover:opacity-75 transition'
 />
+}
 </div>
   </div>
 }}

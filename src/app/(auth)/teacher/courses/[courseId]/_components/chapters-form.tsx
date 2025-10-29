@@ -21,10 +21,10 @@ import toast from "react-hot-toast";
 import * as zod from "zod";
 
 import { Chapter, Course } from "@prisma/client";
-import { Pencil, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import ChaptersList from "./chapters-list";
+import ChaptersList, { OtherChapter } from "./chapters-list";
 import PageLoader from "@/components/page-loader";
 
 const formSchema = zod.object({
@@ -33,7 +33,12 @@ const formSchema = zod.object({
   }),
 });
 
-function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
+type ChapterType = {
+  courseId:string,
+  chapters:OtherChapter[]
+}
+
+function ChaptersForm({ courseId,chapters }: ChapterType) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -54,7 +59,7 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${course.id}/chapters`, values);
+      await axios.post(`/api/courses/${courseId}/chapters`, values);
       toast.success("Chapter created");
       toggleCreating();
       router.refresh();
@@ -70,7 +75,7 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
     try{
       setIsUpdating(true)
 
-      await axios.put(`/api/courses/${course.id}/chapters/reorder`,{
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`,{
         reorderedChapters
       })
 
@@ -84,7 +89,7 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
   }
 
   const onEdit = (chapterId:string)=>{
-    router.push(`/teacher/courses/${course.id}/chapters/${chapterId}`)
+    router.push(`/teacher/courses/${courseId}/chapters/${chapterId}`)
   }
 
   return ( 
@@ -147,13 +152,13 @@ function ChaptersForm({ course }: { course: Course & {chapters:Chapter[]} }) {
        <div>
              <div className={cn(
                 "text-sm mt-2",
-                !course.chapters.length && "text-slate-500 italic"
-             )}>{!course.chapters.length && "No chapters"}
+                !chapters.length && "text-slate-500 italic"
+             )}>{!chapters.length && "No chapters"}
             
             <ChaptersList
               onEdit={onEdit}
               onReorder={onReorder}
-              items={course.chapters ?? []}
+              items={chapters ?? []}
             />
              </div>
              <p className="text-xs text-muted-foreground mt-4">

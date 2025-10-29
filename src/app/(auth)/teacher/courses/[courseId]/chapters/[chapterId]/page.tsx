@@ -17,6 +17,7 @@ import { Session } from "@prisma/client";
 import { getOtherSessionsByChapterId } from "../../../../../../../../actions/getOtherSessionsByChapterId";
 import ErrorPage from "@/components/error";
 import { OtherSession } from "./_components/sessions-list";
+import ChapterOtherCoursesForm from "./_components/chapter-other-courses-form";
 
 async function ChapterIdPage({
   params: { chapterId,courseId },
@@ -119,6 +120,13 @@ async function ChapterIdPage({
         </div>
       
         <div className="space-y-6">
+           <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListChecks} />
+              <h2 className="text-xl">Other Courses</h2>
+            </div>
+            <ChapterOtherCoursesForm chapter={chapter} courseId={courseId} />
+          </div>
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={ListChecks} />
