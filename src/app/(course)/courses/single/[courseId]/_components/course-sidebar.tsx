@@ -81,6 +81,7 @@ async function CourseSidebar({
          
             return (
               <ChapterAndSessions
+              courseId={course.id}
                 chapter={chapter}
                 key={chapter.id}
                 previousChapter={prevChapter}

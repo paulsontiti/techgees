@@ -15,7 +15,6 @@ import ErrorPage from "@/components/error";
 import SessionQuestionsForm from "./_components/session-questions-form";
 import SessionAssignmentForm from "./_components/session-assignment-form";
 import { getUserCookie } from "@/lib/get-user-cookie";
-import SessionOtherChaptersForm from "./_components/session-other-chapters-form";
 
 async function SessionIdPage({
   params: { chapterId, courseId, sessionId },
@@ -91,10 +90,7 @@ if(error) return <ErrorPage name={error.name}/>
               <IconBadge icon={File} />
               <h2 className="text-xl">Resources & Attachments</h2>
             </div>
-            <SessionOtherChaptersForm
-            courseId={courseId}
-            session={session}
-            />
+          
             <SessionAttachmentForm 
               courseId={courseId}
             session={session}/>

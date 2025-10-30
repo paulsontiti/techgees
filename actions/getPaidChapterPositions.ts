@@ -19,14 +19,18 @@ export const getPaidChapterPositions = async (
       },
     });
 
+    
 
-    const positions = chapterPositions.map((pos) => pos.position).sort((a, b) => a - b);
-   
+      
+    const positions = chapterPositions
+      .map((pos) => pos.position)
+      .sort((a, b) => a - b);
+
 
     const endPosition = (purchasePercentage / 100) * positions.length;
+    
 
-    const paidPositions: number[] = positions.slice(0, endPosition );
-
+    const paidPositions: number[] = positions.slice(0, endPosition);
 
     return { paidPositions, error: null };
   } catch (error: any) {

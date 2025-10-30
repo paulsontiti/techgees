@@ -2,8 +2,6 @@ import { db } from "@/lib/db";
 import { Course } from "@prisma/client";
 import { getCourseWithCourseChildrenWithChaptersWithUserProgress } from "./getCourseWithCourseChildrenWithChaptersWithUserProgress";
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
-import { getOtherSessionsByChapterId } from "./getOtherSessionsByChapterId";
-import { getOtherChaptersByCourseId } from "./getOtherChaptersByCourseId";
 
 type ReturnValue = {
   course: CourseChaptersUserProgressType | null;
@@ -47,59 +45,6 @@ export const getCourseChaptersUserProgress = async (
         },
       },
     });
-
-    //add other chapters
-    const { chapters, error } = await getOtherChaptersByCourseId(courseId);
-    const otherChaptersPromises = chapters.map(async (chap) => {
-      const chapter = await db.chapter.findUnique({
-        where: {
-          id: chap.id,
-        },
-        include: {
-          userProgresses: {
-            where: {
-              userId,
-            },
-          },
-          sessions: {
-            where: {
-              //isPublished:true
-            },
-            orderBy: {
-              position: "asc",
-            },
-          },
-        },
-      });
-      if(chapter) chapter.position = chap.position //chap position is different from chapter position. Chap position should be used
-      return chapter! //chap will definitely not be null
-    });
-
-     
-
-    const otherChapters = (await Promise.allSettled(otherChaptersPromises))
-      .filter((res) => res.status === "fulfilled")
-      .map((promise) => promise.value);
-
-      if(course) course.chapters = [...course.chapters,...otherChapters].sort((a,b)=> a.position - b.position)
-        
-    //add other sessions
-    const sessionPromises = course
-      ? course.chapters.map(async (chapter) => {
-          const { sessions, error } = await getOtherSessionsByChapterId(
-            chapter.id
-          );
-
-          chapter.sessions = [...chapter.sessions, ...sessions];
-
-          return chapter;
-        })
-      : [];
-
-    if (course)
-      course.chapters = (await Promise.allSettled(sessionPromises))
-        .filter((res) => res.status === "fulfilled")
-        .map((promise) => promise.value);
 
     //if course is combo get the chapters from its children courses
     if (course?.chapters.length === 0) {

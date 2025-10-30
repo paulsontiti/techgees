@@ -9,10 +9,11 @@ chapter: SidebarChapter, parentId?: string,
 chapterProgressPercentage:number,
 previousChapter:Chapter,
 previousUserChapterComplete:boolean,
+courseId:string
 
 }
 
-export const ChapterAndSessions = ({ chapter, parentId,
+export const ChapterAndSessions = ({ chapter, parentId,courseId,
   chapterProgressPercentage,previousChapter,previousUserChapterComplete
 }: ChapterAndSessionsParamType) => {
 
@@ -26,7 +27,7 @@ export const ChapterAndSessions = ({ chapter, parentId,
       id={chapter.id}
       title={chapter.title}
       isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
-      courseId={chapter.courseId}
+      courseId={courseId}
       parentId={parentId || ""}
 
       isLocked={

@@ -31,7 +31,6 @@ import { getCourseChildren } from "../../../../../../actions/getCourseChildren";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { OtherChapter } from "./_components/chapters-list";
 import ErrorPage from "@/components/error";
-import { getOtherChaptersByCourseId } from "../../../../../../actions/getOtherChaptersByCourseId";
 
 
 
@@ -70,11 +69,6 @@ async function CourseIdPage({
 
   const { courses, error: coursesError } = await getCourses()
   if (coursesError) return <div>{coursesError.message}</div>
-
-    const {chapters,error:chapError} =  await getOtherChaptersByCourseId(course.id)
-    if(chapError) return <ErrorPage name={chapError.name}/>
-  
-    const courseChapters: OtherChapter[] = [...course.chapters,...chapters].sort((a,b) => a.position - b.position)
 
 
   const requiredFields = [
@@ -161,7 +155,7 @@ async function CourseIdPage({
                 <IconBadge icon={ListChecks} />
                 <h2 className="text-xl">Course chapters</h2>
               </div>
-              <ChaptersForm courseId={course.id} chapters={courseChapters}/>
+              <ChaptersForm courseId={course.id} chapters={course.chapters}/>
             </div>
             <div>
               <div className="flex items-center gap-x-2">

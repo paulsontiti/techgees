@@ -13,11 +13,6 @@ import ChapterActions from "./_components/chapter-actions";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import ProjectForm from "./_components/project-form";
 import ChapterAssignmentForm from "./_components/chapter-assignment-form";
-import { Session } from "@prisma/client";
-import { getOtherSessionsByChapterId } from "../../../../../../../../actions/getOtherSessionsByChapterId";
-import ErrorPage from "@/components/error";
-import { OtherSession } from "./_components/sessions-list";
-import ChapterOtherCoursesForm from "./_components/chapter-other-courses-form";
 
 async function ChapterIdPage({
   params: { chapterId,courseId },
@@ -63,15 +58,6 @@ async function ChapterIdPage({
   const completionText = `(${completedFields}/${totalFields})`;
 
   const isComplete = requiredFields.every(Boolean)
-
-  const {sessions,error} =  await getOtherSessionsByChapterId(chapterId)
-  if(error) return <ErrorPage name={error.name}/>
-
-  const chapterSessions: OtherSession[] = [...chapter.sessions,...sessions].sort((a,b) => a.position - b.position)
-
-
-
-
 
 
   return (
@@ -120,19 +106,14 @@ async function ChapterIdPage({
         </div>
       
         <div className="space-y-6">
-           <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={ListChecks} />
-              <h2 className="text-xl">Other Courses</h2>
-            </div>
-            <ChapterOtherCoursesForm chapter={chapter} courseId={courseId} />
-          </div>
+       
+          
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Chapter sessions</h2>
             </div>
-            <SessionForm chapterId={chapterId} courseId={courseId} sessions={chapterSessions}/>
+            <SessionForm chapterId={chapterId} courseId={courseId} sessions={chapter.sessions}/>
           </div>
         
         </div>

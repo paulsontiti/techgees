@@ -28,7 +28,7 @@ type CourseSidebarItemProps = {
   chapterProgress?: number,
   previousUserChapterProgress: boolean,
   prviousChapter: Chapter | null,
-  parentId: string
+  parentId: string,
 };
 
 export function ChapterAccordion({

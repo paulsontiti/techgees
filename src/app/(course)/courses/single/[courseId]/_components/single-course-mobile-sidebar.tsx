@@ -62,6 +62,7 @@ function SingleCourseMobileSidebar({
            
             return (
               <MobileChapter
+              courseId={course.id}
                 key={chapter.id}
                 chapter={chapter}
                 prevChapter={prevChapter}
@@ -80,10 +81,10 @@ export default SingleCourseMobileSidebar;
 
 function MobileChapter({
   chapter,
-  prevChapter,
+  prevChapter,courseId
 }: {
   chapter: SidebarChapter;
-  prevChapter: Chapter;
+  prevChapter: Chapter;courseId:string
 }) {
   const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
 
@@ -91,6 +92,7 @@ function MobileChapter({
 
   return (
     <ChapterAndSessions
+    courseId={courseId}
       chapter={chapter}
       key={chapter.id}
       previousChapter={prevChapter}
