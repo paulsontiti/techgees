@@ -95,9 +95,8 @@ function MainSection({
   //   }
 
   function share(platform: string) {
-    const url = window.location.href;
-    const text = `Hi! I just learned: ${selectedWeek?.title} for FREE — join me on this course for free!
-    ${tggUrl}courses/free-52-weeks?refererId=${user.id}`;
+    const url = `${tggUrl}courses/free-52-weeks?refererId=${user.id}`;
+    const text = `Hi! I just learned: ${selectedWeek?.title} for FREE — join me on this course for free!`;
     if (navigator.share) {
       navigator
         .share({
