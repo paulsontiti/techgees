@@ -1,7 +1,7 @@
 "use client";
+import SessionTest from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/session-test";
+import SessionTestAnswers from "@/app/(course)/courses/components/session-test-answers";
 import { Question, UserProgress } from "@prisma/client";
-import SessionTest from "../../combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/session-test";
-import SessionTestAnswers from "../../components/session-test-answers";
 
 type SessionQuestionsType = {
   sessionId: string;

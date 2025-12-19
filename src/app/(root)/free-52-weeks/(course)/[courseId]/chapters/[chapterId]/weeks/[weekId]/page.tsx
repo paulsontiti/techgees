@@ -1,8 +1,8 @@
-import MainSection from "@/app/(course)/courses/free-52-weeks/_components/main";
+
 import React from "react";
-import { getSessionWithAttachmentQuestionsAssignments } from "../../../../../../../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
-import { getUserName } from "../../../../../../../../../../../actions/getUserName";
-import { getUser } from "../../../../../../../../../../../actions/getUser";
+import { getSessionWithAttachmentQuestionsAssignments } from "../../../../../../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
+import { getUser } from "../../../../../../../../../../actions/getUser";
+import MainSection from "@/app/(root)/free-52-weeks/_components/main";
 
 async function Page({
   params: { weekId, chapterId,courseId },

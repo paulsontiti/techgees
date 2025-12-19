@@ -16,8 +16,8 @@ import {
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Chapter, Session } from "@prisma/client";
-import { SidebarChapter } from "../../combo/[courseId]/child/_components/course-sidebar";
 import { usePathname, useRouter } from "next/navigation";
+import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
 
 export type WEEKType = {
   id: number;

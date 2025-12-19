@@ -5,11 +5,11 @@ import { loadLSType, LS } from "./weeks";
 import { Button } from "@/components/ui/button";
 import { Award, Download, Play, Share2, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { SessionType } from "../../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
 import { Preview } from "@/components/preview";
 import VideoPlayer from "@/components/video-player";
 import SessionQuestions from "./session-questions";
 import { UserDp } from "@/components/user-dp";
+import { SessionType } from "../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
 
 type LSProfile = { name: string; avatarColor: string };
 

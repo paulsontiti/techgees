@@ -2,7 +2,7 @@ import React from 'react'
 import { NavbarRoutes } from '@/components/navbar-routes'
 import { bgPrimaryColor } from '@/utils/colors'
 import WeekMobileSidebar from './mobile-sibebar'
-import { SidebarChapter } from '../../combo/[courseId]/child/_components/course-sidebar'
+import { SidebarChapter } from '@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar'
 
 
 

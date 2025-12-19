@@ -2,10 +2,9 @@
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import SingleCourseMobileSidebar from "../../single/[courseId]/_components/single-course-mobile-sidebar";
 import WeeksAside from "./weeks";
-import { useSheetStore } from "../../../../../../store/sheet-store";
-import { SidebarChapter } from "../../combo/[courseId]/child/_components/course-sidebar";
+import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
+import { useSheetStore } from "../../../../../store/sheet-store";
 
 function WeekMenuBar({
   chapter,

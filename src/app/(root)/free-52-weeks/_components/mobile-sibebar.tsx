@@ -1,6 +1,6 @@
 import React from 'react'
 import WeekMenuBar from './menubar';
-import { SidebarChapter } from '../../combo/[courseId]/child/_components/course-sidebar';
+import { SidebarChapter } from '@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar';
 
 
 

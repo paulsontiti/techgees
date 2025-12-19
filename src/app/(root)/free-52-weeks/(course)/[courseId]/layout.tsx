@@ -3,10 +3,10 @@ import WeeksAside from "../../_components/weeks";
 import CommunityAside from "../../_components/community";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { redirect } from "next/navigation";
-import { getCourseChaptersUserProgress } from "../../../../../../../actions/getCourseChaptersUserProgress";
 import ErrorPage from "@/components/error";
-import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
 import CourseNavbar from "../../_components/navbar";
+import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
+import { getChapterProgress } from "../../../../../../actions/getChapterProgress";
 // 52-Week Course — Advanced React Component
 // Single-file demo scaffold. Features:
 // - Framer Motion animations
