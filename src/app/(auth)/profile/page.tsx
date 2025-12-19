@@ -24,7 +24,7 @@ const userId = await getUserCookie();
 
 if(!userId) return redirect(`/sign-in?redirectUrl=/profile`);
 
-const {user} = await getUser(userId);
+const {user} = await getUser();
 
 if(!user) return redirect(`/sign-in?redirectUrl=/profile`);
 

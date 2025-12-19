@@ -1,5 +1,5 @@
 "use client"
-import { Session } from '@prisma/client'
+import { Session, UserProgress } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
 
 import {
@@ -14,7 +14,7 @@ import { Grip, Pencil } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import PageLoader from '@/components/page-loader'
 
-export type OtherSession = Session & {otherSession?:boolean}
+export type OtherSession = Session & {otherSession?:boolean,userProgresses:UserProgress[]}
 
 interface SessionsListProps{
     items:OtherSession[],

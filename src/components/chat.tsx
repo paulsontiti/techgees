@@ -27,9 +27,7 @@ const [isAStudent,setIsAStudent] = useState(false);
   return (
     <div role='button' className={` fixed bottom-10 right-5 z-50 cursor-pointer`}
     onClick={()=>{
-        router.push(`${isAStudent ? 
-          "https://chat.whatsapp.com/Gz21TOy5nH02wxkiF2wnQN" : 
-          "https://chat.whatsapp.com/KTSeKL2iujUIGNIeVTotUI"}`)
+        router.push(`https://wa.me/2349167704504?text=${encodeURIComponent("Hello The Global Genius")}`)
     }}
     >
     <div  className={`${bgSecondaryColor} ${textPrimaryColor}

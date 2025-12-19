@@ -19,7 +19,7 @@ export const Preview = (
         {ssr:false}
 ),[])
 
-return     <ReactQuill theme="bubble" className="max-w-full"
+return     <ReactQuill theme="bubble" className="max-w-[100%]"
     value={value}
     readOnly 
     />

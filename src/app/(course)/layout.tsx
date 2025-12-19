@@ -6,8 +6,8 @@ import { redirect } from "next/navigation";
 
 
 export const metadata: Metadata = {
-  title: "theglobalgenius",
-  description: "theglobalgenius",
+  title: "The Global Genius",
+  description: "A Learning Management System, a platform where you can learn any and everything with its pioneer in TECH and Software Development",
 };
 
 export default async function CourseLayout({

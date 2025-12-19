@@ -3,6 +3,7 @@ import { Course } from "@prisma/client";
 import { getCourseWithCourseChildrenWithChaptersWithUserProgress } from "./getCourseWithCourseChildrenWithChaptersWithUserProgress";
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
 
+
 type ReturnValue = {
   course: CourseChaptersUserProgressType | null;
   error: Error | null;
@@ -33,6 +34,13 @@ export const getCourseChaptersUserProgress = async (
             sessions: {
               where: {
                 //isPublished:true
+              },
+              include:{
+                userProgresses: {
+              where: {
+                userId,
+              },
+            },
               },
               orderBy: {
                 position: "asc",
@@ -67,6 +75,8 @@ export const getCourseChaptersUserProgress = async (
         }
       }
     }
+
+   
 
     return { course, error: null };
   } catch (error: any) {

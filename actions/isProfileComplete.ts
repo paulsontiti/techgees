@@ -1,5 +1,4 @@
 
-import { getUserCookie } from "@/lib/get-user-cookie";
 import { getUser } from "./getUser";
 
 interface ReturnValue {
@@ -13,9 +12,8 @@ interface ReturnValue {
 export const isProfileComplete = async ():
     Promise<ReturnValue> => {
     try {
-        const userId = await getUserCookie();
 
-       const {user} = await getUser(userId || "");
+       const {user} = await getUser();
        
        if(!user) return { isComplete:false, error: null }
        

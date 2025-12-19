@@ -19,7 +19,7 @@ if(!url) return null;
         <div className='relative aspect-video my-4' onContextMenu={handleContextmenu}>
             {
                 url.includes("youtube") ?
-                    <iframe className='w-full h-full' src={url} title={title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                    <iframe className='w-full h-full' src={url} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
 
                     :
                     <video src={url}

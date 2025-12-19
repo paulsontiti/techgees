@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { getUserCookie } from "@/lib/get-user-cookie";
 import { DBUser } from "@prisma/client";
 
 interface ReturnValue{
@@ -12,10 +13,10 @@ interface ReturnValue{
  * @param {string} userId - The clerk id of the user.
  * @return {ReturnValue} The user or error.
  */
-export const getUser = async(
-    userId:string):
+export const getUser = async():
 Promise<ReturnValue>=>{
     try{
+        const userId = await getUserCookie();
 const user = await db.dBUser.findFirst({
     where:{
         userId,

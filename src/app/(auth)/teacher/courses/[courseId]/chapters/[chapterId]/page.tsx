@@ -37,6 +37,9 @@ async function ChapterIdPage({
         }
       },
       sessions:{
+        include:{
+          userProgresses:true
+        },
         orderBy:{
           position:"asc"
         }
