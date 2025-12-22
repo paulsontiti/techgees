@@ -45,7 +45,7 @@
     "framer-motion": "^11.5.4",
     "lucide-react": "^0.427.0",
     "monaco-editor": "^0.52.2",
-    "next": "14.2.5",
+    "next": "14.2.35",
     "next-auth": "^4.24.10",
     "node-device-detector": "^2.1.6",
     "query-string": "^9.1.0",
