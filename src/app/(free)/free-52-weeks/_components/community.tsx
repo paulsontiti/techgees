@@ -63,11 +63,11 @@ function CommunityAside({
                 className=""
                 size={"sm"}
                 onClick={() =>
-                  free52WeekShare(
-                    "wa",
-                    user.id,
+                  free52WeekShare({
+                    platform:"wa",
+                    userId:user.id,
                     tggUrl,
-                    text
+                    text}
                   )
                 }
               >
@@ -78,7 +78,12 @@ function CommunityAside({
             <div className="flex gap-2 mt-2">
               <button
                 onClick={() =>
-                  free52WeekShare("twitter", user.id, tggUrl, text)
+                  free52WeekShare({
+                    platform:"twitter",
+                    userId:user.id,
+                    tggUrl,
+                    text}
+                  )
                 }
                 className="px-2 py-1 rounded border text-sm"
               >
@@ -86,7 +91,12 @@ function CommunityAside({
               </button>
               <button
                 onClick={() =>
-                  free52WeekShare("facebook", user.id, tggUrl, text)
+                  free52WeekShare({
+                    platform:"facebook",
+                    userId:user.id,
+                    tggUrl,
+                    text}
+                  )
                 }
                 className="px-2 py-1 rounded border text-sm"
               >

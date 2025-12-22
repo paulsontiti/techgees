@@ -10,6 +10,7 @@ import VideoPlayer from "@/components/video-player";
 import SessionQuestions from "./session-questions";
 import { SessionType } from "../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
 import { free52WeekShare } from "@/lib/socia-share";
+import { platform } from "os";
 
 function MainSection({
   week,
@@ -125,7 +126,7 @@ function MainSection({
                 {/* <Button onClick={() => markComplete(selectedWeek?.id || "")}>
                   Mark as Complete
                 </Button> */}
-                <Button onClick={() => free52WeekShare("wa",tggUrl,userId,text)}>
+                <Button onClick={() => free52WeekShare({platform:"wa",userId,text,tggUrl})}>
                   <Share2 className="w-4 h-4 mr-2" />
                   Share
                 </Button>

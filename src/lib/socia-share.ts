@@ -1,4 +1,8 @@
-  export function free52WeekShare(platform: string,userId:string,tggUrl:string,text:string) {
+  type ShareParamsType = {
+    platform: string,userId:string,tggUrl:string,text:string
+  }
+  
+  export function free52WeekShare({userId,tggUrl,text,platform}:ShareParamsType) {
     const url = `${tggUrl}free-52-weeks?refererId=${userId}`;
     if (navigator.share) {
       navigator
