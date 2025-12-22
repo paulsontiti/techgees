@@ -10,6 +10,7 @@ import { Download, Share2 } from "lucide-react";
 import { free52WeekShare } from "@/lib/socia-share";
 import Badges from "./badges";
 import { getISOWeek, startOfISOWeek, endOfISOWeek } from "@/lib/isoWeek";
+import { DBUser } from "@prisma/client";
 
 function CommunityAside({
   user,
@@ -18,7 +19,7 @@ function CommunityAside({
 }: {
   tggUrl: string;
   descendantsCount: number;
-  user: { userName: string; imgUrl: string; id: string };
+  user: DBUser;
 }) {
   // ------------------ UseStates ------------------
 
@@ -28,7 +29,7 @@ function CommunityAside({
   });
 
   const [leaderboard, setLeaderboard] = useState(leaderboards);
-  const text = `Hi! I am learning Frontend Web Development for FREE — join me on this course for free!`
+  const text = `Hi! I am learning Frontend Web Development for FREE — join me on this course for free!`;
 
   return (
     <div className="flex flex-col xl:flex-row">
@@ -38,9 +39,18 @@ function CommunityAside({
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-sm">Signed in as </span>
-                <span className="font-bold ml-1">{profile.name}</span>
+                <span className="font-bold ml-1">
+                  {user.userName || user.email}
+                </span>
               </div>
-              <UserDp imgUrl={user.imgUrl} initials={user.userName[0]} />
+              <UserDp
+                imgUrl={user.imageUrl || ""}
+                initials={
+                  user.userName?.slice(0, 1).toUpperCase() ||
+                  user.email?.slice(0, 1).toUpperCase() ||
+                  "GG"
+                }
+              />
               {/* <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${profile.avatarColor}`}
                   >
@@ -64,11 +74,11 @@ function CommunityAside({
                 size={"sm"}
                 onClick={() =>
                   free52WeekShare({
-                    platform:"wa",
-                    userId:user.id,
+                    platform: "wa",
+                    userId: user.id,
                     tggUrl,
-                    text}
-                  )
+                    text,
+                  })
                 }
               >
                 <Share2 className="w-4 h-4 mr-1" />
@@ -79,11 +89,11 @@ function CommunityAside({
               <button
                 onClick={() =>
                   free52WeekShare({
-                    platform:"twitter",
-                    userId:user.id,
+                    platform: "twitter",
+                    userId: user.id,
                     tggUrl,
-                    text}
-                  )
+                    text,
+                  })
                 }
                 className="px-2 py-1 rounded border text-sm"
               >
@@ -92,11 +102,11 @@ function CommunityAside({
               <button
                 onClick={() =>
                   free52WeekShare({
-                    platform:"facebook",
-                    userId:user.id,
+                    platform: "facebook",
+                    userId: user.id,
                     tggUrl,
-                    text}
-                  )
+                    text,
+                  })
                 }
                 className="px-2 py-1 rounded border text-sm"
               >

@@ -12,7 +12,6 @@ export type SessionType =
       assignments: Assignment[];
       attachments: Attachment[];
       questions: Question[];
-      userProgresses: UserProgress[];
     })
   | null;
 
@@ -24,7 +23,6 @@ interface ReturnValue {
 export const getSessionWithAttachmentQuestionsAssignments = async (
   sessionId: string,
   chapterId: string,
-  userId?:string
 ): Promise<ReturnValue> => {
   try {
     const session = await db.session.findUnique({
@@ -35,11 +33,6 @@ export const getSessionWithAttachmentQuestionsAssignments = async (
       include: {
         questions: true,
         assignments: true,
-        userProgresses: {
-          where: {
-            userId,
-          },
-        },
         attachments: {
           where: {
             sessionId,

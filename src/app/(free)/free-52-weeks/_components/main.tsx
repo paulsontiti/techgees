@@ -10,25 +10,19 @@ import VideoPlayer from "@/components/video-player";
 import SessionQuestions from "./session-questions";
 import { SessionType } from "../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
 import { free52WeekShare } from "@/lib/socia-share";
-import { platform } from "os";
 
 function MainSection({
   week,
   courseId,
-  tggUrl,userId
+  tggUrl,userId,userProgress
 }: {
   week: SessionType;
   courseId: string;
-  tggUrl: string;userId:string
+  tggUrl: string;userId:string,userProgress:boolean
 }) {
   const [selectedWeek, setSelectedWeek] = useState<SessionType>(week);
-
-  const [progress, setProgress] = useState(() =>
-    loadLSType(LS.PROGRESS, { completed: [], bookmarks: [], notes: {} })
-  );
   const [quizOpen, setQuizOpen] = useState(false);
 
-  const [toast, setToast] = useState<string | null>(null);
 
   const text = `Hi! I just learned ${selectedWeek?.title} for FREE — join me on this course for free!`
 
@@ -36,35 +30,7 @@ function MainSection({
     setQuizOpen((prv) => !prv);
   }
 
-  function showToast(msg: string, ms = 2500) {
-    setToast(msg);
-    setTimeout(() => setToast(null), ms);
-  }
-
-  //    async function handleDownloadCertificate() {
-  //     if (completedCount < weeks.length) {
-  //       showToast("Finish all weeks to download certificate");
-  //       return;
-  //     }
-  //     const ok = await generateCertificatePDF({
-  //       name: profile.name,
-  //       completedOn: new Date().toLocaleDateString(),
-  //       courseTitle: "52-Week Mastery Course",
-  //     });
-  //     if (ok) showToast("Certificate generated/downloaded");
-  //     else showToast("Certificate generation failed");
-  //   }
-
-
-  // function markComplete(weekId: string) {
-  //   if (!progress.completed.includes(weekId)) {
-  //     const next = { ...progress, completed: [...progress.completed, weekId] };
-  //     setProgress(next);
-  //     showToast("Great — week completed!");
-  //     // TODO: send event to analytics
-  //   } else showToast("Week already complete");
-  // }
-
+  
   return (
     <main id="top" className="w-full">
       <motion.div
@@ -177,7 +143,7 @@ function MainSection({
 
             {quizOpen && (
               <SessionQuestions
-                userProgress={selectedWeek?.userProgresses[0]}
+                userProgress={userProgress}
                 isLastSession={false}
                 sessionQuestions={selectedWeek?.questions || []}
                 sessionId={selectedWeek?.id!}

@@ -66,7 +66,7 @@ export default async function CourseLayout({
 
 
   return (
-    <div>
+    <div id="top">
       <div>
         <CourseNavbar
           chapter={course.chapters[0]}
@@ -91,11 +91,7 @@ export default async function CourseLayout({
             <CommunityAside
             descendantsCount={descs.length}
               tggUrl={tggUrl}
-              user={{
-                userName: user?.userName || "",
-                imgUrl: user?.imageUrl || "",
-                id: user?.id || "",
-              }}
+              user={user!}
             />
           </div>
       </div>

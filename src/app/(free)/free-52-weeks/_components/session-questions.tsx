@@ -7,7 +7,7 @@ type SessionQuestionsType = {
   sessionId: string;
   sessionUrl: string;
   chapterUrl: string;
-  userProgress:UserProgress | undefined,
+  userProgress:boolean,
   sessionQuestions:Question[]
   isLastSession:boolean
 };
@@ -22,7 +22,7 @@ function SessionQuestions({
 
   return (
     <div>
-      {!userProgress?.isCompleted ? (
+      {!userProgress ? 
         <SessionTest
           questions={sessionQuestions}
           sessionId={sessionId}
@@ -30,9 +30,9 @@ function SessionQuestions({
           chapterUrl={chapterUrl}
           isLastSession={isLastSession || false}
         />
-      ) : (
+       : 
         <SessionTestAnswers questions={sessionQuestions || []} />
-      )}
+      }
     </div>
   );
 }
