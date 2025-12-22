@@ -91,7 +91,6 @@ export default async function CourseLayout({
             <CommunityAside
             descendantsCount={descs.length}
               tggUrl={tggUrl}
-              title={course.chapters[0].title}
               user={{
                 userName: user?.userName || "",
                 imgUrl: user?.imageUrl || "",

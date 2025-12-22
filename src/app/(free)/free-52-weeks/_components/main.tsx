@@ -29,23 +29,7 @@ function MainSection({
 
   const [toast, setToast] = useState<string | null>(null);
 
-
-  function loadLSQUIZ(key: string, fallback: any): any {
-    try {
-      const r = localStorage.getItem(key);
-      return r ? JSON.parse(r) : fallback;
-    } catch {
-      return fallback;
-    }
-  }
-  function loadLSProfile(key: string, fallback: any): any {
-    try {
-      const r = localStorage.getItem(key);
-      return r ? JSON.parse(r) : fallback;
-    } catch {
-      return fallback;
-    }
-  }
+  const text = `Hi! I just learned ${selectedWeek?.title} for FREE — join me on this course for free!`
 
   function toggleQuizOpen() {
     setQuizOpen((prv) => !prv);
@@ -71,14 +55,14 @@ function MainSection({
   //   }
 
 
-  function markComplete(weekId: string) {
-    if (!progress.completed.includes(weekId)) {
-      const next = { ...progress, completed: [...progress.completed, weekId] };
-      setProgress(next);
-      showToast("Great — week completed!");
-      // TODO: send event to analytics
-    } else showToast("Week already complete");
-  }
+  // function markComplete(weekId: string) {
+  //   if (!progress.completed.includes(weekId)) {
+  //     const next = { ...progress, completed: [...progress.completed, weekId] };
+  //     setProgress(next);
+  //     showToast("Great — week completed!");
+  //     // TODO: send event to analytics
+  //   } else showToast("Week already complete");
+  // }
 
   return (
     <main id="top" className="w-full">
@@ -141,7 +125,7 @@ function MainSection({
                 {/* <Button onClick={() => markComplete(selectedWeek?.id || "")}>
                   Mark as Complete
                 </Button> */}
-                <Button onClick={() => free52WeekShare("wa",tggUrl,userId,selectedWeek?.title!)}>
+                <Button onClick={() => free52WeekShare("wa",tggUrl,userId,text)}>
                   <Share2 className="w-4 h-4 mr-2" />
                   Share
                 </Button>

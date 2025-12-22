@@ -9,16 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Download, Share2 } from "lucide-react";
 import { free52WeekShare } from "@/lib/socia-share";
 import Badges from "./badges";
-import {getISOWeek, startOfISOWeek,endOfISOWeek} from "@/lib/isoWeek";
+import { getISOWeek, startOfISOWeek, endOfISOWeek } from "@/lib/isoWeek";
 
 function CommunityAside({
   user,
   tggUrl,
-  title,
   descendantsCount,
 }: {
   tggUrl: string;
-  title: string;
   descendantsCount: number;
   user: { userName: string; imgUrl: string; id: string };
 }) {
@@ -30,8 +28,7 @@ function CommunityAside({
   });
 
   const [leaderboard, setLeaderboard] = useState(leaderboards);
-
-
+  const text = `Hi! I am learning Frontend Web Development for FREE — join me on this course for free!`
 
   return (
     <div className="flex flex-col xl:flex-row">
@@ -65,7 +62,14 @@ function CommunityAside({
               <Button
                 className=""
                 size={"sm"}
-                onClick={() => free52WeekShare("wa", user.id, tggUrl, title)}
+                onClick={() =>
+                  free52WeekShare(
+                    "wa",
+                    user.id,
+                    tggUrl,
+                    text
+                  )
+                }
               >
                 <Share2 className="w-4 h-4 mr-1" />
                 Invite on WhatsApp
@@ -74,7 +78,7 @@ function CommunityAside({
             <div className="flex gap-2 mt-2">
               <button
                 onClick={() =>
-                  free52WeekShare("twitter", user.id, tggUrl, title)
+                  free52WeekShare("twitter", user.id, tggUrl, text)
                 }
                 className="px-2 py-1 rounded border text-sm"
               >
@@ -82,7 +86,7 @@ function CommunityAside({
               </button>
               <button
                 onClick={() =>
-                  free52WeekShare("facebook", user.id, tggUrl, title)
+                  free52WeekShare("facebook", user.id, tggUrl, text)
                 }
                 className="px-2 py-1 rounded border text-sm"
               >
@@ -162,7 +166,11 @@ function CommunityAside({
                 Week {getISOWeek()} of {new Date().getFullYear()}
               </span>
             </h4>
-            <div>{`(${startOfISOWeek(new Date()).toDateString()} - ${endOfISOWeek(new Date()).toDateString()})`}</div>
+            <div>{`(${startOfISOWeek(
+              new Date()
+            ).toDateString()} - ${endOfISOWeek(
+              new Date()
+            ).toDateString()})`}</div>
           </CardHeader>
           <CardContent>
             <table className="w-full text-sm">

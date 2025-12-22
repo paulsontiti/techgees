@@ -1,6 +1,5 @@
-  export function free52WeekShare(platform: string,userId:string,tggUrl:string,title:string) {
-    const url = `${tggUrl}/free-52-weeks?refererId=${userId}`;
-    const text = `Hi! I just learned: ${title} for FREE — join me on this course for free!`;
+  export function free52WeekShare(platform: string,userId:string,tggUrl:string,text:string) {
+    const url = `${tggUrl}free-52-weeks?refererId=${userId}`;
     if (navigator.share) {
       navigator
         .share({
