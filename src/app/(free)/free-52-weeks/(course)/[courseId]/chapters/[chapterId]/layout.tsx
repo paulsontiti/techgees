@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import WeeksAside from "../../_components/weeks";
-import CommunityAside from "../../_components/community";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { redirect } from "next/navigation";
 import ErrorPage from "@/components/error";
-import CourseNavbar from "../../_components/navbar";
-import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
-import { getChapterProgress } from "../../../../../../actions/getChapterProgress";
+import { getCourseChaptersUserProgress } from "../../../../../../../../actions/getCourseChaptersUserProgress";
+import { getChapterProgress } from "../../../../../../../../actions/getChapterProgress";
+import CourseNavbar from "../../../../_components/navbar";
+import WeeksAside from "../../../../_components/weeks";
+import CommunityAside from "../../../../_components/community";
+import { getUser } from "../../../../../../../../actions/getUser";
+import { getDescendants } from "../../../../../../../../actions/getDescendants";
+import { hasCompletedASession } from "../../../../../../../../actions/hasCompletedASession";
 // 52-Week Course — Advanced React Component
 // Single-file demo scaffold. Features:
 // - Framer Motion animations
@@ -28,10 +31,10 @@ export const metadata: Metadata = {
 
 export default async function CourseLayout({
   children,
-  params: { courseId },
+  params: { weekId, chapterId, courseId },
 }: {
   children: React.ReactNode;
-  params: { courseId: string };
+  params: { weekId: string; chapterId: string; courseId: string };
 }) {
   const userId = await getUserCookie();
   if (!userId) return redirect("/dashboard");
@@ -43,10 +46,24 @@ export default async function CourseLayout({
   if (couError) return <ErrorPage name={couError.name} />;
   if (!course) return redirect("/dashboard");
 
+
   const { progressPercentage, error } = await getChapterProgress(
     userId,
     course.chapters[0].id
   );
+  const { user } = await getUser();
+  const tggUrl = process.env.WEB_URL!;
+
+
+  let descs = await getDescendants(user?.id || "")
+  const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
+    const {completedASession} = await hasCompletedASession(d.userId)
+
+    if(completedASession) return d
+  }))
+
+  descs = descendantsCompletedAWeek.filter( d => !!d)
+
 
   return (
     <div>
@@ -56,20 +73,34 @@ export default async function CourseLayout({
           progressPercentage={progressPercentage || 0}
         />
       </div>
-      <div className=" flex flex-col md:flex-row  gap-6 bg-slate-50">
+      <div className=" flex flex-col md:flex-row  gap-2 bg-slate-50">
         {/* Left: Weeks, badges, leaderboard */}
-        <div className="hidden md:block flex-5">
+        <div className="hidden md:block w-full md:w-5/12 xl:w-3/12">
           <WeeksAside
             chapter={course.chapters[0]}
             progressPercentage={progressPercentage}
           />
         </div>
-        <div className="flex flex-col xl:flex-row flex-7">
+        <div className="flex flex-col xl:flex-row md:w-7/12 xl:w-9/12">
+          <div className=" xl:w-1/2">
           {children}
+          </div>
           {/* Right column */}
-          <CommunityAside />
-        </div>
+        
+          <div className=" xl:w-1/2">
+            <CommunityAside
+            descendantsCount={descs.length}
+              tggUrl={tggUrl}
+              title={course.chapters[0].title}
+              user={{
+                userName: user?.userName || "",
+                imgUrl: user?.imageUrl || "",
+                id: user?.id || "",
+              }}
+            />
+          </div>
       </div>
+    </div>
     </div>
   );
 }

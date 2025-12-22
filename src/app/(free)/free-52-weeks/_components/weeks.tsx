@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Chapter, Session } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
+import { OtherSession } from "@/app/(auth)/teacher/courses/[courseId]/chapters/[chapterId]/_components/sessions-list";
 
 export type WEEKType = {
   id: number;
@@ -74,7 +75,7 @@ function WeeksAside({
 
   // ------------------ UseStates ------------------
   const [leaderboard, setLeaderboard] = useState(leaderboards);
-  const [selectedWeek, setSelectedWeek] = useState(activeWeek ?? chapter.sessions[0]);
+  const [selectedWeek, setSelectedWeek] = useState<OtherSession | undefined>(activeWeek);
   const [progress, setProgress] = useState(() =>
     loadLSType(LS.PROGRESS, { completed: [], bookmarks: [], notes: {} })
   );
@@ -114,7 +115,7 @@ function WeeksAside({
 
   function redirectToSelectedWeek(weekId:string) {
     router.push(
-      `/courses/free-52-weeks/${chapter.courseId}/chapters/${chapter.id}/weeks/${weekId}`
+      `/free-52-weeks/${chapter.courseId}/chapters/${chapter.id}/weeks/${weekId}`
     );
   }
 
@@ -158,7 +159,7 @@ function WeeksAside({
                 title={!w.isPublished ? "Not available yet" : ""}
                 className={`w-full text-left p-2 rounded-md flex items-center justify-between shadow
                    hover:bg-gray-200
-                   ${selectedWeek.id === w.id && "bg-gray-400"}`}
+                   ${selectedWeek?.id === w.id && "bg-gray-400"}`}
                 onClick={() => {
                   setSelectedWeek(chapter.sessions[w.position]);
                   redirectToSelectedWeek(w.id);

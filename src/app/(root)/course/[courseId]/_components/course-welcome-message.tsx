@@ -50,7 +50,7 @@ if(course === undefined) return <LoadingComponent/>
         <p>{course?.subTitle}</p>
 
 
-            <StartFreeClassButton courseId={courseId}/>
+            <StartFreeClassButton/>
        
         <StatInfo courseId={courseId}/>
       </div> 

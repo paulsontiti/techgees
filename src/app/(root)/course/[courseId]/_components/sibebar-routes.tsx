@@ -29,19 +29,19 @@ const routes = [
   },
   {
     icon: FaGoogleScholar,
-    label: "Scholarships",
-    href: "/scholarships"
+    label: "Free-52-Weeks",
+    href: "/free-52-weeks"
   },
-  {
-    icon: Swords,
-    label: "Challenges",
-    href: "/challenges"
-  },
-  {
-    icon: FileQuestion,
-    label: "Survey",
-    href: "/survey"
-  },
+  // {
+  //   icon: Swords,
+  //   label: "Challenges",
+  //   href: "/challenges"
+  // },
+  // {
+  //   icon: FileQuestion,
+  //   label: "Survey",
+  //   href: "/survey"
+  // },
 ]
 
 

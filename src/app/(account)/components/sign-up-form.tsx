@@ -64,7 +64,7 @@ const formSchema = zod
     }
   });
 
-function SignUpForm({ referer }: { referer: string }) {
+function SignUpForm({ referer,redirectUrl }: { referer: string,redirectUrl?: string }) {
   const router = useRouter();
   const { updateUser } = useCurrentUser();
   const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +98,11 @@ function SignUpForm({ referer }: { referer: string }) {
       if (response.data.successful) {
         toast.success(response.data.message);
         updateUser(response.data.user.userId);
-        router.push("/");
+         if (redirectUrl) {
+          router.push(redirectUrl);
+        } else {
+          router.push("/");
+        }
       } else {
         toast.error(response.data.message);
       }
@@ -106,6 +110,13 @@ function SignUpForm({ referer }: { referer: string }) {
       toast.error(err.message);
     }
   };
+
+  React.useEffect(()=>{
+    if(!refererId){
+      const referer = localStorage.getItem("refererId") ?? ""
+      setRefererId(referer === "undefined" ? "" : referer)
+    }
+  })
 
   React.useEffect(() => {
     (async () => {
@@ -268,16 +279,14 @@ function SignUpForm({ referer }: { referer: string }) {
                               aria-expanded={open}
                               className="w-full justify-between"
                             >
-                              {refererId
-                                ? users.find((user) => user.id === refererId)
-                                    ?.userName
-                                : "Select referer..."}
+                              {refererId ? users.find(user => user?.id === refererId)?.userName : "Select referer..."
+                                }
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-full p-0">
                             <Command>
-                              <CommandInput placeholder="Search referer..." />
+                              {/* <CommandInput placeholder="Search referer..." /> */}
                               <CommandList>
                                 <CommandEmpty>No user found.</CommandEmpty>
                                 <CommandGroup>
@@ -286,18 +295,20 @@ function SignUpForm({ referer }: { referer: string }) {
                                       key={user.id}
                                       value={user.id}
                                       onSelect={(currentValue) => {
+                                        
                                         setRefererId(
                                           currentValue === refererId
                                             ? ""
                                             : currentValue
                                         );
+                                       
                                         setOpen(false);
                                       }}
                                     >
                                       <Check
                                         className={cn(
                                           "mr-2 h-4 w-4",
-                                          referer === user.id
+                                          refererId === user.id
                                             ? "opacity-100"
                                             : "opacity-0"
                                         )}
@@ -339,7 +350,7 @@ function SignUpForm({ referer }: { referer: string }) {
                 variant="tgg_link"
                 onClick={() => {
                   setIsLoading(true);
-                  router.push("/sign-in");
+                  router.push(`/sign-in?redirectUrl=${redirectUrl}`);
                 }}
               >
                 Sign in <Loader loading={isLoading} />

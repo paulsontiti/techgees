@@ -6,6 +6,7 @@ export const bgNeutralColor = "bg-[#EFF6FF]";
 export const bgNeutralColor2 = "bg-[#D0D5EF]"
 export const bgTempPrimaryColor = "bg-[#D0D5EF]"
 export const hoverBgNeutralColor2 = "hover:bg-[#D0D5EF]"
+export const gradient = "bg-gradient-to-r from-blue-950 to-yellow-600"
 
 //0a0033
 //111587

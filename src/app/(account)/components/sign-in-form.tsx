@@ -166,7 +166,7 @@ function SignInForm({ redirectUrl }: { redirectUrl?: string }) {
                 variant="tgg_link"
                 onClick={() => {
                   setIsLoading(true);
-                  router.push("/sign-up");
+                  router.push(`/sign-up?redirectUrl=${redirectUrl}`);
                 }}
               >
                 Sign Up <Loader loading={isLoading} />

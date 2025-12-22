@@ -1,58 +1,34 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { loadLSType, LS } from "./weeks";
 import { Button } from "@/components/ui/button";
-import { Award, Download, Play, Share2, X } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Play,Share2, X } from "lucide-react";
+
 import { Preview } from "@/components/preview";
 import VideoPlayer from "@/components/video-player";
 import SessionQuestions from "./session-questions";
-import { UserDp } from "@/components/user-dp";
 import { SessionType } from "../../../../../actions/getSessionWithAttachmentQuestionsAssignments";
-
-type LSProfile = { name: string; avatarColor: string };
-
-const BADGES = [
-  { id: "b1", name: "Getting Started", threshold: 1 },
-  { id: "b5", name: "Committed Learner", threshold: 5 },
-  { id: "b13", name: "Quarter Way", threshold: 13 },
-  { id: "b26", name: "Halfway Hero", threshold: 26 },
-  { id: "b52", name: "Course Master", threshold: 52 },
-];
+import { free52WeekShare } from "@/lib/socia-share";
 
 function MainSection({
   week,
   courseId,
-  user,
-  tggUrl,
+  tggUrl,userId
 }: {
   week: SessionType;
   courseId: string;
-  tggUrl: string;
-  user: { userName: string; imgUrl: string; id: string };
+  tggUrl: string;userId:string
 }) {
   const [selectedWeek, setSelectedWeek] = useState<SessionType>(week);
-  const [quizResults, setQuizResults] = useState(() => loadLSQUIZ(LS.QUIZ, {}));
+
   const [progress, setProgress] = useState(() =>
     loadLSType(LS.PROGRESS, { completed: [], bookmarks: [], notes: {} })
   );
   const [quizOpen, setQuizOpen] = useState(false);
-  const [currentAnswers, setCurrentAnswers] = useState({});
-  const [profile, setProfile] = useState({
-    name: user.userName,
-    avatarColor: "bg-indigo-500",
-  });
-
-  const completedCount = progress.completed.length;
 
   const [toast, setToast] = useState<string | null>(null);
-  const unlockedBadges = useMemo(
-    () => BADGES.filter((b) => completedCount >= b.threshold),
-    [completedCount]
-  );
 
-  const videoRef = useRef(null);
 
   function loadLSQUIZ(key: string, fallback: any): any {
     try {
@@ -94,33 +70,6 @@ function MainSection({
   //     else showToast("Certificate generation failed");
   //   }
 
-  function share(platform: string) {
-    const url = `${tggUrl}/free-52-weeks?refererId=${user.id}`;
-    const text = `Hi! I just learned: ${selectedWeek?.title} for FREE — join me on this course for free!`;
-    if (navigator.share) {
-      navigator
-        .share({
-          title: `Free 52-Week Web Development and Python Course. Start your Tech career for Free`,
-          text,
-          url,
-        })
-        .catch(() => {});
-      return;
-    }
-    let shareUrl = "";
-    if (platform === "wa")
-      shareUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-    if (platform === "twitter")
-      shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-        text
-      )}&url=${encodeURIComponent(url)}`;
-    if (platform === "facebook")
-      shareUrl = `https://www.facebook.com/sharer.php?u=${encodeURIComponent(
-        url
-      )}`;
-    if (shareUrl) window.open(shareUrl, "_blank");
-    showToast("Share opened");
-  }
 
   function markComplete(weekId: string) {
     if (!progress.completed.includes(weekId)) {
@@ -132,16 +81,16 @@ function MainSection({
   }
 
   return (
-    <main className="flex-11 max-w-[100%]">
+    <main id="top" className="w-full">
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-xl shadow p-4"
       >
-        <div className="flex flex-col lg:flex-row gap-6 max-w-[100%]">
-          <div className="flex-1 max-w-[100%]">
-            <div className="flex items-start justify-between max-w-[100%]">
-              <div className="max-w-[400px]">
+        <div className="flex flex-col xl:flex-row gap-6">
+          <div className="w-full">
+            <div className="flex items-start justify-between">
+              <div>
                 <h2 className="text-xl font-semibold">{selectedWeek?.title}</h2>
                 <Preview value={selectedWeek?.description || ""} />
               </div>
@@ -192,14 +141,14 @@ function MainSection({
                 {/* <Button onClick={() => markComplete(selectedWeek?.id || "")}>
                   Mark as Complete
                 </Button> */}
-                <Button onClick={() => share("wa")}>
+                <Button onClick={() => free52WeekShare("wa",tggUrl,userId,selectedWeek?.title!)}>
                   <Share2 className="w-4 h-4 mr-2" />
                   Share
                 </Button>
               </div>
-              <div className="text-xs text-slate-500">
+              {/* <div className="text-xs text-slate-500">
                 Pro tip: enable captions for accessibility.
-              </div>
+              </div> */}
             </div>
 
             {/* <div className="mt-6 grid grid-cols-2 gap-4">
@@ -247,7 +196,7 @@ function MainSection({
                 isLastSession={false}
                 sessionQuestions={selectedWeek?.questions || []}
                 sessionId={selectedWeek?.id!}
-                sessionUrl={`/courses/free-52-weeks/${courseId}/chapters/${selectedWeek?.chapterId}/weeks/${selectedWeek?.id}`}
+                sessionUrl={`/free-52-weeks/${courseId}/chapters/${selectedWeek?.chapterId}/weeks/${selectedWeek?.id}`}
                 chapterUrl=""
               />
             )}
@@ -286,111 +235,7 @@ function MainSection({
             </div>
           </div>
 
-          <aside className="w-full">
-            <Card className="w-full p-0">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-sm">Signed in as </span>
-                    <span className="font-bold ml-1">{profile.name}</span>
-                  </div>
-                  <UserDp imgUrl={user.imgUrl} initials={user.userName[0]} />
-                  {/* <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${profile.avatarColor}`}
-                  >
-                    {profile.name[0]}
-                  </div> */}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-x-1 flex">
-                  <Button
-                    size={"sm"}
-                    disabled
-                    //onClick={handleDownloadCertificate}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Certificate
-                  </Button>
-                  <Button size={"sm"} onClick={() => share("wa")}>
-                    Invite on WhatsApp
-                  </Button>
-                </div>
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => share("twitter")}
-                    className="px-2 py-1 rounded border text-sm"
-                  >
-                    Twitter
-                  </button>
-                  <button
-                    onClick={() => share("facebook")}
-                    className="px-2 py-1 rounded border text-sm"
-                  >
-                    Facebook
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="mt-4">
-              <CardHeader>
-                <h4 className="text-sm font-semibold">Badges</h4>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {BADGES.map((b) => {
-                    const unlocked = completedCount >= b.threshold;
-                    return (
-                      <motion.div
-                        key={b.id}
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className={`p-2 rounded-md border ${
-                          unlocked ? "bg-white shadow" : "bg-gray-100"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Award className="w-5 h-5" />
-                          <div>
-                            <div className="text-sm font-medium">{b.name}</div>
-                            <div className="text-xs text-slate-500">
-                              {unlocked
-                                ? `Unlocked`
-                                : `Locked — ${b.threshold} weeks`}
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="mt-4">
-              <CardHeader>
-                <h5 className="text-sm font-medium">Quick Analytics</h5>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm">
-                  Client-side: watch events, quiz events. Pro tip: connect
-                  server analytics for cohort insights and retention funnels.
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="mt-4">
-              <CardHeader>
-                <h5 className="text-sm font-medium">Extras</h5>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm">
-                  Planned: SCORM/xAPI export, SSO (OAuth), subtitle
-                  auto-generation, SCORM packaging, offline video (PWA & service
-                  worker).
-                </div>
-              </CardContent>
-            </Card>
-          </aside>
+       
         </div>
       </motion.div>
 

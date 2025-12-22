@@ -26,7 +26,7 @@ function SessionQuestions({
         <SessionTest
           questions={sessionQuestions}
           sessionId={sessionId}
-          sessionurl={`${sessionUrl}${sessionId}`}
+          sessionurl={`${sessionUrl}`}
           chapterUrl={chapterUrl}
           isLastSession={isLastSession || false}
         />
