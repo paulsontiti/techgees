@@ -33,9 +33,9 @@ async function CommunityAside() {
 
   // descs = descendantsCompletedAWeek.filter( d => !!d)
 
-  const {leaderBoards:compLeaders} = await getRefereesLeaderBoardsWithinAPeriod(startOfISOWeek(),endOfISOWeek())
+  // const {leaderBoards:compLeaders} = await getRefereesLeaderBoardsWithinAPeriod(startOfISOWeek(),endOfISOWeek())
 
-  const sortedCompLeaderBoards = compLeaders.slice(0,11).sort((a,b) => b.points - a.points)
+  // const sortedCompLeaderBoards = compLeaders.slice(0,11).sort((a,b) => b.points - a.points)
 
   // const {leaderBoards} = await getRefereesLeaderBoards()
 
@@ -101,7 +101,7 @@ async function CommunityAside() {
             </CardContent>
           </Card> */}
 
-       <CompLeaderBoard sortedCompLeaderBoards={sortedCompLeaderBoards} userName={user?.userName!}/>
+       {/* <CompLeaderBoard sortedCompLeaderBoards={sortedCompLeaderBoards} userName={user?.userName!}/> */}
        {/*  <CommunityLeaders leaderBoard={communityLeaders} userName={user?.userName!}/> */}
       </aside>
     </div>
