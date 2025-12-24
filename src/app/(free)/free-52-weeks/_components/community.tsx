@@ -1,8 +1,5 @@
-"use client";
-import React, { useState } from "react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { leaderboards, LS } from "./weeks";
 import Image from "next/image";
 import { UserDp } from "@/components/user-dp";
 import { Button } from "@/components/ui/button";
@@ -10,112 +7,43 @@ import { Download, Share2 } from "lucide-react";
 import { free52WeekShare } from "@/lib/socia-share";
 import Badges from "./badges";
 import { getISOWeek, startOfISOWeek, endOfISOWeek } from "@/lib/isoWeek";
-import { DBUser } from "@prisma/client";
+import CommunityLeaders from "./community-leaders";
+import { getUser } from "../../../../../actions/getUser";
+import { getDescendants } from "../../../../../actions/getDescendants";
+import { hasCompletedASession } from "../../../../../actions/hasCompletedASession";
+import { getRefereesLeaderBoardsWithinAPeriod } from "../../../../../actions/getRefereesLeaderBoardWithinAPeriod";
+import { getRefereesLeaderBoards } from "../../../../../actions/getRefereesLeaderBoards";
+import StudentDetails from "./student-details";
+import CompLeaderBoard from "./comp-leaderboard";
 
-function CommunityAside({
-  user,
-  tggUrl,
-  descendantsCount,
-}: {
-  tggUrl: string;
-  descendantsCount: number;
-  user: DBUser;
-}) {
-  // ------------------ UseStates ------------------
+async function CommunityAside() {
 
-  const [profile, setProfile] = useState({
-    name: user.userName,
-    avatarColor: "bg-indigo-500",
-  });
+ const { user } = await getUser();
+  const tggUrl = process.env.WEB_URL!;
 
-  const [leaderboard, setLeaderboard] = useState(leaderboards);
-  const text = `Hi! I am learning Frontend Web Development for FREE — join me on this course for free!`;
+
+  let descs = await getDescendants(user?.id || "")
+  const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
+    const completedASession = await hasCompletedASession(d.userId)
+
+    if(completedASession) return d
+  }))
+
+  descs = descendantsCompletedAWeek.filter( d => !!d)
+
+  const {leaderBoards:compLeaders} = await getRefereesLeaderBoardsWithinAPeriod(startOfISOWeek(),endOfISOWeek())
+
+  const sortedCompLeaderBoards = compLeaders.slice(0,11).sort((a,b) => b.points - a.points)
+
+  const {leaderBoards} = await getRefereesLeaderBoards()
+
+  const communityLeaders = leaderBoards.slice(0,11).sort((a,b) => b.points - a.points)
 
   return (
     <div className="flex flex-col xl:flex-row">
       <aside className="w-full xl:w-1/2">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-sm">Signed in as </span>
-                <span className="font-bold ml-1">
-                  {user.userName || user.email}
-                </span>
-              </div>
-              <UserDp
-                imgUrl={user.imageUrl || ""}
-                initials={
-                  user.userName?.slice(0, 1).toUpperCase() ||
-                  user.email?.slice(0, 1).toUpperCase() ||
-                  "GG"
-                }
-              />
-              {/* <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${profile.avatarColor}`}
-                  >
-                    {profile.name[0]}
-                  </div> */}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col md:flex-row xl:flex-col gap-1">
-              <Button
-                className=""
-                size={"sm"}
-                disabled
-                //onClick={handleDownloadCertificate}
-              >
-                <Download className="w-4 h-4 mr-1" />
-                Download Certificate
-              </Button>
-              <Button
-                className=""
-                size={"sm"}
-                onClick={() =>
-                  free52WeekShare({
-                    platform: "wa",
-                    userId: user.id,
-                    tggUrl,
-                    text,
-                  })
-                }
-              >
-                <Share2 className="w-4 h-4 mr-1" />
-                Invite on WhatsApp
-              </Button>
-            </div>
-            <div className="flex gap-2 mt-2">
-              <button
-                onClick={() =>
-                  free52WeekShare({
-                    platform: "twitter",
-                    userId: user.id,
-                    tggUrl,
-                    text,
-                  })
-                }
-                className="px-2 py-1 rounded border text-sm"
-              >
-                Twitter
-              </button>
-              <button
-                onClick={() =>
-                  free52WeekShare({
-                    platform: "facebook",
-                    userId: user.id,
-                    tggUrl,
-                    text,
-                  })
-                }
-                className="px-2 py-1 rounded border text-sm"
-              >
-                Facebook
-              </button>
-            </div>
-          </CardContent>
-        </Card>
-        <Badges descendantsCount={descendantsCount} />
+     <StudentDetails user={user!} tggUrl={tggUrl}/>
+        <Badges descendantsCount={descs.length} />
         {/* <Card className="mt-4">
               <CardHeader>
                 <h5 className="text-sm font-medium">Quick Analytics</h5>
@@ -171,53 +99,8 @@ function CommunityAside({
             </CardContent>
           </Card> */}
 
-        <Card className="mt-4 w-full">
-          <Image
-            src="/assets/weekly.png"
-            alt="Tech community building weekly challenge image"
-            className="min-w-full h-auto"
-            width={300}
-            height={400}
-          />
-          <CardHeader>
-            <h4 className="text-sm font-semibold">
-              Community Building Challenge Leaderboard -{" "}
-              <span>
-                Week {getISOWeek()} of {new Date().getFullYear()}
-              </span>
-            </h4>
-            <div>{`(${startOfISOWeek(
-              new Date()
-            ).toDateString()} - ${endOfISOWeek(
-              new Date()
-            ).toDateString()})`}</div>
-          </CardHeader>
-          <CardContent>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left">
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Points</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaderboard.map((p, i) => (
-                  <tr
-                    key={p.id}
-                    className={`${
-                      p.name === profile.name ? "bg-yellow-50" : ""
-                    }`}
-                  >
-                    <td>{i + 1}</td>
-                    <td>{p.name}</td>
-                    <td>{p.points}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
-        </Card>
+       <CompLeaderBoard sortedCompLeaderBoards={sortedCompLeaderBoards} userName={user?.userName!}/>
+        <CommunityLeaders leaderBoard={communityLeaders} userName={user?.userName!}/>
       </aside>
     </div>
   );

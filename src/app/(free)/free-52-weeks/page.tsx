@@ -6,6 +6,9 @@ import { getUserCookie } from "@/lib/get-user-cookie";
 import Navbar from "@/app/(root)/_components/nav-bar";
 import { gradient } from "@/utils/colors";
 import RefererId from "./_components/referer-id";
+import { getFreeCourses } from "../../../../actions/getFreeCourses";
+import ErrorPage from "@/components/error";
+import { Preview } from "@/components/preview";
 
 
 export default async function LandingPage({
@@ -58,21 +61,23 @@ export default async function LandingPage({
     },
   ];
 
-    const courses = [
-    {
-      id:"18474722-8727-4938-9f46-f01ab32e0e32",
-      title: "Frontend Web Development",
-      desc: "A carefully designed weekly roadmap that takes you from absolute beginner to job-ready, without confusion or overwhelm.",
-    },
-    {
-      id:"",
-      title: "Python, Game Development, AI and Machine Learning",
-      desc: "No hidden fees. No subscriptions. All lessons, projects, and resources are completely free.",
-    },
+  //   const courses = [
+  //   {
+  //     id:"18474722-8727-4938-9f46-f01ab32e0e32",
+  //     title: "Frontend Web Development",
+  //     desc: "A carefully designed weekly roadmap that takes you from absolute beginner to job-ready, without confusion or overwhelm.",
+  //   },
+  //   {
+  //     id:"",
+  //     title: "Python, Game Development, AI and Machine Learning",
+  //     desc: "No hidden fees. No subscriptions. All lessons, projects, and resources are completely free.",
+  //   },
    
-  ];
+  // ];
 
 
+  const {freeCourses,error} = await getFreeCourses()
+  if(error) return <ErrorPage name={error.name}/>
 
   const faqs = [
     {
@@ -178,12 +183,12 @@ export default async function LandingPage({
 
       {/* COURSES */}
       <section id="courses" className="bg-white py-20">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className=" mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-10">
             Courses Available
           </h2>
-         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course, i) => (
+         <div className="grid md:grid-cols-2 gap-8">
+          {freeCourses.map((course, i) => (
             <div
               key={i}
               className="bg-white p-6 rounded-3xl shadow hover:-translate-y-1 transition"
@@ -191,7 +196,7 @@ export default async function LandingPage({
               <div className="flex gap-2">
                 <h2 className="text-xl font-bold text-center mb-4">{course.title}</h2>
               </div>
-              <p className="font-medium">{course.desc}</p>
+              <Preview value={course.description || ""}/>
              <CourseButton courseId={course.id} userId={userId}/>
             </div>
           ))}
@@ -216,7 +221,7 @@ export default async function LandingPage({
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-gradient-to-r from-emerald-50 to-green-50 py-20">
+      {/* <section className="bg-gradient-to-r from-emerald-50 to-green-50 py-20">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">
             Student Success Stories
@@ -239,10 +244,10 @@ export default async function LandingPage({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Students Projects */}
-      <section className="bg-gradient-to-r from-emerald-50 to-green-50 py-20">
+      {/* <section className="bg-gradient-to-r from-emerald-50 to-green-50 py-20">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">
             Student Projects
@@ -265,7 +270,7 @@ export default async function LandingPage({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* FAQ */}
       <section className="bg-white py-20">

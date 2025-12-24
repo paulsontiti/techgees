@@ -153,17 +153,17 @@ function MainSection({
             )}
 
             {/* Comments */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <h4 className="text-sm font-semibold">Discussion</h4>
               <div className="mt-2 space-y-3">
-                {/* {(comments[selectedWeek.id] || []).map((c) => (
+                {(comments[selectedWeek.id] || []).map((c) => (
                   <div key={c.id} className="p-2 bg-gray-50 rounded">
                     <div className="text-xs text-slate-500">
                       {c.author} • {new Date(c.date).toLocaleString()}
                     </div>
                     <div className="mt-1">{c.text}</div>
                   </div>
-                ))} */}
+                ))}
               </div>
               <div className="mt-3 flex gap-2">
                 <input
@@ -183,7 +183,7 @@ function MainSection({
                   Post
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
 
        

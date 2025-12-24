@@ -1,21 +1,13 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, {useState } from "react";
 import { motion } from "framer-motion";
 
 import {
-  Share2,
-  Award,
-  Trophy,
   CheckCircle,
   Bookmark,
-  Users,
-  Play,
-  Download,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Chapter, Session } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { SidebarChapter } from "@/app/(course)/courses/combo/[courseId]/child/_components/course-sidebar";
 import { OtherSession } from "@/app/(auth)/teacher/courses/[courseId]/chapters/[chapterId]/_components/sessions-list";
@@ -44,11 +36,6 @@ export const LS = {
   COMMENTS: "course_v3_comments",
 };
 
-export const leaderboards = [
-  { id: 1, name: "Ada Lovelace", points: 520 },
-  { id: 2, name: "You", points: 300 },
-];
-
 // ------------------ Local Storage Keys ------------------
 
 type LSType = { completed: string[]; bookmarks: string[]; notes: {} };
@@ -62,9 +49,17 @@ export function loadLSType(key: string, fallback: LSType): LSType {
   }
 }
 
+
+export type Leaderboard ={
+  id:string,
+  userName:string,
+  points:number
+  imageUrl:string
+}
+
 function WeeksAside({
   chapter,
-  progressPercentage,
+  progressPercentage
 }: {
   chapter: SidebarChapter;
   progressPercentage: number;
@@ -74,7 +69,7 @@ function WeeksAside({
   const activeWeek = chapter.sessions.find((session)=> pathname.includes(session.id))
 
   // ------------------ UseStates ------------------
-  const [leaderboard, setLeaderboard] = useState(leaderboards);
+ 
   const [selectedWeek, setSelectedWeek] = useState<OtherSession | undefined>(activeWeek);
   const [progress, setProgress] = useState(() =>
     loadLSType(LS.PROGRESS, { completed: [], bookmarks: [], notes: {} })
@@ -126,7 +121,7 @@ function WeeksAside({
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold">{chapter.title}</h3>
-              <div className="text-xs text-slate-500">Animated, accessible</div>
+              {/* <div className="text-xs text-slate-500">Animated, accessible</div> */}
             </div>
             <div className="text-sm">{completionPercent}%</div>
           </div>
@@ -192,40 +187,7 @@ function WeeksAside({
         </CardContent>
       </Card>
 
-      <Card className="mt-4">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold">Leaderboard</h4>
-            <Trophy className="w-4 h-4" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <ol className="space-y-2">
-            {leaderboard.slice(0, 6).map((p, idx) => (
-              <motion.li
-                key={p.id}
-                layout
-                className="flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${
-                      idx === 0 ? "bg-yellow-400" : "bg-slate-400"
-                    }`}
-                  >
-                    {p.name[0]}
-                  </div>
-                  <div className="text-sm">{p.name}</div>
-                </div>
-                <div className="text-sm font-medium">{p.points}</div>
-              </motion.li>
-            ))}
-          </ol>
-          <div className="mt-3 text-xs text-slate-500">
-            Connect to backend for real-time global leaderboard.
-          </div>
-        </CardContent>
-      </Card>
+    
     </aside>
   );
 }

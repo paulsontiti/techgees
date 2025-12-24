@@ -10,6 +10,9 @@ import CommunityAside from "../../../../_components/community";
 import { getUser } from "../../../../../../../../actions/getUser";
 import { getDescendants } from "../../../../../../../../actions/getDescendants";
 import { hasCompletedASession } from "../../../../../../../../actions/hasCompletedASession";
+import { getRefereesLeaderBoards } from "../../../../../../../../actions/getRefereesLeaderBoards";
+import { getRefereesLeaderBoardsWithinAPeriod } from "../../../../../../../../actions/getRefereesLeaderBoardWithinAPeriod";
+import { endOfISOWeek, startOfISOWeek } from "@/lib/isoWeek";
 // 52-Week Course — Advanced React Component
 // Single-file demo scaffold. Features:
 // - Framer Motion animations
@@ -31,10 +34,10 @@ export const metadata: Metadata = {
 
 export default async function CourseLayout({
   children,
-  params: { weekId, chapterId, courseId },
+  params: {courseId },
 }: {
   children: React.ReactNode;
-  params: { weekId: string; chapterId: string; courseId: string };
+  params: { courseId: string };
 }) {
   const userId = await getUserCookie();
   if (!userId) return redirect("/dashboard");
@@ -51,19 +54,7 @@ export default async function CourseLayout({
     userId,
     course.chapters[0].id
   );
-  const { user } = await getUser();
-  const tggUrl = process.env.WEB_URL!;
-
-
-  let descs = await getDescendants(user?.id || "")
-  const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
-    const {completedASession} = await hasCompletedASession(d.userId)
-
-    if(completedASession) return d
-  }))
-
-  descs = descendantsCompletedAWeek.filter( d => !!d)
-
+ 
 
   return (
     <div id="top">
@@ -89,9 +80,6 @@ export default async function CourseLayout({
         
           <div className=" xl:w-1/2">
             <CommunityAside
-            descendantsCount={descs.length}
-              tggUrl={tggUrl}
-              user={user!}
             />
           </div>
       </div>
