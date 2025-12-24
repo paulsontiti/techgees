@@ -5,7 +5,7 @@
 // import { Button } from "@/components/ui/button";
 // import { Download, Share2 } from "lucide-react";
 // import { free52WeekShare } from "@/lib/socia-share";
-// import Badges from "./badges";
+ import Badges from "./badges";
 // import { getISOWeek, startOfISOWeek, endOfISOWeek } from "@/lib/isoWeek";
 // import CommunityLeaders from "./community-leaders";
  import { getUser } from "../../../../../actions/getUser";
@@ -14,6 +14,8 @@
 // import { getRefereesLeaderBoardsWithinAPeriod } from "../../../../../actions/getRefereesLeaderBoardWithinAPeriod";
 // import { getRefereesLeaderBoards } from "../../../../../actions/getRefereesLeaderBoards";
  import StudentDetails from "./student-details";
+import { getDescendants } from "../../../../../actions/getDescendants";
+import { hasCompletedASession } from "../../../../../actions/hasCompletedASession";
 // import CompLeaderBoard from "./comp-leaderboard";
 
 async function CommunityAside() {
@@ -22,14 +24,14 @@ async function CommunityAside() {
   const tggUrl = process.env.WEB_URL!;
 
 
-  // let descs = await getDescendants(user?.id || "")
-  // const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
-  //   const completedASession = await hasCompletedASession(d.userId)
+  let descs = await getDescendants(user?.id || "")
+  const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
+    const completedASession = await hasCompletedASession(d.userId)
 
-  //   if(completedASession) return d
-  // }))
+    if(completedASession) return d
+  }))
 
-  // descs = descendantsCompletedAWeek.filter( d => !!d)
+  descs = descendantsCompletedAWeek.filter( d => !!d)
 
   // const {leaderBoards:compLeaders} = await getRefereesLeaderBoardsWithinAPeriod(startOfISOWeek(),endOfISOWeek())
 
@@ -43,7 +45,7 @@ async function CommunityAside() {
     <div className="flex flex-col xl:flex-row">
       <aside className="w-full xl:w-1/2">
      <StudentDetails user={user!} tggUrl={tggUrl}/>
-        {/* <Badges descendantsCount={descs.length} /> */}
+        <Badges descendantsCount={descs.length} />
         {/* <Card className="mt-4">
               <CardHeader>
                 <h5 className="text-sm font-medium">Quick Analytics</h5>
