@@ -17,6 +17,8 @@ import { getRefereesLeaderBoardsWithinAPeriod } from "../../../../../actions/get
 // import { getDescendants } from "../../../../../actions/getDescendants";
 // import { hasCompletedASession } from "../../../../../actions/hasCompletedASession";
 import CompLeaderBoard from "./comp-leaderboard";
+import { getRefereesWithinAPeriod } from "../../../../../actions/getRefereesWithinAPeriod";
+import { getRefereesWithASession } from "../../../../../actions/getRefereesWithASession";
 
 async function CommunityAside() {
 
@@ -33,8 +35,8 @@ async function CommunityAside() {
 
   // descs = descendantsCompletedAWeek.filter( d => !!d)
 
-  // const {leaderBoards:compLeaders} = await getRefereesLeaderBoardsWithinAPeriod(startOfISOWeek(),endOfISOWeek())
-
+  const {referees} = await getRefereesWithinAPeriod(startOfISOWeek(),endOfISOWeek())
+  const {refereesWithASession} = await getRefereesWithASession()
   // const sortedCompLeaderBoards = compLeaders.slice(0,11).sort((a,b) => b.points - a.points)
 
   // const {leaderBoards} = await getRefereesLeaderBoards()
@@ -45,7 +47,7 @@ async function CommunityAside() {
     <div className="flex flex-col xl:flex-row">
       <aside className="w-full xl:w-1/2">
      <StudentDetails user={user!} tggUrl={tggUrl}/>
-        {/* <Badges descendantsCount={descs.length} /> */}
+        <Badges refereesWithASession={refereesWithASession.length} />
         {/* <Card className="mt-4">
               <CardHeader>
                 <h5 className="text-sm font-medium">Quick Analytics</h5>

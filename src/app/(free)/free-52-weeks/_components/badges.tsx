@@ -73,7 +73,7 @@ const BADGES = [
   {
     id: "b4",
     name: "Gold Influencer",
-    threshold: 125,
+    threshold: 50,
     color: "bg-yellow-500 text-white border-yellow-600",
     svg: (
       <svg
@@ -91,7 +91,7 @@ const BADGES = [
   {
     id: "b5",
     name: "Platinum Ambassador",
-    threshold: 625,
+    threshold: 100,
     color: "bg-sky-500 text-sky-200 border-sky-600",
     svg: (
       <svg
@@ -106,7 +106,7 @@ const BADGES = [
   {
     id: "b6",
     name: "Diamond Legend",
-    threshold: 3125,
+    threshold: 200,
     color: "bg-cyan-600 text-cyan-200 border-cyan-700",
     svg: (
       <svg
@@ -121,7 +121,7 @@ const BADGES = [
   {
     id: "b7",
     name: "Mythic Titan",
-    threshold: 15625,
+    threshold: 500,
     color: "bg-violet-700 text-violet-300 border-violet-800",
     svg: (
       <svg
@@ -141,7 +141,7 @@ const BADGES = [
   {
     id: "b8",
     name: "Elite Vanguard",
-    threshold: 78125,
+    threshold: 1000,
     color: "bg-blue-700 text-blue-300 border-blue-800",
     svg: (
       <svg
@@ -157,7 +157,7 @@ const BADGES = [
   {
     id: "b9",
     name: "Supreme Dominator",
-    threshold: 390625,
+    threshold: 2000,
     color: "bg-red-700 text-red-300 border-red-800",
     svg: (
       <svg
@@ -173,7 +173,7 @@ const BADGES = [
   {
     id: "b10",
     name: "Ultimate Apex",
-    threshold: 1953125,
+    threshold: 5000,
     color: "bg-green-700 text-green-300 border-green-800",
     svg: (
       <svg
@@ -188,7 +188,7 @@ const BADGES = [
   {
     id: "b11",
     name: "Eternal Immortal",
-    threshold: 9765625,
+    threshold: 10000,
     color: "bg-neutral-900 text-yellow-300 border-yellow-700",
     svg: (
       <svg
@@ -206,7 +206,7 @@ const BADGES = [
     ),
   },
 ];
-function Badges({ descendantsCount }: { descendantsCount: number }) {
+function Badges({ refereesWithASession }: { refereesWithASession: number }) {
   //   const unlockedBadges = useMemo(
   //     () => BADGES.filter((b) => completedCount >= b.threshold),
   //     [completedCount]
@@ -216,14 +216,14 @@ function Badges({ descendantsCount }: { descendantsCount: number }) {
       <CardHeader>
         <h4 className="text-sm font-semibold">Community Building Badges</h4>
         <div className="flex gap-2">
-          <span>Community Count: </span>
-          <span className="font-bold">{descendantsCount}</span>
+          <span>Community Members: </span>
+          <span className="font-bold">{refereesWithASession}</span>
         </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
           {BADGES.map((b) => {
-            const unlocked = descendantsCount >= b.threshold;
+            const unlocked = refereesWithASession >= b.threshold;
             return (
               <motion.div
                 key={b.id}
