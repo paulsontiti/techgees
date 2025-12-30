@@ -19,6 +19,8 @@ import { getRefereesLeaderBoardsWithinAPeriod } from "../../../../../actions/get
 import CompLeaderBoard from "./comp-leaderboard";
 import { getRefereesWithinAPeriod } from "../../../../../actions/getRefereesWithinAPeriod";
 import { getRefereesWithASession } from "../../../../../actions/getRefereesWithASession";
+import { getDescendants } from "../../../../../actions/getDescendants";
+import { hasCompletedASession } from "../../../../../actions/hasCompletedASession";
 
 async function CommunityAside() {
 
@@ -26,17 +28,17 @@ async function CommunityAside() {
   const tggUrl = process.env.WEB_URL!;
 
 
-  // let descs = await getDescendants(user?.id || "")
-  // const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
-  //   const completedASession = await hasCompletedASession(d.userId)
+  let descs = await getDescendants(user?.id || "")
+  const descendantsCompletedAWeek = await Promise.all(descs.map(async(d) =>{
+    const completedASession = await hasCompletedASession(d.userId)
 
-  //   if(completedASession) return d
-  // }))
+    if(completedASession) return d
+  }))
 
-  // descs = descendantsCompletedAWeek.filter( d => !!d)
+  descs = descendantsCompletedAWeek.filter( d => !!d)
 
   // const {referees} = await getRefereesWithinAPeriod(startOfISOWeek(),endOfISOWeek())
-  const {refereesWithASession} = await getRefereesWithASession()
+  //const {refereesWithASession} = await getRefereesWithASession()
   // const sortedCompLeaderBoards = compLeaders.slice(0,11).sort((a,b) => b.points - a.points)
 
   // const {leaderBoards} = await getRefereesLeaderBoards()
@@ -47,7 +49,7 @@ async function CommunityAside() {
     <div className="flex flex-col xl:flex-row">
       <aside className="w-full xl:w-1/2">
      <StudentDetails user={user!} tggUrl={tggUrl}/>
-        <Badges refereesWithASession={refereesWithASession.length} />
+        <Badges refereesWithASession={descs.length} />
         {/* <Card className="mt-4">
               <CardHeader>
                 <h5 className="text-sm font-medium">Quick Analytics</h5>
