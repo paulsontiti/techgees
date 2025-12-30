@@ -35,7 +35,7 @@ async function CommunityAside() {
 
   // descs = descendantsCompletedAWeek.filter( d => !!d)
 
-  const {referees} = await getRefereesWithinAPeriod(startOfISOWeek(),endOfISOWeek())
+  // const {referees} = await getRefereesWithinAPeriod(startOfISOWeek(),endOfISOWeek())
   const {refereesWithASession} = await getRefereesWithASession()
   // const sortedCompLeaderBoards = compLeaders.slice(0,11).sort((a,b) => b.points - a.points)
 
