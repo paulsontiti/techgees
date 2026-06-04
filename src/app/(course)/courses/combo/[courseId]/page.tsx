@@ -1,36 +1,25 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+
 import { Separator } from '@/components/ui/separator'
 import { ComboCourseEnrollButton } from './_components/combo-enroll-button'
 import ComboCourseNavbar from './_components/combo-navbar'
 import VerifyPayment from '../../components/verify-payment'
-import { Course } from '@prisma/client'
+import { Course, PurchaseType } from '@prisma/client'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Preview } from '@/components/preview'
 import VideoPlayer from '@/components/video-player'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import CoursesList from './_components/combo-courses-list'
+import { getCourse } from '../../../../../../actions/getCourse'
+import { getUserCookie } from '@/lib/get-user-cookie'
 
-function ComboCoursePage(
-    { params: { courseId }, searchParams: { reference, redirectUrl }, }: {
-        params: { courseId: string }, searchParams: { reference: string, redirectUrl: string };
+async function ComboCoursePage(
+    { params: { courseId }, searchParams: { reference, redirectUrl,purchaseType }, }: {
+        params: { courseId: string }, searchParams: { reference: string, redirectUrl: string,purchaseType:PurchaseType };
     }) {
-    const [course, setCourse] = useState<Course | undefined>(undefined);
-
-    useEffect(() => {
-        (
-            async () => {
-                try {
-                    const res = await axios.get(`/api/courses/${courseId}`);
-                    setCourse(res.data);
-                } catch (err: any) {
-                    toast.error(err.message);
-                }
-            }
-        )()
-    }, []);
-   
+    
+        const userId = await getUserCookie() as string;
+        const {course} = await getCourse(courseId);
 
     return (
 
@@ -40,7 +29,8 @@ function ComboCoursePage(
             <div className='p-4'>
                <div className='flex flex-col items-center justify-center '>
                     <div className='w-full md:w-[600px] lg:w-[900px]'>
-                        <VerifyPayment reference={reference} redirectUrl={redirectUrl} />
+                        <VerifyPayment reference={reference} redirectUrl={redirectUrl}
+                        userId={userId} purchaseType={purchaseType} courseId={courseId}/>
 
                         <div
                             className="

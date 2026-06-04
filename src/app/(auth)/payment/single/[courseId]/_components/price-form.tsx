@@ -20,56 +20,45 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { PurchaseType } from "@prisma/client";
+import { redirect, useSearchParams } from "next/navigation";
 
 const formSchema = zod.object({
   amount: zod.coerce.number().min(10, {
     message: "amount is required",
   }),
-  purchaseType: zod.string().min(1, {
-    message: "Purchase type is required",
-  }),
 });
 
 function PriceForm({ email, courseId }: { email?: string; courseId: string }) {
+  const searchParams = useSearchParams();
+
+  const price = searchParams.get("coursePrice");
+  const subscriptionPrice = searchParams.get("subscriptionPrice");
+
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: 0,
-      purchaseType:"Community"
+      amount: Number(price) || Number(subscriptionPrice),
     },
   });
   if (!email) {
     toast.error(
       "No email found. You will be redirected to profile page. Please update your profile",
-      { duration: 5000 }
+      { duration: 5000 },
     );
     return redirect("/profile");
   }
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
-    
     try {
       // Send a POST request to your server to create a Paystack checkout session
       const response = await axios.post(
         "/api/paystack/create-checkout-session",
         {
           amount: values.amount,
-          purchaseType: values.purchaseType,
           email,
-          courseId,
-        }
+          courseId,purchaseType: price ? "OneTime" : "Subscription"
+        },
       );
 
       const { authorizationUrl, reference } = response.data;
@@ -81,7 +70,7 @@ function PriceForm({ email, courseId }: { email?: string; courseId: string }) {
         const interval = setInterval(() => {
           if (paymentWindow.closed) {
             const redirectUrl = `/courses/single/${courseId}`;
-            window.location.href = `/courses/single/${courseId}?reference=${reference}&redirectUrl=${redirectUrl}`;
+            window.location.href = `/courses/single/${courseId}?reference=${reference}&redirectUrl=${redirectUrl}&purchaseType=${price ? "OneTime": "Subscription"}`;
             clearInterval(interval);
           }
         }, 1000);
@@ -110,53 +99,22 @@ function PriceForm({ email, courseId }: { email?: string; courseId: string }) {
                     <Input
                       type="number"
                       step={10000}
-                      disabled={isSubmitting}
+                      disabled={true}
+
                       placeholder='e.g. "50000"'
                       {...field}
                     />
                   </FormControl>
-                 
+
                   <FormMessage />
                 </FormItem>
               );
             }}
           />
 
-          <FormField
-            control={form.control}
-            name="purchaseType"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Purchase Type</FormLabel>
-                  <FormControl>
-                    <Select 
-                     onValueChange={field.onChange}
-            defaultValue={field.value}
-            {...field}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select a purchase type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Purchase Type</SelectLabel>
-                          <SelectItem value="Community">Community</SelectItem>
-                          <SelectItem value="Installment">Installment</SelectItem>
-                          <SelectItem value="OneTime">Full payment</SelectItem>
-                          <SelectItem value="Subscription">Subscription</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-<FormDescription>
-                    Note: You will be paying to Black Wizards Technology
-                  </FormDescription>
+          <FormDescription>
+            Note: You will be paying to Black Wizards Technology
+          </FormDescription>
           <div className="flex items-center gap-x-2">
             <Button type="submit" disabled={!isValid || isSubmitting}>
               Pay with Paystack <Loader loading={isSubmitting} />

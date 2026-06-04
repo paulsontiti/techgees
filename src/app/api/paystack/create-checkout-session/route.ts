@@ -3,10 +3,12 @@ import { getUserCookie } from "@/lib/get-user-cookie";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
+
+
 export async function POST(req: Request) {
   try {
     const userId = await getUserCookie();
-    const { email, amount, courseId, purchaseType } = await req.json();
+    const { email, amount} = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -21,69 +23,10 @@ export async function POST(req: Request) {
         headers: {
           Authorization: `Bearer ${process.env.PAYSTACK!}`,
         },
-      }
+      },
     );
 
     const { authorization_url, reference } = response.data.data;
-
-    if (reference) {
-      await db.paystackPayment.create({
-        data: {
-          reference,
-          userId,
-          courseId,
-          amount,
-        },
-      });
-
-      const purchase = await db.purchase.findUnique({
-        where: {
-          courseId_userId: {
-            userId,
-            courseId,
-          },
-        },
-      });
-
-      if (purchase) {
-        const course = await db.course.findUnique({
-          where: {
-            id: courseId,
-          },
-          select: {
-            price: true,
-          },
-        });
-        await db.purchase.update({
-          where:{
-            id: purchase.id
-          },
-          data: {
-            price: course?.price ?? 0,
-            courseId,
-            userId,
-            type: purchaseType,
-          },
-        });
-      } else {
-        const course = await db.course.findUnique({
-          where: {
-            id: courseId,
-          },
-          select: {
-            price: true,
-          },
-        });
-        await db.purchase.create({
-          data: {
-            price: course?.price ?? 0,
-            courseId,
-            userId,
-            type: purchaseType,
-          },
-        });
-      }
-    }
 
     return NextResponse.json({
       authorizationUrl: authorization_url,
@@ -96,3 +39,4 @@ export async function POST(req: Request) {
     });
   }
 }
+

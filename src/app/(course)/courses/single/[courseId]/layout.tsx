@@ -16,39 +16,33 @@ async function CourseLayout({
   params: { courseId: string };
 }) {
   const userId = await getUserCookie();
-    if (!userId) return redirect("/dashboard");
+  if (!userId) return redirect("/dashboard");
 
   const { course, error: couError } = await getCourseChaptersUserProgress(
     userId!,
-    courseId
+    courseId,
   );
   if (couError) return <ErrorPage name={couError.name} />;
   if (!course) return redirect("/dashboard");
 
-       const { progressPercentage, error:proError } = await getCourseProgress(userId!,
-  courseId)
+  const { progressPercentage, error: proError } = await getCourseProgress(
+    userId!,
+    courseId,
+  );
   if (proError) return <ErrorPage name={proError.name} />;
-
-    const { scholarship, error: schCourseError } =
-      await getScholarshipByCourseId (courseId);
-  
-    if (schCourseError) return <ErrorPage name={schCourseError.name} />;
-
-    const url = process.env.WEB_URL!;
 
   return (
     <div>
       <div>
-        <CourseNavbar   course={course}
-              scholarship={scholarship}
-            progressPercentage={progressPercentage || 0}/>
+        <CourseNavbar
+          course={course}
+          progressPercentage={progressPercentage || 0}
+        />
       </div>
       <div className="flex mt-10 justify-center">
         <div className="hidden h-full  md:flex w-1/3 flex-col inset-y-0 z-50">
           <CourseSidebar
             course={course}
-             scholarship={scholarship}
-            url={url}
             userId={userId}
             progressPercentage={progressPercentage || 0}
           />

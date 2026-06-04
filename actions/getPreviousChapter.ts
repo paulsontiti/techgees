@@ -1,10 +1,7 @@
 import { db } from "@/lib/db";
-import { Chapter } from "@prisma/client";
-
-
 
 interface ReturnValue {
-    previousChapter: Chapter | null,
+    previousChapter: {id:string} | null,
     error: Error | null
 }
 
@@ -25,11 +22,11 @@ export const getPreviousChapter = async (chapterId: string, courseId: string):
         const chapter = await db.chapter.findUnique({
             where: {
                 id: chapterId,
-                //isPublished: true,
-            }, include: {
-                sessions: true,
-                questions: true,
-                assignments: true
+                isPublished: true,
+            }, select: {
+                position: true,
+                // questions: true,
+                // assignments: true
             }
         });
      
@@ -42,6 +39,7 @@ export const getPreviousChapter = async (chapterId: string, courseId: string):
                 isPublished: true,
                 position: prvPosition
             },
+            select:{id:true},
             orderBy: {
                 position: "asc"
             }

@@ -8,10 +8,8 @@ import { OpenSheetButton } from "@/components/open-sheet";
 
 function CourseDetails({
   course,
-  scholarshipCourse,
 }: {
   course: CourseChaptersUserProgressType;
-  scholarshipCourse: boolean;
 }) {
 
   

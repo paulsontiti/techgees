@@ -2,7 +2,6 @@
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { NextResponse } from "next/server";
 import { getPreviousChapter } from "../../../../../../../../actions/getPreviousChapter";
-import { getUserChapterProgress } from "../../../../../../../../actions/getUserChapterProgress";
 
 export async function GET(
   req: Request,

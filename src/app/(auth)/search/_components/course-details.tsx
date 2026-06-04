@@ -1,37 +1,23 @@
 "use client"
-import React, { useEffect, useState } from 'react'
 import { SearchPageCourseType } from '../../../../../actions/getCourseWithProgressChapters'
 import { Skeleton } from '@/components/ui/skeleton'
 import { bgNeutralColor2 } from '@/utils/colors'
-import toast from 'react-hot-toast'
-import axios from 'axios'
 import CourseCard from '../../search/_components/course-card'
+import { useSearchedCoursesStore } from '../../../../../store/searched-courses-store'
 
 
-function CourseDetails({title,categoryId}:{title?:string,categoryId?:string}) {
-  const [courses,setCourses] = useState<SearchPageCourseType[] | undefined>(undefined);
+function CourseDetails() {
+  const {searchedCourses,loading} = useSearchedCoursesStore((state=> state));
 
-  useEffect(()=>{
-    (
-      async()=>{
-        try{
-          const res = await axios.post("/api/courses/course-progress-chapters",{title,categoryId});
-          setCourses(res.data);
-        }catch(err:any){
-          toast.error(err.message);
-        }
-      }
-    )()
-  },[]);
 
-  if(courses === undefined) return <Skeleton className={`${bgNeutralColor2} w-full h-44`}/>
-  if(Array.isArray(courses) && courses.length === 0) return <div
+  if(loading) return <Skeleton className={`${bgNeutralColor2} w-full h-44`}/>
+  if(searchedCourses.length === 0) return <div
       className='text-center text-sm text-muted-foreground mt-10'>
          No course found
       </div>
   return (
     <div className='grid gap-4 lg:grid-cols-2 max-w-full'>
-      {courses.map((course) => {
+      {searchedCourses.map((course) => {
        if(!course) return null;
 
         return <CourseCard

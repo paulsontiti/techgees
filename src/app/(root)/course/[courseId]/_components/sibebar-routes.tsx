@@ -27,11 +27,11 @@ const routes = [
     label: "Courses",
     href: "/courses"
   },
-  {
-    icon: FaGoogleScholar,
-    label: "Free-52-Weeks",
-    href: "/free-52-weeks"
-  },
+  // {
+  //   icon: FaGoogleScholar,
+  //   label: "Free-52-Weeks",
+  //   href: "/free-52-weeks"
+  // },
   // {
   //   icon: Swords,
   //   label: "Challenges",

@@ -1,5 +1,4 @@
-
-"use client"
+"use client";
 import CourseProgress from "@/components/course-progress";
 import PaymentProgress from "@/components/paymentProgress";
 import { CourseActioDropdownMenu } from "./action-dropdown-menu";
@@ -7,10 +6,14 @@ import { CourseChaptersUserProgressType } from "../../../../../../../actions/get
 import Heading from "@/components/heading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "./chapter-sessions";
-import { Chapter, Scholarship } from "@prisma/client";
-import useIsPreviousChapterComplete from "../../../../../../../hooks/useIsPreviousChapterComplete";
-import useChapterprogressPercentage from "../../../../../../../hooks/useChapterprogressPercentage";
 import { SidebarChapter } from "../../../combo/[courseId]/child/_components/course-sidebar";
+import { useEffect, useState } from "react";
+import { SubscriptionType } from "../../../../../../../actions/getCourseSubscription";
+import toast from "react-hot-toast";
+import axios from "axios";
+import SubscriptionDetails from "../../../components/subscription-details";
+import { SingleCourseEnrollButton } from "./single-course-enroll-button";
+import { SubscriptionButton } from "../../../components/subscription-button";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -21,12 +24,45 @@ export type CourseSidebarProps = {
 function SingleCourseMobileSidebar({
   course,
   progressPercentage,
-  scholarship,
 }: {
   course: CourseChaptersUserProgressType;
-  scholarship: Scholarship | null;
   progressPercentage: number;
 }) {
+  const [subscription, setSubscription] = useState<
+    SubscriptionType | undefined | null
+  >(undefined);
+  const [purchasePercentage, setPurchasePercentage] = useState<
+    number | undefined
+  >(undefined);
+
+  const [paidPositions, setPaidPositions] = useState<number[]>([]);
+
+  const fetchSubscription = async () => {
+    try {
+      const res = await axios.get(`/api/courses/${course.id}/subscription`);
+
+     
+      if (res.data) {
+        setSubscription(res.data);
+      } else {
+        const res = await axios.get(
+          `/api/courses/${course.id}/purchase-percentage`,
+        );
+        setPurchasePercentage(res.data);
+
+        const resPaid = await axios.get(
+          `/api/courses/${course.id}/paid-chapters-positions`,
+        );
+        setPaidPositions(resPaid.data);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubscription();
+  }, []);
 
 
   return (
@@ -45,7 +81,32 @@ function SingleCourseMobileSidebar({
             <Skeleton className="w-1 h-1" />
           )}
         </div>
-        {!scholarship && <PaymentProgress size="sm" courseId={course.id} />}
+        {purchasePercentage !== undefined && (
+          <PaymentProgress courseId={course.id} size="sm" />
+        )}
+
+        {subscription && (
+         
+          <SubscriptionDetails
+            maxChapters={subscription.maxChapters}
+            expiresAt={new Date(subscription.expiringDate)}
+          />
+        )}
+
+        {/* Payment button */}
+        {!subscription && purchasePercentage !== undefined && purchasePercentage < 100 && (
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <SingleCourseEnrollButton
+              courseId={course.id}
+              coursePrice={course.price!}
+              purchasePercentage={purchasePercentage || 0}
+            />
+            <SubscriptionButton
+              courseId={course.id}
+              subscriptionPrice={course.subscriptionPrice || 10000}
+            />
+          </div>
+        )}
 
         <div className="mt-10">
           {progressPercentage !== undefined ? (
@@ -58,14 +119,12 @@ function SingleCourseMobileSidebar({
       {course ? (
         <>
           {course.chapters.map((chapter) => {
-            const prevChapter = course.chapters[chapter.position - 1];
-           
             return (
               <MobileChapter
-              courseId={course.id}
+                courseId={course.id}
                 key={chapter.id}
                 chapter={chapter}
-                prevChapter={prevChapter}
+                paidFor={paidPositions?.includes(chapter.position)}
               />
             );
           })}
@@ -81,23 +140,19 @@ export default SingleCourseMobileSidebar;
 
 function MobileChapter({
   chapter,
-  prevChapter,courseId
+  courseId,
+  paidFor,
 }: {
   chapter: SidebarChapter;
-  prevChapter: Chapter;courseId:string
+  courseId: string;
+  paidFor: boolean;
 }) {
-  const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
-
-  const {chapterprogressPercentage} = useChapterprogressPercentage(chapter.courseId,chapter.id)
-
   return (
     <ChapterAndSessions
-    courseId={courseId}
+      courseId={courseId}
       chapter={chapter}
       key={chapter.id}
-      previousChapter={prevChapter}
-      previousUserChapterComplete={IsPreviousChapterComplete}
-      chapterProgressPercentage={chapterprogressPercentage}
+      paidFor={paidFor}
     />
   );
 }

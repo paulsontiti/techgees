@@ -7,46 +7,62 @@ import CourseCompletedProgress from "./_components/course-completed-progress";
 import { SingleCourseEnrollButton } from "./_components/single-course-enroll-button";
 import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
 import { getUserCookie } from "@/lib/get-user-cookie";
-import { getScholarshipByCourseId } from "../../../../../../actions/getScholarshipByCourseId";
+import { SubscriptionButton } from "../../components/subscription-button";
+import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
+import { PurchaseType } from "@prisma/client";
 
 async function CourseIdPage({
   params: { courseId },
-  searchParams: { reference, redirectUrl },
+  searchParams: { reference, redirectUrl, purchaseType },
 }: {
   params: { courseId: string };
-  searchParams: { reference: string; redirectUrl: string };
+  searchParams: {
+    reference: string;
+    redirectUrl: string;
+    purchaseType: PurchaseType;
+  };
 }) {
   const userId = await getUserCookie();
+  if (!userId) return redirect("/login");
 
   const { course, error } = await getCourseChaptersUserProgress(
     userId!,
-    courseId
+    courseId,
   );
-
   if (error) return <ErrorPage name={error.name} />;
 
-  const { scholarship, error: schCourseError } =
-    await getScholarshipByCourseId(courseId);
-
-  if (schCourseError) return <ErrorPage name={schCourseError.name} />;
+  // const { purchasePercentage, error: percentageErr } =
+  //   await getPurchasePercentage(courseId, userId as string);
+  // if (percentageErr) return <ErrorPage name={percentageErr.name} />;
 
   if (!course) return redirect("/dashboard");
 
-  const url = process.env.WEB_URL!;
-
   return (
     <div className="flex flex-col gap-4">
-      <VerifyPayment redirectUrl={redirectUrl} reference={reference} />
+      <VerifyPayment
+        redirectUrl={redirectUrl}
+        reference={reference}
+        userId={userId}
+        courseId={courseId}
+        purchaseType={purchaseType}
+      />
       <CourseCompletedProgress courseId={courseId} />
 
-      <SingleCourseEnrollButton
-                courseId={courseId}
-                scholarship={scholarship}
-                userId={userId!}
-                url={url}
-              />
-      
-      <CourseDetails scholarshipCourse={!!scholarship} course={course} />
+      {/* {purchasePercentage < 100 && (
+        <div className="flex flex-col md:flex-row gap-4">
+          <SingleCourseEnrollButton
+            courseId={courseId}
+            coursePrice={course.price!}
+            purchasePercentage={purchasePercentage}
+          />
+          <SubscriptionButton
+            courseId={courseId}
+            subscriptionPrice={course.subscriptionPrice || 10000}
+          />
+        </div>
+      )} */}
+
+      <CourseDetails course={course} />
     </div>
   );
 }

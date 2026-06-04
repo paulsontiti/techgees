@@ -7,11 +7,17 @@ import { CourseChaptersUserProgressType } from "../../../../../../../actions/get
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChapterAndSessions } from "./chapter-sessions";
 import { SingleCourseEnrollButton } from "./single-course-enroll-button";
-import { Scholarship } from "@prisma/client";
-import { getChapterProgress } from "../../../../../../../actions/getChapterProgress";
-import ErrorPage from "@/components/error";
-import { getUserChapterProgress } from "../../../../../../../actions/getUserChapterProgress";
 
+import ErrorPage from "@/components/error";
+
+import { getPurchasePercentage } from "../../../../../../../actions/getPurchasePercentage";
+import {
+  getCourseSubscription,
+  SubscriptionType,
+} from "../../../../../../../actions/getCourseSubscription";
+import { getPaidChapterPositions } from "../../../../../../../actions/getPaidChapterPositions";
+import { SubscriptionButton } from "../../../components/subscription-button";
+import SubscriptionDetails from "../../../components/subscription-details";
 
 export type CourseSidebarProps = {
   progressPercentage: number;
@@ -23,16 +29,37 @@ export type CourseSidebarProps = {
 async function CourseSidebar({
   course,
   progressPercentage,
-  scholarship,
-  url,
-  userId
+  userId,
 }: {
   course: CourseChaptersUserProgressType;
-  scholarship: Scholarship | null;
-  url: string;
   userId: string;
   progressPercentage: number;
 }) {
+  let subscription: SubscriptionType = null;
+  let purchasePercentage;
+  let paidPositions: number[] = [];
+  try {
+    subscription = await getCourseSubscription(course.id, userId);
+    if (subscription) {
+      for (let i = 0; i < (subscription?.maxChapters || 30); i++) {
+        paidPositions.push(i);
+      }
+    }
+  } catch (error: any) {
+    if (error) return <ErrorPage name={error.name} />;
+  }
+
+  if (!subscription) {
+    const data = await getPurchasePercentage(course.id, userId as string);
+    purchasePercentage = data.purchasePercentage;
+    if (data.error) return <ErrorPage name={data.error.name} />;
+
+    const paid = await getPaidChapterPositions(course.id, purchasePercentage);
+    paidPositions = paid.paidPositions;
+
+    if (paid.error) return <ErrorPage name={paid.error.name} />;
+  }
+
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b">
@@ -46,17 +73,32 @@ async function CourseSidebar({
           <CourseActioDropdownMenu courseId={course.id} />
         </div>
 
-        {!scholarship && <PaymentProgress courseId={course.id} size="sm" />}
+        {purchasePercentage !== undefined && (
+          <PaymentProgress courseId={course.id} size="sm" />
+        )}
 
-        {/* Payment button */}
-        <div className="my-2">
-          <SingleCourseEnrollButton
-            courseId={course.id}
-            scholarship={scholarship}
-            userId={userId}
-            url={url}
+        {subscription && (
+          <SubscriptionDetails
+            maxChapters={subscription.maxChapters}
+            expiresAt={subscription.expiringDate}
           />
-        </div>
+        )}
+        {/* Payment button */}
+        {!subscription &&
+          purchasePercentage !== undefined &&
+          purchasePercentage < 100 && (
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
+              <SingleCourseEnrollButton
+                courseId={course.id}
+                coursePrice={course.price!}
+                purchasePercentage={purchasePercentage || 0}
+              />
+              <SubscriptionButton
+                courseId={course.id}
+                subscriptionPrice={course.subscriptionPrice || 10000}
+              />
+            </div>
+          )}
 
         <div className="mt-10">
           {progressPercentage !== undefined ? (
@@ -69,24 +111,20 @@ async function CourseSidebar({
       {course ? (
         <>
           {course.chapters.map(async (chapter) => {
-            const prevChapter = course.chapters[chapter.position - 1];
-            //get previous chapter user progress
-                 const { userChapterProgress: previousUserChapterProgress, error: progressError } =
-                 await getUserChapterProgress(userId, prevChapter?.id ?? "")
-                 if (progressError) return <ErrorPage name={progressError.name} key={progressError.name}/>;
+            //if there is subscription, then all chapters are paid for the duration of the subscription
+            const paidFor = paidPositions.includes(chapter.position);
 
-            const { progressPercentage: chapterProgressPercentage, error } =
-              await getChapterProgress(userId, chapter.id);
-            if (error) return <ErrorPage name={error.name} key={error.name}/>;
-         
             return (
               <ChapterAndSessions
-              courseId={course.id}
+                courseId={course.id}
                 chapter={chapter}
                 key={chapter.id}
-                previousChapter={prevChapter}
-                previousUserChapterComplete={previousUserChapterProgress?.isCompleted || false}
-                chapterProgressPercentage={chapterProgressPercentage}
+                paidFor={paidFor}
+                // previousChapter={prevChapter}
+                // previousUserChapterComplete={
+                //   previousUserChapterProgress?.isCompleted || false
+                // }
+                // chapterProgressPercentage={chapterProgressPercentage}
               />
             );
           })}

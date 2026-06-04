@@ -5,15 +5,12 @@ import { Menu } from "lucide-react";
 import { useSheetStore } from "../../../../../../../store/sheet-store";
 import SingleCourseMobileSidebar from "./single-course-mobile-sidebar";
 import { CourseChaptersUserProgressType } from "../../../../../../../actions/getCourseChaptersUserProgress";
-import { Scholarship } from "@prisma/client";
 
 function SingleCourseMenuBar({
   course,
   progressPercentage,
-  scholarship
 }: {
   course: CourseChaptersUserProgressType;
-  scholarship: Scholarship | null;
   progressPercentage: number;
 }) {
   const { openSheet, closeSheet, isOpen } = useSheetStore();
@@ -34,7 +31,6 @@ p-0 bg-white w-11/12"
       >
         <SingleCourseMobileSidebar
           course={course}
-          scholarship={scholarship}
           progressPercentage={progressPercentage}
         />
       </SheetContent>

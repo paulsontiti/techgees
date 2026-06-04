@@ -4,7 +4,7 @@ import { UserProgress } from "@prisma/client";
 
 
 interface ReturnValue {
-    userChapterProgress: UserProgress | null,
+    userChapterProgress: {isCompleted:boolean} | null,
     error: Error | null
 }
 
@@ -26,6 +26,8 @@ export const getUserChapterProgress = async (userId: string, chapterId: string):
             where: {
                 userId,
                 chapterId
+            },select:{
+                isCompleted:true
             }
         })
 

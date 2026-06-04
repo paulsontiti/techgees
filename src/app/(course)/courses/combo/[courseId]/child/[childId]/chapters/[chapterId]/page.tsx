@@ -24,7 +24,6 @@ async function ChapterIdPage({
             <ChapterProgress chapterId={chapterId} />
             <ChapterDetails 
             chapterDetails={chapterDetails}
-            onScholarship={onScholarship}
             chapterId={chapterId} courseId={childId} isChildCourse={true} />
         </div>
     );

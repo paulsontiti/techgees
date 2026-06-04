@@ -13,7 +13,6 @@ export const updateCommunityPayment = async (): Promise<ReturnValue> => {
     const purchase = await db.purchase.findFirst({
       where: {
         userId,
-        type: "Community",
       },
       select: {
         courseId: true,

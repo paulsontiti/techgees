@@ -1,24 +1,26 @@
 import { db } from "@/lib/db";
 
-interface ReturnValue {
+interface Prices {
   price: number;
-  error: Error | null;
+  subscriptionPrice: number;
 }
 
-
-
-export const getCoursePrice = async (courseId: string): Promise<ReturnValue> => {
+export const getCoursePrices = async (courseId: string): Promise<Prices> => {
   try {
     const course = await db.course.findUnique({
       where: {
         id: courseId,
-      },select:{
-        price:true
-      }
+      },
+      select: {
+        price: true,
+        subscriptionPrice: true,
+      },
     });
-    const price = course?.price!
-    return { price, error: null };
+    const price = course?.price!;
+    const subscriptionPrice = course?.subscriptionPrice!;
+
+    return { price, subscriptionPrice };
   } catch (error: any) {
-    return { price:0, error };
+    throw new Error(error.message);
   }
 };

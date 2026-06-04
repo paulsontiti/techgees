@@ -1,10 +1,7 @@
 
 import React from "react";
 import ChapterProgress from "./_components/chapter-progress";
-import PurchaseWarning from "./_components/purchase-warning";
 import ChapterDetails from "./_components/chapter-details";
-import VerifyPayment from "@/app/(course)/courses/components/verify-payment";
-import { isOnScholarship } from "../../../../../../../../actions/isOnScholarship";
 import ErrorPage from "@/components/error";
 import { getChapterDetails } from "../../../../../../../../actions/getChapterdetails";
 
@@ -16,8 +13,7 @@ import { getChapterDetails } from "../../../../../../../../actions/getChapterdet
   searchParams: { reference: string,redirectUrl:string };
 }) {
 
-  const {onScholarship,error} = await isOnScholarship(courseId);
-  if(error) return <ErrorPage name={error.name}/>
+
 
   const {chapterDetails,error:chapterErr} = await getChapterDetails(chapterId);
   if(chapterErr) return <ErrorPage name={chapterErr.name}/>
@@ -26,14 +22,13 @@ import { getChapterDetails } from "../../../../../../../../actions/getChapterdet
   return (
     <div>
       
-      <VerifyPayment redirectUrl={redirectUrl} reference={reference}/>
+      {/* <VerifyPayment redirectUrl={redirectUrl} reference={reference}/> */}
      <ChapterProgress chapterId={chapterId}/>
-      {
+      {/* {
         !onScholarship && <PurchaseWarning chapterId={chapterId}/>
-      }
+      } */}
      <ChapterDetails
      chapterDetails={chapterDetails}
-     onScholarship={onScholarship}
      chapterId={chapterId} courseId={courseId}/>
     </div>
   );

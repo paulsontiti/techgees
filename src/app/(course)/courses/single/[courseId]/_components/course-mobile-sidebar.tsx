@@ -9,10 +9,8 @@ import { Scholarship } from '@prisma/client';
 
  async function CourseMobileSidebar({
    course,progressPercentage,
-   scholarship
  }: {
-   course: CourseChaptersUserProgressType;
-scholarship: Scholarship | null,progressPercentage:number,
+   course: CourseChaptersUserProgressType;progressPercentage:number,
  }) {
 
 
@@ -20,7 +18,6 @@ scholarship: Scholarship | null,progressPercentage:number,
     return (
        <SingleCourseMenuBar
      course={course}
-            scholarship={scholarship}
             progressPercentage={progressPercentage}
            
        />

@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
 import { getTotalAmountPaidForCourse } from "./getTotalAmountPaidForCourse";
-import { updateCommunityPayment } from "./updateCommunityPayment";
 
 type ReturnValue = {
   purchasePercentage: number,
@@ -10,7 +9,6 @@ type ReturnValue = {
 export const getPurchasePercentage = async (courseId: string, userId: string,):
   Promise<ReturnValue> => {
   try {
-    await updateCommunityPayment();
     
     const { totalAmountPaid, error } = await getTotalAmountPaidForCourse(courseId)
     if (error) throw new Error(error.message)
@@ -25,10 +23,8 @@ export const getPurchasePercentage = async (courseId: string, userId: string,):
         price: true
       }
     })
-
     const purchasePercentage = coursePurchase ?
-      ( (totalAmountPaid / coursePurchase.price!) * 100) : 0
-
+    ( (totalAmountPaid / coursePurchase.price!) * 100) : 0
 
 
     return { purchasePercentage, error: null }

@@ -9,7 +9,7 @@ interface ReturnValue {
 }
 
 export const getTotalAmountPaidForCourse = async (
-  courseId: string
+  courseId: string,
 ): Promise<ReturnValue> => {
   try {
     const userId = (await getUserCookie()) || "";
@@ -18,42 +18,41 @@ export const getTotalAmountPaidForCourse = async (
       where: {
         userId,
         courseId,
-        //payment_status: "success",
+        payment_status: "success",
       },
       select: {
         reference: true,
         amount: true,
-        payment_status:true
+        payment_status: true,
       },
     });
 
     let paymentAmounts: number[] = []; //payments.map((p) => p.amount);
 
     for (let payment of payments) {
-      if(payment.payment_status !== "success"){
-        const { verifiedPayment, error } = await verifyPayStackPayment(payment.reference)
-
+      if (payment.payment_status !== "success") {
+        const { verifiedPayment, error } = await verifyPayStackPayment(
+          payment.reference,
+        );
         if (!error) {
-            if (verifiedPayment.data.status === "success") {
-              await creditReferrers(payment.reference, payment.amount);
+          if (verifiedPayment.data.status === "success") {
+            await creditReferrers(payment.reference, payment.amount);
 
-                paymentAmounts.push(payment.amount)
+            paymentAmounts.push(payment.amount);
 
-                await db.paystackPayment.update({
-                    where: {
-                        reference: payment.reference
-                    },
-                    data: {
-                        payment_status: verifiedPayment.data.status
-                    }
-                })
-            }
+            await db.paystackPayment.update({
+              where: {
+                reference: payment.reference,
+              },
+              data: {
+                payment_status: verifiedPayment.data.status,
+              },
+            });
+          }
         }
-      }else if(payment.payment_status === "success"){
-        paymentAmounts.push(payment.amount)
+      } else if (payment.payment_status === "success") {
+        paymentAmounts.push(payment.amount);
       }
-        
-
     }
 
     //get wallet purchases for this course

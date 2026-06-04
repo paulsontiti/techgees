@@ -1,42 +1,37 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import PriceForm from './_components/price-form';
-import { DBUser } from '@prisma/client';
-import { Skeleton } from '@/components/ui/skeleton';
-import toast from 'react-hot-toast';
-import axios from 'axios';
-import PaymentOption from '../../_component/payment-option';
+import PriceForm from "./_components/price-form";
+import { Skeleton } from "@/components/ui/skeleton";
+import PaymentOption from "../../_component/payment-option";
+import { getUser } from "../../../../../../actions/getUser";
+import { redirect } from "next/navigation";
+import ErrorPage from "@/components/error";
 
- function CoursePaymentPage(
-    { params: { courseId} }: {
-        params: { courseId: string}
-    }
+async function CoursePaymentPage(
+  {
+    params: { courseId },
+  }: {
+    params: { courseId: string };
+  },
+ 
 ) {
+ 
+  const { user, error } = await getUser();
+  if (error) return <ErrorPage name={error.name} />;
+  if (!user) return redirect("/dashboard");
 
-    const [user,setUser] = useState<DBUser | undefined>(undefined);
+  const redirectUrl = `/courses/single/${courseId}`;
 
-    useEffect(()=>{
-        (
-            async()=>{
-                try{
-                    const res = await axios.get(`/api/user`);
-                    setUser(res.data);
-                }catch(err:any){
-                    toast.error(err.message);
-                }
-            }
-        )()
-    },[]);
-
- const redirectUrl = `/courses/single/${courseId}`
-
-    return (
-        <PaymentOption courseId={courseId} redirectUrl={redirectUrl}>
-        {user === undefined ? <Skeleton className='w-[350px] h-60 my-2'/> :  
-      <PriceForm email={user.email || undefined} courseId={courseId}/>}
-   </PaymentOption>
-       
-    )
+  return (
+    <PaymentOption courseId={courseId} redirectUrl={redirectUrl}>
+      {user === undefined ? (
+        <Skeleton className="w-[350px] h-60 my-2" />
+      ) : (
+        <PriceForm
+          email={user.email || undefined}
+          courseId={courseId}
+        />
+      )}
+    </PaymentOption>
+  );
 }
 
-export default CoursePaymentPage
+export default CoursePaymentPage;

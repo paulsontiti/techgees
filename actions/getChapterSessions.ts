@@ -1,8 +1,10 @@
 import { db } from "@/lib/db";
-import { Session } from "@prisma/client";
 
 interface ReturnValue {
-    sessions: Session[],
+    sessions: { id:string,
+            isPublished:boolean,
+            chapterId:string,
+            title:string}[],
     error: Error | null
 }
 /**
@@ -16,6 +18,11 @@ export const getChaptersSessions = async (chapterId:string):
       const sessions = await db.session.findMany({
         where:{
             chapterId
+        },select:{
+            id:true,
+            isPublished:true,
+            chapterId:true,
+            title:true
         },
         orderBy:{
             position:"asc"

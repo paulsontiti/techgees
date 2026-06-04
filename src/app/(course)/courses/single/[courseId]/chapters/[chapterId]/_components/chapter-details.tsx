@@ -17,13 +17,11 @@ function ChapterDetails({
   courseId,
   chapterId,
   isChildCourse,
-  onScholarship,
   chapterDetails,
 }: {
   courseId: string;
   chapterId: string;
   isChildCourse?: boolean;
-  onScholarship: boolean;
   chapterDetails: ChapterDetailsType | null;
 }) {
   // const [completedLastSession, setCompletedLastSession] = useState<
@@ -75,7 +73,7 @@ function ChapterDetails({
   // }
 
   //logic for showing enroll button
-  const showEnrollButton = !isChildCourse && !onScholarship;
+ // const showEnrollButton = !isChildCourse && !onScholarship;
 
 
   return (
@@ -86,11 +84,11 @@ function ChapterDetails({
       <BackButton label="course page" url={`/courses/single/${courseId}`} />
       <div className="p-4 flex flex-col md:flex-row items-center justify-between">
         <h2 className="text-2xl font-semibold mb-2">{chapter?.title}</h2>
-        <SingleChapterEnrollButton
+        {/* <SingleChapterEnrollButton
           showButton={showEnrollButton}
           courseId={courseId}
           chapterId={chapterId}
-        />
+        /> */}
       </div>
       <Separator />
       <div>

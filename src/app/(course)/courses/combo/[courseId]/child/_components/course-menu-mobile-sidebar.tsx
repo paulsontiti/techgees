@@ -146,12 +146,10 @@ function MobileChapter({
   prevChapter,parentId
 }: {
   chapter: SidebarChapter;
-  prevChapter: Chapter;
+  prevChapter: SidebarChapter;
   parentId:string
 }) {
   const {IsPreviousChapterComplete} = useIsPreviousChapterComplete(chapter.courseId,chapter.id)
-
-  const {chapterprogressPercentage} = useChapterprogressPercentage(chapter.courseId,chapter.id)
 
   return (
     <ChapterAndSessions
@@ -159,7 +157,6 @@ function MobileChapter({
       key={chapter.id}
       previousChapter={prevChapter}
       previousUserChapterComplete={IsPreviousChapterComplete}
-      chapterProgressPercentage={chapterprogressPercentage}
       parentId={parentId}
     />
   );

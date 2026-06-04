@@ -49,18 +49,20 @@ model ChallengeParticipants {
 }
 
 model Course {
-  id               String  @id @default(uuid()) @map("_id")
-  userId           String
-  title            String
-  subTitle         String?
-  description      String?
-  imageUrl         String?
-  overviewVideoUrl String?
-  price            Float?
-  comboDiscount    Float?
-  promoDiscount    Float?
-  isPublished      Boolean @default(false)
-  isFree           Boolean @default(false)
+  id                      String  @id @default(uuid()) @map("_id")
+  userId                  String
+  title                   String
+  subTitle                String?
+  description             String?
+  imageUrl                String?
+  overviewVideoUrl        String?
+  price                   Float?
+  subscriptionPrice       Float?
+  maxSubscriptionChapters Int     @default(30)
+  comboDiscount           Float?
+  promoDiscount           Float?
+  isPublished             Boolean @default(false)
+  isFree                  Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -68,8 +70,6 @@ model Course {
   courseCategories CourseCategory[]
   chapters         Chapter[]
   comments         Comment[]
-
-
 
   userProgresses   UserProgress[]
   questions        Question[]
@@ -92,7 +92,8 @@ model Course {
   walletPayments  WalletPayment[]
   challenges      Challenge[]
 
-  scholarships Scholarship[]
+  scholarships  Scholarship[]
+  subscriptions Subscription[]
 
   @@fulltext([title])
 }
@@ -231,8 +232,6 @@ model Chapter {
   sessions       Session[]
   comments       Comment[]
 
-
-
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   questions         Question[]
@@ -260,8 +259,6 @@ model Session {
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-
 
   userProgresses UserProgress[]
 
@@ -561,14 +558,15 @@ model CourseTestScore {
 }
 
 model PaystackPayment {
-  id             String  @id @default(uuid()) @map("_id")
+  id             String       @id @default(uuid()) @map("_id")
   reference      String
   amount         Float
-  payment_status String  @default("pending")
+  payment_status String       @default("pending")
+  purchaseType   PurchaseType @default(OneTime)
   userId         String
-  user           DBUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           DBUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId       String?
-  course         Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course         Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   scholarshipId String?
   scholarship   Scholarship? @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
@@ -676,6 +674,7 @@ model DBUser {
   scholarshipStudents         ScholarshipStudents[]
   scholarship                 Scholarship[]
   scholarshipStudentsReferers ScholarshipStudents[]       @relation("scholarshipReferer")
+  subscriptions               Subscription[]
 
   @@unique([userId])
 }
@@ -724,9 +723,7 @@ enum AttatchmentType {
 }
 
 enum PurchaseType {
-  Community
   Subscription
-  Installment
   OneTime
 }
 
@@ -791,16 +788,34 @@ model CourseCategory {
 }
 
 model Purchase {
-  id       String @id @default(uuid()) @map("_id")
+  id       String       @id @default(uuid()) @map("_id")
   price    Float
   userId   String
   courseId String
-  type PurchaseType @default(OneTime)
+  type     PurchaseType @default(OneTime)
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([courseId, userId])
+  @@index([courseId])
+}
+
+model Subscription {
+  id          String @id @default(uuid()) @map("_id")
+  price       Float
+  userId      String
+  courseId    String
+  maxChapters Int
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user   DBUser @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  expiringDate DateTime
+  updatedAt    DateTime @updatedAt
 
   @@unique([courseId, userId])
   @@index([courseId])

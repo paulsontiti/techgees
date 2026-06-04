@@ -3,15 +3,12 @@ import { NavbarRoutes } from '@/components/navbar-routes'
 import CourseMobileSidebar from './course-mobile-sidebar'
 import { bgPrimaryColor } from '@/utils/colors'
 import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress';
-import { Scholarship } from '@prisma/client';
 
 
 async function CourseNavbar({
     course,progressPercentage,
-    scholarship
   }: {
-    course: CourseChaptersUserProgressType;
- scholarship: Scholarship | null,progressPercentage:number,
+    course: CourseChaptersUserProgressType;progressPercentage:number,
   }) {
 
 
@@ -20,7 +17,6 @@ async function CourseNavbar({
      text-white ${bgPrimaryColor} shadow-sm`}>
       <CourseMobileSidebar
         course={course}
-              scholarship={scholarship}
             progressPercentage={progressPercentage}
            
 

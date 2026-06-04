@@ -50,7 +50,7 @@ export const getCourseWithProgressChapters = async ({
         include: {
           chapters: {
             where: {
-              //isPublished: true,
+              isPublished: true,
             },
             select: {
               id: true,
@@ -77,7 +77,7 @@ export const getCourseWithProgressChapters = async ({
         include: {
           chapters: {
             where: {
-              //isPublished: true,
+              isPublished: true,
             },
             select: {
               id: true,

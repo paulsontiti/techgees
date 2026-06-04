@@ -12,8 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Wallet } from "lucide-react";
-import { textPrimaryColor } from "@/utils/colors";
+import { ChevronDown } from "lucide-react";
 import PaystackIcon from "@/components/paystack-icon";
 import WalletPaymentForm from "./wallet-payment-form";
 
@@ -43,17 +42,6 @@ function PaymentOption({
           <DropdownMenuLabel>Select payment option</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup className="flex flex-col gap-2">
-            {/* <DropdownMenuItem
-              onClick={() => {
-                setWallet(true);
-                setPaystack(false);
-              }}
-            >
-              Pay from wallet
-              <DropdownMenuShortcut>
-                <Wallet className={`w-4 h-4 ${textPrimaryColor}`} />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem> */}
             <DropdownMenuItem
               onClick={() => {
                 setPaystack(true);
