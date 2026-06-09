@@ -48,13 +48,13 @@ course
        
    
         
-  <div className="flex items-center justify-center gap-x-2 mt-8">
-  <Button
+  <div className="flex items-center flex-col justify-center gap-2 mt-8">
+  <Button className="w-full"
       
-       >Start for Free</Button>
+       >Subscribe for {formatPrice(course.subscriptionPrice ?? 10000)}/month</Button>
  
-            <Button  variant="outline"
-       >Learn more</Button>
+            <Button  variant="outline" className="w-full"
+       >Buy for {formatPrice(course.price!)}</Button>
   </div>
       </div>
     </div>
