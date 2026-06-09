@@ -2,6 +2,7 @@
 
 
 import PageLoader from "@/components/page-loader";
+import StartFreeClassButton from "@/components/start-free-class-button";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
 import { Course } from "@prisma/client";
@@ -49,9 +50,10 @@ course
         
   <div className="flex items-center justify-center gap-x-2 mt-8">
   <Button
-       variant="outline"
-       >{formatPrice(course.price ?? 0)}</Button>
-            <Button
+      
+       >Start for Free</Button>
+ 
+            <Button  variant="outline"
        >Learn more</Button>
   </div>
       </div>

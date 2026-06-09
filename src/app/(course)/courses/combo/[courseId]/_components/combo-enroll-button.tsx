@@ -50,7 +50,7 @@ export const ComboCourseEnrollButton = ({ courseId }: { courseId: string }) => {
     return <Skeleton className="w-44 h-10" />;
 
   return (
-    <div>
+    <div className="w-full">
       {purchasePercentage !== 100 && (
         <Button
           onClick={() => {
@@ -61,7 +61,7 @@ export const ComboCourseEnrollButton = ({ courseId }: { courseId: string }) => {
         >
           <Link href={`/payment/combo/${courseId}`}>
             {purchasePercentage === 0
-              ? `Enroll for ${formatPrice(coursePrice)}`
+              ? `Buy for ${formatPrice(coursePrice)}`
               : `Pay ${formatPrice(
                   ((100 - purchasePercentage) / 100) *
                     (!!coursePurchase ? coursePurchase?.price! : coursePrice)

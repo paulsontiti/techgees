@@ -12,6 +12,7 @@ import axios from 'axios'
 import CoursesList from './_components/combo-courses-list'
 import { getCourse } from '../../../../../../actions/getCourse'
 import { getUserCookie } from '@/lib/get-user-cookie'
+import { SubscriptionButton } from '../../components/subscription-button'
 
 async function ComboCoursePage(
     { params: { courseId }, searchParams: { reference, redirectUrl,purchaseType }, }: {
@@ -37,13 +38,16 @@ async function ComboCoursePage(
         flex flex-col  mx-auto pb-20"
                         >
 
-                            <div className="p-4  flex flex-col md:flex-row items-center justify-between">
+                            <div className="p-4  flex flex-col md:flex-row items-center gap-4 justify-between">
                                 {course?.title === undefined ? <Skeleton className='w-full h-10 m-2'/> : 
                                 <h2 className="text-2xl font-semibold mb-2">{course.title}</h2>}
 
-                                <ComboCourseEnrollButton
+                               <div className='flex flex-col md-flex-row gap-2'>
+                                 <ComboCourseEnrollButton
                                     courseId={courseId}
                                 />
+                                <SubscriptionButton courseId={courseId} subscriptionPrice={course?.subscriptionPrice ?? 10000}/>
+                               </div>
                             </div>
                             <Separator />
                             <div className='bg-white p-2 my-2'>
