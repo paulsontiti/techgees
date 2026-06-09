@@ -61,7 +61,7 @@ function SignInForm({ redirectUrl }: { redirectUrl?: string }) {
         toast.success(response.data.message);
         updateUser(response.data.user.userId);
 
-        if (redirectUrl) {
+        if (redirectUrl !== undefined) {
           router.push(redirectUrl);
         } else {
           router.push("/");
