@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Loader from "@/components/loader";
 
-function StartFreeClassButton() {
+function StartFreeClassButton({url}:{url:string}) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -14,7 +14,7 @@ function StartFreeClassButton() {
     <Button
       onClick={() => {
         setLoading(true);
-        router.push(`/courses`);
+        router.push(url);
       }}
       variant="secondary"
       className="mb-8 w-full  md:w-[250px] h-12 rounded-full flex 

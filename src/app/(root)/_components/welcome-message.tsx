@@ -37,7 +37,7 @@ export const WelcomeMessage = () => {
             className="w-full md:w-auto flex flex-col md:flex-row 
            items-center gap-y-2 gap-x-2 mt-16 px-2 "
           >
-            <StartFreeClassButton />
+            <StartFreeClassButton url="/courses" />
           </div>
         </div>
       </div>
