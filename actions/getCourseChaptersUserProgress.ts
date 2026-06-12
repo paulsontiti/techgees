@@ -24,7 +24,7 @@ export const getCourseChaptersUserProgress = async (
       },
       include: {
         chapters: {
-          where: { isPublished: true },
+          //where: { isPublished: true },
           include: {
             userProgresses: {
               where: {
@@ -33,7 +33,7 @@ export const getCourseChaptersUserProgress = async (
             },
             sessions: {
               where: {
-                isPublished:true
+                //isPublished:true
               },
               include:{
                 userProgresses: {
