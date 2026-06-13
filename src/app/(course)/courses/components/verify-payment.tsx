@@ -10,10 +10,16 @@ import toast from "react-hot-toast";
 
 function VerifyPayment({
   reference,
-  redirectUrl,userId,courseId,purchaseType
+  redirectUrl,
+  userId,
+  courseId,
+  purchaseType,
 }: {
   reference?: string;
-  redirectUrl: string;userId:string,courseId:string,purchaseType:PurchaseType
+  redirectUrl: string;
+  userId: string;
+  courseId: string;
+  purchaseType: PurchaseType;
 }) {
   const [payment, setPayment] = useState<
     { amount: number; status: string } | undefined
@@ -25,9 +31,12 @@ function VerifyPayment({
       if (reference) {
         try {
           const res = await axios.post(
-            `/api/paystack/payment/verify/${reference}`,{
-              userId,purchaseType,courseId
-            }
+            `/api/paystack/payment/verify/${reference}`,
+            {
+              userId,
+              purchaseType,
+              courseId,
+            },
           );
           setPayment(res.data);
         } catch (err: any) {

@@ -558,15 +558,17 @@ model CourseTestScore {
 }
 
 model PaystackPayment {
-  id             String       @id @default(uuid()) @map("_id")
+  id             String        @id @default(uuid()) @map("_id")
   reference      String
   amount         Float
-  payment_status String       @default("pending")
-  purchaseType   PurchaseType @default(OneTime)
+  payment_status PaymentStatus @default(pending)
+  purchaseType   PurchaseType  @default(OneTime)
   userId         String
-  user           DBUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           DBUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId       String?
-  course         Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course         Course?       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  paidAt DateTime?
 
   scholarshipId String?
   scholarship   Scholarship? @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
@@ -577,6 +579,12 @@ model PaystackPayment {
   updatedAt DateTime @updatedAt
 
   @@unique([reference])
+}
+
+enum PaymentStatus {
+  pending
+  success
+  failed
 }
 
 model Scholarship {

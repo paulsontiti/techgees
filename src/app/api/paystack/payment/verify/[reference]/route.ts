@@ -9,60 +9,115 @@ type CourseType = {
   maxSubscriptionChapters: number;
 } | null;
 
-export async function POST(
+// export async function POST(
+//   req: Request,
+//   {
+//     params: { reference }
+//   }: {
+//     params: { reference: string }
+//   },
+// ) {
+//   try {
+//     const {userId,purchaseType,courseId} = await req.json();
+//     const { verifiedPayment } = await verifyPayStackPayment(reference);
+//     let payment = null;
+
+//     if (verifiedPayment) {
+//       const verifiedAmount = verifiedPayment.data.amount / 100;
+//       const status = verifiedPayment.data.status;
+
+//       payment = {
+//         amount: verifiedAmount,
+//         status,
+//       };
+
+//       if (status === "success") {
+//         // const paystack = await db.paystackPayment.update({
+//         //   where: {
+//         //     reference,
+//         //   },
+//         //   data: {
+//         //     payment_status: status,
+//         //   },
+//         // });
+
+//         await db.paystackPayment.create({
+//           data: {
+//             reference,
+//             userId,
+//             courseId,
+//             amount: verifiedAmount,
+//             purchaseType,payment_status: status,
+//           },
+//         });
+
+//         await createPurchaseOrSubscription(userId, courseId, purchaseType);
+
+//         await creditReferrers(reference, verifiedAmount);
+//       }
+//     }
+
+//     return NextResponse.json(payment);
+//   } catch (err) {
+//     console.log("[VERIFY_PAYMENT]", err);
+//     return new NextResponse("Internal Error", {
+//       status: 500,
+//     });
+//   }
+// }
+
+// app/api/payments/verify/[reference]/route.ts
+
+import { paystack } from "@/lib/paystack";
+
+export async function GET(
   req: Request,
   {
-    params: { reference }
+    params,
   }: {
-    params: { reference: string }
+    params: Promise<{
+      reference: string;
+    }>;
   },
 ) {
   try {
-    const {userId,purchaseType,courseId} = await req.json();
-    const { verifiedPayment } = await verifyPayStackPayment(reference);
-    let payment = null;
+    const { reference } = await params;
 
-    if (verifiedPayment) {
-      const verifiedAmount = verifiedPayment.data.amount / 100;
-      const status = verifiedPayment.data.status;
-
-      payment = {
-        amount: verifiedAmount,
-        status,
-      };
-
-      if (status === "success") {
-        // const paystack = await db.paystackPayment.update({
-        //   where: {
-        //     reference,
-        //   },
-        //   data: {
-        //     payment_status: status,
-        //   },
-        // });
-
-        await db.paystackPayment.create({
-          data: {
-            reference,
-            userId,
-            courseId,
-            amount: verifiedAmount,
-            purchaseType,payment_status: status,
-          },
-        });
-
-        await createPurchaseOrSubscription(userId, courseId, purchaseType);
-
-        await creditReferrers(reference, verifiedAmount);
-      }
-    }
-
-    return NextResponse.json(payment);
-  } catch (err) {
-    console.log("[VERIFY_PAYMENT]", err);
-    return new NextResponse("Internal Error", {
-      status: 500,
+    const paystackPayment = await db.paystackPayment.findUnique({
+      where: {
+        reference,
+      },
     });
+    let userId = "";
+    let purchaseType = "";
+    let courseId = "";
+
+    userId = paystackPayment ? paystackPayment.userId : "";
+    purchaseType = paystackPayment ? paystackPayment.purchaseType : "";
+    courseId = paystackPayment ? (paystackPayment.courseId as string) : "";
+
+    const response = await paystack.get(`/transaction/verify/${reference}`);
+
+    const payment = response.data.data;
+
+    if (payment.status === "success") {
+      await db.paystackPayment.update({
+        where: {
+          reference,
+        },
+        data: {
+          payment_status: "success",
+          paidAt: new Date(),
+        },
+      });
+
+      await createPurchaseOrSubscription(userId, courseId, purchaseType);
+
+      await creditReferrers(reference, payment.amount / 100);
+    }
+    return NextResponse.json({success:true});
+  } catch (err: any) {
+    console.log(err.message);
   }
 }
 
@@ -109,35 +164,35 @@ async function createPurchase(
   courseId: string,
   course: CourseType,
 ) {
-  // const purchase = await db.purchase.findUnique({
-  //       where: {
-  //         courseId_userId: {
-  //           userId,
-  //           courseId,
-  //         },
-  //       },
-  //     });
-
-  //     if (purchase) {
-  //       await db.purchase.update({
-  //         where: {
-  //           id: purchase.id,
-  //         },
-  //         data: {
-  //           price: course?.price ?? 0,
-  //           courseId,
-  //           userId,
-  //         },
-  //       });
-  //     } else {
-  await db.purchase.create({
-    data: {
-      price: course?.price ?? 0,
-      courseId,
-      userId,
+  const purchase = await db.purchase.findUnique({
+    where: {
+      courseId_userId: {
+        userId,
+        courseId,
+      },
     },
   });
-  //}
+
+  if (!purchase) {
+    //   await db.purchase.update({
+    //     where: {
+    //       id: purchase.id,
+    //     },
+    //     data: {
+    //       price: course?.price ?? 0,
+    //       courseId,
+    //       userId,
+    //     },
+    //   });
+    // } else {
+    await db.purchase.create({
+      data: {
+        price: course?.price ?? 0,
+        courseId,
+        userId,
+      },
+    });
+  }
 }
 
 async function createPurchaseOrSubscription(

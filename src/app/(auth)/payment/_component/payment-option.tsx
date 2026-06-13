@@ -30,6 +30,8 @@ function PaymentOption({
   const [paystack, setPaystack] = useState(false);
   const [wallet, setWallet] = useState(false);
 
+  localStorage.setItem("redirectUrl", redirectUrl || "");
+
   return (
     <div className="flex flex-col gap-4 items-center justify-center">
       <DropdownMenu>
