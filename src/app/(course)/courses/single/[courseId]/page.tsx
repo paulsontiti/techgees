@@ -1,14 +1,10 @@
 import React from "react";
 import ErrorPage from "@/components/error";
 import { redirect } from "next/navigation";
-import VerifyPayment from "../../components/verify-payment";
 import CourseDetails from "./_components/course-details";
 import CourseCompletedProgress from "./_components/course-completed-progress";
-import { SingleCourseEnrollButton } from "./_components/single-course-enroll-button";
 import { getCourseChaptersUserProgress } from "../../../../../../actions/getCourseChaptersUserProgress";
 import { getUserCookie } from "@/lib/get-user-cookie";
-import { SubscriptionButton } from "../../components/subscription-button";
-import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
 import { PurchaseType } from "@prisma/client";
 
 async function CourseIdPage({
@@ -39,13 +35,13 @@ async function CourseIdPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <VerifyPayment
+      {/* <VerifyPayment
         redirectUrl={redirectUrl}
         reference={reference}
         userId={userId}
         courseId={courseId}
         purchaseType={purchaseType}
-      />
+      /> */}
       <CourseCompletedProgress courseId={courseId} />
 
       {/* {purchasePercentage < 100 && (

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 import { getUserCookie } from "@/lib/get-user-cookie";
-import { getPaidChapterPositions } from "../../../../../../actions/getPaidChapterPositions";
 import { getPurchasePercentage } from "../../../../../../actions/getPurchasePercentage";
 import { getPaidChapters } from "../../../../../../actions/getPaidChapters";
 

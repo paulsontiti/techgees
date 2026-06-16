@@ -816,7 +816,7 @@ model Subscription {
   price       Float
   userId      String
   courseId    String
-  maxChapters Int
+  //maxChapters Int
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   user   DBUser @relation(fields: [userId], references: [userId], onDelete: Cascade)
@@ -825,6 +825,6 @@ model Subscription {
   expiringDate DateTime
   updatedAt    DateTime @updatedAt
 
-  @@unique([courseId, userId])
+  //@@unique([courseId, userId])
   @@index([courseId])
 }

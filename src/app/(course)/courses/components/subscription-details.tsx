@@ -2,15 +2,13 @@ import React from "react";
 
 function SubscriptionDetails({
   expiresAt,
-  maxChapters,
 }: {
   expiresAt: Date;
-  maxChapters: number;
 }) {
   return (
     <div>
       <p>{`Your Subscription expires at - ${expiresAt.toUTCString()}`}</p>
-      <p>{`You have access to ${maxChapters} Chapters`}</p>
+      <p>{`You have Full access to this course`}</p>
     </div>
   );
 }

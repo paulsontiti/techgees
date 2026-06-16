@@ -9,10 +9,11 @@ import { useState } from "react";
 interface SubscriptionButtonProps {
   courseId: string;
   subscriptionPrice: number;
+  singleOrCombo:string
 }
 
 export const SubscriptionButton = ({
-  courseId,subscriptionPrice
+  courseId,subscriptionPrice,singleOrCombo
 }: SubscriptionButtonProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +26,7 @@ export const SubscriptionButton = ({
       size="sm"
       className="w-full md:w-auto"
     >
-      <Link href={`/payment/single/${courseId}?subscriptionPrice=${subscriptionPrice}`}>
+      <Link href={`/payment/${singleOrCombo}/${courseId}?subscriptionPrice=${subscriptionPrice}`}>
         {`Subscribe for ${formatPrice(subscriptionPrice)}`}
       </Link>
       <Loader loading={loading} />

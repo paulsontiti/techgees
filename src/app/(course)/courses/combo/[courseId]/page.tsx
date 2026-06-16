@@ -1,17 +1,16 @@
 import { Separator } from "@/components/ui/separator";
 import { ComboCourseEnrollButton } from "./_components/combo-enroll-button";
 import ComboCourseNavbar from "./_components/combo-navbar";
-import VerifyPayment from "../../components/verify-payment";
-import { Course, PurchaseType } from "@prisma/client";
+import { PurchaseType } from "@prisma/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Preview } from "@/components/preview";
 import VideoPlayer from "@/components/video-player";
-import toast from "react-hot-toast";
-import axios from "axios";
 import CoursesList from "./_components/combo-courses-list";
 import { getCourse } from "../../../../../../actions/getCourse";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { SubscriptionButton } from "../../components/subscription-button";
+import { getCourseSubscription } from "../../../../../../actions/getCourseSubscription";
+import SubscriptionDetails from "../../components/subscription-details";
 
 async function ComboCoursePage({
   params: { courseId },
@@ -26,6 +25,8 @@ async function ComboCoursePage({
 }) {
   const userId = (await getUserCookie()) as string;
   const { course } = await getCourse(courseId);
+
+  const subscription = await getCourseSubscription(courseId, userId);
 
   return (
     <div>
@@ -54,13 +55,18 @@ async function ComboCoursePage({
                   </h2>
                 )}
 
-                <div className="flex flex-col md-flex-row gap-2">
-                  <ComboCourseEnrollButton courseId={courseId} />
-                  <SubscriptionButton
-                    courseId={courseId}
-                    subscriptionPrice={course?.subscriptionPrice ?? 10000}
-                  />
-                </div>
+                {subscription ? (
+                  <SubscriptionDetails expiresAt={subscription.expiringDate} />
+                ) : (
+                  <div className="flex flex-col md-flex-row gap-2">
+                    <ComboCourseEnrollButton courseId={courseId} />
+                    <SubscriptionButton
+                      singleOrCombo="combo"
+                      courseId={courseId}
+                      subscriptionPrice={course?.subscriptionPrice ?? 10000}
+                    />
+                  </div>
+                )}
               </div>
               <Separator />
               <div className="bg-white p-2 my-2">

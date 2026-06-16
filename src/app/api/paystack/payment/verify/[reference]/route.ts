@@ -153,7 +153,7 @@ async function createSubscription(
       price: course?.subscriptionPrice || 10000,
       courseId,
       userId,
-      maxChapters: course?.maxSubscriptionChapters || 30,
+      //maxChapters: course?.maxSubscriptionChapters || 30,
       expiringDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     },
   });

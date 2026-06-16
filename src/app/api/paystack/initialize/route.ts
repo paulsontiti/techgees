@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         return new NextResponse("Unauthorized", { status: 401 });
       }
 
-  const { email, amount,courseId } = body;
+  const { email, amount,courseId,purchaseType } = body;
 
   const reference = randomUUID();
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     data: {
       reference,
       amount,
-      userId,courseId
+      userId,courseId,purchaseType
     },
   });
 

@@ -1,25 +1,24 @@
 import { db } from "@/lib/db";
 
-export type SubscriptionType = { expiringDate: Date; maxChapters: number } | null;
+export type SubscriptionType = {
+  expiringDate: Date;
+} | null;
 
 export const getCourseSubscription = async (
   courseId: string,
   userId: string,
 ): Promise<SubscriptionType> => {
   try {
-    const subscription = await db.subscription.findUnique({
+    const subscription = await db.subscription.findFirst({
       where: {
-        courseId_userId: {
-          userId,
-          courseId,
+        userId,
+        courseId,
+        expiringDate: {
+          gt: new Date(),
         },
-        expiringDate:{
-          gt: new Date()
-        }
       },
       select: {
         expiringDate: true,
-        maxChapters: true,
       },
     });
 

@@ -20,10 +20,10 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(10, {
+  amount: zod.coerce.number().min(10000, {
     message: "amount is required",
   }),
 });
@@ -35,10 +35,14 @@ function ComboPriceForm({
   email?: string;
   courseId: string;
 }) {
+  const searchParams = useSearchParams();
+
+  const subscriptionPrice = searchParams.get("subscriptionPrice");
+
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: 0,
+      amount: Number(subscriptionPrice) || 10000,
     },
   });
   if (!email) {
@@ -53,20 +57,20 @@ function ComboPriceForm({
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     try {
       // Send a POST request to your server to create a Paystack checkout session
-      const response = await axios.post("/api/paystack/initialize",
+      const response = await axios.post(
+        "/api/paystack/initialize",
         //"/api/paystack/create-checkout-session",
         {
           amount: values.amount,
           email,
           courseId,
+          purchaseType: subscriptionPrice ? "Subscription" : "OneTime",
         },
       );
 
-       const data =
-      await response.data;
+      const data = await response.data;
 
-    window.location.href =
-      data.authorization_url;
+      window.location.href = data.authorization_url;
 
       // const { authorizationUrl, reference } = response.data;
 
@@ -103,6 +107,7 @@ function ComboPriceForm({
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
                     <Input
+                      min={10000}
                       type="number"
                       step={10000}
                       disabled={isSubmitting}
@@ -119,7 +124,6 @@ function ComboPriceForm({
             }}
           />
           <div className="flex items-center gap-x-2">
-    
             <Button type="submit" disabled={!isValid || isSubmitting}>
               Pay with Paystack <Loader loading={isSubmitting} />
             </Button>

@@ -40,11 +40,11 @@ async function CourseSidebar({
   let paidPositions: number[] = [];
   try {
     subscription = await getCourseSubscription(course.id, userId);
-    if (subscription) {
-      for (let i = 0; i < (subscription?.maxChapters || 30); i++) {
-        paidPositions.push(i);
-      }
-    }
+    // if (subscription) {
+    //   for (let i = 0; i < (subscription?.maxChapters || 30); i++) {
+    //     paidPositions.push(i);
+    //   }
+    // }
   } catch (error: any) {
     if (error) return <ErrorPage name={error.name} />;
   }
@@ -79,7 +79,6 @@ async function CourseSidebar({
 
         {subscription && (
           <SubscriptionDetails
-            maxChapters={subscription.maxChapters}
             expiresAt={subscription.expiringDate}
           />
         )}
@@ -94,6 +93,7 @@ async function CourseSidebar({
                 purchasePercentage={purchasePercentage || 0}
               />
               <SubscriptionButton
+              singleOrCombo="single"
                 courseId={course.id}
                 subscriptionPrice={course.subscriptionPrice || 10000}
               />
@@ -112,7 +112,7 @@ async function CourseSidebar({
         <>
           {course.chapters.map(async (chapter) => {
             //if there is subscription, then all chapters are paid for the duration of the subscription
-            const paidFor = paidPositions.includes(chapter.position);
+            const paidFor = subscription ? true : paidPositions.includes(chapter.position);
 
             return (
               <ChapterAndSessions

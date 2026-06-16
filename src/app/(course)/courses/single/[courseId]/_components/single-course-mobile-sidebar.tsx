@@ -88,7 +88,6 @@ function SingleCourseMobileSidebar({
         {subscription && (
          
           <SubscriptionDetails
-            maxChapters={subscription.maxChapters}
             expiresAt={new Date(subscription.expiringDate)}
           />
         )}
@@ -102,6 +101,7 @@ function SingleCourseMobileSidebar({
               purchasePercentage={purchasePercentage || 0}
             />
             <SubscriptionButton
+            singleOrCombo="single"
               courseId={course.id}
               subscriptionPrice={course.subscriptionPrice || 10000}
             />
