@@ -16,7 +16,7 @@ export default  function Home() {
     return <div className="bg-[#EFF6FF]">
     <WelcomeMessage />
     <WhyGlobalGenius />
-  <MonacoEditor/>
+  {/* <MonacoEditor/> */}
   <div className="flex items-center justify-center mt-8">
   <EarningAd/>
   </div>
