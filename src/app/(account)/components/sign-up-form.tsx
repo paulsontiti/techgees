@@ -98,7 +98,7 @@ function SignUpForm({ referer,redirectUrl }: { referer: string,redirectUrl?: str
       if (response.data.successful) {
         toast.success(response.data.message);
         updateUser(response.data.user.userId);
-         if (redirectUrl) {
+         if (redirectUrl && redirectUrl !== "undefined") {
           router.push(redirectUrl);
         } else {
           router.push("/");
