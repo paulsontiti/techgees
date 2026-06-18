@@ -1,190 +1,210 @@
-import {bgPrimaryColor, bgSecondaryColor, textSecondaryColor } from '@/utils/colors'
-import React, { ReactNode } from 'react'
-import TestimonialCard from './testimonial-card'
-import Carousel from '@/components/carousel'
-import TestimonialText from './testimonial-text'
+"use client";
 
-export type Testimonial = {
-  fullName:string,
-  imgUrl:string,
-  text:ReactNode,
-  whatsAppLink?:string,
-  facebookLink?:string,
-  instagramLink?:string,
-  rating?:number
-}
-
-const testimonials:Testimonial[] = [
-  {
-    fullName:"Chuku Paula",
-    imgUrl:"/assets/testimonials/paula.jpg",
-    text: <TestimonialText>
-      <div className='flex flex-col gap-2'>
-      <p>
-      {`
-      My doubt where fear, distractions and if I can be able to finish up this program.
-      `}
-      </p>
-      <p>
-        {`
-        The solutions to my doubt was courage and decision making.`}
-      </p>
-      <p>
-        {`
-        Global genius are always looking forward to their student progress and always encourages their student to do better and be creative and the courses are well defined and explained for student to understand.
-`}
-      </p>
-      <p>
-        {`
-        So far it is going well despite all the distractions, I get to do something everyday.
-
-`}
-      </p>
-      <p>
-        {`
-       I will recommend The Global Genius to people because Global Genius has been of help and the people will be eager to learn and understand and be creative.
-
-`}
-      </p>
-    </div>
-    </TestimonialText>
-
-  },
-  {
-    fullName:"Opeyemi Ahmed",
-    imgUrl:"/assets/testimonials/ahmed.jpg",
-    text: <TestimonialText>
-       <div className='flex flex-col gap-2 '>
-      <p>
-      {`
-     Before I answer any questions want you to know that you might come across the word simplicity so many times because that is the easiest and quickest word to describe my experience.
-
-      `}
-      </p>
-      <p>
-        {`
-       Before now, I don't believe I could come across a platform or medium that will explain or teach web development in such a simplest manner. Considering many factors one faces on daily basis, I am of the opinion that with time I will know it. With Global Genius it makes it simple to learn. `}
-      </p>
-      <p>
-        {`The only solution to my doubt is the mode of teaching/explaining. It is straight and simple to understand 
-`}
-      </p>
-      <p>
-        {`
-       So far so good, what I love about Global Genius and the courses are: 
-I. The mode of teaching  and secondly it give room to learn at your pace. More so, the follow up. They didn't stop at we have ditched out the courses but also do a follow up calls. 
-`}
-      </p>
-      <p>
-        {`Though with my tight schedule, it is not that easy however, I am enjoying the courses.
-`}
-      </p>
-      <p>
-        {`I have been recommending to my friends already which I will keep doing even to outsider. I would not mind being an ambassador of Global Genius.
-`}
-      </p>
-    </div>
-    </TestimonialText>
-
-  },
-  {
-    fullName:"Joseph Ekpe",
-    imgUrl:"/assets/testimonials/joseph.jpg",
-    text: <TestimonialText>
-       <div className='flex flex-col gap-2 '>
-      <p>
-      {`
-   My name Joseph Ekpe, before joining Global Genius, I doubted my ability to keep up with the course pace and feared that the lessons would be too advanced. 
-
-      `}
-      </p>
-      <p>
-        {`
-    However, the course lessons were well structured and the instructors were always available to clarify any doubts I had as well as to assist me resolve any issues I encountered. 
- `}
-      </p>
-      <p>
-        {`I appreciate the flexibility of the online lessons, which allows me to learn at my own pace. The instructors are knowledgeable, enthusiastic and provide valuable insights. I've been able to balance my coursework with other responsibilities, and I am pleased with my progress so far. 
-
-`}
-      </p>
-      <p>
-        {`
-       I would recommend Global Genius to others mainly because they provide a unique learning experience that is engaging, informative and relevant to real world applications.
-`}
-      </p>
-     
-    </div>
-    </TestimonialText>,
-    facebookLink:"https://www.facebook.com/joseph.ekpe.102?mibextid=ZbWKwL",
-    whatsAppLink:"https://wa.me/qr/FYONZJOVAKF2J1"
-
-  },
-  {
-    fullName:"Adebayo Toheeb",
-    imgUrl:"/assets/testimonials/successor.jpg",
-    text: <TestimonialText>
-       <div className='flex flex-col gap-2 '>
-      <p>
-      {`
-  I wasn’t sure if the course would truly help me gain practical skills or if it was worth the investment.
-
-      `}
-      </p>
-      <p>
-        {`
-   After exploring the curriculum and speaking with a mentor, I realized the course offered hands-on projects and support, I really like the learning structure which eased my concerns.
-
- `}
-      </p>
-      <p>
-        {`I love how well-structured the courses are, the expertise of the instructors, and the supportive community that keeps me motivated.
-
-
-`}
-      </p>
-      <p>
-        {`
-      So far, it’s been amazing! I’ve already learned more than I expected and feel much more confident in my skills.
-
-`}
-      </p>
-      <p>
-        {`
- I would recommend this because it’s not just about learning theory—it’s about practical application, career support, and being part of a community that helps you grow.
-
-`}
-      </p>
-     
-     
-    </div>
-    </TestimonialText>,
-    facebookLink:"https://www.facebook.com/profile.php?id=100080680556199",
-    whatsAppLink:"https://wa.link/3236j0"
-
-  },
-]
+import { motion } from "framer-motion";
+import { Star, Quote } from "lucide-react";
+import TestimonialCard from "./testimonial-card";
+import { testimonials } from "../data/testimonial";
 
 function Testimonials() {
   return (
-    <section id='testimonials' className={`${bgPrimaryColor} w-full flex flex-col justify-center items-center py-8 mt-8`}>
-       <div className='flex flex-col justify-center items-center lg:w-11/12'>
-       <h1 className='text-white text-xl px-4 md:text-2xl mb-8'>Testimonials From Our Students</h1>
-        <div className='hidden md:grid md:grid-cols-2 xl:grid-cols-4 p-8 gap-4'>
-        {testimonials.map((testimonial)=>(
-         
-               <TestimonialCard key={testimonial.imgUrl} testimonial={testimonial}/>
-            ))}
+    <section id="testimonials" className="relative overflow-hidden py-32">
+      {/* Background */}
+      <div className="absolute inset-0 bg-slate-950" />
+
+      <div className="absolute top-0 left-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
+
+      <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl" />
+
+      <div className="relative z-10 container mx-auto px-6">
+        {/* Header */}
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 30,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-4xl text-center"
+        >
+          <span
+            className="
+              rounded-full
+              border
+              border-green-500/20
+              bg-green-500/10
+              px-4
+              py-2
+              text-sm
+              text-green-400
+            "
+          >
+            Student Success Stories
+          </span>
+
+          <h2
+            className="
+              mt-6
+              text-4xl
+              font-bold
+              text-white
+              md:text-6xl
+            "
+          >
+            Loved By Students,
+            <span
+              className="
+                block
+                bg-gradient-to-r
+                from-blue-400
+                to-cyan-400
+                bg-clip-text
+                text-transparent
+              "
+            >
+              Trusted By Parents
+            </span>
+          </h2>
+
+          <p className="mt-6 text-lg text-slate-400">
+            Discover how learners are building confidence, developing practical
+            skills, and transforming their future through technology education.
+          </p>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{
+            opacity: 1,
+          }}
+          viewport={{ once: true }}
+          className="mt-16 grid gap-6 md:grid-cols-4"
+        >
+          {[
+            {
+              number: "1000+",
+              label: "Students",
+            },
+            {
+              number: "4.9/5",
+              label: "Average Rating",
+            },
+            {
+              number: "95%",
+              label: "Completion Rate",
+            },
+            {
+              number: "100%",
+              label: "Online Learning",
+            },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="
+                rounded-3xl
+                border
+                border-white/10
+                bg-white/5
+                p-8
+                text-center
+                backdrop-blur-xl
+              "
+            >
+              <h3 className="text-4xl font-bold text-white">{stat.number}</h3>
+
+              <p className="mt-2 text-slate-400">{stat.label}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Testimonials */}
+        <div
+          className="
+            mt-20
+            grid
+            gap-8
+            md:grid-cols-2
+            xl:grid-cols-4
+          "
+        >
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={testimonial.fullName}
+              initial={{
+                opacity: 0,
+                y: 40,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{ once: true }}
+              transition={{
+                delay: index * 0.1,
+              }}
+            >
+              <TestimonialCard testimonial={testimonial} />
+            </motion.div>
+          ))}
         </div>
-       </div>
-        <Carousel 
-          bgColor={bgSecondaryColor} textColor={textSecondaryColor}>
-           {testimonials.map((testimonial)=>(
-             <TestimonialCard key={testimonial.imgUrl} testimonial={testimonial}/>
-            ))}
-          </Carousel>
+
+        {/* Bottom Review Banner */}
+        <motion.div
+          initial={{
+            opacity: 0,
+          }}
+          whileInView={{
+            opacity: 1,
+          }}
+          viewport={{ once: true }}
+          className="mt-24"
+        >
+          <div
+            className="
+              mx-auto
+              max-w-5xl
+              rounded-3xl
+              border
+              border-white/10
+              bg-white/5
+              p-10
+              backdrop-blur-xl
+            "
+          >
+            <div className="text-center">
+              <Quote className="mx-auto h-10 w-10 text-blue-400" />
+
+              <h3 className="mt-6 text-3xl font-bold text-white">
+                Our Students Don't Just Learn — They Build Real Skills
+              </h3>
+
+              <p className="mx-auto mt-4 max-w-3xl text-slate-400">
+                From complete beginners to aspiring professionals, our students
+                gain practical experience through projects, mentorship,
+                internships and career guidance.
+              </p>
+
+              <div className="mt-6 flex justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-6 w-6 fill-yellow-400 text-yellow-400"
+                  />
+                ))}
+              </div>
+
+              <p className="mt-3 text-slate-400">
+                Rated highly by students and parents.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </section>
-  )
+  );
 }
 
-export default Testimonials
+export default Testimonials;
