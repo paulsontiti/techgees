@@ -51,10 +51,10 @@ course
   <div className="flex items-center flex-col justify-center gap-2 mt-8">
   <Button className="w-full"
       
-       >Subscribe for {formatPrice(course.subscriptionPrice ?? 10000)}/month</Button>
+       >View More</Button>
  
-            <Button  variant="outline" className="w-full"
-       >Buy for {formatPrice(course.price!)}</Button>
+            {/* <Button  variant="outline" className="w-full"
+       >Buy for {formatPrice(course.price!)}</Button> */}
   </div>
       </div>
     </div>

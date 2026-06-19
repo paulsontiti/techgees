@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@/lib/db";
+import { creditReferrers } from "../../../../../actions/creditReferrers";
 
 // export async function POST(req: Request) {
 //   try {
@@ -52,7 +53,13 @@ import { db } from "@/lib/db";
 
 // app/api/payments/webhook/route.ts
 
-export async function POST(request: Request) {
+type CourseType = {
+  price: number | null;
+  subscriptionPrice: number | null;
+  maxSubscriptionChapters: number;
+} | null;
+
+export async function POST(request: NextRequest) {
   const body = await request.text();
 
   const signature = request.headers.get("x-paystack-signature");
@@ -71,7 +78,22 @@ export async function POST(request: Request) {
   const event = JSON.parse(body);
 
   if (event.event === "charge.success") {
+    // console.log(event)
+
     const reference = event.data.reference;
+    const amount = event.data.amount / 100;
+    const paystackPayment = await db.paystackPayment.findUnique({
+      where: {
+        reference,
+      },
+    });
+    let userId = "";
+    let purchaseType = "";
+    let courseId = "";
+
+    userId = paystackPayment ? paystackPayment.userId : "";
+    purchaseType = paystackPayment ? paystackPayment.purchaseType : "";
+    courseId = paystackPayment ? (paystackPayment.courseId as string) : "";
 
     await db.paystackPayment.update({
       where: {
@@ -82,9 +104,100 @@ export async function POST(request: Request) {
         paidAt: new Date(),
       },
     });
+
+    await createPurchaseOrSubscription(userId, courseId, purchaseType);
+
+    await creditReferrers(reference, amount);
+
+    // const reference = event.data.reference;
+
+    // await db.paystackPayment.update({
+    //   where: {
+    //     reference,
+    //   },
+    //   data: {
+    //     payment_status: "success",
+    //     paidAt: new Date(),
+    //   },
+    // });
   }
 
   return NextResponse.json({
     success: true,
   });
+}
+
+
+async function createSubscription(
+  userId: string,
+  courseId: string,
+  course: CourseType,
+) {
+  const subscription = await db.subscription.findFirst({
+    where: {
+      userId,
+      courseId,
+      expiringDate: {
+        gt: new Date(),
+      },
+    },
+  });
+  if (!subscription) {
+    await db.subscription.create({
+      data: {
+        price: course?.subscriptionPrice || 10000,
+        courseId,
+        userId,
+        expiringDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      },
+    });
+  }
+}
+
+async function createPurchase(
+  userId: string,
+  courseId: string,
+  course: CourseType,
+) {
+  const purchase = await db.purchase.findUnique({
+    where: {
+      courseId_userId: {
+        userId,
+        courseId,
+      },
+    },
+  });
+
+  if (!purchase) {
+    await db.purchase.create({
+      data: {
+        price: course?.price ?? 0,
+        courseId,
+        userId,
+      },
+    });
+  }
+}
+
+async function createPurchaseOrSubscription(
+  userId: string,
+  courseId: string,
+  purchaseType: string,
+) {
+  const course = await db.course.findUnique({
+    where: {
+      id: courseId,
+    },
+    select: {
+      price: true,
+      subscriptionPrice: true,
+      maxSubscriptionChapters: true,
+    },
+  });
+
+  if (purchaseType === "OneTime") {
+    await createPurchase(userId, courseId, course);
+  } else {
+    await createSubscription(userId, courseId, course);
+  }
 }
