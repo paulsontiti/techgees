@@ -49,9 +49,6 @@ export const getCourseWithProgressChapters = async ({
         },
         include: {
           chapters: {
-            where: {
-              isPublished: true,
-            },
             select: {
               id: true,
             },
@@ -76,9 +73,6 @@ export const getCourseWithProgressChapters = async ({
         },
         include: {
           chapters: {
-            where: {
-              isPublished: true,
-            },
             select: {
               id: true,
             },
@@ -107,13 +101,13 @@ export const getCourseWithProgressChapters = async ({
 
           const { progressPercentage } = await getCourseProgress(
             userId,
-            course.id
+            course.id,
           );
           return {
             ...course,
             progressPercentage,
           };
-        })
+        }),
       );
 
     return { courses: coursesWithProgressAndCategory, error: null };
