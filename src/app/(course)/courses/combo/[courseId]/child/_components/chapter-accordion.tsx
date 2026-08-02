@@ -79,10 +79,13 @@ export function ChapterAccordion({
       setPrviousChapter(res.data.previousChapter);
       setSessions(res.data.sessions);
 
-      setIconLock((res.data.previousChapter &&
-          !res.data.previousUserChapterProgress?.isCompleted) || isLocked)
+       const lockChapter =
+        (res.data.previousChapter &&
+          !res.data.previousUserChapterProgress?.isCompleted) ||
+        isLocked;
 
-      const icon = iconLock ? Lock : isCompleted ? CheckCheck : PlayCircle;
+      const icon = lockChapter ? Lock : isCompleted ? CheckCheck : PlayCircle;
+      setIconLock(lockChapter);
 
       setIcon(icon);
     } catch (error: any) {
