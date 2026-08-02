@@ -27,7 +27,7 @@ export const ChapterAndSessions = ({
       isCompleted={!!chapter.userProgresses?.[0]?.isCompleted}
       courseId={courseId}
       parentId={parentId || ""}
-      isLocked={false}//(!chapter.isFree && !paidFor) || !chapter.isPublished}
+      isLocked={(!chapter.isFree && !paidFor) || !chapter.isPublished}
     />
   );
 };
