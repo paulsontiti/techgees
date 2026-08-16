@@ -7,11 +7,13 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from './loader'
 import { bgNeutralColor } from '@/utils/colors'
+import { useRouter } from 'next/navigation'
 
 function SingleNotification({ notification }: {
     notification: Notification
 }) {
     const [loading, setLoading] = useState(false)
+    const router = useRouter()
 
     const readNotification = async (notificationId: string) => {
         try {
@@ -32,7 +34,10 @@ function SingleNotification({ notification }: {
             className='my-2 h-6'
             onClick={() => {
                 readNotification(notification.id)
-            }}>Mark as read  <Loader loading={loading} /></Button>
+                if(notification.link){
+                    router.push(notification.link)
+                }
+            }}>{`${notification.link ? "Go to linked page" : "Mark as read"}`} <Loader loading={loading} /></Button>
     </div>
 }
 

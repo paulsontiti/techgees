@@ -20,7 +20,7 @@ import toast from "react-hot-toast";
 
 import * as zod from "zod";
 
-import { Question,Session } from "@prisma/client";
+import { Question, Session } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -43,13 +43,17 @@ const formSchema = zod.object({
   answer: zod.string().min(1, {
     message: "Answer is required",
   }),
- 
 });
 
-function SessionQuestionsForm({ session,courseId }: 
-    {courseId:string, session: Session & {questions:Question[]} }) {
+function SessionQuestionsForm({
+  session,
+  courseId,
+}: {
+  courseId: string;
+  session: Session & { questions: Question[] };
+}) {
   const [isCreating, setIsCreating] = useState(false);
-  const [isEditing,setisEditing] = useState(false)
+  const [isEditing, setisEditing] = useState(false);
 
   const router = useRouter();
 
@@ -57,10 +61,10 @@ function SessionQuestionsForm({ session,courseId }:
     resolver: zodResolver(formSchema),
     defaultValues: {
       question: "",
-      optionA:"",
-      optionB:"",
-      optionC:"",
-      optionD:""
+      optionA: "",
+      optionB: "",
+      optionC: "",
+      optionD: "",
     },
   });
 
@@ -71,38 +75,43 @@ function SessionQuestionsForm({ session,courseId }:
   };
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
-    const isAnsValid = values.answer === values.optionA || values.answer === values.optionB || values.answer === values.optionC ||
-    values.answer === values.optionD
-if(isAnsValid){
-    try {
-        await axios.post(`/api/courses/${courseId}/chapters/${session.chapterId}/sessions/${session.id}/questions`, values);
+    const isAnsValid =
+      values.answer === values.optionA ||
+      values.answer === values.optionB ||
+      values.answer === values.optionC ||
+      values.answer === values.optionD;
+    if (isAnsValid) {
+      try {
+        await axios.post(
+          `/api/courses/${courseId}/chapters/${session.chapterId}/sessions/${session.id}/questions`,
+          values,
+        );
         toast.success("question created");
         toggleCreating();
         router.refresh();
       } catch (err: any) {
-        console.log(err)
+        console.log(err);
         toast.error(err.message);
       }
-}else{
-  return toast.error("Your answer must match an option")
-}
-    
-  
+    } else {
+      return toast.error("Your answer must match an option");
+    }
   };
 
- 
+  const onEdit = (questionId: string) => {
+    setisEditing(true);
+    router.push(
+      `/teacher/courses/${courseId}/chapters/${session.chapterId}/sessions/${session.id}/questions/${questionId}`,
+    );
+  };
 
-  const onEdit = (questionId:string)=>{
-    setisEditing(true)
-    router.push(`/teacher/courses/${courseId}/chapters/${session.chapterId}/sessions/${session.id}/questions/${questionId}`)
-  }
 
-  return ( 
+  return (
     <div
       className="mt-6 relative
     border bg-slate-100 rounded-md p-4"
     >
-      <PageLoader isloading={isEditing} label="re-directing..."/>
+      <PageLoader isloading={isEditing} label="re-directing..." />
       <div className="font-medium flex items-center justify-between">
         {`Session questions(${session.questions.length})`}
         <Button variant="ghost" onClick={toggleCreating}>
@@ -131,20 +140,15 @@ if(isAnsValid){
                   <FormItem>
                     <FormLabel>Question </FormLabel>
                     <FormControl>
-              <Editor
-          
-              {...field}
-              />
-          </FormControl>
-                    <FormDescription>
-                      {`What's the question`}
-                    </FormDescription>
+                      <Editor {...field} />
+                    </FormControl>
+                    <FormDescription>{`What's the question`}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
               }}
             />
-                <FormField
+            <FormField
               control={form.control}
               name="optionA"
               render={({ field }) => {
@@ -254,30 +258,32 @@ if(isAnsValid){
                 );
               }}
             />
-      
-              <Button type="submit" disabled={!isValid || isSubmitting}>
-                Create <Loader loading={isSubmitting} />
-              </Button>
-            
+
+            <Button type="submit" disabled={!isValid || isSubmitting}>
+              Create <Loader loading={isSubmitting} />
+            </Button>
           </form>
         </Form>
-      ) }
+      )}
       {!isCreating && (
-       <div>
-             <div className={cn(
-                "text-sm mt-2",
-                !session.questions.length && "text-slate-500 italic"
-             )}>{!session.questions.length && "No questions"}
-            
+        <div>
+          <div
+            className={cn(
+              "text-sm mt-2",
+              !session.questions.length && "text-slate-500 italic",
+            )}
+          >
+            {!session.questions.length && "No questions"}
+
             <SessionQuestionsList
               onEdit={onEdit}
               questions={session.questions ?? []}
             />
-            <p className="text-slate-500 italic text-sm mt-4">Add at least ten questions</p>
-             </div>
-      
-
-       </div>
+            <p className="text-slate-500 italic text-sm mt-4">
+              Add at least ten questions
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { db } from '@/lib/db'
 import { Preview } from '@/components/preview'
 import Remark from './remark'
+import { getUser } from '../../../../../../actions/getUser'
 
 
 
@@ -35,9 +36,11 @@ async function AssignmentAccordion({ assignment }: {
               answers.length > 0 && <div >
                 <h2 className='my-2'>Unpassed Answers</h2>
                 {
-                  answers.map((answer) => {
+                  answers.map(async(answer) => {
+                    const {user,error} = await getUser(answer.userId)
 
                     return <div key={answer.id} className='border border-sky-500 p-4'>
+                      <p >{`Assignment submitted by ${user?.firstName} ${user?.lastName}`}</p>
                       <Preview value={answer.answer} />
                       <Remark assignmentAnswerId={answer.id}/>
                     </div>
