@@ -89,8 +89,8 @@ const title = session ? session.title :(chapter ? chapter.title : (course ? cour
 
 const id = session?.id || chapter?.id || course?.id
 const url = process.env.WEB_URL
-const assignmentType = session ? "sessions" : (chapter ? "chapters" : (course ? "courses" : ""))
-const link = `${url}teacher/assignments/${assignmentType}/${id}`
+// const assignmentType = session ? "sessions" : (chapter ? "chapters" : (course ? "courses" : ""))
+const link = `${url}teacher/assignments/${id}`
  
 //construct 
 const message = `Assignment answer for ${title} has been submitted`
@@ -100,7 +100,7 @@ await db.notification.create({
         receiverId:instructorId,
         message,
         senderId:userId,
-        title:"An answer to assignment for ${title} was submitted",
+        title:`An answer to assignment for ${title} was submitted`,
         link
 
     }
