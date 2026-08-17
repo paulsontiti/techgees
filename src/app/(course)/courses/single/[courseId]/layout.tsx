@@ -6,7 +6,6 @@ import { getCourseChaptersUserProgress } from "../../../../../../actions/getCour
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { redirect } from "next/navigation";
 import { getCourseProgress } from "../../../../../../actions/getCourseProgress";
-import { getScholarshipByCourseId } from "../../../../../../actions/getScholarshipByCourseId";
 
 async function CourseLayout({
   children,

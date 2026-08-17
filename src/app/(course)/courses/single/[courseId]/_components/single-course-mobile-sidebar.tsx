@@ -14,6 +14,8 @@ import axios from "axios";
 import SubscriptionDetails from "../../../components/subscription-details";
 import { SingleCourseEnrollButton } from "./single-course-enroll-button";
 import { SubscriptionButton } from "../../../components/subscription-button";
+import { FaSpinner } from "react-icons/fa6";
+import LoadingComponent from "@/components/loading-component";
 
 export type CourseSidebarProps = {
   course: CourseChaptersUserProgressType;
@@ -41,7 +43,6 @@ function SingleCourseMobileSidebar({
     try {
       const res = await axios.get(`/api/courses/${course.id}/subscription`);
 
-     
       if (res.data) {
         setSubscription(res.data);
       } else {
@@ -64,7 +65,7 @@ function SingleCourseMobileSidebar({
     fetchSubscription();
   }, []);
 
-
+  if(subscription === undefined) return <LoadingComponent/>
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b gap-y-2">
@@ -86,27 +87,28 @@ function SingleCourseMobileSidebar({
         )}
 
         {subscription && (
-         
           <SubscriptionDetails
             expiresAt={new Date(subscription.expiringDate)}
           />
         )}
 
         {/* Payment button */}
-        {!subscription && purchasePercentage !== undefined && purchasePercentage < 100 && (
-          <div className="flex flex-col md:flex-row gap-4 mt-4">
-            <SingleCourseEnrollButton
-              courseId={course.id}
-              coursePrice={course.price!}
-              purchasePercentage={purchasePercentage || 0}
-            />
-            <SubscriptionButton
-            singleOrCombo="single"
-              courseId={course.id}
-              subscriptionPrice={course.subscriptionPrice || 10000}
-            />
-          </div>
-        )}
+        {!subscription &&
+          purchasePercentage !== undefined &&
+          purchasePercentage < 100 && (
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
+              <SingleCourseEnrollButton
+                courseId={course.id}
+                coursePrice={course.price!}
+                purchasePercentage={purchasePercentage || 0}
+              />
+              <SubscriptionButton
+                singleOrCombo="single"
+                courseId={course.id}
+                subscriptionPrice={course.subscriptionPrice || 10000}
+              />
+            </div>
+          )}
 
         <div className="mt-10">
           {progressPercentage !== undefined ? (
@@ -119,12 +121,15 @@ function SingleCourseMobileSidebar({
       {course ? (
         <>
           {course.chapters.map((chapter) => {
+            const paidFor = subscription
+              ? true
+              : paidPositions?.includes(chapter.position);
             return (
               <MobileChapter
                 courseId={course.id}
                 key={chapter.id}
                 chapter={chapter}
-                paidFor={paidPositions?.includes(chapter.position)}
+                paidFor={paidFor}
               />
             );
           })}

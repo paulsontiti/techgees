@@ -1,7 +1,6 @@
 import React from 'react'
 import SingleCourseMenuBar from './single-course-menu-bar'
 import { CourseChaptersUserProgressType } from '../../../../../../../actions/getCourseChaptersUserProgress';
-import { Scholarship } from '@prisma/client';
 
 
 

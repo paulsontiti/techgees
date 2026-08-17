@@ -1,4 +1,6 @@
 import { db } from "@/lib/db";
+import { getCourseSubscription } from "./getCourseSubscription";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 interface ReturnValue {
   paidPositions: number[];
@@ -7,7 +9,7 @@ interface ReturnValue {
 
 export const getPaidChapterPositions = async (
   courseId: string,
-  purchasePercentage: number
+  purchasePercentage: number,
 ): Promise<ReturnValue> => {
   try {
     let chapterPositions = await db.chapter.findMany({
@@ -19,16 +21,11 @@ export const getPaidChapterPositions = async (
       },
     });
 
-    
-
-      
     const positions = chapterPositions
       .map((pos) => pos.position)
       .sort((a, b) => a - b);
 
-
     const endPosition = (purchasePercentage / 100) * positions.length;
-    
 
     const paidPositions: number[] = positions.slice(0, endPosition);
 
