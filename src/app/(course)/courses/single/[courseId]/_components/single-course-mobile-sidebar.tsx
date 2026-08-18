@@ -65,7 +65,7 @@ function SingleCourseMobileSidebar({
     fetchSubscription();
   }, []);
 
-  if(subscription === undefined) return <LoadingComponent/>
+  if(subscription === undefined && purchasePercentage === undefined) return <LoadingComponent/>
   return (
     <div className="h-full bg-white mt-4 px-4 border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="py-8 px-2 flex flex-col border-b gap-y-2">
