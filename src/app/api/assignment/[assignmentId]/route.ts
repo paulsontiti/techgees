@@ -89,8 +89,8 @@ const title = session ? session.title :(chapter ? chapter.title : (course ? cour
 
 const id = session?.id || chapter?.id || course?.id
 const url = process.env.WEB_URL
-// const assignmentType = session ? "sessions" : (chapter ? "chapters" : (course ? "courses" : ""))
-const link = `${url}teacher/assignments/${id}`
+const assignmentType = session ? "sessions" : (chapter ? "chapters" : (course ? "courses" : ""))
+const link = `${url}teacher/assignments/${assignmentType}/${id}`
  
 //construct 
 const message = `Assignment answer for ${title} has been submitted`

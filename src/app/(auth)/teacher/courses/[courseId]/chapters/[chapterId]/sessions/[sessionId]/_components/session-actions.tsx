@@ -61,7 +61,7 @@ chapterId,courseId,sessionId,disabled,isPublished
 const onViewing = ()=>{
     setIsViewing(true)
 
-    router.push(`/teacher/assignments/${sessionId}`)
+    router.push(`/teacher/assignments/sessions/${sessionId}`)
 }
 
 const onViewingQuestion = ()=>{
