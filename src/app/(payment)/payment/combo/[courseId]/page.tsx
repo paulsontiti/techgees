@@ -25,7 +25,7 @@ function CoursePaymentPage({
     })();
   }, []);
   return (
-    <PaymentOption courseId={courseId} redirectUrl={redirectUrl}>
+    <PaymentOption >
       {user === undefined ? (
         <Skeleton className="w-[350px] h-60 my-2" />
       ) : (
