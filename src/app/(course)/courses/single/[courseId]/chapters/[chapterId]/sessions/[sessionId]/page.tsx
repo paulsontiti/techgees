@@ -1,4 +1,3 @@
-
 import React from "react";
 import SessionComponent from "@/app/(course)/courses/components/session-component";
 
@@ -7,16 +6,15 @@ function SessionIdPage({
 }: {
   params: { courseId: string; chapterId: string; sessionId: string };
 }) {
-
-
   return (
-
-    <SessionComponent
-      sessionId={sessionId}
-      chapterId={chapterId}
-      chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}/#chapter-test`}
-      sessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/`}
-    />
+    <section className="bg-[#07152f] flex flex-col gap-4 p-8 text-white">
+      <SessionComponent
+        sessionId={sessionId}
+        chapterId={chapterId}
+        chapterUrl={`/courses/single/${courseId}/chapters/${chapterId}/#chapter-test`}
+        sessionUrl={`/courses/single/${courseId}/chapters/${chapterId}/sessions/`}
+      />
+    </section>
   );
 }
 

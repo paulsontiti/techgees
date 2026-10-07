@@ -11,12 +11,12 @@ import Footer from "@/components/footer";
 import Chat from "../components/chat";
 import { bgNeutralColor } from "@/utils/colors";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "The Global Genius",
-  description: "A Learning Management System, a platform where you can learn any and everything with its pioneer in TECH and Software Development",
+  description:
+    "A Learning Management System, a platform where you can learn any and everything with its pioneer in TECH and Software Development",
   //  icons: {
   //   icon: "/favicon.ico",
   //   shortcut: "/favicon.ico",
@@ -24,23 +24,17 @@ export const metadata: Metadata = {
   // },
 };
 
-
-export default  function Layout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
-
-
   return (
     <html lang="en">
       <body className={`${inter.className} relative ${bgNeutralColor}`}>
-   
-          <ConfettiProvider/>
-          <ToastProvider/>
-          <NextSSRPlugin
+        <ConfettiProvider />
+        <ToastProvider />
+        <NextSSRPlugin
           /**
            * The `extractRouterConfig` will extract **only** the route configs
            * from the router to prevent additional information from being
@@ -49,17 +43,14 @@ export default  function Layout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-      
-    
+
         <LayoutChildren>
-        <Chat/>
-      
-       <div className="min-h-[80vh]">
-    {children}
-       </div>
-          <Footer/>
+          {/* <Chat /> */}
+
+          <div >{children}</div>
+          {/* <Footer /> */}
         </LayoutChildren>
-          </body>
+      </body>
     </html>
   );
 }

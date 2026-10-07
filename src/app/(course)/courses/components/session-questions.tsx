@@ -36,7 +36,7 @@ function SessionQuestions({sessionId,sessionUrl,chapterUrl,chapterId}:
     if(userProgress === undefined  || sessionQuestions === undefined) return <Skeleton className='w-full h-96 my-2'/>
   
   return (
-    <div>
+    <div className='p-4'>
         {!userProgress?.isCompleted ?
                             <SessionTest questions={sessionQuestions}
                                 sessionId={sessionId}

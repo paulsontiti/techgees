@@ -5,13 +5,13 @@ import { Separator } from "@/components/ui/separator";
 import ChapterComments from "./comments";
 import { Preview } from "@/components/preview";
 import ChapterSessionDetails from "@/components/chapter-session-details";
-import { SingleChapterEnrollButton } from "./single-chapter-enroll-button";
 
 import BackButton from "@/components/back-button";
 import { OpenSheetButton } from "@/components/open-sheet";
 import { ChapterDetailsType } from "../../../../../../../../../actions/getChapterdetails";
 import ProjectList from "./project-list";
 import AssignmentAccordion from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/assignment-accordion";
+import SessionCard from "@/components/session-card";
 
 function ChapterDetails({
   courseId,
@@ -100,7 +100,7 @@ function ChapterDetails({
         noOfProjects={chapterDetails?.chapter?.chapterProjects.length || 0}
       />
 
-      <OpenSheetButton label="Go to class" />
+      
 
       <ChapterComments chapterId={chapterId} />
 
@@ -122,6 +122,18 @@ function ChapterDetails({
           </>
         )}
       </div> */}
+ <Separator />
+ <div className="my-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  {chapter?.sessions.map((session)=>(
+    <SessionCard key={session.position}
+    position={session.position}
+    title={session.title}
+    chapterId={session.chapterId}
+    sessionId={session.id}
+    courseId={courseId}
+    parentId="" />
+  ))}
+ </div>
 
       <Separator />
       {!!chapterDetails?.chapter?.chapterProjects.length && (
@@ -135,7 +147,7 @@ function ChapterDetails({
       <Separator />
 
       {!!chapterDetails?.chapter?.assignments.length && (
-        <div id="chapter-assignment">
+        <div id="chapter-assignment" className="bg-white text-black p-4">
           <h2 className="text-xl my-2 font-bold">Assignments</h2>
           {chapterDetails.chapter.assignments.map((assignment,index) => {
             return (

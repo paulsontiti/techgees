@@ -8,6 +8,7 @@ function Page({
   searchParams:{redirectUrl}
 }:{searchParams:{redirectUrl:string}}) {
 
+
   
   return (
     <div className='flex justify-center mt-10'>

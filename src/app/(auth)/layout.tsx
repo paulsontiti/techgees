@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sidebar } from "./_components/sidebar";
 import Navbar from "./_components/navbar";
 import SignInCheck from "@/components/sign-in-check";
+import { getUserCookie } from "@/lib/get-user-cookie";
 
 
 
@@ -10,15 +11,16 @@ export const metadata: Metadata = {
   description: "theglobalgenius",
 };
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userId = await getUserCookie();
 
   return (
     <div className="h-full">
-    <SignInCheck/>
+    <SignInCheck userId={userId}/>
    
 
       <div>

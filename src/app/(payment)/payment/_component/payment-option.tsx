@@ -1,49 +1,30 @@
 "use client";
-import Banner from "@/components/banner";
-import React, { ReactNode, useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
-import PaystackIcon from "@/components/paystack-icon";
-import WalletPaymentForm from "./wallet-payment-form";
+
+import { ReactNode } from "react";
 
 function PaymentOption({
   children,
-  courseId,
-  redirectUrl,
-  scholarshipId,
 }: {
   children: ReactNode;
-  courseId?: string;
-  redirectUrl?: string;
-  scholarshipId?: string;
 }) {
-  const [paystack, setPaystack] = useState(false);
-  const [wallet, setWallet] = useState(false);
-
-  localStorage.setItem("redirectUrl", redirectUrl || "");
+  
 
   return (
     <div className="flex flex-col gap-4 items-center justify-center">
-      <DropdownMenu>
+      {/* <Button onClick={() => {
+                setPaystack(true);
+                setWallet(false);
+              }}>Pay With Paystack</Button> */}
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="flex items-center gap-4">
+          <Button  className="flex items-center gap-4">
             Select payment option <ChevronDown className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40">
           <DropdownMenuLabel>Select payment option</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup className="flex flex-col gap-2">
+          <DropdownMenuGroup className="flex flex-col gap-2 z-50">
             <DropdownMenuItem
               onClick={() => {
                 setPaystack(true);
@@ -57,20 +38,20 @@ function PaymentOption({
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
-      </DropdownMenu>
-      {wallet && (
+      </DropdownMenu> */}
+      {/* {wallet && (
         <WalletPaymentForm
           courseId={courseId}
           redirecturl={redirectUrl || ""}
           scholarshipId={scholarshipId}
         />
-      )}
-      {paystack && (
+      )} */}
+      {/* {paystack && ( */}
         <div className="mx-2 flex items-center justify-center flex-col gap-4">
-          <Banner label="Please close the Paystack browser window after payment. This to enable redirection to the course page" />
+          {/* <Banner label="Please close the Paystack browser window after payment. This to enable redirection to the course page" /> */}
           {children}
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 }

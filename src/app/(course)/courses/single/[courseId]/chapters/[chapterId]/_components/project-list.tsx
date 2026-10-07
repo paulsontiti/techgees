@@ -24,7 +24,7 @@ function ProjectList({
 }) {
 
   return (
-    <div>
+    <div className="mb-4">
       <h2 className="my-4 font-bold">Projects</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {chapterProjects.map((project) => {

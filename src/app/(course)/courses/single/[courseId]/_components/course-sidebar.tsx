@@ -73,9 +73,9 @@ async function CourseSidebar({
           <CourseActioDropdownMenu courseId={course.id} />
         </div>
 
-        {purchasePercentage !== undefined && (
-          <PaymentProgress courseId={course.id} size="sm" />
-        )}
+        {/* {purchasePercentage !== undefined && (
+          <PaymentProgress  size="sm" />
+        )} */}
 
         {subscription && (
           <SubscriptionDetails

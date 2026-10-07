@@ -20,29 +20,26 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
 import toast from "react-hot-toast";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(10000, {
+  amount: zod.coerce.number().min(5000, {
     message: "amount is required",
   }),
 });
 
 function ComboPriceForm({
   email,
-  courseId,
+  courseId,coursePrice,subscriptionPrice
 }: {
   email?: string;
-  courseId: string;
+  courseId: string;coursePrice?:number,subscriptionPrice?:number
 }) {
-  const searchParams = useSearchParams();
-
-  const subscriptionPrice = searchParams.get("subscriptionPrice");
 
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: Number(subscriptionPrice) || 10000,
+      amount: Number(subscriptionPrice) || coursePrice || 10000,
     },
   });
   if (!email) {
@@ -72,21 +69,6 @@ function ComboPriceForm({
 
       window.location.href = data.authorization_url;
 
-      // const { authorizationUrl, reference } = response.data;
-
-      // // Open Paystack payment page in a new tab
-      // const paymentWindow = window.open(authorizationUrl);
-
-      // if (paymentWindow) {
-      //   const interval = setInterval(() => {
-      //     if (paymentWindow.closed) {
-      //       window.location.href = `/courses/combo/${courseId}?reference=${reference}&redirectUrl=${redirectUrl}`;
-      //       clearInterval(interval);
-      //     }
-      //   }, 1000);
-      // } else {
-      //   toast.error("Failed to open payment window.Try again");
-      // }
     } catch (error: any) {
       toast.error("Error initializing payment: " + error.message);
       // Handle the error, e.g., show a user-friendly error message to the user.
@@ -95,7 +77,7 @@ function ComboPriceForm({
   };
 
   return (
-    <div className="border bg-slate-100 rounded-md p-4 w-[350px]">
+    <div className="border bg-white text-black rounded-md p-4 w-[350px]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
           <FormField
@@ -107,9 +89,9 @@ function ComboPriceForm({
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
                     <Input
-                      min={10000}
+                      min={5000}
                       type="number"
-                      step={10000}
+                      step={5000}
                       disabled={isSubmitting}
                       placeholder='e.g. "50000"'
                       {...field}

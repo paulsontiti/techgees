@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CommentForm from "./comment-form";
-import { Comment } from "@prisma/client";
 import { RatingSlider } from "@/components/rating-slider";
 import Rating from "@/app/(root)/course/[courseId]/_components/rating";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -98,7 +97,7 @@ function SessionComments({
   };
 
   return (
-    <div className="my-4 p-1">
+    <div className="my-4 p-2 bg-white text-black">
     <div className="flex items-center gap-x-4">
       <Heart
         fill={hasLiked ? "black" : "white"}

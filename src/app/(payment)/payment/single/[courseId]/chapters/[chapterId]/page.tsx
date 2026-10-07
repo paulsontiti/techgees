@@ -6,7 +6,7 @@ import { DBUser } from '@prisma/client';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Skeleton } from '@/components/ui/skeleton';
-import PaymentOption from '@/app/(auth)/payment/_component/payment-option';
+import PaymentOption from '@/app/(payment)/payment/_component/payment-option';
 
  function CoursePaymentPage(
     { params: { courseId, chapterId } }: {
@@ -29,7 +29,7 @@ import PaymentOption from '@/app/(auth)/payment/_component/payment-option';
     },[]);
  const redirectUrl = `/courses/single/${courseId}/chapters/${chapterId}`
     return (
-        <PaymentOption courseId={courseId} redirectUrl={redirectUrl}>
+        <PaymentOption >
         {user === undefined ? <Skeleton className='w-[350px] h-60 my-2'/> :  
        <PriceForm email={user.email} courseId={courseId} chapterId={chapterId}/>}
    </PaymentOption>

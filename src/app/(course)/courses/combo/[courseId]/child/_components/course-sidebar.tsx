@@ -18,6 +18,8 @@ type CourseSidebarProps = {
 
 export type SidebarChapter = {
   id: string;
+  description:string | null,
+  sessions:Session[],
   title: string;
   isFree:boolean,
   isPublished:boolean,

@@ -28,9 +28,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import WalletBalance from "../../dashboard/_components/wallet-balance";
+} from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import WalletBalance from "@/app/(auth)/dashboard/_components/wallet-balance";
 
 
 const formSchema = zod.object({

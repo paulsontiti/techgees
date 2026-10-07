@@ -9,6 +9,7 @@ import { RatingSlider } from "@/components/rating-slider";
 import CommentForm from "./comment-form";
 import Rating from "@/app/(root)/course/[courseId]/_components/rating";
 import { Skeleton } from "@/components/ui/skeleton";
+import { textPrimaryColor } from "@/utils/colors";
 
 
 
@@ -98,7 +99,7 @@ function ChapterComments({
   };
 
   return (
-    <div className="my-4 p-1">
+    <div className={`my-4 p-2 bg-white ${textPrimaryColor}`}>
       <div className="flex items-center gap-x-4">
         <Heart
           fill={hasLiked ? "black" : "white"}

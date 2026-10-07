@@ -14,8 +14,6 @@ import PrvSessionButton from '@/components/prv-session-button';
 import NextPrevSessionButton from '@/components/next-prev-session-button';
 import SessionQuestions from './session-questions';
 import SessionAssignments from './session-assignments';
-import MonacoEditor from '@/components/editor/monaco-editor';
-import { Button } from '@/components/ui/button';
 
 function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
     { sessionId: string, chapterId: string, sessionUrl: string, chapterUrl: string }) {
@@ -25,7 +23,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
     const [previousSession, setPreviousSession] = useState<Session | undefined>(undefined);
     const [prvSessionProgress, setPrvSessionProgress] = useState<UserProgress | undefined>(undefined);
 
-    const [openEditor,setOpenEditor] = useState(false);
+    // const [openEditor,setOpenEditor] = useState(false);
 
     useEffect(() => {
         (
@@ -55,7 +53,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
             className="
       flex flex-col max-w-4xl mx-auto pb-20 mt-4 min-w-full"
         >
-            <div className='bg-white p-2 min-w-full'>
+            <div className='p-2 min-w-full'>
                 <div className="p-4 flex flex-col md:flex-row items-center justify-between">
                     <h2 className="text-2xl font-semibold mb-2">{session.title}</h2>
                 </div>
@@ -90,7 +88,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
                                     nextSessionUrl={`${sessionUrl}${nextSession?.id}`}
                                     prevSessionUrl={`${sessionUrl}${previousSession?.id}`} />
                             }
-                            <Button
+                            {/* <Button
                             className='mb-4'
                             onClick={()=>{
                                 setOpenEditor(curr => !curr)
@@ -98,7 +96,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
                             >{`${openEditor ? "Close Code Editor" :"Open Code Editor"}`}</Button>
                            {
                             openEditor &&  <MonacoEditor/>
-                           }
+                           } */}
 
                             {/* <AskSessionQuestion sessionId={sessionId} /> */}
                             <SessionComments
@@ -110,7 +108,7 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
                             <SessionQuestions sessionId={sessionId} sessionUrl={sessionUrl}
                                 chapterUrl={chapterUrl} chapterId={chapterId}
                             />
-                            <Separator />
+                            
 
                             <SessionAssignments sessionId={sessionId} />
                         </>

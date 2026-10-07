@@ -42,7 +42,11 @@ export const getChapterDetails = async (
         isPublished: true,
       },
       include: {
-        sessions: true,
+        sessions: {
+          orderBy:{
+            position:"asc"
+          }
+        },
         questions: true,
         assignments: true,
         chapterProjects: {

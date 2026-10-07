@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
 import { getUserCookie } from "@/lib/get-user-cookie";
 import { DBUser } from "@prisma/client";
-import { userAgent } from "next/server";
 
 interface ReturnValue{
     user:DBUser | null,

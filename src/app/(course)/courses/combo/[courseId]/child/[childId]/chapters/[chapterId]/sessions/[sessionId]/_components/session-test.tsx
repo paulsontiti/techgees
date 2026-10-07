@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useSessionTestStore } from '../../../../../../../../../../../../../store/session-test-store'
 import { useConfettiStore } from '../../../../../../../../../../../../../hooks/use-confetti-store'
 import { useRouter } from 'next/navigation'
+import { bgSecondaryColor, textPrimaryColor } from '@/utils/colors'
 
 function SessionTest({ questions, sessionId,isLastSession,chapterUrl,sessionurl }: {
   questions: Question[], sessionId: string,isLastSession:boolean,chapterUrl:string,sessionurl:string
@@ -81,7 +82,7 @@ function SessionTest({ questions, sessionId,isLastSession,chapterUrl,sessionurl 
               return <QuestionItemForm question={question} key={question.id} />
             })}
            
-            <Button onClick={onSubmit} disabled={submitting}>Submit
+            <Button className={`${bgSecondaryColor} ${textPrimaryColor}`} onClick={onSubmit} disabled={submitting}>Submit
             <Loader loading={submitting} />
           </Button>
 

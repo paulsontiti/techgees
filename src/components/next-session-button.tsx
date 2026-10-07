@@ -2,6 +2,7 @@
 
 import Loader from '@/components/loader'
 import { Button } from '@/components/ui/button'
+import { bgSecondaryColor, textPrimaryColor } from '@/utils/colors'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
@@ -12,7 +13,7 @@ function NextSessionButton({url}:{url:string}) {
         setLoading(true)
         router.push(url)
     }}
-        className='flex items-center gap-x-2 w-full'
+        className={`flex items-center gap-x-2 w-full ${bgSecondaryColor} ${textPrimaryColor}`}
     >Go to next session <Loader loading={loading} /></Button>
 
 }

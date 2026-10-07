@@ -56,7 +56,6 @@ import { creditReferrers } from "../../../../../actions/creditReferrers";
 type CourseType = {
   price: number | null;
   subscriptionPrice: number | null;
-  maxSubscriptionChapters: number;
 } | null;
 
 export async function POST(request: NextRequest) {
@@ -105,9 +104,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    await createPurchaseOrSubscription(userId, courseId, purchaseType);
+    await createPurchaseOrSubscription(userId, courseId, purchaseType,amount);
 
-    await creditReferrers(reference, amount);
+    // await creditReferrers(reference, amount);
 
     // const reference = event.data.reference;
 
@@ -130,8 +129,7 @@ export async function POST(request: NextRequest) {
 
 async function createSubscription(
   userId: string,
-  courseId: string,
-  course: CourseType,
+  courseId: string,amount:number
 ) {
   const subscription = await db.subscription.findFirst({
     where: {
@@ -143,10 +141,11 @@ async function createSubscription(
     },
   });
   if (!subscription) {
+    const subscriptionType = amount < 20000 ? "Community" : "Academy"
     await db.subscription.create({
       data: {
-        price: course?.subscriptionPrice || 10000,
-        courseId,
+        price: amount,
+        courseId,subscriptionType,
         userId,
         expiringDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       },
@@ -182,7 +181,7 @@ async function createPurchase(
 async function createPurchaseOrSubscription(
   userId: string,
   courseId: string,
-  purchaseType: string,
+  purchaseType: string,amount:number
 ) {
   const course = await db.course.findUnique({
     where: {
@@ -198,6 +197,6 @@ async function createPurchaseOrSubscription(
   if (purchaseType === "OneTime") {
     await createPurchase(userId, courseId, course);
   } else {
-    await createSubscription(userId, courseId, course);
+    await createSubscription(userId, courseId,amount);
   }
 }

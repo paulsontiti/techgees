@@ -817,6 +817,7 @@ model Subscription {
   price    Float
   userId   String
   courseId String
+  subscriptionType SubscriptionType @default(Community)
   //maxChapters Int
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -828,4 +829,9 @@ model Subscription {
 
   //@@unique([courseId, userId])
   @@index([courseId])
+}
+
+enum SubscriptionType {
+  Academy
+  Community
 }
