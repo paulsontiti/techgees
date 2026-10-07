@@ -82,9 +82,9 @@ function SingleCourseMobileSidebar({
             <Skeleton className="w-1 h-1" />
           )}
         </div>
-        {purchasePercentage !== undefined && (
-          <PaymentProgress courseId={course.id} size="sm" />
-        )}
+        {/* {purchasePercentage !== undefined && (
+          <PaymentProgress  size="sm" />
+        )} */}
 
         {subscription && (
           <SubscriptionDetails
