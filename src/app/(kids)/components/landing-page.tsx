@@ -507,7 +507,7 @@ export default function LandingPage() {
               </h2>
             </div>
           </Reveal>
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {/* <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               [
                 Play,
@@ -550,7 +550,7 @@ export default function LandingPage() {
                 </Reveal>
               );
             })}
-          </div>
+          </div> */}
         </div>
       </section>
 
