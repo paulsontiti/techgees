@@ -174,6 +174,7 @@ async function CourseIdPage({
                 : paidPositions.includes(chapter.position);
               return (
                 <ChapterCard
+                key={chapter.position}
                   parentId=""
                   isLocked={
                     (!chapter.isFree && !paidFor) || !chapter.isPublished

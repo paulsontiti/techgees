@@ -97,7 +97,7 @@ const growthLevels = [
 export default function PaymentPlans({
   freeTrialUrl,coursePrice,courseId
 }: {
-  freeTrialUrl?: string,coursePrice? : number,courseId:string
+  freeTrialUrl?: string,coursePrice? : number,courseId?:string
 }) {
 
   const [paymentOpen, setPaymentOpen] = useState(false);
@@ -138,7 +138,7 @@ export default function PaymentPlans({
             variants={fadeUp}
             className="text-4xl font-black tracking-tight sm:text-5xl lg:text-7xl"
           >
-            Don't just learn to code.
+            {`Don't just learn to code`}.
             <span className="block bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
               Become a Software & AI Engineer.
             </span>
@@ -194,8 +194,8 @@ export default function PaymentPlans({
           </h3>
 
           <p className="mt-4 text-slate-400">
-            You don't have to pay for everything at once. Start with the option
-            that fits your current situation and keep moving forward.
+            {`You don't have to pay for everything at once. Start with the option
+            that fits your current situation and keep moving forward.`}
           </p>
         </motion.div>
 
@@ -311,7 +311,7 @@ export default function PaymentPlans({
       </button>
 
       <CoursePaymentModal
-        courseId={courseId} coursePrice={coursePrice} subscriptionPrice={subscriptionPrice}
+        courseId={courseId || ""} coursePrice={coursePrice} subscriptionPrice={subscriptionPrice}
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
       />
@@ -474,9 +474,9 @@ export default function PaymentPlans({
               </ul>
 
               <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-400">
-                <strong className="text-white">Important:</strong> If you don't
+                <strong className="text-white">Important:</strong> {`If you don't
                 introduce 3 new members for each month, your
-                subscription changes to ₦20,000/month.
+                subscription changes to ₦20,000/month.`}
               </div>
 
               <button
@@ -731,9 +731,9 @@ export default function PaymentPlans({
             </h3>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              You don't need to wait until you can afford the entire program.
+              {`You don't need to wait until you can afford the entire program.
               Start small, learn consistently, build real skills, create real
-              projects and grow into Software & AI Engineering.
+              projects and grow into Software & AI Engineering.`}
             </p>
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">

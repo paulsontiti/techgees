@@ -433,7 +433,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <PaymentPlans freeTrialUrl="/software-ai-engineering/#journey"/>
+      <PaymentPlans  freeTrialUrl="/software-ai-engineering/#journey"/>
 
       <section id="projects" className="bg-[#f7f9fc] py-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -443,7 +443,7 @@ export default function LandingPage() {
                 Learning by building
               </p>
               <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-                Don't just watch. <span className="text-[#4f7cff]">Build.</span>
+                {`Don't just watch.`} <span className="text-[#4f7cff]">Build.</span>
               </h2>
               <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600">
                 Students progressively turn concepts into projects they can
@@ -633,8 +633,8 @@ export default function LandingPage() {
             >
               <h3 className="text-2xl font-black">Parent enquiry</h3>
               <p className="mt-2 text-sm text-slate-500">
-                Tell us a little about your child and we'll help you choose a
-                starting point.
+                {`Tell us a little about your child and we'll help you choose a
+                starting point.`}
               </p>
               <div className="mt-6 space-y-4">
                 <input
