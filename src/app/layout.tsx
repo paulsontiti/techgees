@@ -48,7 +48,7 @@ export default function Layout({
           {/* <Chat /> */}
 
           <div >{children}</div>
-          {/* <Footer /> */}
+          <Footer />
         </LayoutChildren>
       </body>
     </html>

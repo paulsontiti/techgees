@@ -23,14 +23,15 @@ import { phases } from "../lib/phase";
 import { useRouter } from "next/navigation";
 import PaymentPlans from "@/app/(course)/courses/components/paypent-plan";
 import Link from "next/link";
+import ParentInquiryForm from "./parent-inquiry";
 
-const WA = "https://wa.me/2349167704504";
-export const ChatOnWhatsApp = ()=>{
+export const WA = "https://wa.me/2349167704504";
+export const ChatOnWhatsApp = ({className}:{className?:string})=>{
   return   <Link
                 href={WA}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-7 py-4 font-bold"
+                className={`${className ?? "inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-7 py-4 font-bold"}`}
               >
                 Chat on WhatsApp <MessageCircle size={18} />
               </Link>
@@ -185,7 +186,7 @@ export default function LandingPage() {
 
       <section
         id="top"
-        className="hero-glow grid-bg relative min-h-[760px] bg-[#07152f] pt-28 text-white"
+        className="hero-glow grid-bg relative min-h-[760px] bg-[#07152f] pt-10 text-white"
       >
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-28">
           <div>
@@ -219,7 +220,7 @@ export default function LandingPage() {
                 Systems.
               </strong>
             </motion.p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col  gap-3 md:flex-row">
               <a
                 href="#trial"
                 className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-[#ffd429] px-7 py-4 font-black text-[#07152f] shadow-lg shadow-yellow-400/20"
@@ -251,7 +252,7 @@ export default function LandingPage() {
               <div className="rounded-[1.5rem] bg-[#f7f9fc] p-5 text-[#07152f]">
                 <div className="mb-5 flex items-center justify-between">
                   <span className="font-black">THE TECHNOLOGY JOURNEY</span>
-                  <span className="rounded-full bg-[#ffd429] px-3 py-1 text-xs font-black">
+                  <span className="rounded-full bg-[#ffd429] px-3 py-1 w-24 text-xs font-black">
                     AGES 5+
                   </span>
                 </div>
@@ -308,7 +309,7 @@ export default function LandingPage() {
               building, explaining and improving them.
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
             <div className="rounded-3xl bg-white p-7 shadow-sm">
               <div className="text-3xl">👀</div>
               <h3 className="mt-4 font-black">Curious</h3>
@@ -607,96 +608,33 @@ export default function LandingPage() {
               Engineering pathway if your child is ready. Experience the
               platform before you commit.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
+            <div className="mt-8 flex flex-col gap-3 md:flex-row">
+              <ChatOnWhatsApp className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#07152f] px-7 py-4 font-black text-white shadow-xl"/>
+              {/* <a
                 href={WA}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#07152f] px-7 py-4 font-black text-white shadow-xl"
               >
                 Start on WhatsApp <MessageCircle size={19} />
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="https://globalgenius.community"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 font-black text-[#07152f]"
               >
                 Visit Platform <ArrowRight size={19} />
-              </a>
+              </a> */}
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="rounded-[2rem] bg-white p-6 shadow-2xl sm:p-8"
-            >
-              <h3 className="text-2xl font-black">Parent enquiry</h3>
-              <p className="mt-2 text-sm text-slate-500">
-                {`Tell us a little about your child and we'll help you choose a
-                starting point.`}
-              </p>
-              <div className="mt-6 space-y-4">
-                <input
-                  className="w-full rounded-xl border border-slate-200 px-4 py-3.5 outline-none focus:border-[#4f7cff]"
-                  placeholder="Parent's name"
-                />
-                <input
-                  className="w-full rounded-xl border border-slate-200 px-4 py-3.5 outline-none focus:border-[#4f7cff]"
-                  placeholder="WhatsApp / phone number"
-                />
-                <input
-                  className="w-full rounded-xl border border-slate-200 px-4 py-3.5 outline-none focus:border-[#4f7cff]"
-                  placeholder="Child's age"
-                />
-                <select className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 outline-none focus:border-[#4f7cff]">
-                  <option>Scratch Foundation</option>
-                  <option>Python</option>
-                  <option>Software & AI Engineering</option>
-                  <option>Not sure — I need guidance</option>
-                </select>
-                <button className="w-full rounded-xl bg-[#07152f] px-5 py-4 font-black text-white">
-                  Request Free Trial 🚀
-                </button>
-              </div>
-            </form>
+           <ParentInquiryForm/>
           </Reveal>
         </div>
       </section>
 
-      <footer className="bg-[#07152f] px-5 py-12 text-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="flex items-center gap-2 font-black">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#ffd429] text-[#07152f]">
-                G
-              </span>
-              The Global Genius
-            </div>
-            <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">
-              Software & AI Engineering Academy for the next generation of
-              builders, thinkers and creators.
-            </p>
-          </div>
-          <div className="text-sm text-slate-400">
-            <div>🌐 globalgenius.community</div>
-            <div className="mt-2">📱 09167704504 • 08132658045</div>
-          </div>
-        </div>
-        <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-xs text-slate-500">
-          © 2026 The Global Genius. Learn. Build. Earn. Grow.
-        </div>
-      </footer>
-
-      <a
-        href={WA}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105"
-      >
-        <MessageCircle />
-      </a>
+     
     </main>
   );
 }

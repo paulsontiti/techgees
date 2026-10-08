@@ -8,29 +8,22 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "The Global Genius",
-  description: "A Learning Management System, a platform where you can learn any and everything with its pioneer in TECH and Software Development",
+  description:
+    "A Learning Management System, a platform where you can learn any and everything with its pioneer in TECH and Software Development",
 };
 
-
-export default  function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
-
   return (
-   <div>
-          <header className="text-white">
-       
-        <Navbar/>
+    <div>
+      <header className="text-white">
+        <Navbar />
         <Separator />
-        </header>
-    <main>
-      {children}
-   
-    </main>
-   </div>
+      </header>
+      <main>{children}</main>
+    </div>
   );
 }

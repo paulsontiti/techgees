@@ -18,7 +18,7 @@ import Account from "@/components/account";
 
         <li>  <NavLinks /></li>
         <li className="hidden md:flex"> <SearchInput /></li>
-        <li className="hidden md:flex items-center gap-x-2">
+        <li className=" items-center gap-x-2">
          <Account/>
         </li>
         <li>   <MobileMenu/></li>

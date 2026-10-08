@@ -101,7 +101,7 @@ function SignUpForm({ referer,redirectUrl }: { referer: string,redirectUrl?: str
          if (redirectUrl && redirectUrl !== "undefined") {
           router.push(redirectUrl);
         } else {
-          router.push("/");
+          router.push("/search");
         }
       } else {
         toast.error(response.data.message);
