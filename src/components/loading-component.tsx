@@ -13,7 +13,7 @@ export default function LoadingComponent({
   color = "text-slate-950",
 }: LoadingProps) {
   return (
-    <div className=" flex flex-col items-center justify-center px-6 text-center ">
+    <div className=" flex flex-col items-center justify-center px-6 text-center min-h-screen">
       <div className="mt-2 flex items-center gap-3">
         <Loader2 className="h-4 w-4 animate-spin text-yellow-400" />
 

@@ -19,7 +19,7 @@ export async function GET(
       },
     });
 
-    return NextResponse.json(course?.id);
+    return NextResponse.json(course?.id || "");
   } catch (err) {
     console.log("[GET_COURSE_TITLE]", err);
     return new NextResponse("Internal Error", {

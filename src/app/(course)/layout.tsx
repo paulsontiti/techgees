@@ -21,7 +21,7 @@ export default async function CourseLayout({
   
   const userId = await getUserCookie();
   return (
-    <div>
+    <div className="min-h-screen">
     <SignInCheck userId={userId}/>
     {children}
     </div>

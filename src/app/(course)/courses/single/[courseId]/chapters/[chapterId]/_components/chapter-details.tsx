@@ -12,6 +12,7 @@ import { ChapterDetailsType } from "../../../../../../../../../actions/getChapte
 import ProjectList from "./project-list";
 import AssignmentAccordion from "@/app/(course)/courses/combo/[courseId]/child/[childId]/chapters/[chapterId]/sessions/[sessionId]/_components/assignment-accordion";
 import SessionCard from "@/components/session-card";
+import { textSecondaryColor } from "@/utils/colors";
 
 function ChapterDetails({
   courseId,
@@ -83,7 +84,7 @@ function ChapterDetails({
     >
       <BackButton label="course page" url={`/courses/single/${courseId}`} />
       <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-        <h2 className="text-2xl font-semibold mb-2">{chapter?.title}</h2>
+        <h2 className={`text-2xl font-semibold mb-2 ${textSecondaryColor}`}>{chapter?.title}</h2>
         {/* <SingleChapterEnrollButton
           showButton={showEnrollButton}
           courseId={courseId}

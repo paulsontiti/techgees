@@ -51,11 +51,11 @@ function Footer() {
     //   </div>
     // </footer>
     <div>
-       <footer className="bg-[#07152f] px-5 py-12 text-white">
+       <footer className="bg-[#07152f] mt-1 p-4 text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Logo/>
-            <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">
+            <p className="max-w-md text-sm leading-6 text-slate-400">
               Software & AI Engineering Academy for the next generation of
               builders, thinkers and creators.
             </p>

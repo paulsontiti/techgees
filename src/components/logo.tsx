@@ -1,6 +1,6 @@
 "use client"
+import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'
 import React from 'react'
 
 function Logo() {
@@ -8,10 +8,11 @@ return  <Link
             href="/"
             className="flex items-center gap-2 font-black tracking-tight"
           >
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#ffd429] text-[#07152f]">
+            <Image width={200} height={100} src={"/assets/logo.png"} alt='Logo'/>
+            {/* <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#ffd429] text-[#07152f]">
               GG
             </span>
-            <span className='hidden lg:flex'>The Global Genius</span>
+            <span className='hidden lg:flex'>The Global Genius</span> */}
           </Link>
 
     // return        <div className="items-center gap-8">

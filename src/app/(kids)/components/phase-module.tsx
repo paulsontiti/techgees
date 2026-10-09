@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Module } from "../lib/phase";
-import Link from "next/link";
 import StartCourseLink from "./start-course-link";
 
 type PhaseModulesProps = {
@@ -57,7 +56,7 @@ export default function PhaseModules({ phaseNumber, modules }: PhaseModulesProps
                   🚀 Project: {module.project}
                 </div>
               )}
-              {module.number === 1 && <StartCourseLink moduleTitle={module.title}/>}
+              <StartCourseLink moduleTitle={module.title}/>
             </div>
             
           </motion.details>

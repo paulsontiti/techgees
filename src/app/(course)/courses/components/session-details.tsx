@@ -53,8 +53,8 @@ function SessionDetails({ sessionId, chapterId, sessionUrl, chapterUrl }:
             className="
       flex flex-col max-w-4xl mx-auto pb-20 mt-4 min-w-full"
         >
-            <div className='p-2 min-w-full'>
-                <div className="p-4 flex flex-col md:flex-row items-center justify-between">
+            <div className='min-w-full'>
+                <div className=" flex flex-col md:flex-row items-center justify-between">
                     <h2 className="text-2xl font-semibold mb-2">{session.title}</h2>
                 </div>
                 <Separator />

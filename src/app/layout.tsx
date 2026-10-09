@@ -31,7 +31,10 @@ export default function Layout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} relative ${bgNeutralColor}`}>
+      <body
+        className={`${inter.className} relative min-h-screen
+      `}
+      >
         <ConfettiProvider />
         <ToastProvider />
         <NextSSRPlugin
@@ -47,9 +50,9 @@ export default function Layout({
         <LayoutChildren>
           {/* <Chat /> */}
 
-          <div >{children}</div>
-          <Footer />
+          <div>{children}</div>
         </LayoutChildren>
+        <Footer />
       </body>
     </html>
   );

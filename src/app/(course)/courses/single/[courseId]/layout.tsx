@@ -22,7 +22,7 @@ async function CourseLayout({
   // if (proError) return <ErrorPage name={proError.name} />;
 
   return (
-    <div>
+    <div >
       <div>
         <CourseNavbar
         />
@@ -35,7 +35,7 @@ async function CourseLayout({
             progressPercentage={progressPercentage || 0}
           />
         </div> */}
-        <div>{children}</div>
+        <div className="h-full">{children}</div>
       {/* </div> */}
     </div>
   );

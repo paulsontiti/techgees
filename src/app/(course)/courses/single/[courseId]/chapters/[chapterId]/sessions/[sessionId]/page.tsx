@@ -7,7 +7,7 @@ function SessionIdPage({
   params: { courseId: string; chapterId: string; sessionId: string };
 }) {
   return (
-    <section className="bg-[#07152f] flex flex-col gap-4 p-8 text-white">
+    <section className="bg-[#07152f] flex flex-col gap-4 p-2 text-white">
       <SessionComponent
         sessionId={sessionId}
         chapterId={chapterId}

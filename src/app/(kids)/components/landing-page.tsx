@@ -24,18 +24,21 @@ import { useRouter } from "next/navigation";
 import PaymentPlans from "@/app/(course)/courses/components/paypent-plan";
 import Link from "next/link";
 import ParentInquiryForm from "./parent-inquiry";
+import ProgramPhases from "./phases";
 
 export const WA = "https://wa.me/2349167704504";
-export const ChatOnWhatsApp = ({className}:{className?:string})=>{
-  return   <Link
-                href={WA}
-                target="_blank"
-                rel="noreferrer"
-                className={`${className ?? "inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-7 py-4 font-bold"}`}
-              >
-                Chat on WhatsApp <MessageCircle size={18} />
-              </Link>
-}
+export const ChatOnWhatsApp = ({ className }: { className?: string }) => {
+  return (
+    <Link
+      href={WA}
+      target="_blank"
+      rel="noreferrer"
+      className={`${className ?? "inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-7 py-4 font-bold"}`}
+    >
+      Chat on WhatsApp <MessageCircle size={18} />
+    </Link>
+  );
+};
 
 const ages = [
   {
@@ -231,7 +234,7 @@ export default function LandingPage() {
                   className="transition group-hover:translate-x-1"
                 />
               </a>
-            <ChatOnWhatsApp/>
+              <ChatOnWhatsApp />
             </div>
             <div className="mt-10 flex flex-wrap gap-3 text-sm font-semibold text-slate-300">
               <span>🌍 100% Online</span>
@@ -384,6 +387,7 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <ProgramPhases />
       <section id="journey" className="bg-[#07152f] py-24 text-white">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
@@ -427,14 +431,16 @@ export default function LandingPage() {
                   <div className="mt-5 mb-4 border-t border-white/10 pt-4 text-xs font-bold text-slate-300">
                     {phase.promise}
                   </div>
-                  <span className="absolute bottom-2 right-4  text-[#ffd429]">Explore →</span>
+                  <span className="absolute bottom-2 right-4  text-[#ffd429]">
+                    Explore →
+                  </span>
                 </div>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
-      <PaymentPlans  freeTrialUrl="/software-ai-engineering/#journey"/>
+      <PaymentPlans freeTrialUrl="/software-ai-engineering/#journey" />
 
       <section id="projects" className="bg-[#f7f9fc] py-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -444,7 +450,8 @@ export default function LandingPage() {
                 Learning by building
               </p>
               <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-                {`Don't just watch.`} <span className="text-[#4f7cff]">Build.</span>
+                {`Don't just watch.`}{" "}
+                <span className="text-[#4f7cff]">Build.</span>
               </h2>
               <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600">
                 Students progressively turn concepts into projects they can
@@ -609,7 +616,7 @@ export default function LandingPage() {
               platform before you commit.
             </p>
             <div className="mt-8 flex flex-col gap-3 md:flex-row">
-              <ChatOnWhatsApp className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#07152f] px-7 py-4 font-black text-white shadow-xl"/>
+              <ChatOnWhatsApp className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#07152f] px-7 py-4 font-black text-white shadow-xl" />
               {/* <a
                 href={WA}
                 target="_blank"
@@ -629,12 +636,10 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-           <ParentInquiryForm/>
+            <ParentInquiryForm />
           </Reveal>
         </div>
       </section>
-
-     
     </main>
   );
 }

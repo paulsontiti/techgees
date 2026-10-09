@@ -20,7 +20,7 @@ import { getChapterDetails } from "../../../../../../../../actions/getChapterdet
 
 
   return (
-    <div className="bg-[#07152f] flex flex-col gap-4 p-8 text-white">
+    <div className="bg-[#07152f] flex flex-col gap-4 p-2 text-white">
       
       {/* <VerifyPayment redirectUrl={redirectUrl} reference={reference}/> */}
      <ChapterProgress chapterId={chapterId}/>

@@ -13,7 +13,7 @@ function SessionComponent({ sessionId, chapterId, sessionUrl,
 
   return (
     <div className="
-        flex flex-col max-w-4xl mx-auto pb-20 px-8">
+        flex flex-col max-w-4xl mx-auto pb-20 px-2">
       <SessionProgress sessionId={sessionId} chapterId={chapterId} />
      <BackButton url={chapterUrl} label="chapter page"/>
       <SessionDetails sessionId={sessionId} chapterId={chapterId}

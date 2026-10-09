@@ -41,22 +41,22 @@ export const NavbarRoutes = () => {
 
     return <div className="flex items-center justify-between w-full
      text-white">
-
-        <div className="hidden md:flex items-center gap-x-4 w-1/4">
+{/* 
+        <div className="md:flex items-center gap-x-4 w-2/4"> */}
             <Logo />
 
-        </div>
+        {/* </div> */}
 
         <div className="px-2 flex items-center justify-end gap-x-2 md:gap-x-4 ml-auto w-3/4">
 
             {/* <WelcomeMessage /> */}
-            <Button
+            {/* <Button
                 variant="link"
                 size="sm"
                 onClick={() => {
                     router.push("/")
                 }}
-            >Home</Button>
+            >Home</Button> */}
             {loadingUser ? <Skeleton className="h-6 w-20" /> :
                 <>
                     {isTeacherPage || isCoursePage ? (
