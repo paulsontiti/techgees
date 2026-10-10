@@ -12,11 +12,11 @@ type PhaseModulesProps = {
 export default function PhaseModules({ phaseNumber, modules }: PhaseModulesProps) {
   return (
     <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[#f7f9fc] shadow-sm">
-      <div className="border-b border-slate-200 bg-[#07152f] p-6 text-white sm:p-8">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+      <div className="border-b border-slate-200 bg-[#07152f] md:p-6 text-white p-4">
+        <div className="flex flex-col gap-5 md:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[.2em] text-[#ffd429]">Phase {phaseNumber} curriculum</p>
-            <h3 className="mt-2 text-3xl font-black sm:text-4xl">10 modules. One connected journey.</h3>
+            <h3 className="mt-2 text-3xl font-black md:text-4xl">10 modules. One connected journey.</h3>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
               Each module moves from understanding to practice and toward a project. Learners build depth instead of jumping from topic to topic.
             </p>

@@ -45,7 +45,7 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
   return (
     <main className="min-h-screen bg-[#f7f9fc] text-[#07152f]">
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#07152f]/95 text-white backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
           <Logo/>
           <div className="hidden items-center gap-5 text-sm font-bold md:flex">
             <Link href="/software-ai-engineering/#journey">All phases</Link>
@@ -85,7 +85,7 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
               {p.intro}
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 md:flex-row">
               <a
                 href="#curriculum"
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#ffd429] px-7 py-4 font-black text-[#07152f]"
@@ -116,7 +116,7 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
                 <h2 className="mt-3 text-3xl font-black leading-tight">
                   {p.promise}
                 </h2>
-                <div className="mt-7 grid gap-3 sm:grid-cols-2">
+                <div className="mt-7 grid gap-3 md:grid-cols-2">
                   {p.skills.map((s:any) => (
                     <div
                       key={s}
@@ -221,7 +221,7 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
               student can demonstrate.
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-4 sm:grid-cols-4">
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
             {[
               "🎬 Recorded classes",
               "🧑‍🏫 3 live classes weekly",
@@ -254,7 +254,7 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
               before you commit. We can also help you choose the right starting
               phase based on age and readiness.
             </p>
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col justify-center gap-3 md:flex-row">
               <a
                 href={WA}
                 target="_blank"
@@ -275,7 +275,7 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
       </section>
 
       <section className="bg-[#07152f] py-10 text-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 md:flex-row sm:items-center sm:justify-between lg:px-8">
           {prev ? (
             <Link
               href={`/phases/${prev.slug}`}
@@ -300,10 +300,10 @@ export default function PhasePage({ phase: p }: { phase: Phase }) {
           )}
         </div>
       </section>
-      <footer className="bg-[#07152f] px-5 pb-10 text-center text-sm text-slate-500">
+      {/* <footer className="bg-[#07152f] px-5 pb-10 text-center text-sm text-slate-500">
         © 2026 The Global Genius • globalgenius.community • 09167704504 •
         08132658045
-      </footer>
+      </footer> */}
       <a
         href={WA}
         target="_blank"

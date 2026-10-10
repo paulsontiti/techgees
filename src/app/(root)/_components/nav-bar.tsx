@@ -9,7 +9,7 @@ import Account from "@/components/account";
 
  function Navbar() {
   return (
-    <nav className={`${bgPrimaryColor} py-8 px-2`}>
+    <nav className={`${bgPrimaryColor}`}>
     
       <ul className="flex items-center justify-around w-full md:px-2">
         <li>

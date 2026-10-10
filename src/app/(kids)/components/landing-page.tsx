@@ -136,13 +136,13 @@ export default function LandingPage() {
   };
   return (
     <main className="overflow-hidden">
-      <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#07152f]/90 text-white backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+      <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#07152f]/90 text-white backdrop-blur-xl border-b-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
           <Logo />
           <div className="hidden items-center gap-7 text-sm font-semibold md:flex">
             <a href="#journey">Journey</a>
             <a href="#ages">Age Paths</a>
-            <a href="#projects">Projects</a>
+            <a className="hidden lg:flex" href="#projects">Projects</a>
             <a href="#how">How It Works</a>
             <a href="#payment">Payment Plans</a>
             <a
@@ -175,6 +175,7 @@ export default function LandingPage() {
               <a onClick={() => setOpen(false)} href="#how">
                 How It Works
               </a>
+               <a onClick={() => setOpen(false)} href="#payment">Payment Plans</a>
               <a
                 href="#trial"
                 onClick={() => setOpen(false)}

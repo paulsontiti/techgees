@@ -8,7 +8,7 @@ return  <Link
             href="/"
             className="flex items-center gap-2 font-black tracking-tight"
           >
-            <Image width={200} height={100} src={"/assets/logo.png"} alt='Logo'/>
+            <Image width={100} height={50} src={"/assets/logo.png"} alt='Logo'/>
             {/* <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#ffd429] text-[#07152f]">
               GG
             </span>

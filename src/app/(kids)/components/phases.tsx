@@ -642,7 +642,7 @@ export default function ProgramPhases() {
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {capstones.map((project, index) => {
               const Icon = project.icon;
 
@@ -689,7 +689,7 @@ export default function ProgramPhases() {
             })}
           </div>
 
-          <div className="mt-8 flex flex-col items-center justify-between gap-5 rounded-2xl border border-yellow-400/20 bg-gradient-to-r from-yellow-400/[0.09] to-transparent p-6 sm:flex-row sm:p-8">
+          <div className="mt-8 flex flex-col items-center justify-between gap-5 rounded-2xl border border-yellow-400/20 bg-gradient-to-r from-yellow-400/[0.09] to-transparent p-6 md:flex-row sm:p-8">
             <div>
               <div className="flex items-center gap-2 text-sm font-bold text-yellow-300">
                 <Trophy size={18} />

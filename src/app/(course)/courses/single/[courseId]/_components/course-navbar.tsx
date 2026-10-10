@@ -12,7 +12,7 @@ async function CourseNavbar() {
 
 
   return (
-    <div className={`p-4 border-b h-full flex items-center
+    <div className={`border-b h-full flex items-center
      text-white ${bgPrimaryColor} shadow-sm`}>
       {/* <CourseMobileSidebar
         course={course}

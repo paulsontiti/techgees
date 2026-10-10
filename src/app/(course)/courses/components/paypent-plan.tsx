@@ -589,7 +589,7 @@ export default function PaymentPlans({
             {/* Connecting line */}
             <div className="absolute left-[12%] right-[12%] top-10 hidden h-px bg-gradient-to-r from-emerald-400/20 via-emerald-400/50 to-yellow-400/20 lg:block" />
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
               {growthLevels.map((level, index) => {
                 const Icon = level.icon;
 
@@ -710,7 +710,7 @@ export default function PaymentPlans({
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="relative mx-auto mt-24 max-w-5xl overflow-hidden rounded-[2.5rem] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/[0.12] via-white/[0.035] to-blue-500/[0.08] p-8 text-center sm:p-14"
+          className="relative mx-auto mt-24 max-w-5xl overflow-hidden rounded-[2.5rem] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/[0.12] via-white/[0.035] to-blue-500/[0.08] text-center md:p-8"
         >
           <div className="absolute left-1/2 top-0 h-40 w-96 -translate-x-1/2 rounded-full bg-yellow-400/10 blur-[100px]" />
 
