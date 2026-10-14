@@ -405,7 +405,7 @@ export default function ProgramPhases() {
     <section
       id="program-phases"
       className="relative overflow-hidden 
-      bg-white
+      bg-[#07152f]
        py-20 text-white sm:py-28"
     >
       {/* Background decoration */}
