@@ -3,7 +3,7 @@ import { Monaco } from "@monaco-editor/react";
 export interface Theme {
   id: string;
   label: string;
-  color: string;
+  color: string;age?:number
 }
 
 export interface Language {

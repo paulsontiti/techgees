@@ -404,7 +404,9 @@ export default function ProgramPhases() {
   return (
     <section
       id="program-phases"
-      className="relative overflow-hidden bg-[#050B19] py-20 text-white sm:py-28"
+      className="relative overflow-hidden 
+      bg-white
+       py-20 text-white sm:py-28"
     >
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0">
