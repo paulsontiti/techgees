@@ -18,13 +18,14 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { phases } from "../lib/phase";
 import { useRouter } from "next/navigation";
 import PaymentPlans from "@/app/(course)/courses/components/paypent-plan";
 import Link from "next/link";
 import ParentInquiryForm from "./parent-inquiry";
 import ProgramPhases from "./phases";
+
 
 export const WA = "https://wa.me/2349167704504";
 export const ChatOnWhatsApp = ({ className }: { className?: string }) => {
@@ -42,31 +43,47 @@ export const ChatOnWhatsApp = ({ className }: { className?: string }) => {
 
 const ages = [
   {
-    age: "5–7",
-    title: "Scratch Explorer",
-    tag: "CREATE • PLAY • DISCOVER",
-    color: "from-yellow-300 to-amber-100",
-    items: [
-      "Stories & animation",
-      "Simple games",
-      "Logic & creativity",
-      "Computational thinking",
-    ],
-  },
+    url:"/courses/single/b0148742-237b-4944-9f97-62e40fe35ad1",
+  age: "5–7",
+  title: "Scratch Explorer",
+  tag: "CREATE • PLAY • DISCOVER",
+  color: "from-yellow-300 to-amber-100",
+  items: [
+    "Meet sprites & explore motion",
+    "Create stories with sounds & animation",
+    "Sequence blocks & repeat actions",
+    "Build simple interactive games",
+  ],
+},
+ {
+  url:"/courses/single/c998d316-77f1-45cf-afd8-d784c0792535",
+  age: "8–10",
+  title: "Scratch Creator",
+  tag: "IMAGINE • CODE • CREATE",
+  color: "from-emerald-200 to-cyan-100",
+  items: [
+    "Interactive stories & animations",
+    "Events, loops & conditions",
+    "Music, sounds & score tracking",
+    "Build your own quizzes & games",
+  ],
+},
   {
-    age: "8–10",
-    title: "Scratch Creator",
-    tag: "CODE • BUILD • EXPERIMENT",
-    color: "from-blue-200 to-indigo-100",
-    items: [
-      "Variables & loops",
-      "Game mechanics",
-      "Conditions & events",
-      "Transition toward Python",
-    ],
-  },
+    url:"/courses/single/c9fa23e5-579b-4e68-bb1f-ec8807635de7",
+  age: "11–14 with no Laptops",
+  title: "Scratch Developer",
+  tag: "DESIGN • DEVELOP • INNOVATE",
+  color: "from-blue-200 to-indigo-100",
+  items: [
+    "Advanced variables, lists & loops",
+    "Custom blocks & reusable code",
+    "Complex games & problem-solving",
+    "Transition to Python programming",
+  ],
+},
   {
-    age: "11–14",
+    url:"/software-ai-engineering#journey",
+    age: "11+ with Laptops",
     title: "Engineering Foundation",
     tag: "UNDERSTAND • SOLVE • BUILD",
     color: "from-violet-200 to-fuchsia-100",
@@ -77,18 +94,18 @@ const ages = [
       "AI foundations",
     ],
   },
-  {
-    age: "15+",
-    title: "Advanced Engineering",
-    tag: "ENGINEER • SPECIALIZE • CREATE",
-    color: "from-emerald-200 to-cyan-100",
-    items: [
-      "Machine learning",
-      "Generative AI",
-      "Cloud & systems",
-      "AI architecture",
-    ],
-  },
+  // {
+  //   age: "15+",
+  //   title: "Advanced Engineering",
+  //   tag: "ENGINEER • SPECIALIZE • CREATE",
+  //   color: "from-emerald-200 to-cyan-100",
+  //   items: [
+  //     "Machine learning",
+  //     "Generative AI",
+  //     "Cloud & systems",
+  //     "AI architecture",
+  //   ],
+  // },
 ];
 
 const builds = [
@@ -128,20 +145,22 @@ export function Reveal({
   );
 }
 
-export default function LandingPage() {
+export default function LandingPage({webURL}:{webURL:string}) {
   const [open, setOpen] = useState(false);
+ 
   const router = useRouter();
   const goToPhase = (slug: string) => {
     router.push(`/software-ai-engineering/phases/${slug}`);
   };
+
+ 
   return (
-    <main className="overflow-hidden">
+    <section className="min-h-screen overflow-hidden">
       <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#07152f]/90 text-white backdrop-blur-xl border-b-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
           <Logo />
           <div className="hidden items-center gap-7 text-sm font-semibold md:flex">
             <a href="#journey">Journey</a>
-            <a href="#ages">Age Paths</a>
             <a className="hidden lg:flex" href="#projects">Projects</a>
             <a href="#how">How It Works</a>
             <a href="#payment">Payment Plans</a>
@@ -339,7 +358,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="ages" className="bg-white py-24">
+      <section id="trial" className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
             <div className="max-w-2xl">
@@ -359,7 +378,10 @@ export default function LandingPage() {
             {ages.map((a, i) => (
               <Reveal key={a.title} delay={i * 0.06}>
                 <div
-                  className={`h-full rounded-[2rem] bg-gradient-to-br ${a.color} p-7`}
+                  className={`h-full rounded-[2rem] bg-gradient-to-br ${a.color} p-7 cursor-pointer`}
+                  onClick={()=>{
+                    router.push(`${webURL}${a.url}`)
+                  }}
                 >
                   <div className="flex items-center justify-between">
                     <span className="rounded-full bg-white/70 px-3 py-1 text-sm font-black">
@@ -602,45 +624,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="trial" className="bg-[#ffd429] py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-[1fr_.8fr] lg:px-8 lg:items-center">
-          <Reveal>
-            <p className="text-sm font-black uppercase tracking-[.2em]">
-              🎁 1-week free trial
-            </p>
-            <h2 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl">
-              Let your child <span className="text-[#4f7cff]">try it.</span>
-            </h2>
-            <p className="mt-6 max-w-xl text-lg font-semibold leading-8 text-[#07152f]/75">
-              Start with Scratch Foundation or explore the Software & AI
-              Engineering pathway if your child is ready. Experience the
-              platform before you commit.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 md:flex-row">
-              <ChatOnWhatsApp className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#07152f] px-7 py-4 font-black text-white shadow-xl" />
-              {/* <a
-                href={WA}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#07152f] px-7 py-4 font-black text-white shadow-xl"
-              >
-                Start on WhatsApp <MessageCircle size={19} />
-              </a> */}
-              {/* <a
-                href="https://globalgenius.community"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 font-black text-[#07152f]"
-              >
-                Visit Platform <ArrowRight size={19} />
-              </a> */}
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <ParentInquiryForm />
-          </Reveal>
-        </div>
-      </section>
-    </main>
+   
+    </section>
   );
 }
