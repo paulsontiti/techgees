@@ -1,13 +1,11 @@
 "use client"
 
-import Loader from "@/components/loader";
+
 import { Button } from "@/components/ui/button";
 import { bgSecondaryColor, textPrimaryColor } from "@/utils/colors";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function SignIn(){
-const [loading,setLoading] = useState(false)
 const router = useRouter()
 
 
@@ -17,10 +15,8 @@ const router = useRouter()
     variant="outline"
     size="sm" 
     onClick={()=>{
-        setLoading(true)
         router.push("/sign-in")
     }}>
     Sign in
-    <Loader loading={loading}/>
     </Button>
     }

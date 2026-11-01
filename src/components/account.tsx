@@ -20,7 +20,7 @@ function Account() {
       setUserId(userId ?? "");
     })();
   });
-  if (userId === null) return <Skeleton className="h-10 w-[200px]" />;
+  if (userId === null) return <Skeleton className="h-10 w-32" />;
   return (
     <div>
       {userId ? (

@@ -10,6 +10,7 @@ import LayoutChildren from "@/components/layout-children";
 import Footer from "@/components/footer";
 import Chat from "../components/chat";
 import { bgNeutralColor } from "@/utils/colors";
+import ContactBubble from "@/components/home/contact-bubble";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,6 +53,7 @@ export default function Layout({
 
           <div>{children}</div>
         </LayoutChildren>
+        <ContactBubble/>
         <Footer />
       </body>
     </html>

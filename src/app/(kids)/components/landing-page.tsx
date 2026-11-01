@@ -185,9 +185,7 @@ export default function LandingPage({webURL}:{webURL:string}) {
               <a onClick={() => setOpen(false)} href="#journey">
                 Journey
               </a>
-              <a onClick={() => setOpen(false)} href="#ages">
-                Age Paths
-              </a>
+             
               <a onClick={() => setOpen(false)} href="#projects">
                 Projects
               </a>
@@ -228,8 +226,8 @@ export default function LandingPage({webURL}:{webURL:string}) {
               className="max-w-4xl text-5xl font-black leading-[.98] tracking-[-.04em] sm:text-6xl lg:text-7xl"
             >
               Start your child’s{" "}
-              <span className="text-[#ffd429]">technology journey</span> at age
-              5.
+              <span className="text-[#ffd429]">software and AI engineering journey</span> at age
+              11.
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -239,7 +237,7 @@ export default function LandingPage({webURL}:{webURL:string}) {
             >
               A progressive online learning journey from{" "}
               <strong className="text-white">
-                Scratch → Python → Software Engineering → AI → Intelligent
+                Python → Software Engineering → AI → Intelligent
                 Systems.
               </strong>
             </motion.p>
@@ -276,12 +274,12 @@ export default function LandingPage({webURL}:{webURL:string}) {
                 <div className="mb-5 flex items-center justify-between">
                   <span className="font-black">THE TECHNOLOGY JOURNEY</span>
                   <span className="rounded-full bg-[#ffd429] px-3 py-1 w-24 text-xs font-black">
-                    AGES 5+
+                    AGES 11+
                   </span>
                 </div>
                 <div className="space-y-3">
                   {[
-                    ["🌱", "Scratch", "Create & discover"],
+                    
                     ["🐍", "Python", "Code & understand"],
                     ["🧠", "Computer Science", "Think & solve"],
                     ["💻", "Software Engineering", "Design & build"],
@@ -358,7 +356,7 @@ export default function LandingPage({webURL}:{webURL:string}) {
         </div>
       </section>
 
-      <section id="trial" className="bg-white py-24">
+      {/* <section id="trial" className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
             <div className="max-w-2xl">
@@ -408,7 +406,7 @@ export default function LandingPage({webURL}:{webURL:string}) {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <ProgramPhases />
       <section id="journey" className="bg-[#07152f] py-24 text-white">

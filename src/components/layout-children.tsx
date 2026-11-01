@@ -13,7 +13,7 @@ function LayoutChildren({
       <p>Please check your internet connection and try again</p>
     </div>
   return (
-     <div>
+     <div className='min-h-screen'>
     
        {children}
      </div>

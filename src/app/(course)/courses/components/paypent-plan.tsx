@@ -415,15 +415,9 @@ export default function PaymentPlans({
 
               <div >
                 <div className="mt-4 flex items-center gap-2">
-                  <span>Start with</span>
-                  <span className="text-5xl font-black">₦10k</span>
-                </div>
-                
-                <div className="mt-4 flex items-center gap-2">
-                  <span>and pay</span>
-                  <div><span className="text-5xl font-black">₦5k</span>
+                 
+               <span className="text-5xl font-black">₦10k</span>
                 <span className="mb-2 text-sm text-slate-400">/ month</span></div>
-                </div>
                 
               </div>
 
@@ -432,7 +426,7 @@ export default function PaymentPlans({
                 grow with ambitious people building their future.
               </p>
 
-              <div className="my-7 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
+              {/* <div className="my-7 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
                 <div className="flex gap-3">
                   <Gift className="mt-1 h-5 w-5 shrink-0 text-emerald-400" />
 
@@ -471,20 +465,20 @@ export default function PaymentPlans({
                     {item}
                   </li>
                 ))}
-              </ul>
+              </ul> */}
 
-              <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-400">
+              {/* <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-400">
                 <strong className="text-white">Important:</strong> {`If you don't
                 introduce 3 new members for each month, your
                 subscription changes to ₦20,000/month.`}
-              </div>
+              </div> */}
 
               <button
                onClick={()=>{
                 setPaymentOpen(true)
                 setSubscriptionprice(10000)
               }} className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-400 px-5 py-4 font-bold text-slate-950 transition hover:bg-emerald-300">
-                Subscribe For Community Edition
+                Subscribe For Community
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -661,7 +655,7 @@ export default function PaymentPlans({
                       ₦20k / Month
                     </th>
                     <th className="p-6 text-center text-sm text-emerald-400">
-                      ₦5k / Month
+                      ₦10k / Month
                     </th>
                   </tr>
                 </thead>
@@ -738,7 +732,7 @@ export default function PaymentPlans({
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 px-6 py-4">
-                <p className="text-2xl font-black text-yellow-300">₦5,000</p>
+                <p className="text-2xl font-black text-yellow-300">₦10,000</p>
                 <p className="mt-1 text-xs text-slate-400">Community Edition</p>
               </div>
 
