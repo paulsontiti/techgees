@@ -108,7 +108,7 @@ function Footer() {
                       rel="noopener noreferrer"
                       className="block hover:text-white"
                     >
-                      YouTube live classes ↗
+                      YouTube live classes
                     </a>
                     <a
                       href={whatsappLink()}
@@ -116,7 +116,7 @@ function Footer() {
                       rel="noopener noreferrer"
                       className="block hover:text-white"
                     >
-                      Chat with admissions ↗
+                      Chat with admissions
                     </a>
                   </div>
                 </div>
@@ -138,14 +138,14 @@ function Footer() {
                     >
                       {PHONE_TWO}
                     </a>
-                    <a
+                    {/* <a
                       href="https://globalgenius.community"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block hover:text-white break-all"
                     >
                       globalgenius.community ↗
-                    </a>
+                    </a> */}
                     <p>100% online · Based in Nigeria · Learning without borders</p>
                   </div>
                 </div>
