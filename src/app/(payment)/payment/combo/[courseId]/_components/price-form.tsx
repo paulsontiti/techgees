@@ -23,7 +23,7 @@ import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 
 const formSchema = zod.object({
-  amount: zod.coerce.number().min(5000, {
+  amount: zod.coerce.number().min(10000, {
     message: "amount is required",
   }),
 });
@@ -89,9 +89,9 @@ function ComboPriceForm({
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
                     <Input
-                      min={5000}
+                      min={10000}
                       type="number"
-                      step={5000}
+                      step={10000}
                       disabled={isSubmitting}
                       placeholder='e.g. "50000"'
                       {...field}
