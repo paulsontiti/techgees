@@ -274,14 +274,14 @@ export type CatalogCategory =
   | "Kids & Scratch"
   | "Python"
   | "Web development" | "Frontend Development" | "Backend Development" | "Computer Science"
-  //| "AI & foundations";
+  | "AI & foundations" | "IT & Software";
 export const courseCatalog: {
   title: string;
   category: CatalogCategory;
   courseLink: string;
   audience: string;
   takeaway: string;
-  icon: "game" | "code" | "brain" | "terminal";
+  icon: "game" | "code" | "brain" | "terminal" | "workflow" | "monitorcog" | "shieldcheck";
 }[] = [
   {
     title: "Scratch Explorers",
@@ -307,8 +307,14 @@ export const courseCatalog: {
     icon: "game",
     courseLink: "/courses/single/c9fa23e5-579b-4e68-bb1f-ec8807635de7",
   },
-  // {
-  //    title: "Python for Beginners", category: "Python", audience: "First-time coders", takeaway: "Variables, loops, functions and projects", icon: "terminal" },
+  {
+     title: "Inside the Computer", category: "Computer Science", audience: "Computer Science students", takeaway: "Understand how hardware, software, memory, and the CPU work together to execute Python programs.", icon: "workflow",courseLink:"/courses/single/b38b64de-c12e-45a5-9b8e-2bc41297fd08" },
+     {
+     title: "IT Fundamentals for Beginners", category: "IT & Software", audience: "Computer users", takeaway: "Learn how computers and networks work, protect your accounts and files, and troubleshoot everyday IT problems.", icon: "monitorcog",courseLink:"/courses/single/ae32703a-422b-4ac4-a1be-dce812575cbb" },
+     {
+     title: "Cybersecurity & Ethical Hacking Foundations", category: "IT & Software", audience: "Hackers", takeaway: "Learn to protect accounts, devices, networks, and websites through practical beginner projects.", icon: "shieldcheck",courseLink:"/courses/single/0fe608ed-f1bb-4c25-adfe-dfa4041a0834" },
+     {
+     title: "AI Tools & Workflow Automation", category: "AI & foundations", audience: "AI tools users", takeaway: "Use AI for everyday work and build automated workflows without writing code.", icon: "brain",courseLink:"/courses/single/1f7ca7c4-bc52-4a9f-8c4f-992153db9a0c" },
   {
     title: "Python Programming Foundation(Phone-Friendly)",
     category: "Python",
@@ -350,8 +356,8 @@ export const courseCatalog: {
     icon: "code",
     courseLink: "/courses/single/6d5385f7-dfe3-4023-8d7c-26a776d055d7",
   },
-  { title: "100 Days Accelerated Frontend", category: "Frontend Development", audience: "Developing frontend engineers", takeaway: "Frontend projects and modern web workflows", icon: "code",courseLink:"" },
-  { title: "100 Days Accelerated Backend with Node.js", category: "Backend Development", audience: "Developing backend engineers", takeaway: "APIs and server-side applications", icon: "code",courseLink:"" },
+  { title: "100 Days Accelerated Frontend", category: "Frontend Development", audience: "Developing frontend engineers", takeaway: "Frontend projects and modern web workflows", icon: "code",courseLink:"/courses/single/0a4b041e-b0cf-4f9e-920a-f30e6121b503" },
+  { title: "100 Days Accelerated Backend with Node.js", category: "Backend Development", audience: "Developing backend engineers", takeaway: "APIs and server-side applications", icon: "code",courseLink:"/courses/single/08b5afbf-a64c-408b-9ace-eec3e76d1457" },
   // { title: "Full-Stack Web Development", category: "Web development", audience: "Aspiring app builders", takeaway: "React and Node.js from UI to API", icon: "code", courseLink:"" },
   // { title: "AI & Machine Learning with Python", category: "AI & foundations", audience: "Aspiring AI engineers", takeaway: "Data, models and hands-on ML", icon: "brain",courseLink:"" },
   // { title: "Computer Science Foundations", category: "Computer Science", audience: "Curious problem solvers", takeaway: "Computers, systems and how software works", icon: "brain",courseLink:""},

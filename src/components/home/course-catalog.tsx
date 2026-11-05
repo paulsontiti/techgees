@@ -1,7 +1,7 @@
 'use client'
 
 import { CatalogCategory, courseCatalog } from "@/lib/content";
-import { ArrowUpRight, BookOpen, BrainCircuit, Code2, Gamepad2, Terminal } from "lucide-react";
+import { ArrowUpRight, BookOpen, BrainCircuit, Code2, Gamepad2, MonitorCog, ShieldCheck, Terminal, Workflow } from "lucide-react";
 import { useState } from "react";
 import Heading from "./heading";
 import Reveal from "./reveal";
@@ -9,13 +9,14 @@ import { bgPrimaryColor, textSecondaryColor } from "@/utils/colors";
 import Link from "next/link";
 import PrimaryButton from "./primary-button";
 import useOpenEnrollModal from "../../../store/enrol-modal-store";
+import { GiSecurityGate } from "react-icons/gi";
 
 const catalogFilters: ("All courses" | CatalogCategory)[] = [
   "All courses",
   "Kids & Scratch",
   "Python",
   "Web development",
-  "Frontend Development", "Backend Development", "Computer Science"
+  "Frontend Development", "Backend Development", "Computer Science", "AI & foundations", "IT & Software",
 ];
 
 export default function RealCourseCatalog({url}:{url:string}) {
@@ -29,7 +30,7 @@ export default function RealCourseCatalog({url}:{url:string}) {
     game: Gamepad2,
     code: Code2,
     brain: BrainCircuit,
-    terminal: Terminal,
+    terminal: Terminal,shieldcheck:ShieldCheck,workflow:Workflow,monitorcog:MonitorCog
   };
 
   const {openModal} = useOpenEnrollModal()
