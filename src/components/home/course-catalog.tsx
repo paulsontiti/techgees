@@ -91,7 +91,7 @@ export default function RealCourseCatalog({url}:{url:string}) {
                 <h3 className="mt-6 text-xl font-black tracking-tight leading-snug">
                   {course.title}
                 </h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">
+                <p className="mt-2 text-sm leading-relaxed">
                   {course.takeaway}
                 </p>
                 <div className="mt-auto pt-6 flex items-center justify-between gap-3">
